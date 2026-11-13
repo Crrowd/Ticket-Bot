@@ -32,6 +32,9 @@ DESIGNS = [
     dict(n=7, name="Salbeitürkis & Zitrone", text="Hintergrund aus dem Begrüßungsbereich der bisherigen Seite",
          bg="#A8C5C0", alt="#B6D0CB", paper="#FFFFFF", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
          dark="#142A31", acc="#F4E04D", accsoft="#FBF3BE", hover="#EDD52B", even="#F3F8F7"),
+    dict(n=8, name="Salbeitürkis & Grau-Rosé", text="Wie Entwurf 7, Akzent in gedecktem Rosé",
+         bg="#A8C5C0", alt="#B6D0CB", paper="#FFFFFF", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
+         dark="#142A31", acc="#D4B5B0", accsoft="#F1E5E3", hover="#C9A49E", even="#F3F8F7"),
 ]
 
 def rgb(h):
