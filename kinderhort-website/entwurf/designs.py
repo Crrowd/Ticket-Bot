@@ -29,6 +29,9 @@ DESIGNS = [
     dict(n=6, name="Lavendelgrau & Honig", text="Hintergrund aus dem Porträt der Einrichtungsleitung",
          bg="#9B98A8", alt="#A7A4B3", paper="#FFFFFF", line="#C9C6D3", ink="#24203A", soft="#34304A",
          dark="#1A172B", acc="#F3C969", accsoft="#FBEBC4", hover="#EDB940", even="#F6F5F9"),
+    dict(n=7, name="Salbeitürkis & Zitrone", text="Hintergrund aus dem Begrüßungsbereich der bisherigen Seite",
+         bg="#A8C5C0", alt="#B6D0CB", paper="#FFFFFF", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
+         dark="#142A31", acc="#F4E04D", accsoft="#FBF3BE", hover="#EDD52B", even="#F3F8F7"),
 ]
 
 def rgb(h):
