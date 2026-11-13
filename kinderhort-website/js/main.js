@@ -50,7 +50,8 @@
     tour.querySelector(".tour-next").addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
     function update() {
       if (!count) return;
-      var i = Math.round(track.scrollLeft / step()) + 1;
+      var s = step();
+      var i = s > 0 ? Math.round(track.scrollLeft / s) + 1 : 1;
       count.textContent = "Bild " + Math.min(i, items.length) + " von " + items.length;
     }
     track.addEventListener("scroll", update, { passive: true });
