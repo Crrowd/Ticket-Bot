@@ -6,9 +6,9 @@ import os
 
 W = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Farbwerte des aktuellen Stylesheets (Pool Blue / Dark Cocoa / Solar Yellow)
-BASE = dict(bg="#B9E5EC", alt="#A9DDE6", paper="#F7FCFD", line="#9AD3DD", ink="#3D231E", soft="#5E4640",
-            dark="#2A1714", acc="#FFD33D", accsoft="#FFF0B8", hover="#F5C400", even="#EAF7F9")
+# Farbwerte des aktuellen Stylesheets (Entwurf 1: Salbei & Pfirsich)
+BASE = dict(bg="#EEF4EC", alt="#E1EBDE", paper="#FFFFFF", line="#D3E0CF", ink="#2F3E36", soft="#5A6B61",
+            dark="#22302A", acc="#F4A688", accsoft="#FDE6DC", hover="#EE9272", even="#F6F9F5")
 
 DESIGNS = [
     dict(n=1, name="Salbei & Pfirsich", text="Ruhig, natürlich, warm",
@@ -59,7 +59,7 @@ table.plan thead th { background: var(--sun); color: var(--ink); }
 """
 
 if __name__ == "__main__":
-    css = open(os.path.join(W, "css/style.css"), encoding="utf-8").read()
+    css = open(os.path.join(W, "css/style.css"), encoding="utf-8").read().replace(LIGHT, "")
     os.makedirs(os.path.join(W, "entwurf/designs"), exist_ok=True)
     for d in DESIGNS:
         out = os.path.join(W, f"entwurf/designs/design-{d['n']}.css")
