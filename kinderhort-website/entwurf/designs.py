@@ -35,7 +35,33 @@ DESIGNS = [
     dict(n=8, name="Salbeitürkis & Grau-Rosé", text="Wie Entwurf 7, Akzent in gedecktem Rosé",
          bg="#A8C5C0", alt="#B6D0CB", paper="#FFFFFF", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
          dark="#142A31", acc="#D4B5B0", accsoft="#F1E5E3", hover="#C9A49E", even="#F3F8F7"),
+    dict(n=9, name="Salbeitürkis, Grau-Rosé & dunkles Türkis", text="Wie Entwurf 8, Karten in dunklem Türkis statt Weiß",
+         bg="#A8C5C0", alt="#B6D0CB", paper="#2D6A6A", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
+         dark="#142A31", acc="#D4B5B0", accsoft="#F1E5E3", hover="#C9A49E", even="#F3F8F7", extra="DARK_CARDS"),
 ]
+
+# Dunkle Karten: helle Schrift innerhalb aller Flächen in --paper
+DARK_CARDS = """
+/* Entwurf: dunkle Karten mit heller Schrift */
+.info-card, .room, .tour-item, .timeline .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group,
+.phone-card, .address-card, .prose, .area-card, .pill-list > div, .features li, .stat, .group-chip,
+.subnav a, .hero-tags li, .dropdown, .main-nav .dropdown a {
+  --ink: #F3FAF8; --ink-soft: #CFE3E0; --green: #F3FAF8; --green-dark: #FFFFFF; --line: rgba(255,255,255,.16);
+  color: var(--ink);
+}
+.features li { box-shadow: none; }
+.subnav a { border-color: transparent; }
+.subnav a:hover, .main-nav .dropdown a:hover { --ink: #1E3B44; }
+.info-card .icon, .faq summary::after, .dl-link .ficon, .event .date, .area-card .age,
+table.plan thead th, table.plan tfoot td { color: #1E3B44; }
+.timeline li::before { border-color: #1E3B44; }
+.dl-link { background: rgba(255,255,255,.1); }
+.dl-link:hover { background: rgba(255,255,255,.2); }
+table.plan tbody tr:nth-child(even) { background: rgba(255,255,255,.06); }
+table.plan th, table.plan td { border-color: rgba(255,255,255,.14); }
+.area-card .age { background: #fff; }
+.room .txt p, .area-card .body p { color: var(--ink-soft); }
+"""
 
 def rgb(h):
     h = h.lstrip("#"); return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
@@ -72,5 +98,5 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(W, "entwurf/designs"), exist_ok=True)
     for d in DESIGNS:
         out = os.path.join(W, f"entwurf/designs/design-{d['n']}.css")
-        open(out, "w", encoding="utf-8").write(f"/* Entwurf {d['n']}: {d['name']} – Hintergrund {d['bg']}, Schrift {d['ink']}, Akzent {d['acc']} */\n" + recolor(css, d) + LIGHT)
+        open(out, "w", encoding="utf-8").write(f"/* Entwurf {d['n']}: {d['name']} – Hintergrund {d['bg']}, Schrift {d['ink']}, Akzent {d['acc']} */\n" + recolor(css, d) + LIGHT + (globals()[d["extra"]] if d.get("extra") else ""))
         print(out)
