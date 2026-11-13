@@ -26,6 +26,9 @@ DESIGNS = [
     dict(n=5, name="Sand & Terrakotta", text="Geborgen, erdig, gemütlich",
          bg="#FAF4EA", alt="#F2E8D8", paper="#FFFFFF", line="#E8DBC6", ink="#3B2F2A", soft="#6A5A52",
          dark="#2B221E", acc="#E8956B", accsoft="#FBE2D4", hover="#E07F51", even="#FDF9F3"),
+    dict(n=6, name="Lavendelgrau & Honig", text="Hintergrund aus dem Porträt der Einrichtungsleitung",
+         bg="#9B98A8", alt="#A7A4B3", paper="#FFFFFF", line="#C9C6D3", ink="#24203A", soft="#34304A",
+         dark="#1A172B", acc="#F3C969", accsoft="#FBEBC4", hover="#EDB940", even="#F6F5F9"),
 ]
 
 def rgb(h):
