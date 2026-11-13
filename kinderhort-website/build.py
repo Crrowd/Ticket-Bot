@@ -38,14 +38,14 @@ def icon(name, size=24):
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
 
-def bunting(colors=("#8fcf9f", "#f4b63f", "#ef7b5a", "#4b9fc8"), n=18, bg=None):
+def bunting(colors=("#FFD33D", "#B9E5EC", "#FFD33D", "#F7FCFD"), n=18, bg=None):
     # Wimpelkette angelehnt an das Logo
     w = 1200
     step = w / n
     parts = []
     if bg:
         parts.append(f'<rect width="{w}" height="46" fill="{bg}"/>')
-    parts.append(f'<path d="M0 6 Q {w/2} 22 {w} 6" fill="none" stroke="#2f6b57" stroke-width="1.5" opacity=".5"/>')
+    parts.append(f'<path d="M0 6 Q {w/2} 22 {w} 6" fill="none" stroke="#FFD33D" stroke-width="1.5" opacity=".7"/>')
     for i in range(n):
         x0 = i * step + 4
         x1 = x0 + step - 8
@@ -59,12 +59,12 @@ def bunting(colors=("#8fcf9f", "#f4b63f", "#ef7b5a", "#4b9fc8"), n=18, bg=None):
     return f'<svg class="bunting" viewBox="0 0 {w} 46" preserveAspectRatio="none" aria-hidden="true">{"".join(parts)}</svg>'
 
 BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
-              '<circle cx="24" cy="24" r="23" fill="#2f6b57"/>'
+              '<circle cx="24" cy="24" r="23" fill="#3D231E"/>'
               '<path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/>'
-              '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#8fcf9f"/>'
-              '<path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#f4b63f"/>'
-              '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#ef7b5a"/>'
-              '<path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#4b9fc8"/>'
+              '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#FFD33D"/>'
+              '<path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#B9E5EC"/>'
+              '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#FFD33D"/>'
+              '<path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#B9E5EC"/>'
               '</svg>')
 
 NAV = [
@@ -85,9 +85,9 @@ def header(active):
             items.append(
                 '<li class="has-drop"><button class="drop-toggle" aria-expanded="false" aria-haspopup="true">'
                 f'Virtueller Rundgang {icon("down", 16)}</button><ul class="dropdown">'
-                '<li><a href="kinderkrippe.html#rundgang"><span class="dot" style="background:#f4b63f"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
-                '<li><a href="kindergarten.html#rundgang"><span class="dot" style="background:#ef7b5a"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
-                '<li><a href="kinderhort.html#rundgang"><span class="dot" style="background:#4b9fc8"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
+                '<li><a href="kinderkrippe.html#rundgang"><span class="dot" style="background:#FFD33D"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
+                '<li><a href="kindergarten.html#rundgang"><span class="dot" style="background:#FFD33D"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
+                '<li><a href="kinderhort.html#rundgang"><span class="dot" style="background:#FFD33D"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
                 '</ul></li>')
             continue
         cur = ' aria-current="page"' if href == active else ""
@@ -115,7 +115,7 @@ FOOTER = f'''<footer class="site-footer">
     <div class="footer-grid">
       <div>
         <img class="footer-logo" src="img/logo.png" alt="Logo {ORG}" width="1030" height="608" loading="lazy">
-        <p>Kinderkrippe • Kindergarten • Kinderhort<br><strong style="color:#f4b63f">Weil Qualität zählt!</strong></p>
+        <p>Kinderkrippe • Kindergarten • Kinderhort<br><strong style="color:#FFD33D">Weil Qualität zählt!</strong></p>
       </div>
       <div>
         <h4>Anschrift</h4>
@@ -157,7 +157,7 @@ def page(fname, title, desc, active, body, theme=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
-<meta name="theme-color" content="#2f6b57">
+<meta name="theme-color" content="#B9E5EC">
 <meta property="og:title" content="{e(full_title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website">
@@ -205,7 +205,7 @@ def simple_hero(title, sub, kicker):
   <div class="container">
     <div class="page-hero-card">
       <div class="page-hero-content">
-        <span class="eyebrow" style="background:#fff1cf">{kicker}</span>
+        <span class="eyebrow" style="background:#FFD33D">{kicker}</span>
         <h1>{title}</h1>
         <p>{sub}</p>
       </div>
@@ -383,7 +383,7 @@ home = f'''
   <div class="container welcome">
     <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
     <div class="reveal">
-      <span class="kicker" style="color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.85rem">Herzlich Willkommen</span>
+      <span class="kicker" style="display:inline-block;color:var(--ink);background:var(--sun);padding:4px 12px;border-radius:999px;margin-bottom:14px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.85rem">Herzlich Willkommen</span>
       <h2>Schön, dass Sie da sind!</h2>
       <blockquote>
         <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
