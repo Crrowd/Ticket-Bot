@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /entwurf/
+Disallow: /daten/
+
+Sitemap: https://kinderhort-grombuehl.de/sitemap.xml

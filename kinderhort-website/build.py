@@ -1,10 +1,32 @@
 # Erzeugt die statischen HTML-Seiten der Kinderhort-Webseite.
-import os, html
+import os, html, csv, json, datetime as dt
+from urllib.parse import quote
 from PIL import Image
 
 W = os.path.dirname(os.path.abspath(__file__))
 ORG = "Kath. Kinder- und Jugendhort Grombühl e. V."
+SITE = "https://kinderhort-grombuehl.de/"   # Adresse, unter der die Seite veröffentlicht wird
+MAIL = "kinderhort.grombuehl@t-online.de"
 e = html.escape
+
+# ---------- Daten aus daten/*.csv ----------
+def read_csv(name):
+    with open(os.path.join(W, "daten", name), encoding="utf-8-sig", newline="") as f:
+        return [r for r in csv.DictReader(f, delimiter=";") if any((v or "").strip() for v in r.values())]
+
+def d(s):
+    return dt.datetime.strptime(s.strip(), "%d.%m.%Y").date()
+
+SCHLIESSTAGE = read_csv("schliesstage.csv")
+TERMINE = read_csv("termine.csv")
+FEIERTAGE = read_csv("feiertage.csv")
+PLAN_JAHR = f"{d(SCHLIESSTAGE[0]['erster Schließtag']).year}/{d(SCHLIESSTAGE[-1]['letzter Schließtag']).year}"
+
+def mailto(subject, body):
+    return f"mailto:{MAIL}?subject={quote(subject)}&body={quote(body)}"
+
+KRANK_MAIL = mailto("Krankmeldung / Abwesenheit", "Liebes Team,\n\nunser Kind kann leider nicht in die Einrichtung kommen.\n\nName des Kindes: \nGruppe / Bereich: \nAbwesend von – bis: \nGrund (freiwillig): \n\nViele Grüße\n")
+PLATZ_MAIL = mailto("Platzanfrage", "Liebes Team,\n\nwir interessieren uns für einen Platz in Ihrer Einrichtung.\n\nName des Kindes: \nGeburtsdatum: \nGewünschter Bereich (Krippe / Kindergarten / Hort): \nGewünschter Beginn: \nGewünschte Betreuungszeiten: \nName der Eltern: \nTelefon: \n\nViele Grüße\n")
 
 _dims = {}
 def dims(src):
@@ -13,11 +35,28 @@ def dims(src):
             _dims[src] = im.size
     return _dims[src]
 
-def img(src, alt="", cls="", lazy=True, extra=""):
+def webp(src):
+    """Erzeugt WebP-Fassungen (volle Größe + 800 px) und liefert das srcset."""
+    if not src.endswith(".jpg"):
+        return ""
+    base = src[:-4]
+    full, small = os.path.join(W, base + ".webp"), os.path.join(W, base + "-800.webp")
+    if not os.path.exists(full) or not os.path.exists(small):
+        with Image.open(os.path.join(W, src)) as im:
+            im = im.convert("RGB")
+            im.save(full, "WEBP", quality=74, method=6)
+            sm = im.copy(); sm.thumbnail((800, 800)); sm.save(small, "WEBP", quality=74, method=6)
+    w, _ = dims(src)
+    sw = min(800, w) if w >= dims(src)[1] else int(800 * w / dims(src)[1])
+    return f"{base}-800.webp {sw}w, {base}.webp {w}w"
+
+def img(src, alt="", cls="", lazy=True, extra="", sizes="(max-width: 900px) 100vw, 50vw"):
     w, h = dims(src)
     c = f' class="{cls}"' if cls else ""
     l = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
-    return f'<img src="{src}" alt="{e(alt)}" width="{w}" height="{h}"{c}{l}{extra}>'
+    ss = webp(src)
+    sset = f' srcset="{ss}" sizes="{sizes}"' if ss else ""
+    return f'<img src="{src}"{sset} alt="{e(alt)}" width="{w}" height="{h}"{c}{l}{extra}>'
 
 # ---------- Icons ----------
 def icon(name, size=24):
@@ -38,14 +77,14 @@ def icon(name, size=24):
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
 
-def bunting(colors=("#F4A688", "#EEF4EC", "#F4A688", "#FFFFFF"), n=18, bg=None):
+def bunting(colors=("#D4B5B0", "#A8C5C0", "#D4B5B0", "#F3F8F7"), n=18, bg=None):
     # Wimpelkette angelehnt an das Logo
     w = 1200
     step = w / n
     parts = []
     if bg:
         parts.append(f'<rect width="{w}" height="46" fill="{bg}"/>')
-    parts.append(f'<path d="M0 6 Q {w/2} 22 {w} 6" fill="none" stroke="#F4A688" stroke-width="1.5" opacity=".7"/>')
+    parts.append(f'<path d="M0 6 Q {w/2} 22 {w} 6" fill="none" stroke="#D4B5B0" stroke-width="1.5" opacity=".7"/>')
     for i in range(n):
         x0 = i * step + 4
         x1 = x0 + step - 8
@@ -59,12 +98,12 @@ def bunting(colors=("#F4A688", "#EEF4EC", "#F4A688", "#FFFFFF"), n=18, bg=None):
     return f'<svg class="bunting" viewBox="0 0 {w} 46" preserveAspectRatio="none" aria-hidden="true">{"".join(parts)}</svg>'
 
 BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
-              '<circle cx="24" cy="24" r="23" fill="#2F3E36"/>'
+              '<circle cx="24" cy="24" r="23" fill="#1E3B44"/>'
               '<path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/>'
-              '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#F4A688"/>'
-              '<path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#EEF4EC"/>'
-              '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#F4A688"/>'
-              '<path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#EEF4EC"/>'
+              '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/>'
+              '<path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/>'
+              '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/>'
+              '<path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/>'
               '</svg>')
 
 NAV = [
@@ -85,9 +124,9 @@ def header(active):
             items.append(
                 '<li class="has-drop"><button class="drop-toggle" aria-expanded="false" aria-haspopup="true">'
                 f'Virtueller Rundgang {icon("down", 16)}</button><ul class="dropdown">'
-                '<li><a href="kinderkrippe.html#rundgang"><span class="dot" style="background:#F4A688"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
-                '<li><a href="kindergarten.html#rundgang"><span class="dot" style="background:#F4A688"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
-                '<li><a href="kinderhort.html#rundgang"><span class="dot" style="background:#F4A688"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
+                '<li><a href="kinderkrippe.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
+                '<li><a href="kindergarten.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
+                '<li><a href="kinderhort.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
                 '</ul></li>')
             continue
         cur = ' aria-current="page"' if href == active else ""
@@ -115,7 +154,7 @@ FOOTER = f'''<footer class="site-footer">
     <div class="footer-grid">
       <div>
         <img class="footer-logo" src="img/logo.png" alt="Logo {ORG}" width="1030" height="608" loading="lazy">
-        <p>Kinderkrippe • Kindergarten • Kinderhort<br><strong style="color:#F4A688">Weil Qualität zählt!</strong></p>
+        <p>Kinderkrippe • Kindergarten • Kinderhort<br><strong style="color:#D4B5B0">Weil Qualität zählt!</strong></p>
       </div>
       <div>
         <h4>Anschrift</h4>
@@ -127,6 +166,7 @@ FOOTER = f'''<footer class="site-footer">
           <li><a href="tel:+4993127898920">0931 2789892 0</a></li>
           <li><a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></li>
           <li><a href="kontakt.html">Alle Durchwahlen</a></li>
+          <li><a href="{KRANK_MAIL}">Kind krankmelden</a></li>
         </ul>
       </div>
       <div>
@@ -142,12 +182,12 @@ FOOTER = f'''<footer class="site-footer">
     </div>
     <div class="footer-bottom">
       <span>© <span id="year">2026</span> {ORG}</span>
-      <a href="impressum.html">Impressum</a>
+      <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </div>
 </footer>'''
 
-def page(fname, title, desc, active, body, theme=""):
+def page(fname, title, desc, active, body, theme="", head=""):
     full_title = f"{title} – {ORG}" if title else f"{ORG} – Weil Qualität zählt!"
     bcls = f' class="{theme}"' if theme else ""
     doc = f'''<!DOCTYPE html>
@@ -157,11 +197,17 @@ def page(fname, title, desc, active, body, theme=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
-<meta name="theme-color" content="#EEF4EC">
+<meta name="theme-color" content="#A8C5C0">
 <meta property="og:title" content="{e(full_title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
+<meta property="og:url" content="{SITE}{'' if fname == 'index.html' else fname}">
+<meta property="og:image" content="{SITE}img/og-bild.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{SITE}{'' if fname == 'index.html' else fname}">{head}
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/fredoka-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -173,12 +219,16 @@ def page(fname, title, desc, active, body, theme=""):
 {body}
 </main>
 {FOOTER}
+<script src="js/daten.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>
 </html>
 '''
     with open(os.path.join(W, fname), "w", encoding="utf-8") as f:
         f.write(doc)
+    PAGES_WRITTEN.append(fname)
+
+PAGES_WRITTEN = []
 
 # ---------- Bausteine ----------
 def page_hero(title, sub, image, kicker, links=None, alt=""):
@@ -205,7 +255,7 @@ def simple_hero(title, sub, kicker):
   <div class="container">
     <div class="page-hero-card">
       <div class="page-hero-content">
-        <span class="eyebrow" style="background:#F4A688">{kicker}</span>
+        <span class="eyebrow" style="background:#D4B5B0">{kicker}</span>
         <h1>{title}</h1>
         <p>{sub}</p>
       </div>
@@ -279,15 +329,9 @@ def section(id_, kicker, title, intro, content, cls="", center=False):
 </section>'''
 
 # ---------- Ferienplan ----------
-PLAN = [
-    ("Herbstferien", "30.10.2026", "02.11.2026", "", "03.11.2026", "", "04.11.2026", 2),
-    ("Weihnachten", "23.12.2026", "24.12.2026", "", "08.01.2027", "", "11.01.2027", 7),
-    ("Fasching", "05.02.2027", "08.02.2027", "Rosenmontag", "09.02.2027", "Faschingsdienstag", "10.02.2027", 2),
-    ("Ostern", "24.03.2027", "25.03.2027", "", "30.03.2027", "", "31.03.2027", 2),
-    ("Pfingsten", "14.05.2027", "18.05.2027", "", "18.05.2027", "", "19.05.2027", 1),
-    ("Pfingsten", "26.05.2027", "28.05.2027", "", "28.05.2027", "", "31.05.2027", 1),
-    ("Sommerferien", "06.08.2027", "09.08.2027", "", "27.08.2027", "", "30.08.2027", 15),
-]
+PLAN = [(r["Anlass"], r["geöffnet bis"], r["erster Schließtag"], r.get("Hinweis erster Tag", ""),
+         r["letzter Schließtag"], r.get("Hinweis letzter Tag", ""), r["wieder geöffnet"], int(r["Schließtage"]))
+        for r in SCHLIESSTAGE]
 
 def plan_table():
     rows = []
@@ -298,7 +342,7 @@ def plan_table():
     total = sum(p[-1] for p in PLAN)
     return f'''<div class="table-wrap reveal">
 <table class="plan">
-  <caption>Die Ferienzeiten Ihres Kindes für Krippe, Kindergarten und Kinderhort im Jahr 2026/2027</caption>
+  <caption>Die Ferienzeiten Ihres Kindes für Krippe, Kindergarten und Kinderhort im Jahr {PLAN_JAHR}</caption>
   <thead><tr><th scope="col">Wann?</th><th scope="col">Wir haben geöffnet bis …</th><th scope="col">Erster Schließtag</th><th scope="col">Letzter Schließtag</th><th scope="col">Wir öffnen wieder am …</th><th scope="col" class="num">Schließtage</th></tr></thead>
   <tbody>{"".join(rows)}</tbody>
   <tfoot><tr><td colspan="5">Schließtage gesamt</td><td class="num">{total}</td></tr></tfoot>
@@ -306,10 +350,14 @@ def plan_table():
 </div>
 <p class="plan-note">Damit Sie rechtzeitig Ihre Urlaubspläne schmieden können: Kinderkrippe, Kindergarten und Kinderhort haben die gleichen Schließtage.
 <a href="downloads/Ferienplan_2026_27.pdf">Ferienplan als PDF herunterladen</a> ·
-<a href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen">Original-Aushang ansehen</a></p>'''
+<a href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen">Original-Aushang ansehen</a></p>
+<div class="btn-row no-print">
+  <a class="btn btn-primary" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a>
+  <button class="btn btn-ghost js-print-plan" type="button">{icon("file", 20)} Ferienplan drucken</button>
+</div>'''
 
 def ferienplan_section(cls="alt"):
-    return section("ferienplan", "Ferienplan", "Schließtage 2026/2027",
+    return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                    plan_table(), cls=cls)
 
@@ -329,6 +377,12 @@ WEISSER_RAUM = ("Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hie
                 "unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. "
                 "Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen.")
 
+STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden>
+        <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
+        <p class="status-sub"></p>
+        <p class="status-next">{icon("calendar", 18)} <span></span></p>
+      </div>'''
+
 # =====================================================================
 # STARTSEITE
 # =====================================================================
@@ -344,6 +398,7 @@ home = f'''
         <a class="btn btn-primary" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
+      {STATUS_CARD}
     </div>
     <div class="hero-collage" aria-hidden="false">
       <figure class="c1">{img("img/p2170270.jpg", "Heller Gruppenraum im Kindergarten", lazy=False)}</figure>
@@ -431,13 +486,24 @@ home = f'''
       <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931 2789892 0</a>
-        <a class="btn btn-ghost" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 20)} E-Mail schreiben</a>
+        <a class="btn btn-ghost" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
       </div>
     </div>
   </div>
 </section>
 '''
-page("index.html", "", "Kath. Kinder- und Jugendhort Grombühl e. V. in Würzburg: Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Weil Qualität zählt!", "index.html", home)
+JSONLD = {
+    "@context": "https://schema.org", "@type": "ChildCare", "name": ORG, "url": SITE,
+    "description": "Kinderkrippe, Kindergarten und Kinderhort unter einem Dach in Würzburg-Grombühl.",
+    "image": SITE + "img/og-bild.jpg", "logo": SITE + "img/logo.png",
+    "telephone": "+49 931 27898920", "email": MAIL,
+    "address": {"@type": "PostalAddress", "streetAddress": "Lindleinstraße 20", "postalCode": "97080",
+                "addressLocality": "Würzburg", "addressRegion": "Bayern", "addressCountry": "DE"},
+    "openingHoursSpecification": [{"@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "06:45", "closes": "18:00"}],
+}
+page("index.html", "", "Kath. Kinder- und Jugendhort Grombühl e. V. in Würzburg: Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Weil Qualität zählt!", "index.html", home,
+     head='\n<script type="application/ld+json">' + json.dumps(JSONLD, ensure_ascii=False) + '</script>')
 
 # =====================================================================
 # KINDERKRIPPE
@@ -709,7 +775,7 @@ hort += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zum Kinderh
     ("Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?", "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig."),
     ("Kann ich mein Kind abholen, wann ich möchte?", "Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden."),
     ("Kann ich mein Kind vor der Hausaufgabenzeit abholen?", "Unsere Mindestbuchungszeit beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine."),
-    ("Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?", "Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid."),
+    ("Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?", f'Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="{KRANK_MAIL}">vorbereiteten Krankmeldung per E-Mail</a>.'),
     ("Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?", "Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung."),
 ]))
 hort += abc_section("KinderhortABC", "KinderhortABC herunterladen")
@@ -719,19 +785,25 @@ page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhor
 # =====================================================================
 # AKTUELLES
 # =====================================================================
-def ev(day, mon, title, text):
-    return f'<li class="event reveal"><div class="date"><b>{day}</b><span>{mon}</span></div><p><strong>{title}</strong>{text}</p></li>'
+MONATE = ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sep", "Okt", "Nov", "Dez"]
+def ev(r):
+    a, b = d(r["von"]), d(r["bis"] or r["von"])
+    day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
+    mon = f"{MONATE[b.month - 1]} {b.year}"
+    return (f'<li class="event reveal" data-ende="{b.isoformat()}"><div class="date"><b>{day}</b><span>{mon}</span></div>'
+            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p></li>')
 
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
                 [("termine", "Termine"), ("elternbrief", "Liebe Eltern"), ("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
 <div class="notes-grid" style="margin-top:0">
+  <div>
   <ul class="event-list">
-    {ev("18", "Nov 2026", "Buß- und Bettag", "Unsere Einrichtung hat zu den üblichen Zeiten geöffnet. Für die Hortkinder zählt dieser Tag wie ein Ferientag, hier sind die Ferienbuchungszeiten Ihres Kindes relevant.")}
-    {ev("04", "Dez 2026", "Weihnachtsmarkt mit Christbaumverkauf", "Freitag, 04.12.2026, ab 16:30 Uhr.")}
-    {ev("07", "Dez 2026", "Der Nikolaus besucht uns", "Am 07.12.2026.")}
-    {ev("06.–10.", "Sep 2027", "Österreich-Ferienfreizeit", "Die Ferienfreizeit der Hortkinder findet vom 06.09. bis 10.09.2027 statt.")}
+    {"".join(ev(r) for r in TERMINE)}
   </ul>
+  <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
+  <div class="btn-row"><a class="btn btn-primary" href="downloads/termine.ics" download>{icon("calendar", 20)} Termine in meinen Kalender</a></div>
+  </div>
   <div class="note-card reveal">
     <h3>Sankt Martin</h3>
     <p>Der Sankt-Martins-Umzug / das Martinssingen findet auch in diesem Jahr wieder im kleinen Rahmen in den einzelnen Gruppen statt.</p>
@@ -765,8 +837,15 @@ downl += section("dateien", "Downloads", "Informationsblätter zum Herunterladen
     {dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z · PDF, 224 KB")}
     {dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular · PDF, 110 KB")}</ul></div>
 </div>''')
+def ics_dl(href, title, sub):
+    return f'<li><a class="dl-link" href="{href}" download><span class="ficon">ICS</span><span>{title}<small>{sub}</small></span></a></li>'
+downl += section("kalender", "Kalender", "Termine direkt ins Handy übernehmen", "Die Kalenderdateien lassen sich mit einem Tipp in den Kalender von iPhone, Android oder Outlook übernehmen.", f'''
+<div class="downloads two">
+  <div class="dl-group reveal"><h3>Schließtage</h3><ul>{ics_dl("downloads/schliesstage.ics", f"Schließtage {PLAN_JAHR}", "Kalenderdatei für alle Bereiche")}</ul></div>
+  <div class="dl-group reveal"><h3>Termine</h3><ul>{ics_dl("downloads/termine.ics", "Termine &amp; Veranstaltungen", "Kalenderdatei")}</ul></div>
+</div>''', cls="alt")
 downl += section("", "Aktuelles", "Hier finden Sie alle aktuellen Termine", "",
-                 f'<a class="btn btn-primary" href="aktuelles.html">Zu den Terminen {icon("arrow", 20)}</a>', cls="alt tight")
+                 f'<a class="btn btn-primary" href="aktuelles.html">Zu den Terminen {icon("arrow", 20)}</a>', cls="tight")
 page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts Grombühl: Ferienplan, KinderhortABC und Medikamentenvereinbarung.", "downloads.html", downl)
 
 # =====================================================================
@@ -775,6 +854,24 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 def tel(label, num_display, num):
     return f'<li><span>{label}</span><a href="tel:{num}">{num_display}</a></li>'
 kon = simple_hero("Kontakt", "Wir freuen uns auf Sie und Ihr Kind – rufen Sie direkt in der Gruppe an oder schreiben Sie uns.", "So erreichen Sie uns")
+kon += f'''<section class="section tight" id="schnell">
+  <div class="container">
+    <div class="quick-grid">
+      <a class="quick-card reveal" href="{KRANK_MAIL}">
+        <span class="quick-icon">{icon("mail", 26)}</span>
+        <span><strong>Kind krankmelden</strong><span>Öffnet eine vorbereitete E-Mail – nur noch Name, Gruppe und Zeitraum eintragen. Gerne auch telefonisch in der Gruppe.</span></span>
+      </a>
+      <a class="quick-card reveal" href="{PLATZ_MAIL}">
+        <span class="quick-icon">{icon("users", 26)}</span>
+        <span><strong>Platz anfragen</strong><span>Öffnet eine vorbereitete E-Mail mit allen Angaben, die wir für Ihre Anfrage brauchen.</span></span>
+      </a>
+      <div class="quick-card status-mini reveal" id="status-kontakt" hidden>
+        <span class="quick-icon">{icon("clock", 26)}</span>
+        <span><strong class="status-today"></strong><span class="status-sub"></span></span>
+      </div>
+    </div>
+  </div>
+</section>'''
 kon += f'''<section class="section">
   <div class="container contact-grid">
     <div>
@@ -808,20 +905,20 @@ page("kontakt.html", "Kontakt", "Kontakt zum Kath. Kinder- und Jugendhort Gromb�
 # =====================================================================
 # IMPRESSUM
 # =====================================================================
-imp = simple_hero("Impressum", "Angaben gemäß § 5 TMG", "Rechtliches")
+imp = simple_hero("Impressum", "Angaben gemäß § 5 DDG", "Rechtliches")
 imp += f'''<section class="section"><div class="container"><div class="prose">
-<h2>Angaben gemäß § 5 TMG</h2>
+<h2>Angaben gemäß § 5 DDG</h2>
 <p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg</p>
 <p>Vereinsregister: VR 187<br>Registergericht: Amtsgericht Würzburg Registergericht</p>
 <p><strong>Vertreten durch:</strong><br>Helmut Burmester</p>
 <h2>Kontakt</h2>
 <p>Telefon: <a href="tel:+4993127898920">0931 27898920</a><br>E-Mail: <a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></p>
-<h2>Redaktionell Verantwortlicher</h2>
+<h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
 <p>Petra Lachnit<br>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg</p>
 <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
 <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 <h3>Haftung für Inhalte</h3>
-<p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+<p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
 <p>Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
 <h3>Haftung für Links</h3>
 <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p>
@@ -831,6 +928,73 @@ imp += f'''<section class="section"><div class="container"><div class="prose">
 <p>Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
 </div></div></section>'''
 page("impressum.html", "Impressum", "Impressum des Kath. Kinder- und Jugendhorts Grombühl e. V., Würzburg.", "impressum.html", imp)
+
+# =====================================================================
+# DATENSCHUTZ (Vorlage – vom Träger zu prüfen und zu ergänzen)
+# =====================================================================
+dsg = simple_hero("Datenschutz", "Informationen zum Umgang mit Ihren Daten auf dieser Webseite", "Rechtliches")
+dsg += f'''<section class="section"><div class="container"><div class="prose">
+<p class="todo-hinweis"><strong>Hinweis für den Träger:</strong> Diese Datenschutzerklärung ist eine Vorlage. Bitte die markierten Stellen ergänzen und den Text vor der Veröffentlichung prüfen lassen (z. B. durch den Datenschutzbeauftragten der Diözese).</p>
+<h2>1. Verantwortliche Stelle</h2>
+<p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg<br>Telefon: 0931 27898920<br>E-Mail: <a href="mailto:{MAIL}">{MAIL}</a><br>Vertreten durch: Helmut Burmester</p>
+<h2>2. Datenschutzbeauftragte/r</h2>
+<p><mark>[Bitte ergänzen: Name und Kontakt der/des zuständigen Datenschutzbeauftragten]</mark></p>
+<p>Als katholische Einrichtung unterliegen wir dem Gesetz über den Kirchlichen Datenschutz (KDG).</p>
+<h2>3. Hosting und Server-Protokolle</h2>
+<p>Diese Webseite wird bei <mark>[Bitte ergänzen: Name und Anschrift des Hosting-Anbieters]</mark> betrieben. Beim Aufruf der Seiten speichert der Server automatisch technisch notwendige Informationen (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browsertyp). Diese Daten dienen ausschließlich dem sicheren Betrieb der Webseite und werden nach <mark>[Bitte ergänzen: Speicherdauer, z. B. 7 Tagen]</mark> gelöscht.</p>
+<h2>4. Keine Cookies, kein Tracking</h2>
+<p>Diese Webseite setzt keine Cookies, verwendet keine Analyse- oder Werbedienste und bindet keine Inhalte von Drittanbietern ein. Schriftarten werden direkt von unserem Server geladen; es findet keine Verbindung zu Google oder anderen Anbietern statt.</p>
+<h2>5. Kontakt per E-Mail und Telefon</h2>
+<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren (z. B. für eine Krankmeldung oder Platzanfrage), verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihres Anliegens. Die Buttons „Kind krankmelden“ und „Platz anfragen“ öffnen lediglich Ihr eigenes E-Mail-Programm; über diese Webseite selbst werden keine Daten übertragen oder gespeichert.</p>
+<h2>6. Externe Links</h2>
+<p>Der Link „Auf der Karte anzeigen“ führt zu OpenStreetMap. Erst wenn Sie ihn anklicken, wird eine Verbindung zu den Servern der OpenStreetMap Foundation hergestellt; dort gelten deren Datenschutzbestimmungen.</p>
+<h2>7. Ihre Rechte</h2>
+<p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten sowie ein Widerspruchsrecht. Zudem können Sie sich bei der zuständigen kirchlichen Datenschutzaufsicht beschweren: <mark>[Bitte ergänzen: zuständige Datenschutzaufsicht, z. B. Gemeinsame Datenschutzaufsicht der bayerischen (Erz-)Diözesen]</mark>.</p>
+<p class="muted">Stand: <mark>[Datum ergänzen]</mark></p>
+</div></div></section>'''
+page("datenschutz.html", "Datenschutz", "Datenschutzerklärung des Kath. Kinder- und Jugendhorts Grombühl e. V., Würzburg.", "datenschutz.html", dsg)
+
+# ---------- Daten für Status-Anzeige (js/daten.js) ----------
+kita = {
+    "schliesszeiten": [{"name": r["Anlass"], "von": d(r["erster Schließtag"]).isoformat(), "bis": d(r["letzter Schließtag"]).isoformat(), "tage": int(r["Schließtage"])} for r in SCHLIESSTAGE],
+    "feiertage": [{"datum": d(r["Datum"]).isoformat(), "name": r["Feiertag"]} for r in FEIERTAGE],
+    "planEnde": d(SCHLIESSTAGE[-1]["wieder geöffnet"]).isoformat(),
+    "oeffnung": "06:45", "schluss": "18:00",
+}
+with open(os.path.join(W, "js/daten.js"), "w", encoding="utf-8") as f:
+    f.write("/* Automatisch erzeugt aus daten/*.csv – nicht von Hand ändern, sondern build.py ausführen. */\n")
+    f.write("window.KITA = " + json.dumps(kita, ensure_ascii=False, indent=1) + ";\n")
+
+# ---------- Kalenderdateien (.ics) ----------
+def ics(events, name, slug):
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    def esc(t): return t.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+    out = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Kinderhort Grombuehl//Webseite//DE", "CALSCALE:GREGORIAN",
+           "METHOD:PUBLISH", f"X-WR-CALNAME:{esc(name)}", "X-WR-TIMEZONE:Europe/Berlin"]
+    for i, (start, end, title, desc) in enumerate(events):
+        out += ["BEGIN:VEVENT", f"UID:{slug}-{start:%Y%m%d}-{i}@kinderhort-grombuehl.de", f"DTSTAMP:{stamp}",
+                f"DTSTART;VALUE=DATE:{start:%Y%m%d}", f"DTEND;VALUE=DATE:{end + dt.timedelta(days=1):%Y%m%d}",
+                f"SUMMARY:{esc(title)}", f"DESCRIPTION:{esc(desc)}", "TRANSP:TRANSPARENT", "END:VEVENT"]
+    out.append("END:VCALENDAR")
+    return "\r\n".join(out) + "\r\n"
+
+with open(os.path.join(W, "downloads/schliesstage.ics"), "w", encoding="utf-8", newline="") as f:
+    f.write(ics([(d(r["erster Schließtag"]), d(r["letzter Schließtag"]), f"Kita geschlossen ({r['Anlass']})",
+                  f"Kinderkrippe, Kindergarten und Kinderhort geschlossen. Wieder geöffnet am {r['wieder geöffnet']}.") for r in SCHLIESSTAGE],
+                "Kinderhort Grombühl – Schließtage", "schliesstag"))
+with open(os.path.join(W, "downloads/termine.ics"), "w", encoding="utf-8", newline="") as f:
+    f.write(ics([(d(r["von"]), d(r["bis"] or r["von"]), r["Titel"], r["Beschreibung"]) for r in TERMINE],
+                "Kinderhort Grombühl – Termine", "termin"))
+
+# ---------- SEO: sitemap.xml, robots.txt ----------
+today = dt.date.today().isoformat()
+with open(os.path.join(W, "sitemap.xml"), "w", encoding="utf-8") as f:
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+    for pg in PAGES_WRITTEN:
+        f.write(f"  <url><loc>{SITE}{'' if pg == 'index.html' else pg}</loc><lastmod>{today}</lastmod></url>\n")
+    f.write("</urlset>\n")
+with open(os.path.join(W, "robots.txt"), "w", encoding="utf-8") as f:
+    f.write(f"User-agent: *\nAllow: /\nDisallow: /entwurf/\nDisallow: /daten/\n\nSitemap: {SITE}sitemap.xml\n")
 
 # Favicon
 with open(os.path.join(W, "img/favicon.svg"), "w", encoding="utf-8") as f:

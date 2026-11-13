@@ -1,0 +1,38 @@
+# Weiterleitungen der alten WordPress-Adressen auf die neuen Seiten (Apache-Webspace)
+RewriteEngine On
+
+# Alte Seiten-IDs
+RewriteCond %{QUERY_STRING} (^|&)page_id=12(&|$)
+RewriteRule ^$ /aktuelles.html? [R=301,L]
+RewriteCond %{QUERY_STRING} (^|&)page_id=1139(&|$)
+RewriteRule ^$ /downloads.html? [R=301,L]
+
+# Alte Unterseiten
+RewriteRule ^kinderkrippe/?$  /kinderkrippe.html [R=301,L]
+RewriteRule ^kindergarten/?$  /kindergarten.html [R=301,L]
+RewriteRule ^kinderhort/?$    /kinderhort.html [R=301,L]
+RewriteRule ^aktuelles/?$     /aktuelles.html [R=301,L]
+RewriteRule ^downloads/?$     /downloads.html [R=301,L]
+RewriteRule ^kontakt/?$       /kontakt.html [R=301,L]
+RewriteRule ^impressum/?$     /impressum.html [R=301,L]
+
+# Alte PDF-Links
+RewriteRule ^wp-content/uploads/.*/Ferienplan_2026_27\.pdf$   /downloads/Ferienplan_2026_27.pdf [R=301,L]
+RewriteRule ^wp-content/uploads/.*/HortABC\.pdf$              /downloads/HortABC.pdf [R=301,L]
+RewriteRule ^wp-content/uploads/.*/Medikamentenvereinbarung\.pdf$ /downloads/Medikamentenvereinbarung.pdf [R=301,L]
+
+# Interne Arbeitsordner nicht ausliefern
+RewriteRule ^(entwurf|daten)(/|$) - [F,L]
+RewriteRule ^(build|build_vorschau)\.py$ - [F,L]
+
+# Kalenderdateien korrekt ausliefern, Caching
+AddType text/calendar .ics
+AddType image/webp .webp
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+</IfModule>

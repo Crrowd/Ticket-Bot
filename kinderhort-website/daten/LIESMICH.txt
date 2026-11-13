@@ -1,0 +1,14 @@
+So pflegen Sie Termine, Schließtage und Feiertage
+=================================================
+
+Die drei Dateien in diesem Ordner können mit jedem Texteditor oder mit Excel/LibreOffice
+(als "CSV, Trennzeichen Semikolon, UTF-8" speichern) bearbeitet werden.
+
+termine.csv       – Termine für die Seite "Aktuelles" und die Kalenderdatei.
+                    Vergangene Termine werden auf der Webseite automatisch ausgeblendet.
+schliesstage.csv  – Ferienplan (Tabelle, "Nächster Schließtag" auf der Startseite, Kalenderdatei).
+feiertage.csv     – Gesetzliche Feiertage in Bayern (für die Anzeige "Heute geöffnet/geschlossen").
+
+Datumsformat immer TT.MM.JJJJ, z. B. 04.12.2026.
+
+Danach im Ordner kinderhort-website einmal ausführen:   python3 build.py

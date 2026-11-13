@@ -79,6 +79,9 @@ document.querySelectorAll("[data-full-img]").forEach(function (e) { e.setAttribu
 document.querySelectorAll("[data-href-img]").forEach(function (e) { e.href = IMG[e.dataset.hrefImg]; });
 '''
 doc = doc.replace(' loading="lazy"', "")
+doc = re.sub(r' srcset="[^"]*" sizes="[^"]*"', '', doc)
+for ics in ('schliesstage.ics', 'termine.ics'):
+    doc = doc.replace(f'href="downloads/{ics}" download', f'href="#" data-hinweis="Kalenderdatei auf der veröffentlichten Seite"')
 
 router = """
 (function () {
@@ -114,7 +117,7 @@ html = f"""<!DOCTYPE html>
 <div class="preview-note">Vorschau der neuen Webseite – alle Seiten in einer Datei</div>
 {doc}
 <script>{img_map}</script>
-<script>{js}</script>
+<script>{read("js/daten.js")}</script>\n<script>{js}</script>
 <script>{router}</script>
 </body>
 </html>

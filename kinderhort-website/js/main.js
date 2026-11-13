@@ -135,6 +135,94 @@
     document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("visible"); });
   }
 
+  /* ---------- Datumshilfen ---------- */
+  function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  var TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+  function fmt(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear(); }
+  function fmtLong(d) { return TAGE[d.getDay()] + ", " + fmt(d); }
+
+  /* ---------- Vergangene Termine ausblenden ---------- */
+  var heute = iso(new Date());
+  var events = document.querySelectorAll(".event[data-ende]");
+  if (events.length) {
+    var left = 0;
+    events.forEach(function (ev) { if (ev.getAttribute("data-ende") < heute) ev.hidden = true; else left++; });
+    var empty = document.querySelector(".events-empty");
+    if (empty && !left) empty.hidden = false;
+  }
+
+  /* ---------- Heute geöffnet / nächster Schließtag ---------- */
+  var K = window.KITA;
+  function closedReason(d) {
+    if (!K) return null;
+    var s = iso(d);
+    if (d.getDay() === 0 || d.getDay() === 6) return "Wochenende";
+    for (var i = 0; i < K.feiertage.length; i++) if (K.feiertage[i].datum === s) return K.feiertage[i].name;
+    for (var j = 0; j < K.schliesszeiten.length; j++) {
+      var z = K.schliesszeiten[j];
+      if (s >= z.von && s <= z.bis) return "Schließzeit " + z.name;
+    }
+    return null;
+  }
+  function nextOpen(from) {
+    var d = new Date(from.getFullYear(), from.getMonth(), from.getDate() + 1);
+    for (var i = 0; i < 60 && closedReason(d); i++) d.setDate(d.getDate() + 1);
+    return d;
+  }
+  function status() {
+    var now = new Date(), reason = closedReason(now);
+    var hm = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    var open = !reason && hm >= K.oeffnung && hm < K.schluss;
+    var today, sub;
+    if (open) {
+      today = "Jetzt geöffnet – heute bis " + K.schluss + " Uhr";
+      sub = "Krippe und Kindergarten bis 16:30 Uhr, Spätdienst bis 17:30 Uhr, Hort bis 18:00 Uhr.";
+    } else if (!reason && hm < K.oeffnung) {
+      today = "Heute geöffnet ab " + K.oeffnung + " Uhr";
+      sub = "Krippe und Kindergarten bis 16:30 Uhr, Hort bis 18:00 Uhr.";
+    } else {
+      var n = nextOpen(now);
+      today = reason ? "Heute geschlossen (" + reason + ")" : "Für heute geschlossen";
+      sub = "Wir sind wieder da am " + fmtLong(n) + " ab " + K.oeffnung + " Uhr.";
+    }
+    var next = "";
+    for (var i = 0; i < K.schliesszeiten.length; i++) {
+      var z = K.schliesszeiten[i];
+      if (z.bis < iso(now)) continue;
+      var v = parse(z.von), b = parse(z.bis);
+      var range = z.von === z.bis ? fmtLong(v) : fmt(v) + " – " + fmt(b);
+      next = (iso(now) >= z.von ? "Aktuelle Schließzeit: " : "Nächste Schließzeit: ") + z.name + ", " + range +
+             " (" + z.tage + (z.tage === 1 ? " Schließtag)" : " Schließtage)");
+      break;
+    }
+    if (!next) next = "Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.";
+    return { open: open, today: today, sub: sub, next: next };
+  }
+  if (K) {
+    var st = status();
+    ["status", "status-kontakt"].forEach(function (id) {
+      var box = document.getElementById(id);
+      if (!box) return;
+      box.querySelector(".status-today").textContent = st.today;
+      box.querySelector(".status-sub").textContent = st.sub;
+      var nx = box.querySelector(".status-next span");
+      if (nx) nx.textContent = st.next;
+      box.classList.toggle("is-closed", !st.open);
+      box.hidden = false;
+    });
+  }
+
+  /* ---------- Ferienplan drucken ---------- */
+  document.querySelectorAll(".js-print-plan").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.body.classList.add("print-plan");
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("visible"); });
+      window.print();
+    });
+  });
+  window.addEventListener("afterprint", function () { document.body.classList.remove("print-plan"); });
+
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 })();

@@ -6,9 +6,9 @@ import os
 
 W = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Farbwerte des aktuellen Stylesheets (Entwurf 1: Salbei & Pfirsich)
-BASE = dict(bg="#EEF4EC", alt="#E1EBDE", paper="#FFFFFF", line="#D3E0CF", ink="#2F3E36", soft="#5A6B61",
-            dark="#22302A", acc="#F4A688", accsoft="#FDE6DC", hover="#EE9272", even="#F6F9F5")
+# Farbwerte des aktuellen Stylesheets (Entwurf 9) – css/style.css enthält zusätzlich LIGHT + DARK_CARDS
+BASE = dict(bg="#A8C5C0", alt="#B6D0CB", paper="#2D6A6A", line="#C9DCD8", ink="#1E3B44", soft="#2C4A52",
+            dark="#142A31", acc="#D4B5B0", accsoft="#F1E5E3", hover="#C9A49E", even="#F3F8F7")
 
 DESIGNS = [
     dict(n=1, name="Salbei & Pfirsich", text="Ruhig, natürlich, warm",
@@ -45,7 +45,7 @@ DARK_CARDS = """
 /* Entwurf: dunkle Karten mit heller Schrift */
 .info-card, .room, .tour-item, .timeline .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group,
 .phone-card, .address-card, .prose, .area-card, .pill-list > div, .features li, .stat, .group-chip,
-.subnav a, .hero-tags li, .dropdown, .main-nav .dropdown a {
+.subnav a, .hero-tags li, .dropdown, .main-nav .dropdown a, .status-card, .quick-card {
   --ink: #F3FAF8; --ink-soft: #CFE3E0; --green: #F3FAF8; --green-dark: #FFFFFF; --line: rgba(255,255,255,.16);
   color: var(--ink);
 }
@@ -61,6 +61,15 @@ table.plan tbody tr:nth-child(even) { background: rgba(255,255,255,.06); }
 table.plan th, table.plan td { border-color: rgba(255,255,255,.14); }
 .area-card .age { background: #fff; }
 .room .txt p, .area-card .body p { color: var(--ink-soft); }
+/* Lange Texte hell hinterlegt (besser lesbar) */
+.prose, .faq details > div {
+  --ink: #1E3B44; --ink-soft: #2C4A52; --green: #1E3B44; --green-dark: #142A31;
+  background: #F3F8F7; color: var(--ink);
+}
+.faq details > div { padding-top: 18px; border-top: 1px solid rgba(255,255,255,.2); }
+.faq details > div a { color: #1E3B44; }
+.status-card .status-sub, .quick-card span span { color: var(--ink-soft); }
+.quick-icon { color: #1E3B44; }
 """
 
 def rgb(h):
@@ -94,7 +103,7 @@ table.plan thead th { background: var(--sun); color: var(--ink); }
 """
 
 if __name__ == "__main__":
-    css = open(os.path.join(W, "css/style.css"), encoding="utf-8").read().replace(LIGHT, "")
+    css = open(os.path.join(W, "css/style.css"), encoding="utf-8").read().replace(DARK_CARDS, "").replace(LIGHT, "")
     os.makedirs(os.path.join(W, "entwurf/designs"), exist_ok=True)
     for d in DESIGNS:
         out = os.path.join(W, f"entwurf/designs/design-{d['n']}.css")
