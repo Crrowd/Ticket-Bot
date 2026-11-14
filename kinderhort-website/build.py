@@ -50,8 +50,23 @@ def webp(src):
     sw = min(800, w) if w >= dims(src)[1] else int(800 * w / dims(src)[1])
     return f"{base}-800.webp {sw}w, {base}.webp {w}w"
 
+_lqip = {}
+def lqip(src):
+    """Winzige, unscharfe Vorschau als Hintergrund, bis das Bild geladen ist."""
+    if not src.endswith(".jpg"):
+        return ""
+    if src not in _lqip:
+        import io, base64
+        with Image.open(os.path.join(W, src)) as im:
+            im = im.convert("RGB"); im.thumbnail((16, 16))
+            buf = io.BytesIO(); im.save(buf, "WEBP", quality=35)
+        _lqip[src] = base64.b64encode(buf.getvalue()).decode()
+    return f' style="background-image:url(data:image/webp;base64,{_lqip[src]})"'
+
 def img(src, alt="", cls="", lazy=True, extra="", sizes="(max-width: 900px) 100vw, 50vw"):
     w, h = dims(src)
+    cls = (cls + " ph").strip() if src.endswith(".jpg") else cls
+    extra += lqip(src)
     c = f' class="{cls}"' if cls else ""
     l = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
     ss = webp(src)
@@ -72,6 +87,8 @@ def icon(name, size=24):
         "right": '<path d="M9 5l7 7-7 7"/>',
         "down": '<path d="M6 9l6 6 6-6"/>',
         "file": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+        "search": '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>',
+        "copy": '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
         "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     }[name]
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -108,26 +125,29 @@ BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
 
 NAV = [
     ("index.html", "Startseite"),
+    ("BEREICHE", "Bereiche"),
     ("aktuelles.html", "Aktuelles"),
-    ("TOUR", "Virtueller Rundgang"),
-    ("kinderkrippe.html", "Kinderkrippe"),
-    ("kindergarten.html", "Kindergarten"),
-    ("kinderhort.html", "Kinderhort"),
     ("downloads.html", "Downloads"),
     ("kontakt.html", "Kontakt"),
+]
+BEREICHE = [
+    ("kinderkrippe.html", "Kinderkrippe", "ab 11 Monaten · Sonnen- &amp; Sternengruppe"),
+    ("kindergarten.html", "Kindergarten", "3 Jahre bis Einschulung · Bären, Bienen, Spatzen"),
+    ("kinderhort.html", "Kinderhort", "ab der Einschulung · alle Schulformen"),
+    ("index.html#rundgang", "Virtueller Rundgang", "Fotos aus allen drei Bereichen"),
 ]
 
 def header(active):
     items = []
     for href, label in NAV:
-        if href == "TOUR":
+        if href == "BEREICHE":
+            inside = active in [b[0] for b in BEREICHE]
+            subs = "".join(
+                f'<li><a href="{h}"{' aria-current="page"' if h == active else ""}><span class="dot"></span><span>{t}<small>{sub}</small></span></a></li>'
+                for h, t, sub in BEREICHE)
             items.append(
-                '<li class="has-drop"><button class="drop-toggle" type="button" aria-expanded="false" aria-haspopup="true">'
-                f'Virtueller Rundgang {icon("down", 16)}</button><ul class="dropdown">'
-                '<li><a href="kinderkrippe.html#rundgang"><span class="dot"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
-                '<li><a href="kindergarten.html#rundgang"><span class="dot"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
-                '<li><a href="kinderhort.html#rundgang"><span class="dot"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
-                '</ul></li>')
+                f'<li class="has-drop"><button class="drop-toggle{" current" if inside else ""}" type="button" aria-expanded="false" aria-haspopup="true">'
+                f'Bereiche {icon("down", 16)}</button><ul class="dropdown">{subs}</ul></li>')
             continue
         cur = ' aria-current="page"' if href == active else ""
         cls = ' class="nav-cta"' if href == "kontakt.html" else ""
@@ -139,14 +159,23 @@ def header(active):
       {BRAND_MARK}
       <span class="brand-text"><small>Kath. Kinder- und Jugendhort</small><strong>Grombühl e. V.</strong></span>
     </a>
-    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span></button>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
       </ul>
     </nav>
+    <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span><kbd aria-hidden="true">Strg K</kbd></button>
+    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span></button>
   </div>
 </header>'''
+
+MOBILE_BAR = f'''<nav class="mobile-bar no-print" aria-label="Schnellzugriff">
+  <a href="tel:+4993127898920">{icon("phone", 22)}<span>Anrufen</span></a>
+  <a href="{KRANK_MAIL}">{icon("mail", 22)}<span>Krankmelden</span></a>
+  <a href="aktuelles.html#termine">{icon("calendar", 22)}<span>Termine</span></a>
+  <button type="button" class="js-search">{icon("search", 22)}<span>Suche</span></button>
+</nav>'''
+
 
 FOOTER = f'''<footer class="site-footer">
   {bunting(bg=None)}
@@ -194,7 +223,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <html lang="de" class="no-js">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>document.documentElement.className = "js";</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
@@ -210,8 +239,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{SITE}{'' if fname == 'index.html' else fname}">{head}
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body{bcls}>
@@ -220,6 +248,8 @@ def page(fname, title, desc, active, body, theme="", head=""):
 {body}
 </main>
 {FOOTER}
+{MOBILE_BAR}
+<script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[href$='.html'], a[href*='.html#']"}},"eagerness":"moderate"}}]}}</script>
 <script src="js/daten.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>
@@ -236,21 +266,20 @@ PAGES_WRITTEN = []
 def page_hero(title, sub, image, kicker, links=None, alt=""):
     sn = ""
     if links:
-        sn = '<nav class="subnav" aria-label="Auf dieser Seite"><ul>' + "".join(
-            f'<li><a href="#{a}">{l}</a></li>' for a, l in links) + "</ul></nav>"
+        sn = '\n<nav class="subnav no-print" aria-label="Auf dieser Seite"><div class="container"><ul>' + "".join(
+            f'<li><a href="#{a}">{l}</a></li>' for a, l in links) + "</ul></div></nav>"
     return f'''<section class="page-hero">
   <div class="container">
     <div class="page-hero-card">
-      {img(image, alt or title, lazy=False)}
+      {img(image, alt or title, lazy=False, sizes="100vw")}
       <div class="page-hero-content">
         <span class="eyebrow">{kicker}</span>
         <h1>{title}</h1>
         <p>{sub}</p>
       </div>
     </div>
-    {sn}
   </div>
-</section>'''
+</section>{sn}'''
 
 def simple_hero(title, sub, kicker):
     return f'''<section class="page-hero simple">
@@ -310,8 +339,13 @@ def timeline(rows):
             out.append(f'<li><time>{t}</time><div class="tl-body">{txt}</div></li>')
     return '<ol class="timeline">' + "".join(out) + "</ol>"
 
-def features(items):
-    return '<ul class="features">' + "".join(f'<li class="reveal">{x}</li>' for x in items) + "</ul>"
+def features(items, groups=None):
+    if not groups:
+        return '<ul class="features">' + "".join(f'<li class="reveal">{x}</li>' for x in items) + "</ul>"
+    assert sorted(n for _, idx in groups for n in idx) == list(range(len(items))), "Jeder Punkt muss genau einer Gruppe zugeordnet sein"
+    return '<div class="feature-groups">' + "".join(
+        f'<div class="feature-group reveal"><h3>{t}</h3><ul class="features">' + "".join(f"<li>{items[n]}</li>" for n in idx) + "</ul></div>"
+        for t, idx in groups) + "</div>"
 
 def faq(items):
     out = []
@@ -379,6 +413,14 @@ WEISSER_RAUM = ("Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hie
                 "unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. "
                 "Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen.")
 
+MONATE = ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sep", "Okt", "Nov", "Dez"]
+def ev(r):
+    a, b = d(r["von"]), d(r["bis"] or r["von"])
+    day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
+    mon = f"{MONATE[b.month - 1]} {b.year}"
+    return (f'<li class="event reveal" data-ende="{b.isoformat()}"><div class="date"><b>{day}</b><span>{mon}</span></div>'
+            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p></li>')
+
 STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden>
         <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
         <p class="status-sub"></p>
@@ -412,6 +454,8 @@ home = f'''
   </div>
 </section>
 
+<div class="announce" id="hinweis" hidden></div>
+
 <section class="section alt" id="bereiche">
   <div class="container">
     <div class="section-head center"><span class="kicker">Krippe · Kindergarten · Hort</span><h2>Ein Haus für jedes Alter</h2>
@@ -436,23 +480,6 @@ home = f'''
   </div>
 </section>
 
-<section class="section">
-  <div class="container welcome">
-    <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
-    <div class="reveal">
-      <span class="kicker">Herzlich Willkommen</span>
-      <h2>Schön, dass Sie da sind!</h2>
-      <blockquote>
-        <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
-        <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
-        <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
-        <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
-      </blockquote>
-      <div class="signature">Herzliche Grüße, Ihre<strong>Petra Lachnit</strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
-    </div>
-  </div>
-</section>
-
 <section class="section green">
   <div class="container">
     <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Mehr als Betreuung</h2>
@@ -471,11 +498,52 @@ home = f'''
 </section>
 
 <section class="section">
+  <div class="container welcome">
+    <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
+    <div class="reveal">
+      <span class="kicker">Herzlich Willkommen</span>
+      <h2>Schön, dass Sie da sind!</h2>
+      <blockquote>
+        <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
+        <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
+        <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
+        <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
+      </blockquote>
+      <div class="signature">Herzliche Grüße, Ihre<strong>Petra Lachnit</strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="rundgang">
   <div class="container">
-    <div class="section-head center"><span class="kicker">Informationen</span><h2>Termine &amp; Downloads</h2></div>
-    <div class="teasers">
-      <a class="teaser reveal" href="aktuelles.html">{img("img/bauecke-2.jpg", "Bauecke im Kinderhort")}<div><h3>Aktuelle Termine</h3><p>Hier finden Sie aktuelle Termine und Informationen. {icon("arrow", 18)}</p></div></a>
-      <a class="teaser reveal" href="downloads.html">{img("img/p2160170.jpg", "Spielbereich")}<div><h3>Downloads</h3><p>Hier finden Sie weitere Informationsblätter. {icon("arrow", 18)}</p></div></a>
+    <div class="section-head"><span class="kicker">Virtueller Rundgang</span><h2>Schauen Sie sich bei uns um</h2>
+      <p>Fotos aus allen drei Bereichen zeigen Gruppenräume, Turnraum, Weißen Raum, Bistro und Küche – ganz ohne Termin.</p></div>
+    <div class="teasers three">
+      <a class="teaser reveal" href="kinderkrippe.html#rundgang">{img("img/puppenecke3.jpg", "Puppenecke der Kinderkrippe")}<div><h3>Kinderkrippe</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
+      <a class="teaser reveal" href="kindergarten.html#rundgang">{img("img/blick-vom-nebenraum-in-den-gruppenraum.jpg", "Gruppenraum im Kindergarten")}<div><h3>Kindergarten</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
+      <a class="teaser reveal" href="kinderhort.html#rundgang">{img("img/kreatviraum-4.jpg", "Kreativraum im Kinderhort")}<div><h3>Kinderhort</h3><p>24 Bilder ansehen {icon("arrow", 18)}</p></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="aktuell">
+  <div class="container">
+    <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
+      <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
+    <div class="notes-grid">
+      <div>
+        <ul class="event-list" data-max="3">
+          {"".join(ev(r) for r in TERMINE)}
+        </ul>
+        <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
+        <div class="btn-row"><a class="btn btn-primary" href="aktuelles.html">Alle Termine {icon("arrow", 20)}</a>
+          <a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} In meinen Kalender</a></div>
+      </div>
+      <div class="note-card reveal">
+        <h3>Unterlagen zum Herunterladen</h3>
+        <p>Hier finden Sie weitere Informationsblätter: Ferienplan, KinderhortABC und die Medikamentenvereinbarung.</p>
+        <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
+      </div>
     </div>
   </div>
 </section>
@@ -576,7 +644,7 @@ krippe += section("auszeichnung", "Das zeichnet uns aus", "Was unsere Krippe bes
     "30 Schließtage im Jahr",
     "Hauseigene Küche mit zwei Köchinnen, die täglich abwechslungsreiches und saisonales Essen frisch zubereiten",
     "Das Waschen von Bettwäsche wird von der Kita übernommen",
-]))
+], [("Begleitung &amp; Team", [0, 1, 2, 3]), ("Haus &amp; Garten", [4, 5, 7]), ("Alltag", [6, 8])]))
 krippe += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zur Kinderkrippe", "", faq([
     ("Müssen wir Windeln usw. für unser Kind mitbringen?", "Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause."),
     ("Gibt es die Möglichkeit für mein Kind zum Schlafen?", "Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet."),
@@ -658,7 +726,7 @@ kiga += section("auszeichnung", "Das zeichnet uns aus", "Was unseren Kindergarte
     "Büchereibesuche, Exkursionen (Feuerwehrbesuch, Bäckereibesuch), Jahresausflug",
     "Übernachtung im Kindergarten für die Kinder, die in die Schule kommen",
     "Ab dem Vorschulalter arbeiten wir mit dem Würzburger Trainingsprogramm „Hören, Lauschen, Lernen“",
-]) + '''<h3 class="sub-head">Besondere Vorzüge unserer Einrichtung</h3>
+], [("Betreuung &amp; Team", [0, 1, 2, 3, 4]), ("Haus &amp; Küche", [5, 6, 7, 8]), ("Erleben &amp; Lernen", [9, 10, 11, 12])]) + '''<h3 class="sub-head">Besondere Vorzüge unserer Einrichtung</h3>
 <div class="pill-list">
   <div class="reveal"><h3>Projektarbeit</h3><p>Wir arbeiten im Kindergarten projektbezogen. Das Thema orientiert sich an den Interessen der Kinder, es wird von ihnen ausgewählt und abgestimmt. Die Projektarbeit bietet eine kindgerechte Form des Lernens: Die Kinder können eigene Ideen einbringen und gestalten den Lernprozess mit.</p></div>
   <div class="reveal"><h3>Englisch</h3><p>Hier lernen die Kinder spielerisch die Farben, die Körperteile des Menschen, verschiedene Tiere und singen englische Lieder. Ziel ist es, den Kindern eine Grundlage und einen vertrauten Umgang mit der englischen Sprache zu vermitteln.</p></div>
@@ -762,7 +830,7 @@ hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und J
     "Ferienbetreuung",
     "Ausflug an jedem Freitag, z. B. Stadtbücherei, Museum …",
     "Hohe Elternzufriedenheit mit dem Hort (Quelle: Elternbefragung, Zufriedenheitsnote 1,4)",
-]))
+], [("Räume &amp; Küche", [0, 1, 3, 7]), ("Zeiten &amp; Ferien", [2, 4, 9, 10]), ("Lernen &amp; Qualität", [5, 6, 8, 11])]))
 hort += section("schulen", "Zusammenarbeit mit den Schulen", "Gemeinsam mit den Schulen", "", f'''
 <div class="split">
   <figure class="reveal"><a href="img/zusammenarbeit.jpg" data-full="img/zusammenarbeit.jpg" data-group="schule" data-title="Zusammenarbeit mit den Schulen" data-text="Besuch des Hortes auf dem Adventszauber der Josefschule">{img("img/zusammenarbeit.jpg", "Besuch des Hortes auf dem Adventszauber der Josefschule")}</a>
@@ -787,14 +855,6 @@ page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhor
 # =====================================================================
 # AKTUELLES
 # =====================================================================
-MONATE = ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sep", "Okt", "Nov", "Dez"]
-def ev(r):
-    a, b = d(r["von"]), d(r["bis"] or r["von"])
-    day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
-    mon = f"{MONATE[b.month - 1]} {b.year}"
-    return (f'<li class="event reveal" data-ende="{b.isoformat()}"><div class="date"><b>{day}</b><span>{mon}</span></div>'
-            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p></li>')
-
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
                 [("termine", "Termine"), ("elternbrief", "Liebe Eltern"), ("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
@@ -853,6 +913,9 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 # =====================================================================
 # KONTAKT
 # =====================================================================
+def copy_btn(value, label):
+    return f'<button class="copy-btn" type="button" data-copy="{e(value)}" data-label="{e(label)}" aria-label="{e(label)} kopieren">{icon("copy", 18)}</button>'
+
 def tel(label, num_display, num):
     return f'<li><span>{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'
 kon = simple_hero("Kontakt", "Wir freuen uns auf Sie und Ihr Kind – rufen Sie direkt in der Gruppe an oder schreiben Sie uns.", "So erreichen Sie uns")
@@ -896,8 +959,8 @@ kon += f'''<section class="section">
       <h2>Anschrift</h2>
       <address>
         <div class="contact-row">{icon("pin")}<span>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</span></div>
-        <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>
-        <div class="contact-row">{icon("mail")}<a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></div>
+        <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a>{copy_btn("0931 2789892 0", "Telefonnummer")}</div>
+        <div class="contact-row">{icon("mail")}<a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a>{copy_btn(MAIL, "E-Mail-Adresse")}</div>
       </address>
       <a class="btn btn-primary" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
     </aside>
@@ -957,12 +1020,48 @@ dsg += f'''<section class="section"><div class="container"><div class="prose">
 </div></div></section>'''
 page("datenschutz.html", "Datenschutz", "Datenschutzerklärung des Kath. Kinder- und Jugendhorts Grombühl e. V., Würzburg.", "datenschutz.html", dsg)
 
+# ---------- Suchindex (Schnellsuche, Strg+K) ----------
+def _bereich(page, name, extra):
+    secs = [("ueberblick", "Zielgruppe & Öffnungszeiten", "alter uhrzeit zeiten wann geöffnet küche essen mittagessen"),
+            ("raeume", "Räumlichkeiten", "räume gruppenraum turnraum weißer raum garten gruppen"),
+            ("rundgang", "Virtueller Rundgang", "fotos bilder galerie ansehen"),
+            ("tagesablauf", "Tagesablauf", "ablauf bringzeit abholzeit abholen mittagsschlaf hausaufgaben"),
+            ("auszeichnung", "Das zeichnet uns aus", "vorteile besonderheiten konzept fachkraft"),
+            ("fragen", "Häufige Fragen", "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"),
+            ("ferienplan", "Ferienplan & Schließtage", "ferien schließtage urlaub geschlossen")]
+    out = [(name, "Bereich", page, extra)]
+    out += [(t, name, f"{page}#{a}", k) for a, t, k in secs]
+    return out
+
+SUCHE = [("Startseite", "Überblick", "index.html", "home start willkommen")]
+SUCHE += _bereich("kinderkrippe.html", "Kinderkrippe", "krippe baby kleinkind 11 monate sonnengruppe sternengruppe u3")
+SUCHE += _bereich("kindergarten.html", "Kindergarten", "kiga 3 jahre vorschule bärengruppe bienengruppe spatzengruppe englisch")
+SUCHE += _bereich("kinderhort.html", "Kinderhort", "hort schulkind schule hausaufgaben ferienbetreuung mittagsbetreuung")
+SUCHE += [
+    ("Zusammenarbeit mit den Schulen", "Kinderhort", "kinderhort.html#schulen", "schule josefschule grundschule"),
+    ("Aktuelle Termine", "Aktuelles", "aktuelles.html#termine", "termine veranstaltungen kalender weihnachtsmarkt nikolaus martin"),
+    ("Elternbrief", "Aktuelles", "aktuelles.html#elternbrief", "brief eltern überstunden schließzeit"),
+    ("Ferienplan & Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
+    ("Downloads", "Unterlagen", "downloads.html", "pdf formulare unterlagen herunterladen"),
+    ("KinderhortABC", "Download · PDF", "downloads/HortABC.pdf", "hort abc infos a bis z"),
+    ("Medikamentenvereinbarung", "Download · PDF", "downloads/Medikamentenvereinbarung.pdf", "medikamente formular arznei"),
+    ("Ferienplan als PDF", "Download · PDF", "downloads/Ferienplan_2026_27.pdf", "ferien schließtage aushang"),
+    ("Kalenderdateien", "Downloads", "downloads.html#kalender", "ics kalender handy termine schließtage"),
+    ("Kontakt & Durchwahlen", "Telefon, E-Mail, Anschrift", "kontakt.html", "telefon telefonnummer anrufen email mail adresse anschrift anfahrt lindleinstraße sternengruppe sonnengruppe bienengruppe spatzengruppe bärengruppe"),
+    ("Kind krankmelden", "Vorbereitete E-Mail", "kontakt.html#schnell", "krank krankmeldung abwesend fehlt entschuldigen"),
+    ("Platz anfragen", "Vorbereitete E-Mail", "kontakt.html#schnell", "anmeldung anmelden platz kitaplatz bewerbung aufnahme"),
+    ("Impressum", "Rechtliches", "impressum.html", "impressum verein vorstand"),
+    ("Datenschutz", "Rechtliches", "datenschutz.html", "datenschutz dsgvo kdg cookies"),
+]
+
 # ---------- Daten für Status-Anzeige (js/daten.js) ----------
 kita = {
     "schliesszeiten": [{"name": r["Anlass"], "von": d(r["erster Schließtag"]).isoformat(), "bis": d(r["letzter Schließtag"]).isoformat(), "tage": int(r["Schließtage"])} for r in SCHLIESSTAGE],
     "feiertage": [{"datum": d(r["Datum"]).isoformat(), "name": r["Feiertag"]} for r in FEIERTAGE],
     "planEnde": d(SCHLIESSTAGE[-1]["wieder geöffnet"]).isoformat(),
     "oeffnung": "06:45", "schluss": "18:00",
+    "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"]} for r in TERMINE],
+    "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
 }
 with open(os.path.join(W, "js/daten.js"), "w", encoding="utf-8") as f:
     f.write("/* Automatisch erzeugt aus daten/*.csv – nicht von Hand ändern, sondern build.py ausführen. */\n")
@@ -998,6 +1097,31 @@ with open(os.path.join(W, "sitemap.xml"), "w", encoding="utf-8") as f:
     f.write("</urlset>\n")
 with open(os.path.join(W, "robots.txt"), "w", encoding="utf-8") as f:
     f.write(f"User-agent: *\nAllow: /\nDisallow: /entwurf/\nDisallow: /daten/\n\nSitemap: {SITE}sitemap.xml\n")
+
+# ---------- Service Worker: schnelle Wiederbesuche, auch bei schlechtem Netz ----------
+SW = '''/* Automatisch erzeugt von build.py */
+const CACHE = "kita-__VERSION__";
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (e) => e.waitUntil(
+  caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())));
+self.addEventListener("fetch", (e) => {
+  const req = e.request, url = new URL(req.url);
+  if (req.method !== "GET" || url.origin !== location.origin) return;
+  const fresh = () => fetch(req).then((res) => {
+    if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+    return res;
+  });
+  if (req.mode === "navigate") {
+    /* Seiten: immer aktuell, Kopie nur als Rückfall ohne Netz */
+    e.respondWith(fresh().catch(() => caches.match(req).then((r) => r || caches.match("index.html"))));
+  } else {
+    /* Bilder, Schriften, CSS, JS: sofort aus dem Speicher, im Hintergrund auffrischen */
+    e.respondWith(caches.match(req).then((hit) => { const net = fresh().catch(() => hit); return hit || net; }));
+  }
+});
+'''
+with open(os.path.join(W, "sw.js"), "w", encoding="utf-8") as f:
+    f.write(SW.replace("__VERSION__", dt.datetime.now().strftime("%Y%m%d%H%M")))
 
 # Favicon
 with open(os.path.join(W, "img/favicon.svg"), "w", encoding="utf-8") as f:

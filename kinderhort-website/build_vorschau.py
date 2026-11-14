@@ -41,7 +41,7 @@ css += """
 .spa-page.active { display: block; }
 .no-js .spa-page { display: block; }
 
-.preview-note { background: #F1E5E3; color: #1E3B44; text-align: center; font: 700 .85rem/1.4 Figtree, sans-serif; padding: 6px 12px; }
+.preview-note { background: #F1E5E3; color: #1E3B44; text-align: center; font: 700 .85rem/1.4 'Plus Jakarta Sans', sans-serif; padding: 6px 12px; }
 """
 
 js = read("js/main.js")
@@ -60,7 +60,8 @@ for name in PAGES:
     title = re.search(r"<title>(.*?)</title>", src).group(1)
     mains.append(f'<div class="spa-page {body_cls}" id="seite-{name}" data-page="{name}" data-title="{title}">{main}</div>')
 
-doc = "\n".join([header, "<main id=\"inhalt\">", *mains, "</main>", footer])
+mobile_bar = re.search(r'(<nav class="mobile-bar.*?</nav>)', read('index.html'), re.S).group(1)
+doc = "\n".join([header, "<main id=\"inhalt\">", *mains, "</main>", footer, mobile_bar])
 
 # Links zwischen Seiten -> Hash-Navigation
 doc = re.sub(r'href="([a-z]+)\.html#([\w-]+)"', r'href="#\1:\2"', doc)
@@ -105,6 +106,11 @@ router = """
 })();
 """
 
+daten = re.sub(r'"u": "([a-z]+)\.html#([\w-]+)"', r'"u": "#\1:\2"', read("js/daten.js"))
+daten = re.sub(r'"u": "([a-z]+)\.html"', r'"u": "#\1"', daten)
+for k, v in PDFS.items():
+    daten = daten.replace(f'"u": "{k}"', f'"u": "{v}"')
+js = js.replace('"aktuelles.html#termine"', '"#aktuelles:termine"')
 html = f"""<!DOCTYPE html>
 <html lang="de" class="no-js">
 <head>
@@ -118,7 +124,7 @@ html = f"""<!DOCTYPE html>
 <div class="preview-note">Vorschau der neuen Webseite – alle Seiten in einer Datei</div>
 {doc}
 <script>{img_map}</script>
-<script>{read("js/daten.js")}</script>\n<script>{js}</script>
+<script>{daten}</script>\n<script>{js}</script>
 <script>{router}</script>
 </body>
 </html>

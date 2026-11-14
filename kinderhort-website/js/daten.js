@@ -104,5 +104,263 @@ window.KITA = {
  ],
  "planEnde": "2027-08-30",
  "oeffnung": "06:45",
- "schluss": "18:00"
+ "schluss": "18:00",
+ "termine": [
+  {
+   "von": "2026-11-18",
+   "bis": "2026-11-18",
+   "titel": "Buß- und Bettag"
+  },
+  {
+   "von": "2026-12-04",
+   "bis": "2026-12-04",
+   "titel": "Weihnachtsmarkt mit Christbaumverkauf"
+  },
+  {
+   "von": "2026-12-07",
+   "bis": "2026-12-07",
+   "titel": "Der Nikolaus besucht uns"
+  },
+  {
+   "von": "2027-09-06",
+   "bis": "2027-09-10",
+   "titel": "Österreich-Ferienfreizeit"
+  }
+ ],
+ "suche": [
+  {
+   "t": "Startseite",
+   "s": "Überblick",
+   "u": "index.html",
+   "k": "home start willkommen"
+  },
+  {
+   "t": "Kinderkrippe",
+   "s": "Bereich",
+   "u": "kinderkrippe.html",
+   "k": "krippe baby kleinkind 11 monate sonnengruppe sternengruppe u3"
+  },
+  {
+   "t": "Zielgruppe & Öffnungszeiten",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#ueberblick",
+   "k": "alter uhrzeit zeiten wann geöffnet küche essen mittagessen"
+  },
+  {
+   "t": "Räumlichkeiten",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#raeume",
+   "k": "räume gruppenraum turnraum weißer raum garten gruppen"
+  },
+  {
+   "t": "Virtueller Rundgang",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#rundgang",
+   "k": "fotos bilder galerie ansehen"
+  },
+  {
+   "t": "Tagesablauf",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#tagesablauf",
+   "k": "ablauf bringzeit abholzeit abholen mittagsschlaf hausaufgaben"
+  },
+  {
+   "t": "Das zeichnet uns aus",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#auszeichnung",
+   "k": "vorteile besonderheiten konzept fachkraft"
+  },
+  {
+   "t": "Häufige Fragen",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#fragen",
+   "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
+  },
+  {
+   "t": "Ferienplan & Schließtage",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#ferienplan",
+   "k": "ferien schließtage urlaub geschlossen"
+  },
+  {
+   "t": "Kindergarten",
+   "s": "Bereich",
+   "u": "kindergarten.html",
+   "k": "kiga 3 jahre vorschule bärengruppe bienengruppe spatzengruppe englisch"
+  },
+  {
+   "t": "Zielgruppe & Öffnungszeiten",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#ueberblick",
+   "k": "alter uhrzeit zeiten wann geöffnet küche essen mittagessen"
+  },
+  {
+   "t": "Räumlichkeiten",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#raeume",
+   "k": "räume gruppenraum turnraum weißer raum garten gruppen"
+  },
+  {
+   "t": "Virtueller Rundgang",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#rundgang",
+   "k": "fotos bilder galerie ansehen"
+  },
+  {
+   "t": "Tagesablauf",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#tagesablauf",
+   "k": "ablauf bringzeit abholzeit abholen mittagsschlaf hausaufgaben"
+  },
+  {
+   "t": "Das zeichnet uns aus",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#auszeichnung",
+   "k": "vorteile besonderheiten konzept fachkraft"
+  },
+  {
+   "t": "Häufige Fragen",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#fragen",
+   "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
+  },
+  {
+   "t": "Ferienplan & Schließtage",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#ferienplan",
+   "k": "ferien schließtage urlaub geschlossen"
+  },
+  {
+   "t": "Kinderhort",
+   "s": "Bereich",
+   "u": "kinderhort.html",
+   "k": "hort schulkind schule hausaufgaben ferienbetreuung mittagsbetreuung"
+  },
+  {
+   "t": "Zielgruppe & Öffnungszeiten",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#ueberblick",
+   "k": "alter uhrzeit zeiten wann geöffnet küche essen mittagessen"
+  },
+  {
+   "t": "Räumlichkeiten",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#raeume",
+   "k": "räume gruppenraum turnraum weißer raum garten gruppen"
+  },
+  {
+   "t": "Virtueller Rundgang",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#rundgang",
+   "k": "fotos bilder galerie ansehen"
+  },
+  {
+   "t": "Tagesablauf",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#tagesablauf",
+   "k": "ablauf bringzeit abholzeit abholen mittagsschlaf hausaufgaben"
+  },
+  {
+   "t": "Das zeichnet uns aus",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#auszeichnung",
+   "k": "vorteile besonderheiten konzept fachkraft"
+  },
+  {
+   "t": "Häufige Fragen",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#fragen",
+   "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
+  },
+  {
+   "t": "Ferienplan & Schließtage",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#ferienplan",
+   "k": "ferien schließtage urlaub geschlossen"
+  },
+  {
+   "t": "Zusammenarbeit mit den Schulen",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#schulen",
+   "k": "schule josefschule grundschule"
+  },
+  {
+   "t": "Aktuelle Termine",
+   "s": "Aktuelles",
+   "u": "aktuelles.html#termine",
+   "k": "termine veranstaltungen kalender weihnachtsmarkt nikolaus martin"
+  },
+  {
+   "t": "Elternbrief",
+   "s": "Aktuelles",
+   "u": "aktuelles.html#elternbrief",
+   "k": "brief eltern überstunden schließzeit"
+  },
+  {
+   "t": "Ferienplan & Schließtage",
+   "s": "Aktuelles",
+   "u": "aktuelles.html#ferienplan",
+   "k": "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"
+  },
+  {
+   "t": "Downloads",
+   "s": "Unterlagen",
+   "u": "downloads.html",
+   "k": "pdf formulare unterlagen herunterladen"
+  },
+  {
+   "t": "KinderhortABC",
+   "s": "Download · PDF",
+   "u": "downloads/HortABC.pdf",
+   "k": "hort abc infos a bis z"
+  },
+  {
+   "t": "Medikamentenvereinbarung",
+   "s": "Download · PDF",
+   "u": "downloads/Medikamentenvereinbarung.pdf",
+   "k": "medikamente formular arznei"
+  },
+  {
+   "t": "Ferienplan als PDF",
+   "s": "Download · PDF",
+   "u": "downloads/Ferienplan_2026_27.pdf",
+   "k": "ferien schließtage aushang"
+  },
+  {
+   "t": "Kalenderdateien",
+   "s": "Downloads",
+   "u": "downloads.html#kalender",
+   "k": "ics kalender handy termine schließtage"
+  },
+  {
+   "t": "Kontakt & Durchwahlen",
+   "s": "Telefon, E-Mail, Anschrift",
+   "u": "kontakt.html",
+   "k": "telefon telefonnummer anrufen email mail adresse anschrift anfahrt lindleinstraße sternengruppe sonnengruppe bienengruppe spatzengruppe bärengruppe"
+  },
+  {
+   "t": "Kind krankmelden",
+   "s": "Vorbereitete E-Mail",
+   "u": "kontakt.html#schnell",
+   "k": "krank krankmeldung abwesend fehlt entschuldigen"
+  },
+  {
+   "t": "Platz anfragen",
+   "s": "Vorbereitete E-Mail",
+   "u": "kontakt.html#schnell",
+   "k": "anmeldung anmelden platz kitaplatz bewerbung aufnahme"
+  },
+  {
+   "t": "Impressum",
+   "s": "Rechtliches",
+   "u": "impressum.html",
+   "k": "impressum verein vorstand"
+  },
+  {
+   "t": "Datenschutz",
+   "s": "Rechtliches",
+   "u": "datenschutz.html",
+   "k": "datenschutz dsgvo kdg cookies"
+  }
+ ]
 };
