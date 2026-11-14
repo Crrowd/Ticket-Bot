@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verbesserungsvorschläge – Entwürfe</title>
+<link rel="stylesheet" href="../../css/style.css">
+<style>
+  /* Nur für diese Entwurfsseite */
+  .mock { padding: 56px 0; border-bottom: 2px dashed rgba(30, 59, 68, .25); }
+  .mock-tag { display: inline-block; font: 800 .8rem var(--font-body); letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: #fff; padding: 6px 14px; border-radius: 8px; margin-bottom: 22px; }
+  .beispiel { display: inline-block; font: 700 .68rem var(--font-body); letter-spacing: .08em; text-transform: uppercase; background: var(--rose-soft); color: var(--ink); padding: 2px 8px; border-radius: 6px; vertical-align: middle; margin-left: 8px; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  .steps li { counter-increment: s; background: var(--surface); color: var(--on-surface); border-radius: var(--r); padding: 24px; box-shadow: var(--shadow); position: relative; }
+  .steps li::before { content: counter(s); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--rose); color: var(--ink); font: 800 1.2rem var(--font-head); margin-bottom: 16px; }
+  .steps li:not(:last-child)::after { content: ""; position: absolute; top: 45px; right: -19px; width: 20px; height: 2px; background: var(--ink); opacity: .35; }
+  .steps h3 { margin-bottom: .3em; }
+  .steps p { margin: 0; color: var(--on-surface-soft); font-size: .97rem; }
+
+  .compare { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--surface); color: var(--on-surface); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+  .compare th, .compare td { padding: 16px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(255, 255, 255, .14); }
+  .compare thead th { background: var(--rose); color: var(--ink); font: 800 1.1rem var(--font-head); }
+  .compare thead th small { display: block; font: 600 .8rem var(--font-body); opacity: .8; }
+  .compare tbody th { font: 700 .76rem var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: var(--on-surface-soft); width: 170px; }
+  .compare tr:last-child > * { border-bottom: 0; }
+  .compare a { color: var(--rose); font-weight: 700; }
+
+  .day { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; position: relative; margin-top: 10px; }
+  .day::before { content: ""; position: absolute; left: 0; right: 0; top: 21px; height: 3px; background: var(--ink); opacity: .25; }
+  .day div { text-align: center; padding: 0 8px; position: relative; }
+  .day div::before { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: var(--rose); border: 4px solid var(--ink); margin: 12px auto 14px; position: relative; }
+  .day b { display: block; font: 800 1.25rem var(--font-head); }
+  .day span { font-size: .93rem; color: var(--ink-soft); }
+  .tabs { display: inline-flex; gap: 6px; background: rgba(30, 59, 68, .1); padding: 5px; border-radius: 999px; margin-bottom: 26px; }
+  .tabs span { padding: 8px 18px; border-radius: 999px; font-weight: 700; font-size: .92rem; }
+  .tabs .on { background: var(--surface); color: #fff; }
+
+  .pack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .pack > div { background: var(--surface); color: var(--on-surface); border-radius: var(--r); padding: 26px; box-shadow: var(--shadow); border-top: 5px solid var(--rose); }
+  .pack ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .pack li { display: flex; gap: 12px; align-items: flex-start; }
+  .pack li::before { content: ""; width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--rose); flex: none; margin-top: 2px; }
+  .pack small { display: block; margin-top: 16px; color: var(--on-surface-soft); }
+
+  .menu { width: 100%; border-collapse: collapse; background: var(--surface); color: var(--on-surface); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+  .menu th, .menu td { padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, .14); }
+  .menu thead th { background: var(--rose); color: var(--ink); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+  .menu tbody th { width: 150px; font-weight: 800; }
+  .menu .today { background: rgba(255, 255, 255, .1); }
+  .menu .today th::after { content: "heute"; margin-left: 8px; font: 700 .66rem var(--font-body); text-transform: uppercase; letter-spacing: .08em; background: var(--rose); color: var(--ink); padding: 2px 8px; border-radius: 6px; }
+  .menu em { font-style: normal; color: var(--on-surface-soft); font-size: .88rem; }
+
+  .team { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+  .team div { background: var(--surface); color: var(--on-surface); border-radius: var(--r); padding: 22px 16px; text-align: center; box-shadow: var(--shadow); }
+  .team i { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; background: var(--rose-soft); color: var(--ink); font: 800 1.5rem var(--font-head); font-style: normal; margin: 0 auto 14px; border: 3px solid var(--rose); }
+  .team img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin: 0 auto 14px; border: 3px solid var(--rose); }
+  .team b { display: block; }
+  .team span { font-size: .88rem; color: var(--on-surface-soft); }
+  .team a { display: block; margin-top: 10px; color: var(--rose); font-weight: 700; font-size: .88rem; text-decoration: none; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .chips span { padding: 8px 16px; border-radius: 999px; background: var(--surface); color: #fff; font-weight: 600; font-size: .9rem; }
+  .chips .on { background: var(--rose); color: var(--ink); }
+  .chips small { opacity: .7; margin-left: 4px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .grid4 img { border-radius: var(--r-sm); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; box-shadow: var(--shadow); }
+
+  .way { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; }
+  .map { border-radius: var(--r); min-height: 300px; background:
+      linear-gradient(115deg, transparent 46%, rgba(255,255,255,.55) 46% 49%, transparent 49%),
+      linear-gradient(20deg, transparent 58%, rgba(255,255,255,.55) 58% 60%, transparent 60%),
+      linear-gradient(80deg, transparent 30%, rgba(255,255,255,.4) 30% 31.5%, transparent 31.5%), var(--bg-alt);
+    box-shadow: var(--shadow); position: relative; display: grid; place-items: center; }
+  .map button { border: 0; background: var(--ink); color: #fff; font: 700 1rem var(--font-body); padding: 14px 24px; border-radius: 999px; }
+  .map p { position: absolute; bottom: 12px; left: 16px; right: 16px; margin: 0; font-size: .8rem; color: var(--ink-soft); text-align: center; }
+  .pin { position: absolute; top: 34%; left: 52%; width: 26px; height: 26px; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--surface); border: 4px solid #fff; box-shadow: var(--shadow); }
+  .wayl { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .wayl li { background: var(--surface); color: var(--on-surface); border-radius: var(--r-sm); padding: 16px 20px; }
+  .wayl b { display: block; }
+  .wayl span { color: var(--on-surface-soft); font-size: .95rem; }
+</style>
+</head>
+<body>
+
+<section class="mock" id="m1"><div class="container">
+  <span class="mock-tag">Vorschlag 1 · Anmeldung in 4 Schritten</span>
+  <div class="section-head"><span class="kicker">Anmeldung</span><h2>So bekommen Sie einen Platz</h2><p>Der Weg zum Kita-Platz – Schritt für Schritt. <span class="beispiel">Texte als Beispiel</span></p></div>
+  <ol class="steps">
+    <li><h3>Anfragen</h3><p>Schreiben Sie uns über „Platz anfragen“ oder rufen Sie an.</p></li>
+    <li><h3>Kennenlernen</h3><p>Wir zeigen Ihnen das Haus und beantworten Ihre Fragen.</p></li>
+    <li><h3>Zusage &amp; Vertrag</h3><p>Sie buchen die Betreuungszeiten, die Sie brauchen.</p></li>
+    <li><h3>Eingewöhnung</h3><p>Gemeinsam geplant – in der Krippe ca. vier Wochen.</p></li>
+  </ol>
+  <div class="btn-row"><span class="btn btn-primary">Platz anfragen</span><span class="btn btn-ghost">0931 2789892 0</span></div>
+</div></section>
+
+<section class="mock" id="m2"><div class="container">
+  <span class="mock-tag">Vorschlag 2 · Die drei Bereiche im Vergleich</span>
+  <div class="section-head"><span class="kicker">Auf einen Blick</span><h2>Welcher Bereich passt zu meinem Kind?</h2></div>
+  <table class="compare">
+    <thead><tr><td></td><th>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></th><th>Kindergarten<small>Bären, Bienen, Spatzen</small></th><th>Kinderhort<small>gruppenübergreifend</small></th></tr></thead>
+    <tbody>
+      <tr><th>Alter</th><td>ab 11 Monaten bis 3 Jahre</td><td>3 Jahre bis zur Einschulung</td><td>ab der Einschulung, alle Schulformen</td></tr>
+      <tr><th>Geöffnet</th><td>6:45 – 16:30 Uhr</td><td>6:45 – 16:30 Uhr, Spätdienst bis 17:30</td><td>6:45 – 8:00 und Schulschluss – 18:00 Uhr, in den Ferien ganztags</td></tr>
+      <tr><th>Essen</th><td>Frühstück und Mittagessen aus der eigenen Küche</td><td>Mittagessen aus der eigenen Küche</td><td>Mittagessen im Bistro</td></tr>
+      <tr><th>Besonders</th><td>Eingewöhnung ca. 4 Wochen, Mittagsschlaf, Portfolio</td><td>Projektarbeit, Englisch, Vorkurs Deutsch</td><td>Korrigierte Hausaufgaben, Freitagsausflug, Ferienprogramm</td></tr>
+      <tr><th>Mehr</th><td><a>Zur Krippe →</a></td><td><a>Zum Kindergarten →</a></td><td><a>Zum Hort →</a></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section class="mock" id="m3"><div class="container">
+  <span class="mock-tag">Vorschlag 3 · „Ein Tag bei uns“ als Zeitleiste</span>
+  <div class="section-head"><span class="kicker">Tagesablauf</span><h2>Ein Tag bei uns</h2></div>
+  <div class="tabs"><span>Krippe</span><span class="on">Kindergarten</span><span>Hort</span></div>
+  <div class="day">
+    <div><b>6:45</b><span>Frühbetreuung</span></div>
+    <div><b>8:00</b><span>Ankommen &amp; Frühstück</span></div>
+    <div><b>10:00</b><span>Angebote: Turnen, Englisch, Spaziergang</span></div>
+    <div><b>12:30</b><span>Warmes Mittagessen</span></div>
+    <div><b>13:30</b><span>Freispiel im Garten</span></div>
+    <div><b>16:30</b><span>Abholen, Spätdienst bis 17:30</span></div>
+  </div>
+</div></section>
+
+<section class="mock" id="m4"><div class="container">
+  <span class="mock-tag">Vorschlag 4 · Checkliste „Was braucht mein Kind?“</span>
+  <div class="section-head"><span class="kicker">Gut vorbereitet</span><h2>Was braucht mein Kind?</h2><p>Zum Abhaken und Ausdrucken – aus den häufigen Fragen zusammengestellt.</p></div>
+  <div class="pack">
+    <div><h3>Kinderkrippe</h3><ul><li>Windeln</li><li>Feuchttücher</li><li>ggf. Wundschutzcreme</li></ul><small>Bettwäsche stellt und wäscht die Kita.</small></div>
+    <div><h3>Kindergarten</h3><ul><li>Brotzeit für Frühstück und Nachmittag</li><li>Trinkflasche mit Wasser (Mehrweg)</li><li>ggf. Windeln</li></ul><small>Das warme Mittagessen kommt aus unserer Küche.</small></div>
+    <div><h3>Kinderhort</h3><ul><li>Brotzeit für den Nachmittag</li><li>Trinkflasche mit Wasser</li><li>Schultasche mit Hausaufgaben</li></ul><small>Jedes Kind hat einen eigenen Spind.</small></div>
+  </div>
+</div></section>
+
+<section class="mock" id="m5"><div class="container">
+  <span class="mock-tag">Vorschlag 5 · Speiseplan der Woche</span>
+  <div class="section-head"><span class="kicker">Aus unserer Küche</span><h2>Speiseplan dieser Woche <span class="beispiel">Gerichte als Beispiel</span></h2></div>
+  <table class="menu">
+    <thead><tr><th>Tag</th><th>Mittagessen</th><th>Nachtisch</th></tr></thead>
+    <tbody>
+      <tr><th>Montag</th><td>Gemüsesuppe mit Vollkornbrot <em>· vegetarisch</em></td><td>Obst</td></tr>
+      <tr><th>Dienstag</th><td>Nudeln mit Tomatensoße <em>· vegetarisch</em></td><td>Joghurt</td></tr>
+      <tr class="today"><th>Mittwoch</th><td>Kartoffeln mit Kräuterquark und Salat</td><td>Apfelmus</td></tr>
+      <tr><th>Donnerstag</th><td>Hähnchen mit Reis und Gemüse</td><td>Obst</td></tr>
+      <tr><th>Freitag</th><td>Fischstäbchen mit Kartoffelbrei</td><td>Pudding</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section class="mock" id="m6"><div class="container">
+  <span class="mock-tag">Vorschlag 6 · Team-Seite</span>
+  <div class="section-head"><span class="kicker">Unser Team</span><h2>Wer Ihr Kind begleitet <span class="beispiel">Platzhalter außer Leitung</span></h2></div>
+  <div class="team">
+    <div><img src="../../img/petra-lachnit.png" alt=""><b>Petra Lachnit</b><span>Einrichtungsleitung</span><a>0931 2789892 0</a></div>
+    <div><i>☀️</i><b>Name</b><span>Sonnengruppe · Krippe</span><a>Durchwahl 14</a></div>
+    <div><i>⭐</i><b>Name</b><span>Sternengruppe · Krippe</span><a>Durchwahl 15</a></div>
+    <div><i>🐻</i><b>Name</b><span>Bärengruppe · Kindergarten</span><a>Durchwahl 11</a></div>
+    <div><i>🐝</i><b>Name</b><span>Bienengruppe · Kindergarten</span><a>Durchwahl 13</a></div>
+  </div>
+</div></section>
+
+<section class="mock" id="m7"><div class="container">
+  <span class="mock-tag">Vorschlag 7 · Rundgang nach Räumen filtern</span>
+  <div class="section-head"><span class="kicker">Virtueller Rundgang</span><h2>Rundgang durch den Kinderhort</h2></div>
+  <div class="chips"><span>Alle <small>24</small></span><span class="on">Kreativraum <small>9</small></span><span>Hausaufgaben <small>4</small></span><span>Spielflur <small>3</small></span><span>Bistro <small>2</small></span><span>Turnraum</span><span>Weißer Raum</span><span>Werkraum</span></div>
+  <div class="grid4">
+    <img src="../../img/kreatviraum-5-1-800.webp" alt=""><img src="../../img/img_4956-800.webp" alt=""><img src="../../img/bauecke-2-800.webp" alt=""><img src="../../img/baellebad-800.webp" alt="">
+  </div>
+</div></section>
+
+<section class="mock" id="m8"><div class="container">
+  <span class="mock-tag">Vorschlag 8 · Anfahrt mit Karte auf Klick</span>
+  <div class="section-head"><span class="kicker">So finden Sie uns</span><h2>Anfahrt <span class="beispiel">Angaben als Beispiel</span></h2></div>
+  <div class="way">
+    <div class="map"><span class="pin"></span><button>Karte laden</button><p>Die Karte wird erst nach Ihrem Klick von OpenStreetMap geladen.</p></div>
+    <ul class="wayl">
+      <li><b>Adresse</b><span>Lindleinstraße 20, 97080 Würzburg</span></li>
+      <li><b>Mit Bus und Straßenbahn</b><span>Haltestelle und Linien – vom Hort zu ergänzen</span></li>
+      <li><b>Mit dem Auto</b><span>Parken und Bringzone – vom Hort zu ergänzen</span></li>
+      <li><b>Mit Kinderwagen</b><span>Abstellmöglichkeit im Eingangsbereich der Krippe</span></li>
+    </ul>
+  </div>
+</div></section>
+
+</body>
+</html>
