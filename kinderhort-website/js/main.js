@@ -75,21 +75,20 @@
   /* ---------- Sprungmarken: aktuellen Abschnitt hervorheben ---------- */
   var subLinks = $$(".subnav a");
   if (subLinks.length && "IntersectionObserver" in window) {
-    var byId = {};
-    subLinks.forEach(function (a) { byId[a.getAttribute("href").split("#").pop().split(":").pop()] = a; });
+    var pairs = [];
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
-        var a = byId[en.target.id];
-        subLinks.forEach(function (l) { l.removeAttribute("aria-current"); });
+        var a = pairs.filter(function (p) { return p[0] === en.target; })[0][1], ul = a.closest("ul");
+        $$("a", ul).forEach(function (l) { l.removeAttribute("aria-current"); });
         a.setAttribute("aria-current", "true");
-        var ul = a.closest("ul");
         ul.scrollTo({ left: a.offsetLeft - ul.offsetLeft - 16, behavior: reduced ? "auto" : "smooth" });
       });
     }, { rootMargin: "-140px 0px -65% 0px" });
-    Object.keys(byId).forEach(function (id) {
-      var sec = $$("[id]").filter(function (el) { return el.id === id && el.offsetParent !== null; })[0] || document.getElementById(id);
-      if (sec) spy.observe(sec);
+    subLinks.forEach(function (a) {
+      var id = a.getAttribute("href").split("#").pop().split(":").pop();
+      var sec = (a.closest(".spa-page") || document).querySelector('[id="' + id + '"]');
+      if (sec) { pairs.push([sec, a]); spy.observe(sec); }
     });
   }
 
