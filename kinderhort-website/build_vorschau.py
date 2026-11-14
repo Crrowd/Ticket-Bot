@@ -40,7 +40,8 @@ css += """
 .spa-page { display: none; }
 .spa-page.active { display: block; }
 .no-js .spa-page { display: block; }
-.preview-note { background: #fff1cf; color: #23332e; text-align: center; font: 700 .85rem/1.4 Nunito, sans-serif; padding: 6px 12px; }
+
+.preview-note { background: #F1E5E3; color: #1E3B44; text-align: center; font: 700 .85rem/1.4 Figtree, sans-serif; padding: 6px 12px; }
 """
 
 js = read("js/main.js")

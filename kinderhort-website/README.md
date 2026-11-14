@@ -26,7 +26,7 @@ cd kinderhort-website
 python3 -m http.server 8000   # dann http://localhost:8000 öffnen
 ```
 
-Kein CMS, keine Datenbank, keine externen Dienste: Schriften (Nunito, Fredoka – SIL Open Font License)
+Kein CMS, keine Datenbank, keine externen Dienste: Schriften (Fraunces für Überschriften, Figtree für Text – SIL Open Font License)
 liegen lokal in `fonts/`, es werden keine Google-Server oder Tracker geladen.
 
 ## Termine, Schließtage, Feiertage pflegen

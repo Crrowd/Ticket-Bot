@@ -122,11 +122,11 @@ def header(active):
     for href, label in NAV:
         if href == "TOUR":
             items.append(
-                '<li class="has-drop"><button class="drop-toggle" aria-expanded="false" aria-haspopup="true">'
+                '<li class="has-drop"><button class="drop-toggle" type="button" aria-expanded="false" aria-haspopup="true">'
                 f'Virtueller Rundgang {icon("down", 16)}</button><ul class="dropdown">'
-                '<li><a href="kinderkrippe.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
-                '<li><a href="kindergarten.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
-                '<li><a href="kinderhort.html#rundgang"><span class="dot" style="background:#D4B5B0"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
+                '<li><a href="kinderkrippe.html#rundgang"><span class="dot"></span><span>Kinderkrippe<small>Sonnen- &amp; Sternengruppe</small></span></a></li>'
+                '<li><a href="kindergarten.html#rundgang"><span class="dot"></span><span>Kindergarten<small>Bären, Bienen &amp; Spatzen</small></span></a></li>'
+                '<li><a href="kinderhort.html#rundgang"><span class="dot"></span><span>Kinderhort<small>Kreativraum, Bistro &amp; mehr</small></span></a></li>'
                 '</ul></li>')
             continue
         cur = ' aria-current="page"' if href == active else ""
@@ -135,11 +135,11 @@ def header(active):
     return f'''<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="index.html" aria-label="{ORG} – Startseite">
+    <a class="brand" href="index.html">
       {BRAND_MARK}
       <span class="brand-text"><small>Kath. Kinder- und Jugendhort</small><strong>Grombühl e. V.</strong></span>
     </a>
-    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span></button>
+    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span></button>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
@@ -154,23 +154,23 @@ FOOTER = f'''<footer class="site-footer">
     <div class="footer-grid">
       <div>
         <img class="footer-logo" src="img/logo.png" alt="Logo {ORG}" width="1030" height="608" loading="lazy">
-        <p>Kinderkrippe • Kindergarten • Kinderhort<br><strong style="color:#D4B5B0">Weil Qualität zählt!</strong></p>
+        <p>Kinderkrippe • Kindergarten • Kinderhort<br><span class="footer-claim">Weil Qualität zählt!</span></p>
       </div>
       <div>
-        <h4>Anschrift</h4>
+        <h2 class="foot-title">Anschrift</h2>
         <p>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</p>
       </div>
       <div>
-        <h4>Kontakt</h4>
+        <h2 class="foot-title">Kontakt</h2>
         <ul>
-          <li><a href="tel:+4993127898920">0931 2789892 0</a></li>
+          <li><a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></li>
           <li><a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></li>
           <li><a href="kontakt.html">Alle Durchwahlen</a></li>
           <li><a href="{KRANK_MAIL}">Kind krankmelden</a></li>
         </ul>
       </div>
       <div>
-        <h4>Seiten</h4>
+        <h2 class="foot-title">Seiten</h2>
         <ul>
           <li><a href="kinderkrippe.html">Kinderkrippe</a></li>
           <li><a href="kindergarten.html">Kindergarten</a></li>
@@ -195,6 +195,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className = "js";</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="theme-color" content="#A8C5C0">
@@ -209,8 +210,8 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{SITE}{'' if fname == 'index.html' else fname}">{head}
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/fredoka-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body{bcls}>
@@ -224,6 +225,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 </body>
 </html>
 '''
+    doc = "\n".join(line.rstrip() for line in doc.split("\n"))
     with open(os.path.join(W, fname), "w", encoding="utf-8") as f:
         f.write(doc)
     PAGES_WRITTEN.append(fname)
@@ -255,7 +257,7 @@ def simple_hero(title, sub, kicker):
   <div class="container">
     <div class="page-hero-card">
       <div class="page-hero-content">
-        <span class="eyebrow" style="background:#D4B5B0">{kicker}</span>
+        <span class="eyebrow">{kicker}</span>
         <h1>{title}</h1>
         <p>{sub}</p>
       </div>
@@ -340,7 +342,7 @@ def plan_table():
         l = last + (f"<small>({ln})</small>" if ln else "")
         rows.append(f"<tr><th scope=\"row\">{name}</th><td>{open_until}</td><td>{f}</td><td>{l}</td><td>{reopen}</td><td class=\"num\">{n:02d}</td></tr>")
     total = sum(p[-1] for p in PLAN)
-    return f'''<div class="table-wrap reveal">
+    return f'''<div class="table-wrap reveal" tabindex="0" role="region" aria-label="Ferienplan – Tabelle, seitlich scrollbar">
 <table class="plan">
   <caption>Die Ferienzeiten Ihres Kindes für Krippe, Kindergarten und Kinderhort im Jahr {PLAN_JAHR}</caption>
   <thead><tr><th scope="col">Wann?</th><th scope="col">Wir haben geöffnet bis …</th><th scope="col">Erster Schließtag</th><th scope="col">Letzter Schließtag</th><th scope="col">Wir öffnen wieder am …</th><th scope="col" class="num">Schließtage</th></tr></thead>
@@ -400,7 +402,7 @@ home = f'''
       </div>
       {STATUS_CARD}
     </div>
-    <div class="hero-collage" aria-hidden="false">
+    <div class="hero-collage">
       <figure class="c1">{img("img/p2170270.jpg", "Heller Gruppenraum im Kindergarten", lazy=False)}</figure>
       <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", lazy=False)}</figure>
       <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", lazy=False)}</figure>
@@ -438,7 +440,7 @@ home = f'''
   <div class="container welcome">
     <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
     <div class="reveal">
-      <span class="kicker" style="display:inline-block;color:var(--ink);background:var(--sun);padding:4px 12px;border-radius:999px;margin-bottom:14px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.85rem">Herzlich Willkommen</span>
+      <span class="kicker">Herzlich Willkommen</span>
       <h2>Schön, dass Sie da sind!</h2>
       <blockquote>
         <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
@@ -485,7 +487,7 @@ home = f'''
     <div class="cta-band reveal">
       <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
-        <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931 2789892 0</a>
+        <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931&nbsp;2789892&nbsp;0</a>
         <a class="btn btn-ghost" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
       </div>
     </div>
@@ -656,7 +658,7 @@ kiga += section("auszeichnung", "Das zeichnet uns aus", "Was unseren Kindergarte
     "Büchereibesuche, Exkursionen (Feuerwehrbesuch, Bäckereibesuch), Jahresausflug",
     "Übernachtung im Kindergarten für die Kinder, die in die Schule kommen",
     "Ab dem Vorschulalter arbeiten wir mit dem Würzburger Trainingsprogramm „Hören, Lauschen, Lernen“",
-]) + '''<h3 class="mt-2" style="margin-bottom:1rem">Besondere Vorzüge unserer Einrichtung</h3>
+]) + '''<h3 class="sub-head">Besondere Vorzüge unserer Einrichtung</h3>
 <div class="pill-list">
   <div class="reveal"><h3>Projektarbeit</h3><p>Wir arbeiten im Kindergarten projektbezogen. Das Thema orientiert sich an den Interessen der Kinder, es wird von ihnen ausgewählt und abgestimmt. Die Projektarbeit bietet eine kindgerechte Form des Lernens: Die Kinder können eigene Ideen einbringen und gestalten den Lernprozess mit.</p></div>
   <div class="reveal"><h3>Englisch</h3><p>Hier lernen die Kinder spielerisch die Farben, die Körperteile des Menschen, verschiedene Tiere und singen englische Lieder. Ziel ist es, den Kindern eine Grundlage und einen vertrauten Umgang mit der englischen Sprache zu vermitteln.</p></div>
@@ -739,7 +741,7 @@ hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts",
     ("16:30 – 18:00 Uhr", "Je nach gebuchter Zeit können die Kinder bis 18:00 Uhr im Hort bleiben."),
 ]), cls="alt")
 hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …", "", f'''
-<div class="split" style="margin-bottom:40px;align-items:start">
+<div class="split split-top">
   <div class="reveal"><p>Wir betrachten jedes Kind stärkenorientiert. Wir fördern die Selbstständigkeit der Schulkinder durch unser gruppenübergreifendes Konzept, das den Kindern die Möglichkeit gibt, selbst zu bestimmen, wo und mit wem sie spielen oder wie sie ihre Freizeit gestalten. Altersübergreifende Kontakte zu Jüngeren und Älteren stärken die Kinder in Verantwortungsübernahme, Rücksicht und Eigenverantwortlichkeit. Zahlreiche Partizipationsmöglichkeiten zeigen den Kindern, wie sie Einfluss auf ihren Alltag im Kinderhort nehmen und diesen selbst mitbestimmen können, z. B. in Kinderkonferenzen, Kinderbefragungen und Gruppengesprächen mit den Erziehern.</p></div>
   <div class="reveal"><p>Unsere Fachkraftquote beträgt <strong>100 Prozent</strong>, das heißt, dass die Hortkinder ausschließlich von ausgebildeten, staatlich anerkannten Erziehern betreut werden. Wir sind Ausbildungsstätte und beschäftigen regelmäßig Studierende, die sich in der Ausbildung zum Erzieher befinden.</p>
   <div class="stats three">
@@ -796,7 +798,7 @@ def ev(r):
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
                 [("termine", "Termine"), ("elternbrief", "Liebe Eltern"), ("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
-<div class="notes-grid" style="margin-top:0">
+<div class="notes-grid">
   <div>
   <ul class="event-list">
     {"".join(ev(r) for r in TERMINE)}
@@ -813,11 +815,11 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
   </div>
 </div>''')
 akt += section("elternbrief", "Elternbrief", "Liebe Eltern!", "", '''
-<div class="prose reveal" style="max-width:860px">
+<div class="prose reveal">
   <p>Nach dem BayKiBiG (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von Inhouseschulungen für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p>
   <p>Unser Personal arbeitet mit großem Engagement. Dadurch fallen im Laufe eines Kindergarten- und Hortjahres Überstunden an (z. B. St. Martin, Ferienfreizeit, Lebensmittelsammlung, Elternabende, Weihnachtsmarkt, Feste und Feiern mit Eltern und Kindern …). Diese Überstunden gleichen unsere Mitarbeiterinnen und Mitarbeiter durch Freizeit aus.</p>
   <p>Während der „Schulferienzeiten“, in denen unsere Einrichtung geöffnet hat (Herbst, Fasching, Ostern, Pfingsten, August), wird immer ein Teil der Erzieherinnen und Erzieher die Betreuung Ihres Kindes übernehmen und gleichzeitig werden einige Erzieherinnen und Erzieher ihre geleisteten Überstunden frei nehmen können.</p>
-  <p style="margin-top:1.6em">Im Auftrag des Vorsitzenden<br><strong style="color:var(--ink)">Petra Lachnit</strong><br>Einrichtungsleiterin</p>
+  <p class="sign-off">Im Auftrag des Vorsitzenden<br><strong>Petra Lachnit</strong><br>Einrichtungsleiterin</p>
 </div>''', cls="alt")
 akt += ferienplan_section(cls="")
 page("aktuelles.html", "Aktuelles", "Aktuelle Termine, Vormerktermine und Schließtage des Kath. Kinder- und Jugendhorts Grombühl in Würzburg.", "aktuelles.html", akt)
@@ -852,7 +854,7 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 # KONTAKT
 # =====================================================================
 def tel(label, num_display, num):
-    return f'<li><span>{label}</span><a href="tel:{num}">{num_display}</a></li>'
+    return f'<li><span>{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'
 kon = simple_hero("Kontakt", "Wir freuen uns auf Sie und Ihr Kind – rufen Sie direkt in der Gruppe an oder schreiben Sie uns.", "So erreichen Sie uns")
 kon += f'''<section class="section tight" id="schnell">
   <div class="container">
@@ -875,6 +877,7 @@ kon += f'''<section class="section tight" id="schnell">
 kon += f'''<section class="section">
   <div class="container contact-grid">
     <div>
+      <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">
         {tel("Sternengruppe", "0931 2789892 15", "+49931278989215")}
         {tel("Sonnengruppe", "0931 2789892 14", "+49931278989214")}
@@ -893,10 +896,10 @@ kon += f'''<section class="section">
       <h2>Anschrift</h2>
       <address>
         <div class="contact-row">{icon("pin")}<span>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</span></div>
-        <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931 2789892 0</a></div>
+        <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>
         <div class="contact-row">{icon("mail")}<a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></div>
       </address>
-      <a class="btn" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
+      <a class="btn btn-primary" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
     </aside>
   </div>
 </section>'''
@@ -912,7 +915,7 @@ imp += f'''<section class="section"><div class="container"><div class="prose">
 <p>Vereinsregister: VR 187<br>Registergericht: Amtsgericht Würzburg Registergericht</p>
 <p><strong>Vertreten durch:</strong><br>Helmut Burmester</p>
 <h2>Kontakt</h2>
-<p>Telefon: <a href="tel:+4993127898920">0931 27898920</a><br>E-Mail: <a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></p>
+<p>Telefon: <a href="tel:+4993127898920">0931&nbsp;27898920</a><br>E-Mail: <a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></p>
 <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
 <p>Petra Lachnit<br>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg</p>
 <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>

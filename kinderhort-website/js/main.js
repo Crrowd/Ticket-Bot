@@ -2,6 +2,7 @@
 (function () {
   "use strict";
   document.documentElement.classList.remove("no-js");
+  document.documentElement.classList.add("js");
 
   /* Header-Schatten beim Scrollen */
   var header = document.querySelector(".site-header");
@@ -66,9 +67,9 @@
   lb.setAttribute("aria-label", "Bildansicht");
   lb.innerHTML =
     '<span class="lb-count"></span>' +
-    '<button class="lb-btn lb-close" aria-label="Schließen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
-    '<button class="lb-btn lb-prev" aria-label="Vorheriges Bild"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-    '<button class="lb-btn lb-next" aria-label="Nächstes Bild"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>' +
+    '<button type="button" class="lb-btn lb-close" aria-label="Schließen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+    '<button type="button" class="lb-btn lb-prev" aria-label="Vorheriges Bild"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+    '<button type="button" class="lb-btn lb-next" aria-label="Nächstes Bild"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>' +
     '<figure><img alt=""><figcaption><strong></strong><span></span></figcaption></figure>';
   document.body.appendChild(lb);
   var lbImg = lb.querySelector("img"), lbTitle = lb.querySelector("figcaption strong"),
@@ -78,7 +79,10 @@
   function show(i) {
     idx = (i + group.length) % group.length;
     var el = group[idx];
+    lbImg.classList.remove("ready");
+    lbImg.onload = function () { lbImg.classList.add("ready"); };
     lbImg.src = el.getAttribute("data-full");
+    if (lbImg.complete) lbImg.classList.add("ready");
     lbImg.alt = el.getAttribute("data-title") || "";
     lbTitle.textContent = el.getAttribute("data-title") || "";
     lbText.textContent = el.getAttribute("data-text") || "";
@@ -123,16 +127,26 @@
     touchX = null;
   });
 
-  /* Sanftes Einblenden */
-  if ("IntersectionObserver" in window) {
+  /* Sanftes Einblenden beim Scrollen, Geschwister leicht versetzt */
+  var reveals = document.querySelectorAll(".reveal");
+  function shown(el) {
+    el.classList.add("visible");
+    /* danach gelten wieder die eigenen Hover-Übergänge der Karte */
+    setTimeout(function () { el.classList.remove("reveal"); el.style.removeProperty("--i"); }, 1400);
+  }
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var io = new IntersectionObserver(function (entries) {
+      var n = 0;
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("visible"); io.unobserve(en.target); }
+        if (!en.isIntersecting) return;
+        en.target.style.setProperty("--i", Math.min(n++, 5));
+        shown(en.target);
+        io.unobserve(en.target);
       });
-    }, { rootMargin: "0px 0px -60px 0px" });
-    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    reveals.forEach(function (el) { io.observe(el); });
   } else {
-    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("visible"); });
+    reveals.forEach(function (el) { el.classList.add("visible"); });
   }
 
   /* ---------- Datumshilfen ---------- */

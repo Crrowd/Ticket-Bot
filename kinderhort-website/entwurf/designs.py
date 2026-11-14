@@ -1,3 +1,6 @@
+# ARCHIV: Mit diesem Skript wurden die Farbentwürfe 1–9 aus dem früheren Stylesheet erzeugt.
+# Die Webseite nutzt Entwurf 9; css/style.css wurde danach neu aufgebaut und ist nicht mehr
+# die Vorlage für dieses Skript. Die fertigen Varianten liegen in entwurf/designs/.
 # Erzeugt 5 helle Farb-Entwürfe (CSS-Varianten) aus css/style.css.
 # Aufruf:  python3 entwurf/designs.py   -> entwurf/designs/design-N.css
 # Einen Entwurf übernehmen: Datei nach css/style.css kopieren und build.py
