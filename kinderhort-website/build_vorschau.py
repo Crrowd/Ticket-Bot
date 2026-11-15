@@ -60,8 +60,7 @@ for name in PAGES:
     title = re.search(r"<title>(.*?)</title>", src).group(1)
     mains.append(f'<div class="spa-page {body_cls}" id="seite-{name}" data-page="{name}" data-title="{title}">{main}</div>')
 
-mobile_bar = re.search(r'(<nav class="mobile-bar.*?</nav>)', read('index.html'), re.S).group(1)
-doc = "\n".join([header, "<main id=\"inhalt\">", *mains, "</main>", footer, mobile_bar])
+doc = "\n".join([header, "<main id=\"inhalt\">", *mains, "</main>", footer])
 
 # Links zwischen Seiten -> Hash-Navigation
 doc = re.sub(r'href="([a-z]+)\.html#([\w-]+)"', r'href="#\1:\2"', doc)

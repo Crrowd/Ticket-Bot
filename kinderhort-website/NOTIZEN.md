@@ -16,7 +16,7 @@ Stand: 13.11.2026
 - [x] Weiterleitungen alter URLs (`/kinderkrippe/`, `/kindergarten/`, `/kinderhort/`, `/aktuelles/`, `/downloads/`, `/kontakt/`, `/impressum/`, `?page_id=…`) auf die neuen Seiten
 
 ## To-do (Wünsche, noch offen)
-- [ ] **Untere Handy-Leiste entfernen** (Anrufen · Krankmelden · Termine · Suche, im Screenshot vom 15.11. markiert). Dabei mitdenken: Die Suche ist am Handy bisher nur unten erreichbar → Lupe wieder oben in die Kopfleiste; der Zähler für gemerkte Termine braucht ein neues Ziel (Menüpunkt „Aktuelles“); die Abstände unten (Kurzmeldungen, „Nach oben“-Knopf) wieder anpassen.
+- [x] **Untere Handy-Leiste entfernen** (erledigt 15.11.: Lupe sitzt oben neben dem Menü-Knopf, der Name steht zweizeilig, der Zähler gemerkter Termine sitzt als Abzeichen am Menü-Knopf und das Datum fliegt dorthin; Kurzmeldungen und „Nach oben“ wieder unten am Rand) (Anrufen · Krankmelden · Termine · Suche, im Screenshot vom 15.11. markiert). Dabei mitdenken: Die Suche ist am Handy bisher nur unten erreichbar → Lupe wieder oben in die Kopfleiste; der Zähler für gemerkte Termine braucht ein neues Ziel (Menüpunkt „Aktuelles“); die Abstände unten (Kurzmeldungen, „Nach oben“-Knopf) wieder anpassen.
 
 ## 2. Inhalte – vom Hort benötigt
 - [ ] KrippenABC und KindergartenABC (PDF) – fehlen auch auf der alten Seite
@@ -284,6 +284,13 @@ Entscheidung offen (Auswahl direkt im Katalog).
 101 Sanfte Welle zum Fußbereich · 102 Gruppensymbole, die lebendig werden · 103 Seiten merken · 104 Elternbeirat vorstellen (Namen Platzhalter) · 105 Verspielte Link-Unterstreichung · 106 Leitsatz schreibt sich · 107 Schwung unter dem Gruß · 108 „Einfach erklärt“ · 109 Bilder im Bereichsmenü wechseln · 110 Fotos in weichen Formen · 111 Bereich als Infoblatt drucken · 112 Telefonnummer am Computer (QR zum Anrufen)
 
 Entscheidung offen (Auswahl direkt im Katalog).
+
+## Ja-Runde Kniffe, Ideen und Übergänge (15.11.2026)
+Eingebaut nach der Abstimmung in den Sammlungen `kniffe`, `auswahl` (89–112) und `uebergaenge`.
+- **Kniffe:** 1 verschachtelte Rundungen (Sprungmarken 14, Termine 22/10, Alters-Etikett 6, Kontaktkarte 28) · 2 Ränder aus der Textfarbe (`--rule` = `color-mix(currentColor 16 %)`, Knöpfe 50–55 %) · 3 OKLCH war schon da · 4 Foto-Verläufe in OKLab · 5 alle Symbole Strichstärke 1,8 · 6 weiche Kanten an Sprungmarken, Rundgang, Tabellen · 7 Symbolwechsel mit Unschärfe (Merken, Teilen, Downloads, Menü) · 9 `dvh` statt `vh` · 10 Original-Aushang als Vorschaubild mit `mix-blend-mode: multiply`. Nein: 8 Dunkelmodus.
+- **Ideen:** 91 Themen-Knöpfe über den Fragen · 92 Bereichskarten kippen zur Maus · 97 Hinweis ohne Internet · 101 Welle zum Fußbereich · 102 Gruppensymbole bewegen sich · 106 Leitsatz schreibt sich (nur erster Besuch, 22 ms je Buchstabe) · 107 Schwung unter der Unterschrift · 109 Bilder im Bereichsmenü blättern.
+- **Übergänge:** Seitenwechsel je nach Richtung (2 seitlich nach Menü-Reihenfolge, 7 Karte für Impressum/Datenschutz, 48 nach oben aus dem Kontakt-Band, 36 sonst ruhig) · 14 Fotos öffnen sich wie ein Fenster · 15/18 schon da · 16 Reiter-Inhalt gleitet mit · 17 Fenster wächst aus dem Knopf · 19 Bereichskopf wechselt Bilder mit Kamerafahrt · 25 Zeilen steigen auf · 27 Abschnitte schieben sich heran (auf Notiz-Wunsch) · 29 Lichtkante · 30 Pfeil fliegt durch · 31 Karten heben sich · 32 Häkchen zeichnet sich · 35 Strich im Menü · 42 Menü ohne Federn (200/140 ms) · 43 Knöpfe nur Farbe + 97 % · 44 Leiste wird nach und nach fester und verschwindet weiter beim Runterscrollen · 45 Wörter rollen um · 51 Linie unter Abschnittsköpfen · 52 Rundgang als Welle · 53 Titel in der Leiste (Kopf nur auf 92 % verkleinert) · 55 Telefon klingelt · 58 Platzhalter atmen · 59 Wimpel im Logo.
+- Noch offen in der Abstimmung: Katalog 112, Übergänge 34 und 47 ohne Wahl; „Merken“ bleibt liegen.
 
 ## Design-Kniffe (15.11.2026)
 Seite: `entwurf/ideen/kniffe.html` (gebaut mit `entwurf/ideen/mk_kniffe.py`, private Vorschau: https://claude.ai/artifact/XX628G1RyVpLSaSQwT7A8Z), Auswahl in der Datenbank-Sammlung `kniffe` (ids `kniff-1` … `kniff-10`). Die zehn Kniffe aus dem Bild, jeweils mit Vorher/Nachher an einem echten Bauteil der Seite. Bildvergleiche in `entwurf/kniffe/vorher-nachher/`.

@@ -101,7 +101,7 @@ def icon(name, size=24):
         "poster": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h2M12 8h4M8 12h2M12 12h4M8 16h2M12 16h4"/>',
     }[name]
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-            f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
+            f'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
 
 def bunting(colors=("#D4B5B0", "#A8C5C0", "#D4B5B0", "#F3F8F7"), n=18, bg=None):
     # Wimpelkette angelehnt an das Logo
@@ -126,10 +126,10 @@ def bunting(colors=("#D4B5B0", "#A8C5C0", "#D4B5B0", "#F3F8F7"), n=18, bg=None):
 BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
               '<circle cx="24" cy="24" r="23" fill="#1E3B44"/>'
               '<path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/>'
-              '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/>'
-              '<path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/>'
-              '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/>'
-              '<path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/>'
+              '<path class="bf" d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/>'
+              '<path class="bf" d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/>'
+              '<path class="bf" d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/>'
+              '<path class="bf" d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/>'
               '</svg>')
 
 NAV = [
@@ -144,6 +144,9 @@ BEREICHE = [
     ("kiga", "kindergarten.html", "Kindergarten", "3 Jahre bis Einschulung · Bären, Bienen, Spatzen", "img/blick-vom-fenster-in-den-raum.jpg"),
     ("hort", "kinderhort.html", "Kinderhort", "ab der Einschulung · alle Schulformen", "img/kreatviraum-5-1.jpg"),
 ]
+MEGA_FOTOS = {"krippe": ["img/puppenecke3.jpg", "img/p2160131.jpg"],
+              "kiga": ["img/blick-vom-nebenraum-in-den-gruppenraum.jpg", "img/p2170270.jpg"],
+              "hort": ["img/kreatviraum-4.jpg", "img/img_4956.jpg"]}
 MEGA_LINKS = [("ueberblick", "Zielgruppe &amp; Öffnungszeiten"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"),
               ("tagesablauf", "Tagesablauf"), ("fragen", "Häufige Fragen")]
 
@@ -155,7 +158,7 @@ def mega(active):
         + "<ul>" + "".join(f'<li><a href="{h}#{a}">{l}</a></li>' for a, l in MEGA_LINKS) + "</ul></div>"
         for k, h, t, sub, _ in BEREICHE)
     visual = "".join(
-        f'<figure class="v-{k}{" def" if k == default else ""}">{img(im, "", sizes="320px")}<figcaption>{t}<small>{sub}</small></figcaption></figure>'
+        f'<figure class="v-{k}{" def" if k == default else ""}">{img(im, "", sizes="320px")}' + "".join(img(x, "", cls="mv-x", sizes="320px") for x in MEGA_FOTOS[k]) + f'<figcaption>{t}<small>{sub}</small></figcaption></figure>'
         for k, h, t, sub, im in BEREICHE)
     return f'<div class="mega"><div class="mega-cols">{cols}</div><div class="mega-visual" aria-hidden="true">{visual}</div></div>'
 
@@ -198,19 +201,14 @@ def header(active):
       </ul>
     </nav>
     <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span><kbd aria-hidden="true">Strg K</kbd></button>
-    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span></button>
+    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span><span class="nav-badge toggle-badge" aria-hidden="true"></span></button>
   </div>
 </header>'''
 
-MOBILE_BAR = f'''<nav class="mobile-bar no-print" aria-label="Schnellzugriff">
-  <a href="tel:+4993127898920">{icon("phone", 22)}<span>Anrufen</span></a>
-  <a href="{KRANK_MAIL}">{icon("mail", 22)}<span>Krankmelden</span></a>
-  <a href="aktuelles.html#termine" class="cal-target">{icon("calendar", 22)}<span>Termine</span><span class="nav-badge" aria-hidden="true"></span></a>
-  <button type="button" class="js-search">{icon("search", 22)}<span>Suche</span></button>
-</nav>'''
 
 
 FOOTER = f'''<footer class="site-footer">
+  <svg class="foot-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path class="w2" d="M0 34 C240 8 480 8 720 30 S1200 54 1440 26 V60 H0Z"/><path class="w1" d="M0 40 C240 20 480 54 720 40 S1200 18 1440 38 V60 H0Z"/></svg>
   {bunting(bg=None)}
   <div class="container">
     <div class="footer-grid">
@@ -326,7 +324,6 @@ def page(fname, title, desc, active, body, theme="", head=""):
 {body}
 </main>
 {FOOTER}
-{MOBILE_BAR}
 <script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[href$='.html'], a[href*='.html#']"}},"eagerness":"moderate"}}]}}</script>
 <script src="js/daten.js" defer></script>
 <script src="js/main.js" defer></script>
@@ -481,8 +478,8 @@ def plan_table():
 </table>
 </div>
 <p class="plan-note">Damit Sie rechtzeitig Ihre Urlaubspläne schmieden können: Kinderkrippe, Kindergarten und Kinderhort haben die gleichen Schließtage.
-<a href="downloads/Ferienplan_2026_27.pdf">Ferienplan als PDF herunterladen</a> ·
-<a href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen">Original-Aushang ansehen</a></p>
+<a href="downloads/Ferienplan_2026_27.pdf">Ferienplan als PDF herunterladen</a></p>
+<a class="aushang no-print" href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen"><img src="img/schliesstage-2026-2027.jpg" alt="" width="593" height="714" loading="lazy" decoding="async"><span>Original-Aushang<small>Zum Vergrößern antippen</small></span></a>
 <div class="btn-row no-print">
   <a class="btn btn-primary" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a>
   <button class="btn btn-ghost js-print-plan" type="button">{icon("file", 20)} Ferienplan drucken</button>
@@ -552,7 +549,7 @@ home = f'''
     <div>
       <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
       <h1>Kath. Kinder- und Jugendhort <span class="hl">Grombühl</span></h1>
-      <p class="lead">Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
+      <p class="lead"><span class="leitsatz">Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt!</span> Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
       <div class="hero-actions">
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
@@ -627,7 +624,7 @@ home = f'''
         <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
         </details>
       </blockquote>
-      <div class="signature">Herzliche Grüße, Ihre<strong>Petra Lachnit</strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
+      <div class="signature">Herzliche Grüße, Ihre<strong class="sig-name">Petra Lachnit<svg class="sig-swash" viewBox="0 0 220 28" aria-hidden="true"><path pathLength="1" d="M4 20 C40 8 70 26 104 16 S168 4 216 12"/></svg></strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
     </div>
   </div>
 </section>
@@ -731,8 +728,8 @@ krippe += section("ueberblick", "Auf einen Blick", "Die Kinderkrippe", "", info_
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
 krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", "", '''<div class="groups"><span class="muted">Die Kinderkrippe umfasst zwei Gruppen:</span>
-<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span>Sonnengruppe</span>
-<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span>Sternengruppe</span></div>''' + rooms([
+<span class="group-chip"><span class="group-ic gi-sonne" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span>Sonnengruppe</span>
+<span class="group-chip"><span class="group-ic gi-stern" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span>Sternengruppe</span></div>''' + rooms([
     ("Gruppenraum", "Unterteilt in verschiedene Bereiche: wie z. B. Bauecke, Puppenwohnung, Bücherecke und mit dem großen Tisch für die gemeinsamen Mahlzeiten. Die bodentiefen Fenster fluten die Räume mit viel Licht und bieten eine schöne Aussicht in den Garten. Das Spielen auf dem Boden ist durch die Fußbodenheizung besonders einladend.", "img/p2160110.jpg"),
     ("Nebenraum", "Der Nebenraum ist dem Gruppenraum direkt angegliedert. Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kl. Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit.", "img/nebenraum.jpg"),
     ("Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch Rollo, bzw. mit Vorhang angenehm abgedunkelt werden um eine gemütliche Schlafatmosphäre zu ermöglichen.", "img/schlafen.jpg"),
@@ -817,9 +814,9 @@ kiga += section("ueberblick", "Auf einen Blick", "Der Kindergarten", "", info_ca
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
 kiga += section("raeume", "Räumlichkeiten", "Große, helle Räume zum Spielen und Lernen", "", '''<div class="groups"><span class="muted">Es gibt drei Kindergartengruppen:</span>
-<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/></svg></span>Bärengruppe</span>
-<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/></svg></span>Bienengruppe</span>
-<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
+<span class="group-chip"><span class="group-ic gi-baer" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/></svg></span>Bärengruppe</span>
+<span class="group-chip"><span class="group-ic gi-biene" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/></svg></span>Bienengruppe</span>
+<span class="group-chip"><span class="group-ic gi-spatz" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
     ("Gruppenraum", "In unseren großen, hellen Gruppenräumen befinden sich jeweils eine Leseecke, eine Bauecke, eine Puppen-, Rollenspielecke, ein Kreativtisch, ein Frühstücks- und Esstisch für das warme frisch zubereitete Mittagessen sowie Spieltische für Brettspiele und Puzzle. Zu jeder Gruppe gehört ein Nebenraum, dort finden altersspezifische Angebote in Kleingruppen statt. Außerdem hat jede Gruppe einen großen Außenspielbereich im Flur mit wechselnden Spielmaterialien.", "img/blick-vom-fenster-in-den-raum.jpg"),
     ("Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
