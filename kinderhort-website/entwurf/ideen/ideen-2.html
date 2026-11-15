@@ -1,0 +1,641 @@
+<title>Hort-Webseite Ideenkatalog 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: wie Katalog 1 – Karten mit Live-Bühne auf dunklem Türkis, Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 10px; right: 16px; text-align: center; pointer-events: none; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .chip:active, .seg button:active, .filter button:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.replay { position: absolute; top: 12px; right: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.14); color: var(--on); font-weight: 600; font-size: .82rem; cursor: pointer; }
+.replay:hover { background: rgba(255,255,255,.26); }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); transition: color .2s; }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+
+/* A Überschrift per Maske */
+.headline { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; text-align: center; max-width: 14ch; }
+.headline .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.headline .w > span { display: inline-block; translate: 0 110%; }
+.headline.go .w > span { translate: 0 0; transition: translate .7s var(--ease-out); transition-delay: calc(var(--i) * 45ms); }
+.headline .hl { background: linear-gradient(var(--rose), var(--rose)) no-repeat 0 90% / 0 .22em; }
+.headline.go .hl { background-size: 100% .22em; transition: background-size .5s var(--ease-io) .55s; }
+
+/* B Zahlen zählen */
+.stats { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.stat { background: rgba(255,255,255,.08); border-radius: 14px; padding: 16px; }
+.stat b { display: block; font-size: 2.2rem; font-weight: 800; letter-spacing: -.03em; color: var(--rose); line-height: 1.1; }
+.stat span { font-size: .85rem; color: var(--on-soft); }
+
+/* C Wimpelkette */
+.bunt { width: 100%; height: 150px; touch-action: pan-y; }
+.bunt svg { width: 100%; height: 100%; overflow: visible; }
+
+/* D Lichtkegel */
+.spots { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.spot { position: relative; border-radius: 16px; padding: 18px 14px; min-height: 140px; background: radial-gradient(260px circle at var(--mx, -200px) var(--my, -200px), rgba(255,255,255,.16), transparent 45%), rgba(20,42,49,.3); border: 1px solid rgba(255,255,255,.08); display: grid; align-content: end; gap: 4px; }
+.spot::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: radial-gradient(200px circle at var(--mx, -200px) var(--my, -200px), var(--rose), transparent 50%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+.spot b { font-size: 1rem; }
+.spot span { font-size: .78rem; color: var(--on-soft); }
+@media (max-width: 520px) { .spots { grid-template-columns: minmax(0, 1fr); } .spot { min-height: 80px; } }
+
+/* E Magnetischer Knopf */
+.magnet-area { width: 100%; height: 220px; display: grid; place-items: center; }
+.magnet { border: 0; border-radius: 999px; padding: 18px 30px; font-weight: 800; font-size: 1.05rem; background: var(--rose); color: var(--ink); cursor: pointer; box-shadow: 0 14px 28px -14px rgba(0,0,0,.6); transition: translate .5s var(--ease-out); }
+.magnet span { display: inline-block; transition: translate .5s var(--ease-out); }
+.magnet.near, .magnet.near span { transition-duration: .12s; }
+
+/* F Fotostreifen */
+.strip { width: 100%; height: 230px; display: flex; gap: 8px; }
+.strip button { all: unset; position: relative; flex: 1; min-width: 0; border-radius: 14px; overflow: hidden; cursor: pointer; transition: flex-grow .5s var(--ease-io); }
+.strip button:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
+.strip button.on { flex-grow: 4.5; }
+.strip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.strip span { position: absolute; left: 12px; right: 12px; bottom: 10px; font-weight: 700; font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; translate: 0 8px; transition: opacity .2s var(--ease-out), translate .2s var(--ease-out); text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.strip button.on span { opacity: 1; translate: 0 0; transition-duration: .3s; transition-delay: .2s; }
+.strip button::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(20,42,49,.75)); }
+
+/* G Geschichte */
+.story { position: relative; width: 230px; aspect-ratio: 9 / 15; border-radius: 18px; overflow: hidden; background: var(--deep); user-select: none; touch-action: none; box-shadow: 0 18px 36px -18px rgba(0,0,0,.7); }
+.story img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.06; transition: opacity .4s var(--ease-out), scale 4.5s linear; }
+.story img.on { opacity: 1; scale: 1; }
+.story .bars { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 4px; z-index: 2; }
+.story .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.35); overflow: hidden; }
+.story .bars i b { display: block; height: 100%; width: 0; background: #fff; }
+.story .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 14px; background: linear-gradient(180deg, transparent, rgba(20,42,49,.85)); z-index: 2; }
+.story .cap strong { display: block; font-size: 1rem; }
+.story .cap span { font-size: .8rem; color: var(--on-soft); }
+.story .paused { position: absolute; top: 22px; left: 12px; z-index: 3; font-size: .72rem; font-weight: 700; background: rgba(0,0,0,.45); padding: 2px 8px; border-radius: 999px; opacity: 0; transition: opacity .15s; }
+.story.hold .paused { opacity: 1; }
+
+/* H Bereichs-Finder */
+.finder { width: 100%; max-width: 440px; display: grid; gap: 14px; }
+.finder .age { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+.areas { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); background: rgba(255,255,255,.1); border-radius: 14px; padding: 5px; }
+.areas span:not(.knob) { position: relative; z-index: 1; text-align: center; padding: 10px 4px; font-weight: 700; font-size: .9rem; transition: color .25s; }
+.areas span.on:not(.knob) { color: var(--ink); }
+.areas .knob { top: 5px; height: calc(100% - 10px); border-radius: 10px; }
+.areas .knob.none { opacity: 0; }
+.finder .res { min-height: 3.4em; font-size: .95rem; }
+.finder .res b { display: block; }
+.finder .res span { color: var(--on-soft); }
+.fade-swap { transition: opacity .2s var(--ease-out), filter .2s var(--ease-out); }
+.fade-swap.swap { opacity: 0; filter: blur(5px); }
+
+/* I Fachbegriffe */
+.terms { max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 20px; font-size: .95rem; line-height: 1.75; }
+.term { border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: help; text-decoration: underline dotted var(--surface); text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 600; }
+.term:hover { text-decoration-style: solid; }
+.pop { position: absolute; z-index: 20; max-width: 260px; background: var(--deep); color: var(--on); border-radius: 12px; padding: 12px 14px; font-size: .85rem; line-height: 1.5; box-shadow: 0 16px 30px -12px rgba(0,0,0,.6); opacity: 0; scale: .95; visibility: hidden; transition: opacity .16s var(--ease-out), scale .16s var(--ease-out), visibility 0s .16s; }
+.pop.open { opacity: 1; scale: 1; visibility: visible; transition: opacity .2s var(--ease-out), scale .2s var(--ease-out), visibility 0s; }
+.pop b { display: block; color: var(--rose); margin-bottom: 2px; }
+
+/* J Rollende Ziffern */
+.count { display: grid; gap: 14px; justify-items: center; text-align: center; }
+.digits { display: flex; gap: 4px; font-size: 4rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.digit { position: relative; height: 1em; width: .66em; overflow: hidden; background: rgba(255,255,255,.08); border-radius: 10px; }
+.digit .col { position: absolute; left: 0; right: 0; top: 0; display: grid; text-align: center; transition: translate .7s var(--ease-io); transition-delay: calc(var(--i) * 30ms); }
+.digit .col span { height: 1em; display: grid; place-items: center; color: var(--rose); }
+.count .what { font-size: 1rem; }
+.count .what b { color: var(--rose); }
+
+/* K Karten zum Umdrehen */
+.flips { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; perspective: 900px; }
+.flip { all: unset; position: relative; height: 170px; cursor: pointer; transform-style: preserve-3d; transition: rotate .55s var(--ease-io); border-radius: 16px; }
+.flip:focus-visible { outline: 3px solid var(--rose); outline-offset: 3px; }
+.flip.on { rotate: y 180deg; }
+.face { position: absolute; inset: 0; border-radius: 16px; padding: 16px; display: grid; align-content: space-between; backface-visibility: hidden; }
+.front { background: rgba(255,255,255,.1); }
+.front i { font-style: normal; font-size: 1.8rem; }
+.front b { font-size: .98rem; line-height: 1.25; }
+.front small { color: var(--on-soft); font-size: .76rem; }
+.back { background: var(--paper); color: var(--ink); rotate: y 180deg; }
+.back b { font-size: 1.15rem; letter-spacing: -.01em; }
+.back small { color: var(--ink-soft); font-size: .78rem; }
+@media (max-width: 520px) { .flips { grid-template-columns: minmax(0, 1fr); } .flip { height: 120px; } }
+
+/* L Licht nach Tageszeit */
+.sky { position: absolute; inset: 0; transition: background .6s linear; }
+.sun { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; background: radial-gradient(circle, #fff6dc, #f5d38e 60%, rgba(245, 211, 142, 0) 72%); box-shadow: 0 0 60px 20px rgba(255, 236, 190, .45); transition: left .6s var(--ease-io), top .6s var(--ease-io), opacity .4s; }
+.skyui { position: relative; z-index: 1; width: 100%; max-width: 420px; display: grid; gap: 10px; margin-top: auto; }
+.skyui .t { font-weight: 800; font-size: 1.3rem; color: var(--ink); text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+
+/* M Checkliste */
+.pack { width: 100%; max-width: 420px; display: grid; gap: 12px; }
+.pack ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pack li label { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.08); cursor: pointer; }
+.pack input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.box { width: 24px; height: 24px; border-radius: 7px; border: 2px solid var(--rose); display: grid; place-items: center; flex: none; transition: background .2s; }
+.box svg { stroke: var(--deep); stroke-width: 3.2; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .25s var(--ease-out); }
+.pack input:checked + .box { background: var(--rose); }
+.pack input:checked + .box svg { stroke-dashoffset: 0; }
+.pack input:focus-visible + .box { outline: 3px solid var(--rose); outline-offset: 2px; }
+.txt { position: relative; }
+.txt::after { content: ""; position: absolute; left: 0; right: 0; top: 52%; height: 2px; background: var(--on-soft); transform-origin: left; scale: 0 1; transition: scale .3s var(--ease-io); }
+.pack input:checked ~ .txt { color: var(--on-soft); }
+.pack input:checked ~ .txt::after { scale: 1 1; }
+.packhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ring { width: 44px; height: 44px; rotate: -90deg; }
+.ring circle { fill: none; stroke-width: 4; }
+.ring .bgc { stroke: rgba(255,255,255,.15); }
+.ring .fg { stroke: var(--ok); stroke-linecap: round; transition: stroke-dashoffset .4s var(--ease-io); }
+.ring.pulse { animation: ringpulse .6s var(--ease-out); }
+@keyframes ringpulse { 40% { filter: drop-shadow(0 0 8px var(--ok)); } }
+.done-msg { font-weight: 700; color: var(--ok); min-height: 1.6em; }
+
+/* N Durchwahl finden mit Wackeln */
+.dial { width: 100%; max-width: 400px; display: grid; gap: 10px; }
+.dial input { width: 100%; border: 0; border-radius: 12px; padding: 12px 14px; font: 500 1rem var(--font); background: var(--paper); color: var(--ink); }
+.dial input.err { box-shadow: 0 0 0 3px var(--rose); }
+.dial .out { min-height: 3.2em; }
+.dial .out b { display: block; font-size: 1.6rem; letter-spacing: -.02em; color: var(--rose); }
+.dial .out span { color: var(--on-soft); font-size: .9rem; }
+@keyframes shake { 20% { translate: -6px 0; } 40% { translate: 5px 0; } 60% { translate: -3px 0; } 80% { translate: 2px 0; } }
+.shake { animation: shake .32s var(--ease-out); }
+
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Ideenkatalog 2</span>
+    <h1>14 weitere Ideen für Bewegung und Funktionen</h1>
+    <p>Diesmal mehr Animationen: kleine Momente, die die Seite lebendig machen, ohne zu stören. Jede Karte ist live, einfach ausprobieren. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
+  </header>
+
+  <div class="filter" role="group" aria-label="Ideen filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="anim" aria-pressed="false">Animation</button>
+    <button type="button" data-f="funk" aria-pressed="false">Funktion</button>
+  </div>
+
+  <div class="grid">
+
+    <article class="card" data-k="anim">
+      <div class="stage"><button type="button" class="replay" data-replay="A">↻ Nochmal</button>
+        <h2 class="headline" id="headline">Ein Haus für <span class="hl">jedes Alter</span></h2></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Überschriften steigen auf</h2><p>Die Wörter großer Überschriften steigen nacheinander aus einer unsichtbaren Kante auf, danach zieht sich die rosé Markierung unter das wichtigste Wort. Nur bei Abschnittsanfängen, nicht bei jedem Text.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><button type="button" class="replay" data-replay="B">↻ Nochmal</button>
+        <div class="stats">
+          <div class="stat"><b data-to="30" data-from="0">0</b><span>Schließtage im Jahr – höchstens</span></div>
+          <div class="stat"><b data-to="100" data-from="0" data-suffix=" %">0 %</b><span>Fachkraftquote im Hort</span></div>
+          <div class="stat"><b data-to="75" data-from="0" data-suffix=" %">0 %</b><span>Übertritt an weiterführende Schulen 2021</span></div>
+          <div class="stat"><b data-to="1.4" data-from="6" data-dec="1">6,0</b><span>Zufriedenheitsnote der Eltern</span></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Zahlen zählen hoch</h2><p>Kennzahlen zählen beim Erscheinen zu ihrem Wert, schnell am Anfang, sanft am Ende. Die Elternnote zählt von 6 herunter bis 1,4. Die Ziffern sind gleich breit, damit nichts wackelt.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="bunt" id="bunt"><svg viewBox="0 0 600 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg></div>
+        <span class="hint">Maus oder Finger schnell darüber bewegen</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2>Wimpelkette weht</h2><p>Die Wimpelkette aus dem Logo reagiert auf Bewegung: Beim schnellen Scrollen oder Darüberfahren schwingen die Wimpel mit und pendeln sich wieder ein. Das ist ein reines Schmuck-Element, deshalb darf es hier nachschwingen.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="spots" id="spots">
+        <div class="spot"><b>Kinderkrippe</b><span>ab 11 Monaten</span></div>
+        <div class="spot"><b>Kindergarten</b><span>3 Jahre bis Einschulung</span></div>
+        <div class="spot"><b>Kinderhort</b><span>ab der Einschulung</span></div>
+      </div><span class="hint">Mit der Maus über die Karten fahren</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">nur mit Maus</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Licht folgt der Maus</h2><p>Auf den dunklen Karten folgt ein weicher Lichtschein dem Mauszeiger, der Rand leuchtet rosé auf. Am Handy bleibt alles ruhig.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="magnet-area" id="magnetArea"><button type="button" class="magnet" id="magnet"><span>Platz anfragen →</span></button></div>
+        <span class="hint">Mit der Maus in die Nähe des Knopfs fahren</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">nur mit Maus</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Magnetischer Hauptknopf</h2><p>Der wichtigste Knopf einer Seite zieht den Zeiger leicht an, die Beschriftung bewegt sich etwas mehr als der Knopf. Nur für ein, zwei Knöpfe pro Seite, sonst wird es unruhig.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="strip" id="strip"></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Fotostreifen, der aufklappt</h2><p>Ein Streifen aus Raumfotos. Das Foto unter der Maus oder dem Finger wird breit, die anderen machen Platz, die Bildunterschrift erscheint. Passt gut auf die Startseite statt der drei Rundgang-Karten.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="story" id="story" role="region" aria-label="Rundgang als Geschichte"><div class="bars"></div><span class="paused">Pause</span><div class="cap"><strong></strong><span></span></div></div>
+        <span class="hint">Rechts/links tippen · gedrückt halten pausiert</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2>Rundgang als Geschichte</h2><p>Der virtuelle Rundgang wie eine Handy-Geschichte: Bilder wechseln von selbst, Balken oben zeigen den Fortschritt. Tippen springt vor oder zurück. Gedrückt halten pausiert, und der Balken bleibt dabei sofort stehen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="finder">
+        <label class="label" for="ageRange">Wie alt ist Ihr Kind?</label>
+        <div class="age" id="ageText" aria-live="polite">2 Jahre</div>
+        <input class="range" id="ageRange" type="range" min="0" max="192" value="24">
+        <div class="areas" aria-hidden="true"><span class="knob"></span><span>Krippe</span><span>Kindergarten</span><span>Hort</span></div>
+        <div class="res fade-swap" id="ageRes"></div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Welcher Bereich passt?</h2><p>Neue Eltern stellen das Alter ihres Kindes ein und sehen sofort, welcher Bereich und welche Gruppen passen, mit Link zur Seite. Die Altersgrenzen sind vereinfacht; die genaue Regel (Krippe bis August des Jahres, in dem das Kind 3 wird) steht darunter.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="terms" id="terms">Nach dem <button type="button" class="term" data-t="BayKiBiG|Bayerisches Kinderbildungs- und -betreuungsgesetz. Es regelt unter anderem die Förderung der Kitas und erlaubt bis zu 30 Schließtage im Jahr.">BayKiBiG</button> dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. <button type="button" class="term" data-t="Inhouseschulung|Fortbildung, die im eigenen Haus für alle Mitarbeiterinnen und Mitarbeiter gemeinsam stattfindet.">Inhouseschulungen</button> finden in der Schließzeit statt. Die Entwicklung jedes Krippenkindes halten wir im <button type="button" class="term" data-t="Portfolio|Eine Mappe, in der die Entwicklung des Kindes mit Fotos, Bildern und Beobachtungen festgehalten wird.">Portfolio</button> fest, Vorschulkinder unterstützt der <button type="button" class="term" data-t="Vorkurs Deutsch|Zusätzliche Förderung für Vorschulkinder in Grammatik, Sprachverständnis und Wortschatz.">Vorkurs Deutsch</button>.</div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Fachbegriffe erklärt</h2><p>Begriffe wie BayKiBiG oder Portfolio sind gepunktet unterstrichen. Ein Tipp öffnet eine kurze Erklärung, die direkt aus dem Wort herauswächst und beim Schließen dorthin zurückgeht. Die Erklärungen sind Beispiele.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="count">
+        <div class="chips" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center"><button type="button" class="chip" data-d="2026-12-04" data-w="Weihnachtsmarkt" aria-pressed="true">Weihnachtsmarkt</button><button type="button" class="chip" data-d="2026-12-24" data-w="Weihnachts-Schließzeit" aria-pressed="false">Weihnachten</button><button type="button" class="chip" data-d="2027-08-09" data-w="Sommer-Schließzeit" aria-pressed="false">Sommer</button></div>
+        <div class="digits" id="digits" aria-hidden="true"></div>
+        <p class="what" id="countWhat" aria-live="polite"></p>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Countdown mit rollenden Ziffern</h2><p>„Noch 18 Tage bis zum Weihnachtsmarkt“: Die Ziffern rollen wie bei einem Zählwerk zur neuen Zahl, jede Stelle leicht versetzt. Gut für den Hinweis auf der Startseite oder vor den Ferien.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="flips" id="flips">
+        <button type="button" class="flip" aria-pressed="false"><span class="face front"><i aria-hidden="true">☀️</i><b>Sonnengruppe</b><small>Kinderkrippe · antippen</small></span><span class="face back"><small>Durchwahl</small><b>0931 2789892 14</b><small>Gruppenleitung: Name (Beispiel)</small></span></button>
+        <button type="button" class="flip" aria-pressed="false"><span class="face front"><i aria-hidden="true">🐻</i><b>Bärengruppe</b><small>Kindergarten · antippen</small></span><span class="face back"><small>Durchwahl</small><b>0931 2789892 11</b><small>Gruppenleitung: Name (Beispiel)</small></span></button>
+        <button type="button" class="flip" aria-pressed="false"><span class="face front"><i aria-hidden="true">🎒</i><b>Kinderhort</b><small>Schulkinder · antippen</small></span><span class="face back"><small>Durchwahl</small><b>0931 2789892 0</b><small>Leitung: Petra Lachnit</small></span></button>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">braucht Namen</span></div>
+        <h2>Gruppenkarten zum Umdrehen</h2><p>Auf der Kontaktseite drehen sich die Gruppenkarten beim Antippen um. Hinten stehen Durchwahl und Gruppenleitung. Das ist ein schöner Platz für die Team-Fotos, sobald es sie gibt.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage" style="align-content:end"><div class="sky" id="sky"></div><div class="sun" id="sun"></div>
+        <div class="skyui"><span class="t" id="skyT">10:00 Uhr</span><input class="range" id="skyRange" type="range" min="390" max="1110" step="5" value="600" aria-label="Uhrzeit"></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Stimmung</span><span class="tag">Aufwand: mittel</span></div>
+        <h2>Licht nach Tageszeit</h2><p>Der Auftakt der Startseite bekommt ein Licht, das zur echten Uhrzeit passt: morgens warm, mittags hell, abends kühler. Die Sonne wandert im Bogen. Das passiert nur im Hintergrund und ganz leise.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="pack" id="pack">
+        <div class="packhead"><div class="seg" role="group" aria-label="Bereich" id="packSeg"><span class="knob" aria-hidden="true"></span><button type="button" data-p="krippe" aria-pressed="true">Krippe</button><button type="button" data-p="kiga" aria-pressed="false">Kindergarten</button><button type="button" data-p="hort" aria-pressed="false">Hort</button></div>
+          <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bgc" cx="22" cy="22" r="18"/><circle class="fg" id="packRing" cx="22" cy="22" r="18"/></svg></div>
+        <ul id="packList"></ul>
+        <p class="done-msg" id="packDone" aria-live="polite"></p>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Checkliste „Was braucht mein Kind?“</h2><p>Zum Abhaken vor dem ersten Tag. Das Häkchen zeichnet sich, der Text wird durchgestrichen, der Ring füllt sich. Sind alle Punkte erledigt, leuchtet er kurz auf. Die Liste bleibt im Browser gespeichert. Die Punkte stammen aus den häufigen Fragen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="dial">
+        <label class="label" for="dialIn">Gruppe eingeben, z. B. „Spatzen“</label>
+        <input id="dialIn" type="text" autocomplete="off" placeholder="Gruppe oder Bereich" enterkeyhint="search">
+        <div class="out fade-swap" id="dialOut" aria-live="polite"></div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Durchwahl finden</h2><p>Ein Feld, das beim Tippen die passende Durchwahl zeigt. Bei einem unbekannten Begriff wackelt das Feld kurz und schlägt die Zentrale vor. Das Wackeln ist eine knappe, ehrliche Rückmeldung ohne Fehlermeldung.</p></div>
+    </article>
+
+  </div>
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Sag einfach, welche eingebaut werden sollen.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover: hover)").matches;
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function onView(el, fn) {
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { fn(); io.disconnect(); } }); }, { threshold: .4 });
+    io.observe(el);
+  }
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, anim) {
+      if (!anim) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px"; knob.style.translate = b.offsetLeft + "px 0";
+      if (!anim) { void knob.offsetWidth; knob.style.transition = ""; } else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) { b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b, true); onPick(b); }); });
+    requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+  }
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  var replay = {};
+  $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
+
+  /* A Überschrift per Maske */
+  (function () {
+    var h = $("#headline"), i = 0;
+    function wrap(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function (w) {
+            if (!w) return;
+            if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return; }
+            var o = document.createElement("span"); o.className = "w"; var s = document.createElement("span"); s.textContent = w; s.style.setProperty("--i", i++); o.appendChild(s); frag.appendChild(o);
+          });
+          n.replaceWith(frag);
+        } else wrap(n);
+      });
+    }
+    h.setAttribute("aria-label", h.textContent); wrap(h);
+    $$(".w", h).forEach(function (w) { w.setAttribute("aria-hidden", "true"); });
+    function play() { h.classList.remove("go"); void h.offsetWidth; requestAnimationFrame(function () { h.classList.add("go"); }); }
+    replay.A = play; onView(h, play);
+  })();
+
+  /* B Zahlen zählen */
+  (function () {
+    var els = $$(".stat b");
+    function fmt(v, el) { var d = +(el.dataset.dec || 0); return v.toFixed(d).replace(".", ",") + (el.dataset.suffix || ""); }
+    function run() {
+      els.forEach(function (el, n) {
+        var from = +el.dataset.from, to = +el.dataset.to, t0 = null, dur = 1200, delay = n * 60;
+        if (reduced) { el.textContent = fmt(to, el); return; }
+        function step(t) { if (!t0) t0 = t; var p = Math.min(1, Math.max(0, (t - t0 - delay) / dur)); var e = 1 - Math.pow(1 - p, 4); el.textContent = fmt(from + (to - from) * e, el); if (p < 1) requestAnimationFrame(step); }
+        requestAnimationFrame(step);
+      });
+    }
+    replay.B = run; onView($(".stats"), run);
+  })();
+
+  /* C Wimpelkette (Feder-Physik, nur Schmuck) */
+  (function () {
+    var box = $("#bunt"), svg = $("svg", box), ns = "http://www.w3.org/2000/svg", flags = [], N = 12, cols = ["#D4B5B0", "#B6D0CB", "#F3F8F7"];
+    var line = document.createElementNS(ns, "path"); line.setAttribute("d", "M10 30 Q300 80 590 30"); line.setAttribute("fill", "none"); line.setAttribute("stroke", "#F3FAF8"); line.setAttribute("stroke-width", "2"); line.setAttribute("opacity", ".6"); svg.appendChild(line);
+    for (var k = 0; k < N; k++) {
+      var t = (k + .5) / N, x = 10 + 580 * t, y = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 80 + t * t * 30;
+      var g = document.createElementNS(ns, "g"); g.setAttribute("transform", "translate(" + x + " " + y + ")");
+      var p = document.createElementNS(ns, "path"); p.setAttribute("d", "M-18 0 L18 0 L0 44 Z"); p.setAttribute("fill", cols[k % 3]); g.appendChild(p); svg.appendChild(g);
+      flags.push({ g: g, x: x, y: y, a: 0, v: 0 });
+    }
+    var lastX = null, lastT = 0, wind = 0, running = false;
+    function kick(vx) { wind += vx; if (!running) { running = true; requestAnimationFrame(tick); } }
+    function tick() {
+      var still = true;
+      flags.forEach(function (f, i) {
+        var target = Math.max(-40, Math.min(40, -wind * (0.8 + (i % 3) * .15)));
+        f.v += (target - f.a) * 0.06; f.v *= 0.88; f.a += f.v;
+        f.g.setAttribute("transform", "translate(" + f.x + " " + f.y + ") rotate(" + f.a.toFixed(2) + ")");
+        if (Math.abs(f.v) > .02 || Math.abs(f.a - target) > .05) still = false;
+      });
+      wind *= 0.9;
+      if (Math.abs(wind) > .05) still = false;
+      if (still) { running = false; return; }
+      requestAnimationFrame(tick);
+    }
+    if (reduced) return;
+    box.addEventListener("pointermove", function (e) { var now = performance.now(); if (lastX !== null && now - lastT < 80) kick((e.clientX - lastX) / Math.max(8, now - lastT) * 6); lastX = e.clientX; lastT = now; });
+    box.addEventListener("pointerleave", function () { lastX = null; });
+    onView(box, function () { kick(14); });
+  })();
+
+  /* D Lichtkegel */
+  (function () {
+    $$(".spot").forEach(function (s) {
+      s.addEventListener("pointermove", function (e) { if (e.pointerType !== "mouse") return; var r = s.getBoundingClientRect(); s.style.setProperty("--mx", (e.clientX - r.left) + "px"); s.style.setProperty("--my", (e.clientY - r.top) + "px"); });
+      s.addEventListener("pointerleave", function () { s.style.setProperty("--mx", "-200px"); s.style.setProperty("--my", "-200px"); });
+    });
+  })();
+
+  /* E Magnetischer Knopf */
+  (function () {
+    var area = $("#magnetArea"), m = $("#magnet"), label = $("span", m);
+    if (reduced) return;
+    area.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      var r = m.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy), R = 110;
+      if (d < R) { var k = (1 - d / R); m.classList.add("near"); m.style.translate = (dx * .22 * k) + "px " + (dy * .3 * k) + "px"; label.style.translate = (dx * .12 * k) + "px " + (dy * .16 * k) + "px"; }
+      else { m.classList.remove("near"); m.style.translate = ""; label.style.translate = ""; }
+    });
+    area.addEventListener("pointerleave", function () { m.classList.remove("near"); m.style.translate = ""; label.style.translate = ""; });
+  })();
+
+  /* F Fotostreifen */
+  (function () {
+    var pics = [["img/kreatviraum-5-1-800.webp", "Kreativraum"], ["img/p2160031-800.webp", "Weißer Raum"], ["img/img_1251-800.webp", "Bistro"], ["img/turnraum-800.webp", "Turnraum"], ["img/werkraum-800.webp", "Werkraum"]];
+    var strip = $("#strip");
+    pics.forEach(function (p, i) {
+      var b = document.createElement("button"); b.type = "button"; if (i === 0) b.className = "on";
+      b.setAttribute("aria-label", p[1]);
+      b.innerHTML = '<img alt="" loading="lazy"><span></span>'; $("img", b).src = p[0]; $("span", b).textContent = p[1];
+      function on() { $$("button", strip).forEach(function (x) { x.classList.toggle("on", x === b); }); }
+      b.addEventListener("pointerenter", on); b.addEventListener("focus", on); b.addEventListener("click", on);
+      strip.appendChild(b);
+    });
+  })();
+
+  /* G Rundgang als Geschichte */
+  (function () {
+    var pics = [["img/p2160110-800.webp", "Gruppenraum", "Kinderkrippe – unterteilt in verschiedene Bereiche"], ["img/blick-vom-fenster-in-den-raum-800.webp", "Gruppenraum", "Kindergarten – Frühstücks- und Esstische"], ["img/kreatviraum-5-1-800.webp", "Kreativraum", "Kinderhort – Freizeitbereich"], ["img/p2160031-800.webp", "Weißer Raum", "Ruhe, Wasserbett und Lichtwasserfall"], ["img/img_1251-800.webp", "Bistro", "Mittagessen nach der Schule"]];
+    var st = $("#story"), bars = $(".bars", st), cap = $(".cap", st), imgs = [], fills = [], i = 0, p = 0, last = null, hold = false, DUR = 4000;
+    pics.forEach(function (pc) { var im = document.createElement("img"); im.alt = ""; im.src = pc[0]; st.insertBefore(im, bars); imgs.push(im); var bar = document.createElement("i"); var f = document.createElement("b"); bar.appendChild(f); bars.appendChild(bar); fills.push(f); });
+    function show(n) {
+      i = (n + pics.length) % pics.length; p = 0;
+      imgs.forEach(function (im, k) { im.classList.toggle("on", k === i); });
+      fills.forEach(function (f, k) { f.style.width = k < i ? "100%" : "0"; });
+      $("strong", cap).textContent = pics[i][1]; $("span", cap).textContent = pics[i][2];
+    }
+    function frame(t) {
+      if (last !== null && !hold && !reduced) { p += (t - last) / DUR; if (p >= 1) show(i + 1); else fills[i].style.width = (p * 100) + "%"; }
+      last = t; requestAnimationFrame(frame);
+    }
+    var downAt = 0;
+    st.addEventListener("pointerdown", function () { hold = true; downAt = performance.now(); st.classList.add("hold"); });
+    st.addEventListener("pointerup", function (e) {
+      hold = false; st.classList.remove("hold");
+      if (performance.now() - downAt < 250) { var r = st.getBoundingClientRect(); show(i + (e.clientX - r.left > r.width / 3 ? 1 : -1)); }
+    });
+    st.addEventListener("pointerleave", function () { hold = false; st.classList.remove("hold"); });
+    st.tabIndex = 0;
+    st.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") show(i + 1); if (e.key === "ArrowLeft") show(i - 1); });
+    show(0); requestAnimationFrame(frame);
+  })();
+
+  /* H Bereichs-Finder */
+  (function () {
+    var r = $("#ageRange"), txt = $("#ageText"), res = $("#ageRes"), areas = $(".areas"), knob = $(".knob", areas), spans = $$("span:not(.knob)", areas), cur = null, first = true;
+    function ageLabel(m) { var y = Math.floor(m / 12), mo = m % 12; return (y ? y + (y === 1 ? " Jahr" : " Jahre") : "") + (y && mo ? " " : "") + (mo ? mo + (mo === 1 ? " Monat" : " Monate") : (y ? "" : "0 Monate")); }
+    function pick(m) {
+      if (m < 11) return [-1, "Noch etwas zu jung", "Die Krippe nimmt Kinder ab 11 Monaten auf. Fragen Sie gern schon jetzt nach einem Platz."];
+      if (m < 36) return [0, "Kinderkrippe – Sonnen- oder Sternengruppe", "Bis zum August des Jahres, in dem Ihr Kind 3 wird."];
+      if (m < 75) return [1, "Kindergarten – Bären-, Bienen- oder Spatzengruppe", "Von 3 Jahren bis zur Einschulung."];
+      return [2, "Kinderhort – für alle Schulformen", "Ab der Einschulung, gern über die Grundschule hinaus."];
+    }
+    function upd() {
+      var m = +r.value, res2 = pick(m); txt.textContent = ageLabel(m);
+      spans.forEach(function (s, k) { s.classList.toggle("on", k === res2[0]); });
+      knob.classList.toggle("none", res2[0] < 0);
+      if (res2[0] >= 0) {
+        var s = spans[res2[0]];
+        if (first) knob.style.transition = "none";
+        knob.style.width = s.offsetWidth + "px"; knob.style.translate = s.offsetLeft - 5 + "px 0";
+        if (first) { void knob.offsetWidth; knob.style.transition = ""; } else if (cur !== res2[0] && !reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+      }
+      if (cur !== res2[0] || first) {
+        var fill = function () { res.innerHTML = "<b></b><span></span>"; $("b", res).textContent = res2[1]; $("span", res).textContent = res2[2]; };
+        if (first || reduced) fill(); else { res.classList.add("swap"); setTimeout(function () { fill(); res.classList.remove("swap"); }, 180); }
+      }
+      cur = res2[0]; first = false;
+    }
+    r.addEventListener("input", upd); requestAnimationFrame(upd);
+  })();
+
+  /* I Fachbegriffe */
+  (function () {
+    var box = $("#terms"), stage = box.closest(".stage"), pop = document.createElement("div"), open = null;
+    pop.className = "pop"; pop.setAttribute("role", "tooltip"); pop.id = "termPop"; stage.appendChild(pop);
+    function close() { if (!open) return; pop.classList.remove("open"); open.setAttribute("aria-expanded", "false"); open = null; }
+    $$(".term", box).forEach(function (t) {
+      t.setAttribute("aria-expanded", "false"); t.setAttribute("aria-controls", "termPop");
+      t.addEventListener("click", function (e) {
+        e.stopPropagation(); if (open === t) { close(); return; } close();
+        var parts = t.dataset.t.split("|"); pop.innerHTML = "<b></b><span></span>"; $("b", pop).textContent = parts[0]; $("span", pop).textContent = parts[1];
+        var s = stage.getBoundingClientRect(), r = t.getBoundingClientRect();
+        var w = Math.min(260, s.width - 24), left = Math.max(12, Math.min(s.width - w - 12, r.left - s.left + r.width / 2 - w / 2)), top = r.bottom - s.top + 8;
+        pop.style.width = w + "px"; pop.style.left = left + "px"; pop.style.top = top + "px";
+        pop.style.transformOrigin = (r.left - s.left + r.width / 2 - left) + "px 0";   /* wächst aus dem Wort */
+        void pop.offsetWidth; pop.classList.add("open"); t.setAttribute("aria-expanded", "true"); open = t;
+      });
+    });
+    document.addEventListener("click", close);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) { var t = open; close(); t.focus(); } });
+  })();
+
+  /* J Rollende Ziffern */
+  (function () {
+    var box = $("#digits"), what = $("#countWhat"), cols = [];
+    function ensure(n) {
+      while (cols.length < n) {
+        var d = document.createElement("span"); d.className = "digit"; var c = document.createElement("span"); c.className = "col";
+        for (var k = 0; k < 10; k++) { var s = document.createElement("span"); s.textContent = k; c.appendChild(s); }
+        d.appendChild(c); box.insertBefore(d, box.firstChild); cols.unshift(c);
+      }
+      while (cols.length > n) { box.firstChild.remove(); cols.shift(); }
+      cols.forEach(function (c, i) { c.style.setProperty("--i", i); });
+    }
+    function days(iso) { var p = iso.split("-"), now = new Date(); return Math.max(0, Math.round((Date.UTC(+p[0], p[1] - 1, +p[2]) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5)); }
+    function set(b) {
+      var n = days(b.dataset.d), s = String(n); ensure(Math.max(2, s.length)); s = s.padStart(cols.length, "0");
+      requestAnimationFrame(function () { cols.forEach(function (c, i) { c.style.translate = "0 " + (-+s[i]) + "em"; }); });
+      what.innerHTML = "Noch <b></b> bis: "; $("b", what).textContent = n + (n === 1 ? " Tag" : " Tage"); what.appendChild(document.createTextNode(b.dataset.w));
+    }
+    var chips = $$(".count .chip");
+    chips.forEach(function (b) { b.addEventListener("click", function () { chips.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); set(b); }); });
+    ensure(2); onView(box, function () { set(chips[0]); });
+  })();
+
+  /* K Karten zum Umdrehen */
+  (function () { $$(".flip").forEach(function (f) { f.addEventListener("click", function () { var on = !f.classList.contains("on"); f.classList.toggle("on", on); f.setAttribute("aria-pressed", on); }); }); })();
+
+  /* L Licht nach Tageszeit */
+  (function () {
+    var sky = $("#sky"), sun = $("#sun"), r = $("#skyRange"), t = $("#skyT");
+    var stops = [[390, [245, 205, 175], [168, 197, 192]], [600, [214, 236, 232], [168, 197, 192]], [780, [235, 246, 244], [182, 208, 203]], [960, [222, 214, 230], [160, 190, 186]], [1110, [150, 170, 185], [100, 130, 135]]];
+    function mix(a, b, k) { return a.map(function (v, i) { return Math.round(v + (b[i] - v) * k); }); }
+    function upd() {
+      var m = +r.value; t.textContent = Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0") + " Uhr";
+      var i = 0; while (i < stops.length - 2 && m > stops[i + 1][0]) i++;
+      var a = stops[i], b = stops[i + 1], k = Math.min(1, Math.max(0, (m - a[0]) / (b[0] - a[0])));
+      var top = mix(a[1], b[1], k), bot = mix(a[2], b[2], k);
+      sky.style.background = "linear-gradient(180deg, rgb(" + top + ") 0%, rgb(" + bot + ") 100%)";
+      var p = (m - 390) / 720, x = 8 + p * 84, y = 70 - Math.sin(p * Math.PI) * 55;   /* Bogen über den Himmel */
+      sun.style.left = x + "%"; sun.style.top = y + "%"; sun.style.opacity = m > 1050 ? .4 : 1;
+    }
+    r.addEventListener("input", upd);
+    var now = new Date(), nm = now.getHours() * 60 + now.getMinutes(); r.value = Math.min(1110, Math.max(390, nm)); upd();
+  })();
+
+  /* M Checkliste */
+  (function () {
+    var lists = { krippe: ["Windeln", "Feuchttücher", "ggf. Wundschutzcreme"], kiga: ["Brotzeit für Frühstück und Nachmittag", "Trinkflasche mit Wasser (Mehrweg)", "ggf. Windeln"], hort: ["Brotzeit für den Nachmittag", "Trinkflasche mit Wasser", "Schultasche mit Hausaufgaben"] };
+    var ul = $("#packList"), ring = $("#packRing"), done = $("#packDone"), C = 2 * Math.PI * 18, cur = "krippe";
+    ring.style.strokeDasharray = C;
+    function saved() { try { return JSON.parse(store("tasche-" + cur) || "[]"); } catch (e) { return []; } }
+    function render() {
+      var s = saved(); ul.innerHTML = "";
+      lists[cur].forEach(function (item, i) {
+        var li = document.createElement("li"), id = "pk-" + cur + "-" + i;
+        li.innerHTML = '<label for="' + id + '"><input type="checkbox" id="' + id + '"><span class="box"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"></span></label>';
+        $(".txt", li).textContent = item; var cb = $("input", li); cb.checked = s.indexOf(i) >= 0;
+        cb.addEventListener("change", function () { var s2 = saved(); if (cb.checked) s2.push(i); else s2.splice(s2.indexOf(i), 1); store("tasche-" + cur, JSON.stringify(s2)); prog(true); });
+        ul.appendChild(li);
+      });
+      prog(false);
+    }
+    function prog(anim) {
+      var n = saved().length, all = lists[cur].length; ring.style.strokeDashoffset = C * (1 - n / all);
+      done.textContent = n === all ? "Alles eingepackt!" : "";
+      if (anim && n === all && !reduced) { ring.parentNode.classList.remove("pulse"); void ring.parentNode.offsetWidth; ring.parentNode.classList.add("pulse"); }
+    }
+    segment($("#packSeg"), function (b) { cur = b.dataset.p; render(); });
+    render();
+  })();
+
+  /* N Durchwahl finden */
+  (function () {
+    var dir = [["sonnen", "Sonnengruppe · Kinderkrippe", "0931 2789892 14"], ["sternen", "Sternengruppe · Kinderkrippe", "0931 2789892 15"], ["bienen", "Bienengruppe · Kindergarten", "0931 2789892 13"], ["spatzen", "Spatzengruppe · Kindergarten", "0931 2789892 12"], ["baeren", "Bärengruppe · Kindergarten", "0931 2789892 11"], ["hort", "Kinderhort · allgemein", "0931 2789892 0"], ["krippe", "Kinderkrippe – bitte Gruppe wählen: Sonnen 14, Sternen 15", "0931 2789892 14 / 15"], ["kindergarten", "Kindergarten – Bären 11, Spatzen 12, Bienen 13", "0931 2789892 11–13"]];
+    var inp = $("#dialIn"), out = $("#dialOut"), t = null, shown = "";
+    function norm(s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").trim(); }
+    function set(html) { if (html === shown) return; shown = html; if (reduced) { out.innerHTML = html; return; } out.classList.add("swap"); setTimeout(function () { out.innerHTML = html; out.classList.remove("swap"); }, 160); }
+    inp.addEventListener("input", function () {
+      clearTimeout(t); inp.classList.remove("err"); var v = norm(inp.value);
+      if (!v) { set(""); return; }
+      var hit = dir.filter(function (d) { return d[0].indexOf(v) === 0 || v.indexOf(d[0]) === 0; })[0];
+      if (hit) { set("<b>" + hit[2] + "</b><span>" + hit[1] + "</span>"); return; }
+      t = setTimeout(function () {   /* erst nach einer kurzen Tipp-Pause bemängeln */
+        inp.classList.add("err"); if (!reduced) { inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); }
+        set("<b>0931 2789892 0</b><span>Keine Gruppe gefunden – die Zentrale verbindet Sie gern.</span>");
+      }, 600);
+    });
+  })();
+})();
+</script>
