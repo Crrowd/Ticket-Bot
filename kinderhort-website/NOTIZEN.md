@@ -15,6 +15,9 @@ Stand: 13.11.2026
 - [x] Impressum: TMG-Verweise auf DDG (Digitale-Dienste-Gesetz, seit Mai 2024) umstellen
 - [x] Weiterleitungen alter URLs (`/kinderkrippe/`, `/kindergarten/`, `/kinderhort/`, `/aktuelles/`, `/downloads/`, `/kontakt/`, `/impressum/`, `?page_id=…`) auf die neuen Seiten
 
+## To-do (Wünsche, noch offen)
+- [ ] **Untere Handy-Leiste entfernen** (Anrufen · Krankmelden · Termine · Suche, im Screenshot vom 15.11. markiert). Dabei mitdenken: Die Suche ist am Handy bisher nur unten erreichbar → Lupe wieder oben in die Kopfleiste; der Zähler für gemerkte Termine braucht ein neues Ziel (Menüpunkt „Aktuelles“); die Abstände unten (Kurzmeldungen, „Nach oben“-Knopf) wieder anpassen.
+
 ## 2. Inhalte – vom Hort benötigt
 - [ ] KrippenABC und KindergartenABC (PDF) – fehlen auch auf der alten Seite
 - [ ] Abschnitt „Anmeldung & Platzanfrage“ (Ablauf, Ansprechpartner, Besichtigung)
@@ -281,6 +284,13 @@ Entscheidung offen (Auswahl direkt im Katalog).
 101 Sanfte Welle zum Fußbereich · 102 Gruppensymbole, die lebendig werden · 103 Seiten merken · 104 Elternbeirat vorstellen (Namen Platzhalter) · 105 Verspielte Link-Unterstreichung · 106 Leitsatz schreibt sich · 107 Schwung unter dem Gruß · 108 „Einfach erklärt“ · 109 Bilder im Bereichsmenü wechseln · 110 Fotos in weichen Formen · 111 Bereich als Infoblatt drucken · 112 Telefonnummer am Computer (QR zum Anrufen)
 
 Entscheidung offen (Auswahl direkt im Katalog).
+
+## Design-Kniffe (15.11.2026)
+Seite: `entwurf/ideen/kniffe.html` (gebaut mit `entwurf/ideen/mk_kniffe.py`, private Vorschau: https://claude.ai/artifact/XX628G1RyVpLSaSQwT7A8Z), Auswahl in der Datenbank-Sammlung `kniffe` (ids `kniff-1` … `kniff-10`). Die zehn Kniffe aus dem Bild, jeweils mit Vorher/Nachher an einem echten Bauteil der Seite. Bildvergleiche in `entwurf/kniffe/vorher-nachher/`.
+- Schon da: 3 OKLCH-Farbstufen.
+- Teilweise: 1 verschachtelte Rundungen, 2 durchsichtige Ränder, 7 Symbolwechsel mit Unschärfe (nur Kopieren-Knopf), 9 dvh (nur Handy-Suche).
+- Fehlt: 4 OKLCH-Verläufe, 5 Symbol-Strichstärke 1,8 passend zu Schrift 600, 6 weiche Kanten an Wischreihen, 8 Dunkelmodus-Tiefe (nur falls je ein Dunkelmodus kommt), 10 Aushang mit `mix-blend-mode: multiply`.
+- Noch nichts eingebaut – wartet auf die Abstimmung.
 
 ## Übergänge-Katalog (15.11.2026)
 Seite: `entwurf/ideen/uebergaenge.html` (private Vorschau: https://claude.ai/artifact/MwFfsnHZkLRnpvEW46xg52), Auswahl in der Datenbank-Sammlung `uebergaenge`.

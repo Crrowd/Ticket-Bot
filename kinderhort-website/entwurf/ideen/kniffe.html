@@ -1,0 +1,383 @@
+<meta charset="utf-8">
+<title>Hort-Webseite Design-Kniffe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: wie Katalog 1 – Karten mit Live-Bühne auf dunklem Türkis, Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 10px; right: 16px; text-align: center; pointer-events: none; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .chip:active, .seg button:active, .filter button:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.replay { position: absolute; top: 12px; right: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.14); color: var(--on); font-weight: 600; font-size: .82rem; cursor: pointer; }
+.replay:hover { background: rgba(255,255,255,.26); }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); transition: color .2s; }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+
+
+.status { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+.st-fehlt { background: #F6D9D3; color: #7E3B31; } .st-teil { background: #F3E9C9; color: #6B5317; } .st-da { background: #DDF3E6; color: #1F6B43; }
+.where { font-size: .86rem; color: var(--ink-soft); }
+.where b { color: var(--ink); }
+.vn { position: absolute; top: 12px; left: 12px; z-index: 5; }
+.vn.seg button { padding: 6px 12px; min-height: 32px; font-size: .8rem; }
+.stage.kn { padding-top: 58px; }
+.demo { width: 100%; display: grid; place-items: center; }
+.filter { max-width: 100%; overflow-x: auto; scrollbar-width: none; } .filter::-webkit-scrollbar { display: none; }
+
+/* 1 Concentric radius */
+.cc { width: 280px; background: #F3F8F7; border-radius: 28px; padding: 12px; display: grid; gap: 12px; box-shadow: 0 16px 30px -16px rgba(0,0,0,.55); color: var(--ink); }
+.cc img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; border-radius: 28px; transition: border-radius .3s cubic-bezier(.22,1,.36,1); }
+.cc .row { display: flex; gap: 8px; }
+.cc .row span { flex: 1; text-align: center; padding: 9px 0; border-radius: 22px; background: #D4B5B0; font-weight: 600; font-size: .84rem; border-radius: 28px; transition: border-radius .3s cubic-bezier(.22,1,.36,1); }
+.after .cc img, .after .cc .row span { border-radius: 16px; }
+.cc-note { margin-top: 12px; font-size: .8rem; color: var(--on-soft); text-align: center; }
+.cc-note b { color: var(--on); }
+
+/* 2 Alpha borders */
+.ab { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: 460px; border-radius: 14px; overflow: hidden; }
+.ab > div { padding: 16px 12px; display: grid; gap: 10px; justify-items: center; }
+.ab .b1 { background: #A8C5C0; color: #1E3B44; } .ab .b2 { background: #F3F8F7; color: #1E3B44; } .ab .b3 { background: #2D6A6A; color: #F3F8F7; }
+.ab .box { width: 100%; height: 44px; border-radius: 10px; border: 1.5px solid #8FA9A4; transition: border-color .3s cubic-bezier(.22,1,.36,1); }
+.ab .pill2 { padding: 6px 12px; border-radius: 10px; border: 1.5px solid #8FA9A4; font-size: .78rem; font-weight: 600; transition: border-color .3s cubic-bezier(.22,1,.36,1); }
+.after .ab .box, .after .ab .pill2 { border-color: color-mix(in oklab, currentColor 18%, transparent); }
+
+/* 3 OKLCH palettes */
+.pal { width: 100%; max-width: 460px; display: grid; gap: 8px; }
+.pal .lbl2 { font-size: .74rem; color: var(--on-soft); font-weight: 600; }
+.pal .sw { display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 10px; overflow: hidden; }
+.pal .sw span { height: 42px; display: grid; place-items: center; font-size: .66rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 4 OKLCH gradients */
+.gr { width: 100%; max-width: 460px; display: grid; gap: 10px; }
+.gr .bar { height: 54px; border-radius: 12px; background: linear-gradient(90deg, #1E3B44, #D4B5B0); }
+.after .gr .bar { background: linear-gradient(in oklch 90deg, #1E3B44, #D4B5B0); }
+.gr .bar.b2 { background: linear-gradient(90deg, #A8C5C0, #D4B5B0); } .after .gr .bar.b2 { background: linear-gradient(in oklch 90deg, #A8C5C0, #D4B5B0); }
+.gr .photo { position: relative; height: 130px; border-radius: 12px; overflow: hidden; }
+.gr .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gr .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,42,49,0) 10%, rgba(20,42,49,.86) 100%); }
+.after .gr .photo::after { background: linear-gradient(in oklab 180deg, oklch(26% .03 215 / 0) 10%, oklch(26% .03 215 / .86) 100%); }
+.gr .photo b { position: absolute; left: 14px; bottom: 10px; z-index: 1; color: #fff; font-size: 1.1rem; }
+
+/* 5 Matched icon weight */
+.iw { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(4, 1fr); background: #142A31; border-radius: 16px; padding: 8px; }
+.iw div { display: grid; justify-items: center; gap: 4px; color: #F3F8F7; font-weight: 600; font-size: .72rem; padding: 8px 0; }
+.iw svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; transition: stroke-width .3s cubic-bezier(.22,1,.36,1), width .3s, height .3s; }
+.iw .i1 svg { width: 18px; height: 18px; stroke-width: 1.4; } .iw .i2 svg { width: 24px; height: 24px; stroke-width: 2.4; } .iw .i3 svg { width: 22px; height: 22px; stroke-width: 2; } .iw .i4 svg { width: 20px; height: 20px; stroke-width: 1.5; }
+.after .iw svg { width: 21px !important; height: 21px !important; stroke-width: 1.8 !important; }
+.iw-note { margin-top: 10px; text-align: center; font-size: .8rem; color: var(--on-soft); }
+
+/* 6 Masked edges */
+.me { width: 100%; max-width: 420px; display: grid; gap: 12px; }
+.me .strip { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 6px; border-radius: 14px; background: rgba(243,248,247,.9); }
+.me .strip::-webkit-scrollbar { display: none; }
+.me .strip span { flex: none; padding: 9px 14px; border-radius: 10px; font-weight: 600; font-size: .86rem; color: #1E3B44; }
+.me .strip span:first-child { background: #D4B5B0; }
+.after .me .strip { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--ml, 0px), #000 calc(100% - var(--mr, 0px)), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 var(--ml, 0px), #000 calc(100% - var(--mr, 0px)), transparent 100%); }
+.me .track { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.me .track::-webkit-scrollbar { display: none; }
+.me .track img { flex: none; width: 150px; height: 100px; object-fit: cover; border-radius: 12px; }
+.after .me .track { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--ml, 0px), #000 calc(100% - var(--mr, 0px)), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 var(--ml, 0px), #000 calc(100% - var(--mr, 0px)), transparent 100%); }
+
+/* 7 Blurred icon swaps */
+.sw7 { display: flex; gap: 14px; justify-content: center; }
+.sw7 button { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 12px; padding: 10px 16px; background: #F3F8F7; color: #1E3B44; font: 600 .9rem var(--font); cursor: pointer; }
+.sw7 .ic2 { position: relative; width: 22px; height: 22px; }
+.sw7 .ic2 svg { position: absolute; inset: 0; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sw7 .ic2 .b { opacity: 0; }
+.sw7 button.on .ic2 .a { opacity: 0; } .sw7 button.on .ic2 .b { opacity: 1; }
+.after .sw7 .ic2 svg { transition: opacity .2s cubic-bezier(.22,1,.36,1), filter .2s cubic-bezier(.22,1,.36,1), transform .2s cubic-bezier(.22,1,.36,1); }
+.after .sw7 .ic2 .b { filter: blur(4px); transform: scale(.5); }
+.after .sw7 button.on .ic2 .a { filter: blur(4px); transform: scale(.5); } .after .sw7 button.on .ic2 .b { filter: blur(0); transform: none; }
+
+/* 8 Dark mode depth */
+.dk { width: 100%; max-width: 440px; border-radius: 16px; padding: 16px; background: oklch(20% .025 215); display: grid; gap: 10px; color: oklch(94% .01 190); }
+.dk .s1, .dk .s2, .dk .s3 { border-radius: 12px; padding: 12px 14px; font-size: .86rem; background: oklch(20% .025 215); box-shadow: 0 10px 24px -8px rgba(0,0,0,.6); transition: background .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1); }
+.dk .s2 { margin-left: 16px; } .dk .s3 { margin-left: 32px; }
+.dk small { display: block; color: oklch(75% .02 200); margin-top: 2px; }
+.after .dk .s1 { background: oklch(25% .028 210); box-shadow: inset 0 1px 0 oklch(100% 0 0 / .06); }
+.after .dk .s2 { background: oklch(29% .03 205); box-shadow: inset 0 1px 0 oklch(100% 0 0 / .08); }
+.after .dk .s3 { background: oklch(33% .032 200); box-shadow: inset 0 1px 0 oklch(100% 0 0 / .1); }
+
+/* 9 Dynamic viewport */
+.dv { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.phone2 { position: relative; width: 190px; height: 360px; border-radius: 28px; border: 6px solid #0E1E23; background: #A8C5C0; overflow: hidden; }
+.phone2 .hero2 { position: absolute; left: 0; right: 0; top: 0; height: var(--h, 348px); background: url("img/p2160110-800.webp") center / cover; display: flex; align-items: flex-end; padding: 12px; transition: height .3s cubic-bezier(.22,1,.36,1); }
+.phone2 .hero2 span { background: #D4B5B0; color: #1E3B44; font-weight: 600; font-size: .76rem; padding: 8px 12px; border-radius: 10px; }
+.phone2 .bbar { position: absolute; left: 0; right: 0; bottom: 0; height: 52px; background: rgba(240,240,240,.95); display: grid; place-items: center; font-size: .66rem; color: #555; translate: 0 100%; transition: translate .3s cubic-bezier(.22,1,.36,1); z-index: 2; }
+.phone2.bar .bbar { translate: 0 0; }
+.dv-side { display: grid; gap: 10px; max-width: 200px; } .dv-side p { font-size: .84rem; color: var(--on-soft); }
+
+/* 10 Multiply */
+.mp { width: 100%; max-width: 440px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: center; background: #A8C5C0; border-radius: 16px; padding: 16px; color: #1E3B44; }
+.mp img { width: 100%; display: block; border-radius: 6px; rotate: -2deg; box-shadow: 0 10px 20px -10px rgba(0,0,0,.4); transition: box-shadow .3s; }
+.after .mp img { mix-blend-mode: multiply; box-shadow: none; }
+.mp p { font-size: .86rem; } .mp b { display: block; font-size: 1rem; margin-bottom: 4px; }
+/* Auswahl je Idee */
+.vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
+.vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vote-q { font-weight: 800; font-size: .86rem; }
+.vote-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg-alt); }
+.vote-seg button { border: 0; background: none; padding: 7px 15px; min-height: 38px; border-radius: 999px; font-weight: 700; font-size: .88rem; cursor: pointer; color: var(--ink); transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.vote-seg button:active { scale: .96; }
+.vote-seg button[data-v="ja"][aria-pressed="true"] { background: var(--surface); color: var(--on); }
+.vote-seg button[data-v="merken"][aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.vote-seg button[data-v="nein"][aria-pressed="true"] { background: var(--ink-soft); color: var(--on); }
+.vote-note input { width: 100%; border: 1.5px solid rgba(30,59,68,.18); border-radius: 10px; padding: 9px 11px; font: 500 .9rem var(--font); background: #fff; color: var(--ink); }
+.vote-note input:focus { outline: none; border-color: var(--surface); box-shadow: 0 0 0 3px rgba(45,106,106,.18); }
+.card { transition: box-shadow .25s, opacity .25s; }
+.card[data-vote="ja"] { box-shadow: 0 0 0 3px var(--surface), var(--shadow); }
+.card[data-vote="merken"] { box-shadow: 0 0 0 3px var(--rose), var(--shadow); }
+.card[data-vote="nein"] { opacity: .72; }
+.card[data-vote="nein"] .stage { filter: saturate(.4) brightness(.9); }
+.tally { position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 30; margin: 26px auto 0; width: fit-content; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; padding: 10px 18px; border-radius: 999px; background: var(--deep); color: var(--on); box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); font-size: .9rem; font-weight: 600; }
+.tally b { font-size: 1rem; }
+.tally .t-ja b { color: #9FD8C4; } .tally .t-merken b { color: var(--rose); }
+.tally .saved { font-size: .8rem; color: var(--on-soft); font-weight: 500; }
+.sync-note { font-size: .85rem; color: var(--ink-soft); margin: -10px 0 22px; }
+@media (max-width: 520px) { .tally { border-radius: 18px; } }
+
+.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 .35em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Design-Kniffe</span>
+    <h1>10 Kniffe für den letzten Schliff</h1>
+    <p>Die zehn Design-Kniffe aus deinem Bild, jeweils an einem echten Bauteil der Seite. Oben auf jeder Karte zwischen <b>Vorher</b> und <b>Nachher</b> umschalten. Darunter steht, ob der Kniff auf der Seite schon umgesetzt ist, teilweise oder noch fehlt.</p>
+  </header>
+  <p class="sync-note">Unter jedem Kniff kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
+
+  <div class="filter" role="group" aria-label="Kniffe filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="fehlt" aria-pressed="false">Fehlt noch</button>
+    <button type="button" data-f="teil" aria-pressed="false">Teilweise da</button>
+    <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
+  </div>
+
+  <div class="grid">
+
+    <article class="card" data-k="teil">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div><div class="cc"><img src="img/p2160110-800.webp" alt=""><div class="row"><span>Merken</span><span>Teilen</span></div></div><p class="cc-note">außen <b>28</b> − Abstand <b>12</b> = innen <b>16</b></p></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-teil">Teilweise da</span></div>
+        <h2><span class="num">1</span> Verschachtelte Rundungen passen zueinander</h2><p>Liegt etwas Rundes in etwas Rundem, gilt: innen = außen minus Abstand. Sonst wirken die Ecken „eingeklemmt“. Im Vorher haben Foto und Knöpfe dieselbe Rundung wie die Karte, im Nachher 28 − 12 = 16 Pixel.</p><p class="where">Auf der Seite: <b>Umschalter sind schon richtig</b>, offen sind z. B. Datumsfelder in den Terminen, Kalendertage und Fotos in Karten.</p></div>
+    </article>
+
+    <article class="card" data-k="teil">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="ab"><div class="b1"><span class="box"></span><span class="pill2">Kontakt</span></div><div class="b2"><span class="box"></span><span class="pill2">Kontakt</span></div><div class="b3"><span class="box"></span><span class="pill2">Kontakt</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-teil">Teilweise da</span></div>
+        <h2><span class="num">2</span> Ränder aus durchsichtiger Textfarbe</h2><p>Rahmen bekommen keine feste Grauton-Farbe, sondern die Textfarbe mit wenig Deckkraft. Dann passen sie auf jedem Hintergrund – Salbei, Papier und dunkles Türkis. Im Vorher wirkt derselbe Grauton auf jedem Grund anders.</p><p class="where">Auf der Seite: <b>feine Linien sind schon so</b>, offen sind die Rahmen der hellen Knöpfe und Eingabefelder.</p></div>
+    </article>
+
+    <article class="card" data-k="da">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="pal" id="pal"></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-da">Schon da</span></div>
+        <h2><span class="num">3</span> Farbabstufungen in OKLCH</h2><p>Hellere und dunklere Stufen einer Farbe werden in OKLCH berechnet statt in HSL. Dann wirken die Schritte gleichmäßig, und der Farbton kippt nicht ins Gräuliche oder Bläuliche. Oben HSL, unten OKLCH – mit Vorher/Nachher wechselt die zweite Reihe.</p><p class="where">Auf der Seite: <b>schon umgesetzt</b> – die Farben sind in OKLCH hinterlegt. Diese Stufen könnten noch die restlichen festen Farbtöne ersetzen.</p></div>
+    </article>
+
+    <article class="card" data-k="fehlt">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="gr"><div class="bar"></div><div class="bar b2"></div><div class="photo"><img src="img/kreatviraum-5-1-800.webp" alt=""><b>Kinderhort</b></div></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-fehlt">Fehlt noch</span></div>
+        <h2><span class="num">4</span> Farbverläufe in OKLCH</h2><p>Ein Verlauf von Petrol zu Rosé wird normal durch ein trübes Grau gerechnet. In OKLCH bleibt die Mitte farbig und klar. Auch die dunklen Verläufe über Fotos werden weicher, ohne grauen Schleier.</p><p class="where">Auf der Seite: <b>fehlt noch</b> – betrifft die dunklen Verläufe über den Fotos (Kopfbilder, Rundgang, Teaser).</p></div>
+    </article>
+
+    <article class="card" data-k="fehlt">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div><div class="iw"><div class="i1"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Anrufen</div><div class="i2"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Krankmelden</div><div class="i3"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Termine</div><div class="i4"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>Suche</div></div><p class="iw-note">Text 600 → Strich 1,8 · alle 21 Pixel</p></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-fehlt">Fehlt noch</span></div>
+        <h2><span class="num">5</span> Symbole so kräftig wie die Schrift</h2><p>Seit die Schrift ruhiger ist (Stärke 600), passen manche Symbole nicht mehr dazu: mal zu dünn, mal zu dick, unterschiedlich groß. Im Nachher haben alle dieselbe Größe und eine Strichstärke, die zum Text passt.</p><p class="where">Auf der Seite: <b>fehlt noch</b> – die Symbole haben Strichstärke 2 (Buttons, Menü, Leiste) und 1,5 (Gruppen).</p></div>
+    </article>
+
+    <article class="card" data-k="fehlt">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="me"><div class="strip" data-mask><span>Überblick</span><span>Räumlichkeiten</span><span>Virtueller Rundgang</span><span>Tagesablauf</span><span>Das zeichnet uns aus</span><span>Fragen</span><span>Ferienplan</span></div><div class="track" data-mask><img src="img/p2160110-800.webp" alt=""><img src="img/turnraum-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""><img src="img/lesecke-800.webp" alt=""><img src="img/werkraum-800.webp" alt=""></div></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-fehlt">Fehlt noch</span></div>
+        <h2><span class="num">6</span> Weiche Kanten statt abgeschnitten</h2><p>Wo man seitlich wischen kann, schneidet die Seite bisher hart ab – wie bei „Virtueller Rundg“ in deinem Screenshot. Mit weichen Kanten blendet der Rand aus, und nur dort, wo es weitergeht. Zum Ausprobieren wischen.</p><p class="where">Auf der Seite: <b>fehlt noch</b> – Sprungmarken unter dem Kopfbild, Rundgang-Fotos, Bildkarten-Reihen.</p></div>
+    </article>
+
+    <article class="card" data-k="teil">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="sw7"><button type="button"><span class="ic2"><svg class="a" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="b" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Menü</button><button type="button"><span class="ic2"><svg class="a" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><svg class="b" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Kopieren</button></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-teil">Teilweise da</span></div>
+        <h2><span class="num">7</span> Symbole wechseln mit Unschärfe</h2><p>Wenn ein Symbol zu einem anderen wird – Menü zu Kreuz, Kopieren zu Haken – blendet das alte kurz unscharf und klein aus, das neue unscharf und klein ein. Im Vorher springt es einfach. Knöpfe antippen.</p><p class="where">Auf der Seite: <b>teilweise</b> – der Kopieren-Knopf macht es schon; Menü-Knopf, Merken und Teilen noch nicht.</p></div>
+    </article>
+
+    <article class="card" data-k="fehlt">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="dk"><div class="s1">Seite<small>Grundfläche</small></div><div class="s2">Karte<small>eine Ebene höher</small></div><div class="s3">Menü<small>ganz oben</small></div></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-fehlt">Fehlt noch</span></div>
+        <h2><span class="num">8</span> Tiefe im Dunkelmodus</h2><p>Nur falls es einmal einen Dunkelmodus geben soll: Im Dunkeln sieht man Schatten kaum. Höhere Ebenen werden deshalb heller statt schattiger, dazu eine feine Lichtkante oben. Im Vorher verschwimmen die Ebenen.</p><p class="where">Auf der Seite: <b>gibt es nicht</b> – die Seite hat keinen Dunkelmodus. Nur ein Entwurf, falls ihr einen möchtet.</p></div>
+    </article>
+
+    <article class="card" data-k="teil">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="dv"><div class="phone2" id="phone2"><div class="hero2"><span>Platz anfragen</span></div><div class="bbar">kinderhort-grombuehl.de</div></div><div class="dv-side"><p>Browserleiste ein- und ausblenden und auf den Knopf achten.</p><button type="button" class="btn" id="barBtn">Leiste einblenden</button></div></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-teil">Teilweise da</span></div>
+        <h2><span class="num">9</span> Höhe passt sich der Browserleiste an</h2><p>Am Handy blendet der Browser seine Leiste ein und aus. Eine Fläche „so hoch wie der Bildschirm“ mit der alten Einheit 100vh rutscht dann unter die Leiste – der Knopf unten verschwindet. Mit der neuen Einheit 100dvh passt sie sich an.</p><p class="where">Auf der Seite: <b>teilweise</b> – die Suche am Handy passt sich schon an; Bildansicht und Geschichte nutzen noch die alte Einheit.</p></div>
+    </article>
+
+    <article class="card" data-k="fehlt">
+      <div class="stage kn"><div class="seg vn" role="group" aria-label="Vorher oder nachher"><span class="knob" aria-hidden="true"></span><button type="button" data-v="0" aria-pressed="false">Vorher</button><button type="button" data-v="1" aria-pressed="true">Nachher</button></div><div class="demo after"><div class="mp"><img src="img/aushang-800.jpg" alt="Original-Aushang Ferienplan"><p><b>Ferienplan 2026/27</b>Original-Aushang mit Schließtagen und Vormerkterminen</p></div></div></div>
+      <div class="about"><div class="meta"><span class="status st-fehlt">Fehlt noch</span></div>
+        <h2><span class="num">10</span> Papier verschmilzt mit dem Hintergrund</h2><p>Der eingescannte Original-Aushang hat weißes Papier und liegt als weißes Rechteck auf dem Salbei. Mit „Multiplizieren“ nimmt das Papier den Farbton der Seite an, Schrift und Farben bleiben – als wäre der Aushang auf die Seite gedruckt.</p><p class="where">Auf der Seite: <b>fehlt noch</b> – betrifft den Original-Aushang beim Ferienplan und eingescannte Elternbriefe.</p></div>
+    </article>
+  </div>
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“. Nichts davon ist schon geändert – sag einfach, welche Kniffe eingebaut werden sollen.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover: hover)").matches;
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function onView(el, fn) {
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { fn(); io.disconnect(); } }); }, { threshold: .4 });
+    io.observe(el);
+  }
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, anim) {
+      if (!anim) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px"; knob.style.translate = b.offsetLeft + "px 0";
+      if (!anim) { void knob.offsetWidth; knob.style.transition = ""; } else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) { b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b, true); onPick(b); }); });
+    requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+  }
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f === "offen" ? !!c.dataset.vote : f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  var replay = {};
+  $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
+
+
+
+  /* Vorher / Nachher je Karte */
+  $$(".vn").forEach(function (g) { var demo = g.parentNode.querySelector(".demo"); segment(g, function (b) { demo.classList.toggle("after", b.dataset.v === "1"); updMasks(); }); });
+
+  /* 3 Farbstufen: HSL gegen OKLCH */
+  (function () {
+    var box = $("#pal"), steps = [95, 85, 72, 60, 48, 36, 26];
+    function row(name, hsl, okl) { return '<span class="lbl2">' + name + '</span><div class="sw">' + steps.map(function (l, i) { var bg = hsl(l, i), fg = l > 60 ? "#1E3B44" : "#F3F8F7"; return '<span style="background:' + bg + ';color:' + fg + '">' + l + "</span>"; }).join("") + "</div>"; }
+    function render(after) {
+      box.innerHTML = row("Petrol – HSL", function (l) { return "hsl(190 38% " + l + "%)"; }) + row(after ? "Petrol – OKLCH" : "Petrol – HSL (vorher)", after ? function (l) { return "oklch(" + l + "% 0.05 205)"; } : function (l) { return "hsl(190 38% " + l + "%)"; }) +
+        row("Rosé – HSL", function (l) { return "hsl(8 30% " + l + "%)"; }) + row(after ? "Rosé – OKLCH" : "Rosé – HSL (vorher)", after ? function (l) { return "oklch(" + l + "% 0.04 28)"; } : function (l) { return "hsl(8 30% " + l + "%)"; });
+    }
+    render(true);
+    new MutationObserver(function () { render(box.closest(".demo").classList.contains("after")); }).observe(box.closest(".demo"), { attributes: true, attributeFilter: ["class"] });
+  })();
+
+  /* 6 Weiche Kanten nur dort, wo es weitergeht */
+  function updMasks() { $$("[data-mask]").forEach(function (el) { var l = el.scrollLeft > 2, r = el.scrollLeft + el.clientWidth < el.scrollWidth - 2; el.style.setProperty("--ml", l ? "36px" : "0px"); el.style.setProperty("--mr", r ? "36px" : "0px"); }); }
+  $$("[data-mask]").forEach(function (el) { el.addEventListener("scroll", updMasks, { passive: true }); }); updMasks(); addEventListener("resize", updMasks);
+
+  /* 7 Symbole tauschen */
+  $$(".sw7 button").forEach(function (b) { b.addEventListener("click", function () { b.classList.toggle("on"); }); });
+
+  /* 9 Browserleiste */
+  (function () { var ph = $("#phone2"), btn = $("#barBtn"), hero = $(".hero2", ph), demo = ph.closest(".demo");
+    function upd() { var bar = ph.classList.contains("bar"), after = demo.classList.contains("after"); hero.style.setProperty("--h", (after && bar ? 296 : 348) + "px"); }
+    btn.addEventListener("click", function () { var o = !ph.classList.contains("bar"); ph.classList.toggle("bar", o); btn.textContent = o ? "Leiste ausblenden" : "Leiste einblenden"; upd(); });
+    new MutationObserver(upd).observe(demo, { attributes: true, attributeFilter: ["class"] }); upd(); })();
+
+  /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
+  (function () {
+    var cards = $$(".card"), state = {}, db = null, col = null, saveT = {}, savedEl, local = false;
+    var tally = document.createElement("div"); tally.className = "tally"; tally.setAttribute("aria-live", "polite");
+    tally.innerHTML = '<span class="t-ja"><b>0</b> Ja</span><span class="t-merken"><b>0</b> Merken</span><span class="t-nein"><b>0</b> Nein</span><span class="t-offen"><b>0</b> offen</span><span class="saved">verbinde …</span>';
+    $(".grid").after(tally); savedEl = $(".saved", tally);
+    function count() {
+      var c = { ja: 0, merken: 0, nein: 0 }; cards.forEach(function (cd) { var v = state[cd.dataset.nr]; if (v && c[v.wahl] !== undefined) c[v.wahl]++; });
+      $(".t-ja b", tally).textContent = c.ja; $(".t-merken b", tally).textContent = c.merken; $(".t-nein b", tally).textContent = c.nein;
+      $(".t-offen b", tally).textContent = cards.length - c.ja - c.merken - c.nein;
+    }
+    function paint(cd) {
+      var v = state[cd.dataset.nr] || {}; cd.dataset.vote = v.wahl || "";
+      if (!v.wahl) cd.removeAttribute("data-vote");
+      $$(".vote-seg button", cd).forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === v.wahl); });
+      var inp = $(".vote-note input", cd); if (document.activeElement !== inp) inp.value = v.notiz || "";
+    }
+    function save(cd) {
+      var nr = cd.dataset.nr, v = state[nr] || {}; savedEl.textContent = "speichert …";
+      var row = { nr: +nr, titel: cd.dataset.titel, wahl: v.wahl || "", notiz: v.notiz || "", zeit: new Date().toISOString() };
+      if (!col) { try { localStorage.setItem("kniffe-wahl", JSON.stringify(state)); } catch (e) {} savedEl.textContent = "nur auf diesem Gerät gespeichert"; return; }
+      clearTimeout(saveT[nr]);
+      saveT[nr] = setTimeout(function () {
+        col.doc("kniff-" + ("0" + nr).slice(-2)).set(row).then(function () { delete saveT[nr]; savedEl.textContent = "✓ gespeichert – Claude sieht deine Auswahl"; }, function (e) { delete saveT[nr]; savedEl.textContent = "Speichern fehlgeschlagen (" + (e && e.code || "Fehler") + ")"; });
+      }, 250);
+    }
+    cards.forEach(function (cd) {
+      var nr = $(".num", cd).textContent, h2 = $(".about h2", cd);
+      cd.dataset.nr = nr; cd.dataset.titel = h2.textContent.replace(/^\s*\d+\s*/, "");
+      var v = document.createElement("div"); v.className = "vote";
+      v.innerHTML = '<div class="vote-row"><span class="vote-q">Einbauen?</span><div class="vote-seg" role="group" aria-label="Entscheidung zu Idee ' + nr + '"><button type="button" data-v="ja" aria-pressed="false">Ja</button><button type="button" data-v="merken" aria-pressed="false">Merken</button><button type="button" data-v="nein" aria-pressed="false">Nein</button></div></div>' +
+        '<label class="vote-note"><span class="visually-hidden">Anmerkung zu Idee ' + nr + '</span><input type="text" maxlength="300" placeholder="Anmerkung (optional), z. B. „etwas schwächer“"></label>';
+      $(".about", cd).appendChild(v);
+      $$(".vote-seg button", v).forEach(function (b) { b.addEventListener("click", function () {
+        var s = state[nr] || (state[nr] = {}); s.wahl = s.wahl === b.dataset.v ? "" : b.dataset.v; paint(cd); count(); save(cd);
+      }); });
+      var inp = $("input", v), last = "";
+      inp.addEventListener("focus", function () { last = inp.value; });
+      inp.addEventListener("change", function () { if (inp.value === last) return; var s = state[nr] || (state[nr] = {}); s.notiz = inp.value.trim(); last = inp.value; save(cd); });
+    });
+    var vh = document.createElement("style"); vh.textContent = ".visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}"; document.head.appendChild(vh);
+    function fromLocal() { local = true; try { state = JSON.parse(localStorage.getItem("kniffe-wahl") || "{}"); } catch (e) { state = {}; } cards.forEach(paint); count(); savedEl.textContent = "nur auf diesem Gerät gespeichert"; }
+    count();
+    var timer = setTimeout(function () { if (!col) fromLocal(); }, 10000);
+    if (!window.claude || !window.claude.use) { clearTimeout(timer); fromLocal(); return; }
+    window.claude.use("db").then(function (d) {
+      if (!d) { clearTimeout(timer); fromLocal(); return; }
+      db = d; col = db.collection("kniffe");
+      col.onSnapshot(function (snap) {
+        clearTimeout(timer);
+        snap.docs.forEach(function (doc) { var x = doc.data() || {}; var nr = String(x.nr); if (saveT[nr]) return; /* eigene Änderung unterwegs */ state[nr] = { wahl: x.wahl || "", notiz: x.notiz || "" }; });
+        cards.forEach(paint); count(); if (!/gespeichert/.test(savedEl.textContent)) savedEl.textContent = "verbunden – Claude sieht deine Auswahl";
+      }, function () { clearTimeout(timer); col = null; fromLocal(); });
+    }, function () { clearTimeout(timer); fromLocal(); });
+  })();
+})();
+</script>
