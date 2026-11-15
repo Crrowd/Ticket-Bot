@@ -152,6 +152,14 @@ def mega(active):
         for k, h, t, sub, im in BEREICHE)
     return f'<div class="mega"><div class="mega-cols">{cols}</div><div class="mega-visual" aria-hidden="true">{visual}</div></div>'
 
+NAV_EXTRA = ('<li class="nav-extra">'
+    f'<figure class="nav-photo">{img("img/p2160110.jpg", "", sizes="360px")}</figure>'
+    '<p class="nav-extra-title">Wir sind für Sie da</p>'
+    f'<a class="nav-quick" href="tel:+4993127898920">{icon("phone", 20)}<span>0931&nbsp;2789892&nbsp;0<small>Anrufen, Mo–Fr ab 6:45 Uhr</small></span></a>'
+    f'<a class="nav-quick" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 20)}<span>E-Mail schreiben<small>kinderhort.grombuehl@t-online.de</small></span></a>'
+    f'<p class="nav-addr">{icon("pin", 18)}<span>Lindleinstraße 20, 97080 Würzburg</span></p>'
+    '</li>')
+
 def header(active):
     items = []
     for href, label in NAV:
@@ -170,11 +178,12 @@ def header(active):
   <div class="container header-inner">
     <a class="brand" href="index.html">
       {BRAND_MARK}
-      <span class="brand-text"><small>Kath. Kinder- und Jugendhort</small><strong>Grombühl e. V.</strong></span>
+      <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name">Grombühl e. V.</span></span>
     </a>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
+        {NAV_EXTRA}
       </ul>
     </nav>
     <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span><kbd aria-hidden="true">Strg K</kbd></button>
@@ -506,7 +515,6 @@ home = f'''
       <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
       <h1>Kath. Kinder- und Jugendhort <span class="hl">Grombühl</span></h1>
       <p class="lead">Weil Qualität zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
-      <ul class="hero-tags"><li>Kinderkrippe</li><li>Kindergarten</li><li>Kinderhort</li></ul>
       <div class="hero-actions">
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
