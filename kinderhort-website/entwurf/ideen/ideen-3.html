@@ -673,6 +673,123 @@ button { font: inherit; color: inherit; }
 .donate-txt .big { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; }
 .donate-txt small { color: var(--on-soft); }
 
+/* 51 Wimpel-Tapete */
+.wallp { position: relative; width: 100%; max-width: 460px; height: 220px; border-radius: 16px; overflow: hidden; background: var(--bg); color: var(--ink); display: grid; place-items: center; }
+.wallp::before { content: ""; position: absolute; inset: -40px; opacity: .22;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Cpath d='M0 8 Q40 22 80 8' fill='none' stroke='%231E3B44' stroke-width='1.2'/%3E%3Cpath d='M14 13 l10 0 -5 11z' fill='%23D4B5B0'/%3E%3Cpath d='M36 16 l10 0 -5 11z' fill='%232D6A6A'/%3E%3Cpath d='M58 13 l10 0 -5 11z' fill='%23D4B5B0'/%3E%3C/svg%3E") 0 0 / 80px 60px;
+  animation: drift 40s linear infinite; }
+@keyframes drift { to { translate: 80px 60px; } }
+.wallp b { position: relative; font-size: 1.5rem; letter-spacing: -.03em; background: var(--paper); padding: 10px 18px; border-radius: 14px; }
+
+/* 52 Neu seit letztem Besuch */
+.newsince { width: 100%; max-width: 420px; display: grid; gap: 8px; }
+.ns-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.1); font-weight: 600; font-size: .92rem; }
+.ns-item small { margin-left: auto; color: var(--on-soft); font-weight: 500; font-size: .78rem; }
+.ns-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); flex: none; scale: 0; transition: scale .35s cubic-bezier(.34,1.56,.64,1); }
+.ns-item.new .ns-dot { scale: 1; }
+.ns-item.new { background: rgba(127,214,164,.14); }
+.ns-ctl { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+/* 53 Zufallsfoto */
+.rnd { display: grid; gap: 14px; justify-items: center; }
+.rnd-frame { width: 280px; background: #fff; padding: 10px 10px 34px; border-radius: 6px; rotate: -2deg; box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); position: relative; }
+.rnd-frame img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 3px; }
+.rnd-frame span { position: absolute; left: 0; right: 0; bottom: 8px; text-align: center; color: var(--ink); font: 700 .86rem var(--font); }
+.rnd-frame.shuffle { animation: shuf .45s var(--ease-out); }
+@keyframes shuf { 30% { rotate: 4deg; scale: .96; } 60% { rotate: -4deg; } }
+
+/* 54 Kalender-Abo */
+.sub { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
+.sub ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: st; }
+.sub li { counter-increment: st; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .9rem; animation: rise .35s var(--ease-out) both; }
+.sub li:nth-child(2) { animation-delay: 60ms; } .sub li:nth-child(3) { animation-delay: 120ms; }
+.sub li::before { content: counter(st); width: 28px; height: 28px; border-radius: 50%; background: var(--surface); color: var(--on); display: grid; place-items: center; font-weight: 800; font-size: .82rem; }
+.sub .seg { background: var(--bg-alt); justify-self: start; }
+.sub .seg button { color: var(--ink); }
+
+/* 55 Liste/Kalender */
+.lv { width: 100%; max-width: 420px; display: grid; gap: 12px; justify-items: center; }
+.lv-box { width: 100%; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 12px; min-height: 200px; }
+.lv-list { display: grid; gap: 6px; }
+.lv-list div { display: flex; gap: 10px; padding: 8px 10px; border-radius: 10px; background: var(--bg-alt); font-size: .86rem; font-weight: 600; }
+.lv-list b { min-width: 44px; }
+.lv-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; font-size: .78rem; }
+.lv-cal span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 8px; }
+.lv-cal .ev { background: var(--rose); font-weight: 800; }
+.lv-cal .h { font-weight: 800; color: var(--ink-soft); font-size: .68rem; }
+
+/* 56 So wächst ein Kind */
+.grow { width: 100%; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; }
+.gstep { flex: none; width: 170px; scroll-snap-align: center; background: rgba(255,255,255,.1); border-radius: 16px; padding: 14px; display: grid; gap: 6px; align-content: start; position: relative; }
+.gstep .age { font-size: .74rem; font-weight: 800; letter-spacing: .08em; color: var(--rose); text-transform: uppercase; }
+.gstep h3 { font-size: 1.05rem; } .gstep p { font-size: .82rem; color: var(--on-soft); }
+.gstep .kid { font-size: calc(1.4rem + var(--g) * .5rem); line-height: 1; }
+.gstep:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; translate: 0 -50%; color: var(--rose); font-weight: 800; }
+
+/* 57 Maskottchen */
+.mascot-stage { position: relative; width: 100%; max-width: 440px; height: 230px; border-radius: 16px; background: var(--bg); overflow: hidden; }
+.mascot-stage .ln { margin: 14px 18px; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.mascot { position: absolute; right: 22px; bottom: -80px; width: 86px; transition: bottom .55s cubic-bezier(.34,1.56,.64,1); }
+.mascot.up { bottom: 6px; }
+.mascot svg { width: 100%; display: block; }
+.mascot .wing { transform-box: fill-box; transform-origin: 20% 20%; }
+.mascot.up .wing { animation: flap .4s ease-in-out 3 .5s; }
+@keyframes flap { 50% { rotate: -25deg; } }
+.bubble { position: absolute; right: 112px; bottom: 70px; max-width: 200px; background: var(--paper); color: var(--ink); border-radius: 14px 14px 4px 14px; padding: 9px 12px; font-size: .84rem; font-weight: 600; box-shadow: 0 10px 20px -10px rgba(0,0,0,.5); opacity: 0; scale: .7; transform-origin: 100% 100%; transition: opacity .2s .45s, scale .35s .45s cubic-bezier(.34,1.56,.64,1); }
+.mascot.up + .bubble { opacity: 1; scale: 1; }
+
+/* 58 Fehlerseite */
+.e404 { width: 100%; max-width: 420px; background: var(--bg); color: var(--ink); border-radius: 18px; padding: 22px; display: grid; gap: 10px; justify-items: center; text-align: center; }
+.e404 .num4 { font-size: 3.6rem; font-weight: 800; letter-spacing: -.05em; line-height: 1; display: flex; align-items: center; gap: 4px; }
+.e404 .num4 i { display: inline-block; width: 52px; height: 52px; border-radius: 50%; background: var(--ink); position: relative; animation: look 3s ease-in-out infinite; }
+.e404 .num4 i::after { content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); top: 14px; left: 22px; }
+@keyframes look { 0%, 100% { rotate: 0deg; } 30% { rotate: -25deg; } 60% { rotate: 25deg; } }
+.e404 p { font-size: .92rem; color: var(--ink-soft); }
+.e404 .links { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.e404 .links a { padding: 7px 12px; border-radius: 999px; background: var(--paper); color: var(--ink); font-weight: 700; font-size: .84rem; text-decoration: none; }
+
+/* 59 Elternumfrage */
+.poll { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 12px; }
+.poll h3 { font-size: 1rem; }
+.faces { display: flex; justify-content: space-between; gap: 6px; }
+.faces button { flex: 1; border: 2px solid transparent; background: var(--bg-alt); border-radius: 14px; padding: 8px 0; font-size: 1.7rem; cursor: pointer; transition: scale .2s cubic-bezier(.34,1.56,.64,1), border-color .2s; }
+.faces button:hover { scale: 1.08; }
+.faces button[aria-pressed="true"] { border-color: var(--surface); scale: 1.1; }
+.res-bars { display: grid; gap: 5px; }
+.res-bars div { display: grid; grid-template-columns: 28px minmax(0, 1fr) 36px; gap: 8px; align-items: center; font-size: .8rem; }
+.res-bars i { height: 10px; border-radius: 5px; background: var(--bg-alt); overflow: hidden; }
+.res-bars i b { display: block; height: 100%; width: 0; background: var(--surface); border-radius: 5px; transition: width .7s var(--ease-out); }
+.res-bars .mine b { background: var(--rose); }
+
+/* 60 Tiefen-Scrollen */
+.depth { position: relative; width: 100%; max-width: 420px; height: 250px; overflow-y: auto; border-radius: 16px; background: var(--bg); overscroll-behavior: contain; }
+.depth .sp { height: 120px; display: grid; place-items: center; color: var(--ink-soft); font-size: .84rem; }
+.depth figure { margin: 0 18px; height: 180px; border-radius: 14px; overflow: hidden; }
+.depth figure img { width: 100%; height: 135%; object-fit: cover; display: block; will-change: translate; }
+
+/* 61 Wochenrückblick */
+.week { position: relative; width: 100%; max-width: 440px; }
+.week-photo { position: relative; border-radius: 16px; overflow: hidden; }
+.week-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.week-photo .tag2 { position: absolute; left: 12px; top: 12px; background: var(--paper); color: var(--ink); font-weight: 800; font-size: .78rem; padding: 4px 10px; border-radius: 999px; }
+.sticker { position: absolute; font-size: 2rem; filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); scale: 0; rotate: -30deg; }
+.week.go .sticker { animation: stick .5s cubic-bezier(.34,1.56,.64,1) forwards; animation-delay: var(--d); }
+@keyframes stick { to { scale: 1; rotate: var(--r); } }
+.week p { margin-top: 10px; font-size: .9rem; color: var(--on-soft); }
+
+/* 62 Reaktionen */
+.react { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 10px; }
+.react h3 { font-size: 1rem; } .react p { font-size: .88rem; color: var(--ink-soft); }
+.react-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.react-row button { position: relative; display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid rgba(30,59,68,.15); background: #fff; border-radius: 999px; padding: 5px 11px; font: 700 .84rem var(--font); color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s, scale .12s; }
+.react-row button[aria-pressed="true"] { background: var(--rose-soft); border-color: var(--rose); }
+.react-row button:active { scale: .94; }
+.react-row .em { display: inline-block; }
+.react-row button.bump .em { animation: popin .45s cubic-bezier(.34,1.56,.64,1); }
+.react-row .cnt { font-variant-numeric: tabular-nums; }
+.floaty { position: absolute; pointer-events: none; font-size: 1.2rem; animation: floatup .8s var(--ease-out) forwards; }
+@keyframes floatup { to { translate: 0 -40px; opacity: 0; } }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -707,7 +824,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>50 neue Ideen zum Ausprobieren</h1>
+    <h1>62 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
   <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
@@ -1255,6 +1372,83 @@ button { font: inherit; color: inherit; }
       <div class="stage"><div class="donate"><div class="thermo" aria-hidden="true"><i id="thermo"></i></div><div class="donate-txt"><b>Neues Klettergerüst für den Garten</b><span class="big" id="donN">0 €</span><small id="donS">von 8.000 € gesammelt (Beispiel)</small><button type="button" class="btn" style="justify-self:start">So können Sie helfen</button></div></div></div>
       <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">50</span> Spendenbarometer</h2><p>Für Förderverein oder Elternbeirat: ein Barometer, das zeigt, wie weit ein Spendenziel schon ist. Füllt sich beim Erscheinen, die Zahl zählt mit. <b>Beispiel:</b> Projekt und Beträge sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="wallp"><b>Willkommen!</b></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">51</span> Wandernde Wimpel-Tapete</h2><p>Ein ganz feines Muster aus kleinen Wimpelketten im Hintergrund großer Flächen, das unmerklich langsam wandert. Gibt der Seite eine eigene Handschrift, ohne vom Inhalt abzulenken.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="newsince"><div class="ns-item" data-d="2026-11-14">Neuer Termin: Weihnachtsmarkt<small>14.11.</small><span class="ns-dot" style="order:-1"></span></div><div class="ns-item" data-d="2026-11-10">Ferienplan 2026/27 aktualisiert<small>10.11.</small><span class="ns-dot" style="order:-1"></span></div><div class="ns-item" data-d="2026-10-20">Neue Fotos aus dem Hort<small>20.10.</small><span class="ns-dot" style="order:-1"></span></div>
+          <div class="ns-ctl"><span class="label" style="align-self:center">Letzter Besuch:</span><div class="seg" id="nsSeg" role="group" aria-label="Letzter Besuch"><span class="knob" aria-hidden="true"></span><button type="button" data-d="2026-11-12" aria-pressed="true">vor 3 Tagen</button><button type="button" data-d="2026-10-01" aria-pressed="false">vor 6 Wochen</button></div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">52</span> „Neu seit Ihrem letzten Besuch“</h2><p>Die Seite merkt sich (nur im eigenen Browser) den letzten Besuch und markiert alles, was seitdem neu ist, mit einem grünen Punkt. Eltern sehen sofort, ob sich etwas getan hat. Kein Konto, keine Cookies-Abfrage nötig.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="rnd"><div class="rnd-frame" id="rndF"><img id="rndI" src="img/p2160027-800.webp" alt="Foto aus dem Alltag"><span id="rndT">Blick in den Alltag</span></div><button type="button" class="btn" id="rndB">🎲 Anderes Foto</button></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">53</span> Zufallsfoto „Blick in den Alltag“</h2><p>Ein Knopf zeigt ein zufälliges Foto aus dem Haus, das Polaroid wackelt kurz beim Wechsel. Lädt zum Stöbern ein und macht neugierig auf die Räume.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="sub"><b>Termine automatisch im eigenen Kalender</b><div class="seg" id="subSeg" role="group" aria-label="Gerät"><span class="knob" aria-hidden="true"></span><button type="button" data-g="ios" aria-pressed="true">iPhone</button><button type="button" data-g="android" aria-pressed="false">Android</button><button type="button" data-g="pc" aria-pressed="false">Outlook</button></div><ol id="subSteps"></ol></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">54</span> Kalender-Abo-Assistent</h2><p>Statt einer Datei zum Herunterladen ein Abo: Neue Termine und Schließtage erscheinen dann von selbst im Kalender der Eltern. Der Assistent erklärt die drei Schritte je nach Gerät. Die Kalenderdatei gibt es schon.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="lv"><div class="seg" id="lvSeg" role="group" aria-label="Ansicht"><span class="knob" aria-hidden="true"></span><button type="button" data-v="list" aria-pressed="true">Liste</button><button type="button" data-v="cal" aria-pressed="false">Kalender</button></div><div class="lv-box" id="lvBox"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">55</span> Termine als Liste oder Kalender</h2><p>Ein Schalter wechselt die Termine zwischen Liste und Monatsansicht, die Inhalte gleiten weich ineinander über. Manche Eltern denken in Listen, andere in Kalendern. Die Dezember-Termine sind die echten.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="grow" id="grow">
+          <div class="gstep" style="--g:0"><span class="age">ab 11 Monaten</span><span class="kid" aria-hidden="true">👶</span><h3>Kinderkrippe</h3><p>Ankommen, Vertrauen fassen, die Welt mit allen Sinnen entdecken.</p></div>
+          <div class="gstep" style="--g:1"><span class="age">ab 3 Jahren</span><span class="kid" aria-hidden="true">🧒</span><h3>Kindergarten</h3><p>Freunde finden, Regeln lernen, Vorkurs Deutsch und Vorschule.</p></div>
+          <div class="gstep" style="--g:2"><span class="age">ab der Einschulung</span><span class="kid" aria-hidden="true">🎒</span><h3>Kinderhort</h3><p>Hausaufgaben, Projekte, Ferienfreizeit – bis 16 Jahre.</p></div>
+          <div class="gstep" style="--g:3"><span class="age">danach</span><span class="kid" aria-hidden="true">🌟</span><h3>Bereit für mehr</h3><p>Ein Haus, das ein Kind vom Krabbeln bis zur Jugend begleitet.</p></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">56</span> „So wächst ein Kind bei uns“</h2><p>Eine waagrechte Zeitleiste vom ersten Krabbeln bis zum Jugendalter, die zeigt, dass das Haus ein Kind lange begleiten kann. Zum Wischen, jede Station rastet sanft ein. Ein starkes Argument für Krippe, Kindergarten und Hort unter einem Dach.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="mascot-stage"><div class="ln"></div><div class="ln" style="width:60%"></div><div class="ln"></div><div class="ln" style="width:70%"></div><div class="mascot" id="mascot"><svg viewBox="0 0 100 90" aria-hidden="true"><ellipse cx="50" cy="56" rx="34" ry="28" fill="#B9876F"/><ellipse cx="54" cy="64" rx="20" ry="16" fill="#F1E5E3"/><circle cx="34" cy="36" r="18" fill="#B9876F"/><circle cx="29" cy="32" r="4" fill="#1E3B44"/><circle cx="30" cy="31" r="1.3" fill="#fff"/><path d="M14 38 l-10 3 10 3z" fill="#E2B24B"/><path class="wing" d="M50 46 C 70 40 84 52 80 66 C 70 64 58 58 50 46 Z" fill="#8B6A55"/><path d="M80 52 l16 -6 -6 14z" fill="#8B6A55"/><path d="M40 82 v6 M56 82 v6" stroke="#E2B24B" stroke-width="3" stroke-linecap="round"/><path d="M22 18 l6 6 4 -8z" fill="#D4B5B0"/></svg></div><div class="bubble" id="bubble">Hallo! Ich bin Pip. Soll ich dir zeigen, wo die Termine sind?</div></div><button type="button" class="replay" data-replay="P2" style="top:auto;bottom:12px">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">57</span> Maskottchen „Pip“, der Spatz</h2><p>Ein kleiner, selbst gezeichneter Spatz (passend zur Spatzengruppe), der an wenigen Stellen auftaucht: auf der Fehlerseite, beim leeren Suchergebnis, in der Kinder-Ecke. Er flattert kurz und gibt einen Tipp. Name und Aussehen sind ein Vorschlag.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="e404"><div class="num4" aria-label="404">4<i aria-hidden="true"></i>4</div><b>Hoppla, diese Seite gibt es nicht (mehr).</b><p>Vielleicht hilft eines davon weiter:</p><div class="links"><a href="#">Startseite</a><a href="#">Termine</a><a href="#">Kontakt</a><a href="#">Suche</a></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">58</span> Freundliche Fehlerseite</h2><p>Wenn ein alter Link ins Leere führt, kommt statt einer kahlen Fehlermeldung eine freundliche Seite mit einer „0“, die sich suchend umschaut, und den wichtigsten Wegen weiter. Wichtig, weil die alte Webseite andere Adressen hatte.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="poll"><h3>Wie zufrieden sind Sie mit der Eingewöhnung?</h3><div class="faces" id="faces"><button type="button" aria-pressed="false" aria-label="sehr zufrieden">😄</button><button type="button" aria-pressed="false" aria-label="zufrieden">🙂</button><button type="button" aria-pressed="false" aria-label="geht so">😐</button><button type="button" aria-pressed="false" aria-label="unzufrieden">🙁</button></div><div class="res-bars" id="resBars" hidden></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">59</span> Kurze Elternumfrage</h2><p>Eine Frage, vier Gesichter, ein Tipp – fertig. Danach sieht man, wie andere geantwortet haben. Anonym und in Sekunden erledigt, das Team bekommt schnell ein Stimmungsbild. <b>Beispiel:</b> Die Ergebnisse sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="depth" id="depth" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="sp">nach unten scrollen</div><figure><img src="img/p2170222-800.webp" alt="Raum im Haus"></figure><div class="sp"></div><figure><img src="img/vorleseecke-800.webp" alt="Vorleseecke"></figure><div class="sp"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">60</span> Fotos mit Tiefe beim Scrollen</h2><p>Große Fotos bewegen sich beim Scrollen etwas langsamer als die Seite, als würde man durch ein Fenster schauen. Ganz dezent und nur bei großen Bildern. Bei „Bewegung reduzieren“ bleibt alles still.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="week" id="week"><div class="week-photo"><img src="img/krativraum-2-1-800.webp" alt="Kreativraum"><span class="tag2">KW 46 · Kindergarten</span><span class="sticker" style="left:68%;top:12%;--r:12deg;--d:.1s">🍂</span><span class="sticker" style="left:80%;top:56%;--r:-8deg;--d:.25s">🏮</span><span class="sticker" style="left:8%;top:62%;--r:6deg;--d:.4s">⭐</span></div><p>Diese Woche haben die Bienen Laternen gebastelt und den Martinsumzug geübt. (Beispiel)</p></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">61</span> Wochenrückblick</h2><p>Einmal pro Woche ein Foto und zwei Sätze aus einer Gruppe, mit ein paar Stickern verziert. Eltern erfahren, was ihre Kinder erleben, das Team braucht dafür nur Minuten. Fotos nur ohne erkennbare Kinder oder mit Einverständnis.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="react" id="react"><h3>Unser Weihnachtsmarkt war ein voller Erfolg!</h3><p>Danke an alle Familien fürs Mithelfen und Mitfeiern. (Beispiel)</p><div class="react-row"><button type="button" aria-pressed="false"><span class="em">❤️</span><span class="cnt">24</span></button><button type="button" aria-pressed="false"><span class="em">👏</span><span class="cnt">17</span></button><button type="button" aria-pressed="false"><span class="em">🎄</span><span class="cnt">9</span></button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">62</span> Reaktionen auf Neuigkeiten</h2><p>Unter Neuigkeiten können Eltern mit einem Tipp ein Herz oder Applaus dalassen, das Symbol hüpft und schwebt kurz nach oben. Ein kleines Dankeschön ans Team, ganz ohne Kommentarspalte. <b>Beispiel:</b> Die Zahlen sind erfunden.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
@@ -1955,6 +2149,85 @@ button { font: inherit; color: inherit; }
     if (reduced) { el.textContent = have.toLocaleString("de-DE") + " €"; return; }
     var t0 = performance.now(); (function tick(t) { var k = Math.min(1, (t - t0) / 1400), e2 = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(have * e2).toLocaleString("de-DE") + " €"; if (k < 1) requestAnimationFrame(tick); })(t0);
   });
+
+
+  /* AV Neu seit letztem Besuch */
+  segment($("#nsSeg"), function (b) { var d = b.dataset.d; $$(".ns-item").forEach(function (it) { it.classList.toggle("new", it.dataset.d > d); }); });
+  $$(".ns-item").forEach(function (it) { it.classList.toggle("new", it.dataset.d > "2026-11-12"); });
+
+  /* AW Zufallsfoto */
+  (function () {
+    var P = [["p2160027", "Spielecke der Krippe"], ["p2160035", "Gruppenraum"], ["p2160042", "Bauecke"], ["p2160052", "Kreativtisch"], ["img_1222", "Hort"], ["hausaufgaben1", "Hausaufgabenraum"], ["vorleseecke", "Vorleseecke"]], i = 0;
+    $("#rndB").addEventListener("click", function () {
+      var n; do { n = Math.floor(Math.random() * P.length); } while (n === i); i = n;
+      var f = $("#rndF"), img = $("#rndI");
+      if (!reduced) { f.classList.remove("shuffle"); void f.offsetWidth; f.classList.add("shuffle"); }
+      img.style.opacity = 0; setTimeout(function () { img.src = "img/" + P[i][0] + "-800.webp"; $("#rndT").textContent = P[i][1]; img.onload = function () { img.style.transition = "opacity .3s"; img.style.opacity = 1; }; }, reduced ? 0 : 150);
+    });
+  })();
+
+  /* AX Kalender-Abo */
+  (function () {
+    var S = { ios: ["Link „Kalender abonnieren“ auf der Termin-Seite antippen.", "„Abonnieren“ bestätigen.", "Fertig – neue Termine erscheinen automatisch im iPhone-Kalender."],
+      android: ["Google Kalender am Computer öffnen, „Weitere Kalender → Per URL“ wählen.", "Den Abo-Link der Termin-Seite einfügen.", "Fertig – der Kalender erscheint auch am Handy."],
+      pc: ["In Outlook „Kalender hinzufügen → Aus dem Internet“ wählen.", "Den Abo-Link der Termin-Seite einfügen.", "Fertig – Outlook holt neue Termine von selbst."] };
+    function show(g) { $("#subSteps").innerHTML = S[g].map(function (t) { return "<li><span>" + t + "</span></li>"; }).join(""); }
+    segment($("#subSeg"), function (b) { show(b.dataset.g); }); show("ios");
+  })();
+
+  /* AY Liste / Kalender */
+  (function () {
+    var E = [[4, "Weihnachtsmarkt mit Christbaumverkauf"], [7, "Der Nikolaus besucht uns"], [24, "Weihnachten – geschlossen bis 08.01."]];
+    var box = $("#lvBox");
+    function list() { return '<div class="lv-list">' + E.map(function (x) { return "<div><b>" + ("0" + x[0]).slice(-2) + ".12.</b>" + x[1] + "</div>"; }).join("") + "</div>"; }
+    function cal() { var h = '<b style="display:block;margin-bottom:6px">Dezember 2026</b><div class="lv-cal">' + ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].map(function (d) { return '<span class="h">' + d + "</span>"; }).join("") + "<span></span>";
+      for (var d = 1; d <= 31; d++) { var ev = E.filter(function (x) { return x[0] === d; })[0]; h += "<span" + (ev ? ' class="ev" title="' + ev[1] + '"' : "") + ">" + d + "</span>"; } return h + "</div>"; }
+    function show(v, anim) {
+      if (!anim || reduced) { box.innerHTML = v === "list" ? list() : cal(); return; }
+      box.animate([{ opacity: 1, scale: 1 }, { opacity: 0, scale: .97 }], { duration: 140, easing: "ease-in" }).onfinish = function () {
+        box.innerHTML = v === "list" ? list() : cal(); box.animate([{ opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1 }], { duration: 240, easing: "cubic-bezier(.23,1,.32,1)" }); };
+    }
+    segment($("#lvSeg"), function (b) { show(b.dataset.v, true); }); show("list");
+  })();
+
+  /* AZ Maskottchen */
+  (function () {
+    var m = $("#mascot");
+    function play() { m.classList.remove("up"); setTimeout(function () { m.classList.add("up"); }, 300); }
+    replay.P2 = play; onView(m.parentNode, play);
+  })();
+
+  /* BA Elternumfrage */
+  (function () {
+    var base = [46, 31, 8, 3], fs = $$("#faces button"), rb = $("#resBars");
+    fs.forEach(function (f, k) { f.addEventListener("click", function () {
+      fs.forEach(function (x) { x.setAttribute("aria-pressed", x === f); });
+      var v = base.slice(); v[k]++; var sum = v.reduce(function (a, b) { return a + b; }, 0);
+      rb.hidden = false; rb.innerHTML = v.map(function (n, i) { return '<div class="' + (i === k ? "mine" : "") + '"><span>' + fs[i].textContent + "</span><i><b></b></i><span>" + Math.round(n / sum * 100) + " %</span></div>"; }).join("");
+      requestAnimationFrame(function () { requestAnimationFrame(function () { $$("b", rb).forEach(function (b, i) { b.style.width = (v[i] / sum * 100) + "%"; }); }); });
+    }); });
+  })();
+
+  /* BB Tiefen-Scrollen */
+  (function () {
+    var box = $("#depth"), imgs = $$("img", box);
+    if (reduced) return;
+    function upd() { var h = box.clientHeight; imgs.forEach(function (im) { var f = im.parentNode, c = f.offsetTop - box.scrollTop + f.offsetHeight / 2, p = (c - h / 2) / h; im.style.translate = "0 " + Math.max(-26, Math.min(0, -13 - p * 26)).toFixed(1) + "%"; }); }
+    box.addEventListener("scroll", upd, { passive: true }); upd();
+  })();
+
+  /* BC Wochenrückblick */
+  onView($("#week"), function () { $("#week").classList.add("go"); });
+
+  /* BD Reaktionen */
+  (function () {
+    $$("#react .react-row button").forEach(function (b) { b.addEventListener("click", function () {
+      var on = b.getAttribute("aria-pressed") !== "true", c = $(".cnt", b); b.setAttribute("aria-pressed", on); c.textContent = +c.textContent + (on ? 1 : -1);
+      if (on && !reduced) { b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
+        var f = document.createElement("span"); f.className = "floaty"; f.textContent = $(".em", b).textContent; var host = $("#react"); host.style.position = "relative";
+        f.style.left = (b.offsetLeft + 10) + "px"; f.style.top = (b.offsetTop - 6) + "px"; host.appendChild(f); setTimeout(function () { f.remove(); }, 900); }
+    }); });
+  })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
