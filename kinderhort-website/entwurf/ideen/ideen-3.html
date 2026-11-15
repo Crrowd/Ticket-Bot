@@ -281,6 +281,137 @@ button { font: inherit; color: inherit; }
   body.print-sheet .sheet { position: fixed; left: 0; top: 0; width: 100%; rotate: none; box-shadow: none; font-size: 200%; }
 }
 
+
+/* 15 Monatskalender */
+.cal { width: 100%; max-width: 360px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 14px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); overflow: hidden; }
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.cal-head b { font-size: 1.02rem; }
+.cal-head button { width: 38px; height: 38px; border: 0; border-radius: 50%; background: rgba(30,59,68,.08); color: var(--ink); font-size: 1.2rem; cursor: pointer; }
+.cal-head button:disabled { opacity: .3; cursor: default; }
+.cal-wd, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; }
+.cal-wd span { font-size: .7rem; font-weight: 800; color: var(--ink-soft); padding: 4px 0; }
+.cal-grid span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 9px; font-size: .86rem; font-weight: 600; }
+.cal-grid .we { color: #8A9EA2; }
+.cal-grid .zu { background: var(--rose); color: var(--ink); font-weight: 800; }
+.cal-grid .zu.first { border-radius: 9px 4px 4px 9px; } .cal-grid .zu.last { border-radius: 4px 9px 9px 4px; }
+.cal-note { margin-top: 10px; font-size: .84rem; color: var(--ink-soft); min-height: 2.6em; }
+.cal-note b { color: var(--ink); }
+
+/* 16 Buchungszeit */
+.book { width: 100%; max-width: 440px; display: grid; gap: 12px; }
+.book .lab { display: flex; justify-content: space-between; font-size: .86rem; color: var(--on-soft); }
+.book .lab b { color: var(--on); font-size: .95rem; }
+.book-out { background: rgba(255,255,255,.1); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; }
+.book-out .big { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+.book-bar { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; }
+.book-bar i { height: 8px; border-radius: 3px; background: rgba(255,255,255,.15); transition: background .3s; }
+.book-bar i.on { background: var(--rose); }
+.book-bar i.hit { background: var(--paper); }
+.book-warn { font-size: .82rem; color: #F6D4CE; min-height: 1.3em; }
+
+/* 17 Entdecker-Punkte */
+.spots { position: relative; width: 100%; max-width: 480px; border-radius: 16px; overflow: hidden; }
+.spots img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.spot { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 0; border-radius: 50%; background: var(--paper); color: var(--ink); font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+.spot::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--paper); animation: ping 2s var(--ease-out) infinite; }
+.spot[aria-expanded="true"] { background: var(--rose); }
+.spot[aria-expanded="true"]::after { display: none; }
+.spot-tip { position: absolute; max-width: 200px; background: var(--paper); color: var(--ink); padding: 9px 12px; border-radius: 12px; font-size: .84rem; box-shadow: 0 12px 24px -10px rgba(0,0,0,.6); pointer-events: none;
+  opacity: 0; scale: .8; transition: opacity .16s var(--ease-out), scale .2s var(--ease-out); z-index: 2; }
+.spot-tip.open { opacity: 1; scale: 1; }
+.spot-tip b { display: block; }
+
+/* 18 Elternstimmen */
+.quotes { position: relative; width: 100%; max-width: 440px; min-height: 190px; display: grid; }
+.quote { grid-area: 1 / 1; display: grid; gap: 10px; align-content: center; opacity: 0; translate: 0 10px; transition: opacity .5s var(--ease-out), translate .5s var(--ease-out); }
+.quote.on { opacity: 1; translate: 0 0; }
+.quote p { font-size: 1.15rem; font-weight: 600; line-height: 1.5; color: var(--on); }
+.quote p::before { content: "„"; display: block; height: .55em; color: var(--rose); font-size: 3rem; line-height: .6; }
+.quote span { font-size: .84rem; color: var(--on-soft); }
+.q-dots { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+.q-dots button { width: 28px; height: 6px; border: 0; padding: 0; border-radius: 3px; background: rgba(255,255,255,.2); cursor: pointer; overflow: hidden; position: relative; }
+.q-dots button i { position: absolute; inset: 0; background: var(--rose); scale: 0 1; transform-origin: left; }
+.q-dots button.on i { animation: qfill 5s linear forwards; }
+.quotes:hover .q-dots button.on i, .quotes:focus-within .q-dots button.on i { animation-play-state: paused; }
+@keyframes qfill { to { scale: 1 1; } }
+
+/* 19 Handgezeichnet */
+.scrib { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.5rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.25; text-align: center; max-width: 15ch; }
+.mark { position: relative; display: inline-block; white-space: nowrap; }
+.mark svg { position: absolute; pointer-events: none; overflow: visible; }
+.mark.circle { margin: 0 .22em; }
+.mark.circle svg { left: -9%; top: -20%; width: 118%; height: 145%; }
+.mark.under svg { left: -4%; bottom: -16%; width: 108%; height: 34%; }
+.mark path { fill: none; stroke: var(--rose); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.scrib.go .mark path { stroke-dashoffset: 0; transition: stroke-dashoffset .7s var(--ease-io); }
+.scrib.go .mark.under path { transition-delay: .55s; }
+
+/* 20 Startbildschirm */
+.home { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.phone { width: 170px; height: 300px; border-radius: 30px; background: #182F36; border: 6px solid #0E1E23; padding: 34px 14px; display: grid; grid-template-columns: repeat(3, 1fr); align-content: start; gap: 14px 10px; position: relative; }
+.phone::before { content: ""; position: absolute; top: 8px; left: 50%; width: 52px; height: 14px; translate: -50% 0; background: #0E1E23; border-radius: 999px; }
+.phone .app { aspect-ratio: 1; border-radius: 12px; background: rgba(255,255,255,.12); }
+.phone .app:nth-child(3n+1) { background: rgba(212,181,176,.35); } .phone .app:nth-child(4n) { background: rgba(168,197,192,.35); }
+.phone .me { aspect-ratio: 1; border-radius: 12px; background: var(--paper); display: grid; place-items: center; scale: 0; position: relative; }
+.phone .me.in { animation: popin .6s cubic-bezier(.34,1.56,.64,1) forwards; }
+@keyframes popin { from { scale: 0; } to { scale: 1; } }
+.phone .me svg { width: 72%; height: 72%; }
+.phone .me-lbl { grid-column: auto; font-size: .55rem; color: var(--on); text-align: center; margin-top: -10px; opacity: 0; transition: opacity .3s .3s; }
+.phone .me.in + .me-lbl { opacity: 1; }
+.home-side { display: grid; gap: 10px; max-width: 220px; }
+.home-side p { font-size: .86rem; color: var(--on-soft); }
+
+/* 21 AG-Wochenplan */
+.ags { width: 100%; display: grid; gap: 12px; justify-items: center; }
+.ag-week { width: 100%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.ag-day { display: grid; gap: 6px; align-content: start; }
+.ag-day > b { font-size: .75rem; text-align: center; color: var(--on-soft); letter-spacing: .06em; }
+.ag { background: var(--paper); color: var(--ink); border-radius: 10px; padding: 7px 6px; font-size: .74rem; font-weight: 700; text-align: center; line-height: 1.25; transition: opacity .3s, scale .3s var(--ease-out), filter .3s; }
+.ag small { display: block; font-weight: 500; color: var(--ink-soft); font-size: .66rem; }
+.ag.off { opacity: .22; scale: .94; filter: grayscale(1); }
+
+/* 22 Gruß am Seitenende */
+.endbox { position: relative; width: 100%; max-width: 420px; height: 250px; overflow-y: auto; border-radius: 16px; background: var(--bg); color: var(--ink); overscroll-behavior: contain; }
+.endbox .fill { padding: 18px; display: grid; gap: 10px; }
+.endbox .fill i { display: block; height: 12px; border-radius: 6px; background: rgba(30,59,68,.12); }
+.endbox .fill i:nth-child(3n) { width: 70%; }
+.endbox footer { background: var(--deep); color: var(--on); padding: 0 18px 22px; text-align: center; }
+.endbox .flags { display: flex; justify-content: center; gap: 3px; height: 26px; }
+.endbox .flags span { width: 20px; height: 24px; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: 50% 0; }
+.endbox .flags span:nth-child(odd) { background: var(--rose); } .endbox .flags span:nth-child(even) { background: var(--bg); }
+.endbox.wave .flags span { animation: wave 1.2s var(--ease-io) 2; animation-delay: calc(var(--i) * 60ms); }
+@keyframes wave { 25% { rotate: 14deg; } 75% { rotate: -10deg; } }
+.endbox .bye { font-weight: 800; font-size: 1.1rem; margin-top: 12px; opacity: 0; translate: 0 8px; transition: opacity .4s .3s var(--ease-out), translate .4s .3s var(--ease-out); }
+.endbox .bye small { display: block; font-weight: 500; font-size: .8rem; color: var(--on-soft); }
+.endbox.wave .bye { opacity: 1; translate: 0 0; }
+.endbox .hand { display: inline-block; transform-origin: 70% 80%; }
+.endbox.wave .hand { animation: hand .5s ease-in-out 4 .4s; }
+@keyframes hand { 50% { rotate: 18deg; } }
+
+/* Auswahl je Idee */
+.vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
+.vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vote-q { font-weight: 800; font-size: .86rem; }
+.vote-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg-alt); }
+.vote-seg button { border: 0; background: none; padding: 7px 15px; min-height: 38px; border-radius: 999px; font-weight: 700; font-size: .88rem; cursor: pointer; color: var(--ink); transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.vote-seg button:active { scale: .96; }
+.vote-seg button[data-v="ja"][aria-pressed="true"] { background: var(--surface); color: var(--on); }
+.vote-seg button[data-v="merken"][aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.vote-seg button[data-v="nein"][aria-pressed="true"] { background: var(--ink-soft); color: var(--on); }
+.vote-note input { width: 100%; border: 1.5px solid rgba(30,59,68,.18); border-radius: 10px; padding: 9px 11px; font: 500 .9rem var(--font); background: #fff; color: var(--ink); }
+.vote-note input:focus { outline: none; border-color: var(--surface); box-shadow: 0 0 0 3px rgba(45,106,106,.18); }
+.card { transition: box-shadow .25s, opacity .25s; }
+.card[data-vote="ja"] { box-shadow: 0 0 0 3px var(--surface), var(--shadow); }
+.card[data-vote="merken"] { box-shadow: 0 0 0 3px var(--rose), var(--shadow); }
+.card[data-vote="nein"] { opacity: .72; }
+.card[data-vote="nein"] .stage { filter: saturate(.4) brightness(.9); }
+.tally { position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 30; margin: 26px auto 0; width: fit-content; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; padding: 10px 18px; border-radius: 999px; background: var(--deep); color: var(--on); box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); font-size: .9rem; font-weight: 600; }
+.tally b { font-size: 1rem; }
+.tally .t-ja b { color: #9FD8C4; } .tally .t-merken b { color: var(--rose); }
+.tally .saved { font-size: .8rem; color: var(--on-soft); font-weight: 500; }
+.sync-note { font-size: .85rem; color: var(--ink-soft); margin: -10px 0 22px; }
+@media (max-width: 520px) { .tally { border-radius: 18px; } }
+
 .num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
 .foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
 @media (prefers-reduced-motion: reduce) {
@@ -291,15 +422,17 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>14 neue Ideen zum Ausprobieren</h1>
+    <h1>22 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
+  <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
 
   <div class="filter" role="group" aria-label="Ideen filtern">
     <span class="knob" aria-hidden="true"></span>
     <button type="button" data-f="alle" aria-pressed="true">Alle</button>
     <button type="button" data-f="anim" aria-pressed="false">Animation</button>
     <button type="button" data-f="funk" aria-pressed="false">Funktion</button>
+    <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
   </div>
 
   <div class="grid">
@@ -504,8 +637,102 @@ button { font: inherit; color: inherit; }
         <h2><span class="num">14</span> Aushang mit QR-Code</h2><p>Das Team pflegt Termine nur noch an einer Stelle, der Aushang entsteht automatisch daraus. Der QR-Code führt Eltern direkt zur aktuellen Termin-Seite. Die Termine hier sind die echten.</p></div>
     </article>
 
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="cal">
+          <div class="cal-head"><button type="button" id="calPrev" aria-label="Voriger Monat">‹</button><b id="calM" aria-live="polite"></b><button type="button" id="calNext" aria-label="Nächster Monat">›</button></div>
+          <div class="cal-wd" aria-hidden="true"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div>
+          <div class="cal-grid" id="calG"></div>
+          <p class="cal-note" id="calN"></p>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">15</span> Monatskalender mit Schließtagen</h2><p>Ein kleiner Kalender zum Durchblättern, in dem die Schließtage rosé markiert sind, darunter steht, wann wieder geöffnet ist. Wischen oder Pfeile, die Monate gleiten zur Seite. Die Schließzeiten hier sind die echten aus dem Ferienplan 2026/27.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage">
+        <div class="book">
+          <div class="seg" id="bookSeg" role="group" aria-label="Bereich" style="justify-self:center"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-b="kita" aria-pressed="true">Krippe / Kindergarten</button><button type="button" data-b="hort" aria-pressed="false">Hort</button></div>
+          <div><div class="lab"><span id="bInL">Bringen</span><b id="bInV"></b></div><input class="range" type="range" id="bIn" step="15" aria-labelledby="bInL"></div>
+          <div><div class="lab"><span id="bOutL">Abholen</span><b id="bOutV"></b></div><input class="range" type="range" id="bOut" step="15" aria-labelledby="bOutL"></div>
+          <div class="book-out" aria-live="polite"><span class="big" id="bH"></span><span id="bCat"></span><div class="book-bar" id="bBar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="book-warn" id="bWarn"></span></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">16</span> Buchungszeit-Rechner</h2><p>Eltern schieben Bring- und Abholzeit und sehen sofort die Stunden pro Tag und die passende Buchungskategorie (in Bayern in Stundenstufen). Unter der Mindestbuchungszeit im Hort (4 bis 5 Stunden) gibt es einen Hinweis. Die Kosten je Stufe müsste der Hort ergänzen.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage">
+        <div class="spots" id="spots"><img src="img/lesecke-800.webp" alt="Leseecke" loading="lazy">
+          <button type="button" class="spot" style="left:22%;top:38%" data-t="Bücher zum Mitnehmen|Jede Woche dürfen die Kinder ein Buch ausleihen." aria-expanded="false" aria-label="Punkt 1">1</button>
+          <button type="button" class="spot" style="left:58%;top:64%" data-t="Kuschelecke|Hier wird vorgelesen und ausgeruht." aria-expanded="false" aria-label="Punkt 2">2</button>
+          <button type="button" class="spot" style="left:80%;top:28%" data-t="Viel Tageslicht|Große Fenster zum Garten." aria-expanded="false" aria-label="Punkt 3">3</button>
+          <div class="spot-tip" id="spotTip" role="status"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">17</span> Fotos mit Entdecker-Punkten</h2><p>Auf ausgewählten Raumfotos pulsieren kleine Punkte. Ein Tipp darauf erzählt, was dort passiert. Das macht aus einem Foto eine kleine Führung. <b>Beispiel:</b> Die Texte und Punkte sind erfunden und müssten vom Team kommen.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="quotes" id="quotes" tabindex="0" aria-roledescription="Karussell" aria-label="Elternstimmen">
+          <div class="quote on"><p>Unsere Tochter geht jeden Morgen gern hin – das sagt eigentlich alles.</p><span>Mutter, Kindergarten (Beispiel)</span></div>
+          <div class="quote"><p>Die Hausaufgabenzeit im Hort nimmt uns abends so viel Druck.</p><span>Vater, Hort (Beispiel)</span></div>
+          <div class="quote"><p>Die Eingewöhnung in der Krippe war liebevoll und ganz in unserem Tempo.</p><span>Eltern, Kinderkrippe (Beispiel)</span></div>
+          <div class="q-dots" style="grid-area:2/1"><button type="button" aria-label="Stimme 1" class="on"><i></i></button><button type="button" aria-label="Stimme 2"><i></i></button><button type="button" aria-label="Stimme 3"><i></i></button></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">18</span> Elternstimmen</h2><p>Kurze Zitate von Eltern wechseln alle 5 Sekunden weich, der Balken zeigt, wann es weitergeht. Mit der Maus darüber pausiert es. <b>Beispiel:</b> Die Zitate sind erfunden – echte nur mit Einverständnis der Eltern.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><button type="button" class="replay" data-replay="S">↻ Nochmal</button>
+        <h2 class="scrib" id="scrib">Weil <span class="mark circle">Qualität<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M60 6 C 30 0 4 8 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 5"/></svg></span> <span class="mark under">zählt!<svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 12 C 25 6 55 4 97 9 M12 17 C 40 13 70 13 90 15"/></svg></span></h2></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">19</span> Handgezeichnete Markierungen</h2><p>Wie deine eigenen Markierungen in den Fotos: Um wichtige Wörter zeichnet sich ein rosé Kringel oder eine Unterstreichung, als hätte jemand mit dem Stift nachgeholfen. Sparsam eingesetzt, höchstens einmal pro Abschnitt.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="home">
+          <div class="phone" aria-hidden="true"><span class="app"></span><span class="app"></span><span class="app"></span><span class="app"></span><span class="app"></span><span class="app"></span><span class="app"></span><span class="me" id="homeIcon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#1E3B44"/><path d="M9 20 Q24 28 39 20" stroke="#F3F8F7" stroke-width="1.6" fill="none"/><path d="M13 22l2 7 3-6zM21 24l2.5 7 3-6.5zM29 23.5l2.5 6.5 2.5-7z" fill="#D4B5B0"/></svg></span><span class="app"></span></div>
+          <div class="home-side"><p>Die Webseite lässt sich wie eine App auf den Startbildschirm legen – mit eigenem Symbol, öffnet ohne Browserleiste.</p><button type="button" class="btn" id="homeBtn">Zum Startbildschirm</button><p id="homeHow" class="label"></p></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">20</span> Als App auf den Startbildschirm</h2><p>Ein Knopf erklärt Eltern Schritt für Schritt, wie sie die Seite aufs Handy legen (am iPhone über „Teilen → Zum Home-Bildschirm“). Danach sind Krankmelden und Termine nur einen Tipp entfernt. Die technischen Grundlagen hat die Seite schon.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="ags">
+          <div class="seg" id="agSeg" role="group" aria-label="Klassenstufe"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-c="alle" aria-pressed="true">Alle</button><button type="button" data-c="12" aria-pressed="false">1.–2. Klasse</button><button type="button" data-c="34" aria-pressed="false">3.–4. Klasse</button><button type="button" data-c="5" aria-pressed="false">ab 5.</button></div>
+          <div class="ag-week">
+            <div class="ag-day"><b>MO</b><span class="ag" data-c="12 34">Fußball<small>15:00</small></span><span class="ag" data-c="5">Lernzeit+<small>14:30</small></span></div>
+            <div class="ag-day"><b>DI</b><span class="ag" data-c="12">Basteln<small>15:00</small></span><span class="ag" data-c="34 5">Kochen<small>15:30</small></span></div>
+            <div class="ag-day"><b>MI</b><span class="ag" data-c="12 34 5">Garten<small>14:30</small></span></div>
+            <div class="ag-day"><b>DO</b><span class="ag" data-c="34 5">Werken<small>15:00</small></span><span class="ag" data-c="12">Tanzen<small>15:00</small></span></div>
+            <div class="ag-day"><b>FR</b><span class="ag" data-c="12 34 5">Spielenachmittag<small>14:00</small></span></div>
+          </div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">21</span> AG-Wochenplan im Hort</h2><p>Die Angebote der Woche auf einen Blick. Klassenstufe wählen, und was nicht passt, tritt zurück. Eltern sehen sofort, was ihr Kind wann machen kann. <b>Beispiel:</b> Die AGs sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="endbox" id="endbox" tabindex="0" aria-label="Beispielseite zum Scrollen">
+          <div class="fill" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <footer><div class="flags" aria-hidden="true"><span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span></div>
+            <p class="bye"><span class="hand">👋</span> Schön, dass Sie da waren!<small>Bis bald im Kinderhort Grombühl</small></p><span id="endSentinel"></span></footer>
+        </div>
+        <p class="hint">In der Box nach unten scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">22</span> Gruß am Seitenende</h2><p>Wer bis ganz unten scrollt, wird belohnt: Die Wimpelkette im Fuß wiegt sich, eine kleine Hand winkt und ein freundlicher Gruß erscheint. Einmal pro Besuch, danach bleibt es ruhig.</p></div>
+    </article>
   </div>
-  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Sag einfach per Nummer (1–14), welche eingebaut werden sollen.</p>
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
 </div>
 
 <script data-qr src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -532,7 +759,7 @@ button { font: inherit; color: inherit; }
     requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
     addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
   }
-  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f === "offen" ? !!c.dataset.vote : f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
   var replay = {};
   $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
 
@@ -803,6 +1030,168 @@ button { font: inherit; color: inherit; }
     function make() { if (window.QRCode) new QRCode(box, { text: "https://kinderhort-grombuehl.de/aktuelles.html#termine", width: 116, height: 116, colorDark: "#1E3B44", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); else box.textContent = "QR"; }
     if (window.QRCode) make(); else { var s = document.querySelector("script[data-qr]"); if (s) s.addEventListener("load", make); setTimeout(function () { if (!box.firstChild) make(); }, 3000); }
     $("#printBtn").addEventListener("click", function () { document.body.classList.add("print-sheet"); window.print(); setTimeout(function () { document.body.classList.remove("print-sheet"); }, 500); });
+  })();
+
+  /* O Monatskalender */
+  (function () {
+    var Z = [["Herbstferien", "2026-11-02", "2026-11-03", "04.11.2026"], ["Weihnachten", "2026-12-24", "2027-01-08", "11.01.2027"], ["Fasching", "2027-02-08", "2027-02-09", "10.02.2027"], ["Ostern", "2027-03-25", "2027-03-30", "31.03.2027"], ["Pfingsten", "2027-05-18", "2027-05-18", "19.05.2027"], ["Pfingsten", "2027-05-28", "2027-05-28", "31.05.2027"], ["Sommerferien", "2027-08-09", "2027-08-27", "30.08.2027"]];
+    var MN = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    var y = 2026, m = 11, minI = 2026 * 12 + 10, maxI = 2027 * 12 + 7, g = $("#calG"), startX = null;
+    function key(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+    function zu(k) { return Z.filter(function (z) { return k >= z[1] && k <= z[2]; })[0]; }
+    function render(dir) {
+      $("#calM").textContent = MN[m] + " " + y;
+      var first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), h = "";
+      for (var i = 0; i < off; i++) h += "<span></span>";
+      for (var d = 1; d <= n; d++) {
+        var dt = new Date(y, m, d), wd = (dt.getDay() + 6) % 7, k = key(dt), z = wd < 5 && zu(k), cls = wd > 4 ? "we" : z ? "zu" : "";
+        if (z) { var pv = new Date(y, m, d - (wd === 0 ? 3 : 1)), nx = new Date(y, m, d + (wd === 4 ? 3 : 1)); if (!zu(key(pv))) cls += " first"; if (!zu(key(nx))) cls += " last"; }
+        h += '<span class="' + cls + '"' + (z ? ' title="' + z[0] + '"' : "") + ">" + d + "</span>";
+      }
+      g.innerHTML = h;
+      var pre = y + "-" + ("0" + (m + 1)).slice(-2), hits = Z.filter(function (z) { return z[1].slice(0, 7) <= pre && z[2].slice(0, 7) >= pre; });
+      $("#calN").innerHTML = hits.length ? hits.map(function (z) { return "<b>" + z[0] + "</b> geschlossen, wieder geöffnet ab " + z[3]; }).join("<br>") : "Keine Schließtage in diesem Monat.";
+      $("#calPrev").disabled = y * 12 + m <= minI; $("#calNext").disabled = y * 12 + m >= maxI;
+      if (dir && !reduced) g.animate([{ opacity: 0, translate: (dir * 28) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 280, easing: "cubic-bezier(.23,1,.32,1)" });
+    }
+    function step(d) { var i = y * 12 + m + d; if (i < minI || i > maxI) return; y = Math.floor(i / 12); m = i % 12; render(d); }
+    $("#calPrev").addEventListener("click", function () { step(-1); }); $("#calNext").addEventListener("click", function () { step(1); });
+    g.addEventListener("pointerdown", function (e) { startX = e.clientX; });
+    g.addEventListener("pointerup", function (e) { if (startX === null) return; var dx = e.clientX - startX; startX = null; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); });
+    render(0);
+  })();
+
+  /* P Buchungszeit */
+  (function () {
+    var bIn = $("#bIn"), bOut = $("#bOut"), area = "kita", bars = $$("#bBar i");
+    var R = { kita: [[405, 540, 450], [720, 990, 900], "Bringen", "Abholen"], hort: [[660, 810, 705], [870, 1080, 990], "Ankommen nach der Schule", "Abholen"] };
+    function hm(x) { return Math.floor(x / 60) + ":" + ("0" + x % 60).slice(-2) + " Uhr"; }
+    function setup() {
+      var r = R[area]; bIn.min = r[0][0]; bIn.max = r[0][1]; bIn.value = r[0][2]; bOut.min = r[1][0]; bOut.max = r[1][1]; bOut.value = r[1][2];
+      $("#bInL").textContent = r[2]; $("#bOutL").textContent = r[3]; upd();
+    }
+    function upd() {
+      var a = +bIn.value, b = +bOut.value, mins = b - a, h = Math.floor(mins / 60), mm = mins % 60, cat = Math.min(9, Math.ceil(mins / 60));
+      $("#bInV").textContent = hm(a); $("#bOutV").textContent = hm(b);
+      $("#bH").textContent = h + " Std." + (mm ? " " + mm + " Min." : "") + " pro Tag";
+      $("#bCat").textContent = "Buchungskategorie: " + (cat >= 9 ? "mehr als 8 Std." : "mehr als " + (cat - 1) + " bis " + cat + " Std.");
+      bars.forEach(function (x, i) { x.classList.toggle("on", i < cat - 1); x.classList.toggle("hit", i === cat - 1); });
+      $("#bWarn").textContent = area === "hort" && mins < 240 ? "Unter der Mindestbuchungszeit im Hort (4 bis 5 Std.)" : "";
+    }
+    bIn.addEventListener("input", upd); bOut.addEventListener("input", upd);
+    segment($("#bookSeg"), function (b) { area = b.dataset.b; setup(); });
+    setup();
+  })();
+
+  /* Q Entdecker-Punkte */
+  (function () {
+    var box = $("#spots"), tip = $("#spotTip"), cur = null;
+    function close() { if (cur) cur.setAttribute("aria-expanded", "false"); cur = null; tip.classList.remove("open"); }
+    $$(".spot", box).forEach(function (s) {
+      s.addEventListener("click", function (e) {
+        e.stopPropagation(); if (cur === s) { close(); return; } close(); cur = s; s.setAttribute("aria-expanded", "true");
+        var t = s.dataset.t.split("|"); tip.innerHTML = "<b>" + t[0] + "</b>" + t[1];
+        var bw = box.offsetWidth, x = s.offsetLeft, y2 = s.offsetTop, w = Math.min(200, bw - 20);
+        tip.style.left = Math.max(10, Math.min(bw - w - 10, x - w / 2)) + "px"; tip.style.width = w + "px";
+        var above = y2 > box.offsetHeight / 2; tip.style.top = (above ? y2 - 24 - 70 : y2 + 24) + "px";
+        tip.style.transformOrigin = (x - parseFloat(tip.style.left)) + "px " + (above ? "100%" : "0");
+        tip.classList.add("open");
+      });
+    });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#spots")) close(); });
+    addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+  })();
+
+  /* R Elternstimmen */
+  (function () {
+    var box = $("#quotes"), qs = $$(".quote", box), dots = $$(".q-dots button", box), i = 0;
+    function show(n) { i = n; qs.forEach(function (q, k) { q.classList.toggle("on", k === n); }); dots.forEach(function (d, k) { d.classList.remove("on"); void d.offsetWidth; d.classList.toggle("on", k === n); }); }
+    dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); }); $("i", d).addEventListener("animationend", function () { show((i + 1) % qs.length); }); });
+    if (reduced) dots.forEach(function (d) { $("i", d).style.display = "none"; });
+  })();
+
+  /* S Handgezeichnet */
+  (function () {
+    var h = $("#scrib");
+    function play() { h.classList.remove("go"); void h.offsetWidth; requestAnimationFrame(function () { h.classList.add("go"); }); }
+    replay.S = play; onView(h, play);
+  })();
+
+  /* T Startbildschirm */
+  (function () {
+    var b = $("#homeBtn"), ic = $("#homeIcon"), how = $("#homeHow");
+    b.addEventListener("click", function () {
+      ic.classList.remove("in"); void ic.offsetWidth; ic.classList.add("in");
+      var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      how.textContent = ios ? "So geht’s am iPhone/iPad: Teilen-Symbol antippen → „Zum Home-Bildschirm“." : "So geht’s: im Browsermenü „App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen.";
+    });
+  })();
+
+  /* U AG-Wochenplan */
+  segment($("#agSeg"), function (b) { var c = b.dataset.c; $$(".ag").forEach(function (a) { a.classList.toggle("off", c !== "alle" && a.dataset.c.split(" ").indexOf(c) < 0); }); });
+
+  /* V Gruß am Seitenende */
+  (function () {
+    var box = $("#endbox"), done = false;
+    if (!("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting && !done) { done = true; box.classList.add("wave"); } }, { root: box, threshold: 1 });
+    io.observe($("#endSentinel"));
+  })();
+
+  /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
+  (function () {
+    var cards = $$(".card"), state = {}, db = null, col = null, saveT = {}, savedEl, local = false;
+    var tally = document.createElement("div"); tally.className = "tally"; tally.setAttribute("aria-live", "polite");
+    tally.innerHTML = '<span class="t-ja"><b>0</b> Ja</span><span class="t-merken"><b>0</b> Merken</span><span class="t-nein"><b>0</b> Nein</span><span class="t-offen"><b>0</b> offen</span><span class="saved">verbinde …</span>';
+    $(".grid").after(tally); savedEl = $(".saved", tally);
+    function count() {
+      var c = { ja: 0, merken: 0, nein: 0 }; cards.forEach(function (cd) { var v = state[cd.dataset.nr]; if (v && c[v.wahl] !== undefined) c[v.wahl]++; });
+      $(".t-ja b", tally).textContent = c.ja; $(".t-merken b", tally).textContent = c.merken; $(".t-nein b", tally).textContent = c.nein;
+      $(".t-offen b", tally).textContent = cards.length - c.ja - c.merken - c.nein;
+    }
+    function paint(cd) {
+      var v = state[cd.dataset.nr] || {}; cd.dataset.vote = v.wahl || "";
+      if (!v.wahl) cd.removeAttribute("data-vote");
+      $$(".vote-seg button", cd).forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === v.wahl); });
+      var inp = $(".vote-note input", cd); if (document.activeElement !== inp) inp.value = v.notiz || "";
+    }
+    function save(cd) {
+      var nr = cd.dataset.nr, v = state[nr] || {}; savedEl.textContent = "speichert …";
+      var row = { nr: +nr, titel: cd.dataset.titel, wahl: v.wahl || "", notiz: v.notiz || "", zeit: new Date().toISOString() };
+      if (!col) { try { localStorage.setItem("ideen3-wahl", JSON.stringify(state)); } catch (e) {} savedEl.textContent = "nur auf diesem Gerät gespeichert"; return; }
+      clearTimeout(saveT[nr]);
+      saveT[nr] = setTimeout(function () {
+        col.doc("idee-" + ("0" + nr).slice(-2)).set(row).then(function () { delete saveT[nr]; savedEl.textContent = "✓ gespeichert – Claude sieht deine Auswahl"; }, function (e) { delete saveT[nr]; savedEl.textContent = "Speichern fehlgeschlagen (" + (e && e.code || "Fehler") + ")"; });
+      }, 250);
+    }
+    cards.forEach(function (cd) {
+      var nr = $(".num", cd).textContent, h2 = $(".about h2", cd);
+      cd.dataset.nr = nr; cd.dataset.titel = h2.textContent.replace(/^\s*\d+\s*/, "");
+      var v = document.createElement("div"); v.className = "vote";
+      v.innerHTML = '<div class="vote-row"><span class="vote-q">Einbauen?</span><div class="vote-seg" role="group" aria-label="Entscheidung zu Idee ' + nr + '"><button type="button" data-v="ja" aria-pressed="false">Ja</button><button type="button" data-v="merken" aria-pressed="false">Merken</button><button type="button" data-v="nein" aria-pressed="false">Nein</button></div></div>' +
+        '<label class="vote-note"><span class="visually-hidden">Anmerkung zu Idee ' + nr + '</span><input type="text" maxlength="300" placeholder="Anmerkung (optional), z. B. „etwas schwächer“"></label>';
+      $(".about", cd).appendChild(v);
+      $$(".vote-seg button", v).forEach(function (b) { b.addEventListener("click", function () {
+        var s = state[nr] || (state[nr] = {}); s.wahl = s.wahl === b.dataset.v ? "" : b.dataset.v; paint(cd); count(); save(cd);
+      }); });
+      var inp = $("input", v), last = "";
+      inp.addEventListener("focus", function () { last = inp.value; });
+      inp.addEventListener("change", function () { if (inp.value === last) return; var s = state[nr] || (state[nr] = {}); s.notiz = inp.value.trim(); last = inp.value; save(cd); });
+    });
+    var vh = document.createElement("style"); vh.textContent = ".visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}"; document.head.appendChild(vh);
+    function fromLocal() { local = true; try { state = JSON.parse(localStorage.getItem("ideen3-wahl") || "{}"); } catch (e) { state = {}; } cards.forEach(paint); count(); savedEl.textContent = "nur auf diesem Gerät gespeichert"; }
+    count();
+    var timer = setTimeout(function () { if (!col) fromLocal(); }, 10000);
+    if (!window.claude || !window.claude.use) { clearTimeout(timer); fromLocal(); return; }
+    window.claude.use("db").then(function (d) {
+      if (!d) { clearTimeout(timer); fromLocal(); return; }
+      db = d; col = db.collection("auswahl");
+      col.onSnapshot(function (snap) {
+        clearTimeout(timer);
+        snap.docs.forEach(function (doc) { var x = doc.data() || {}; var nr = String(x.nr); if (saveT[nr]) return; /* eigene Änderung unterwegs */ state[nr] = { wahl: x.wahl || "", notiz: x.notiz || "" }; });
+        cards.forEach(paint); count(); if (!/gespeichert/.test(savedEl.textContent)) savedEl.textContent = "verbunden – Claude sieht deine Auswahl";
+      }, function () { clearTimeout(timer); col = null; fromLocal(); });
+    }, function () { clearTimeout(timer); fromLocal(); });
   })();
 })();
 </script>
