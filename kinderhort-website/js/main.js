@@ -591,6 +591,226 @@
   }
   if (note && !note.firstChild) note.hidden = true;
 
+  /* ---------- Termine merken: Datum fliegt im Bogen zum Zähler, gemerkte als Kalenderdatei ---------- */
+  var SAVED_KEY = "gemerkt";
+  function savedList() { try { return JSON.parse(store(SAVED_KEY) || "[]"); } catch (e) { return []; } }
+  function setSaved(list) { store(SAVED_KEY, JSON.stringify(list)); }
+  function calTarget() {
+    var m = $(".mobile-bar .cal-target");
+    if (m && m.offsetParent) return m;
+    return $('.main-nav a[href="aktuelles.html"]') || $('.main-nav a[href="#aktuelles"]');
+  }
+  function refreshSaved(pulse) {
+    var list = savedList();
+    $$(".nav-badge").forEach(function (b) {
+      b.textContent = list.length ? list.length : "";
+      b.classList.toggle("show", list.length > 0);
+      if (pulse) { b.classList.remove("pulse"); void b.offsetWidth; b.classList.add("pulse"); }
+    });
+    /* je Terminliste zählen, wie viele ihrer Termine gemerkt sind */
+    $$(".saved-row").forEach(function (row) {
+      var n = $$(".event[data-von]", row.closest("section") || document).filter(function (li) { return list.indexOf($(".save", li).getAttribute("data-key")) >= 0 && !li.hidden; }).length;
+      row.hidden = !n; $(".saved-n", row).textContent = n;
+    });
+  }
+  $$(".event .save").forEach(function (btn) {
+    var key = btn.getAttribute("data-key"), li = btn.closest(".event"), title = li.getAttribute("data-titel");
+    function paint(on) {
+      btn.classList.toggle("on", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-label", title + (on ? " gemerkt – nicht mehr merken" : " merken"));
+    }
+    paint(savedList().indexOf(key) >= 0);
+    btn.addEventListener("click", function () {
+      var list = savedList(), on = list.indexOf(key) < 0;
+      if (on) list.push(key); else list.splice(list.indexOf(key), 1);
+      setSaved(list);
+      paint(on);   /* sofort umschalten, erst danach die Flug-Animation */
+      var t = calTarget(), date = $(".date", li);
+      if (on && t && !reduced && date.animate) {
+        var a = date.getBoundingClientRect(), b = t.getBoundingClientRect();
+        var f = date.cloneNode(true);
+        f.className = "date flyer";
+        f.style.cssText = "left:" + a.left + "px;top:" + a.top + "px;width:" + a.width + "px;height:" + a.height + "px";
+        document.body.appendChild(f);
+        var dx = b.left + b.width / 2 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+        /* Bogen: Mittelpunkt liegt höher als die direkte Linie */
+        f.animate([
+          { transform: "translate(0,0) scale(1)", opacity: 1 },
+          { transform: "translate(" + dx * 0.5 + "px," + (dy * 0.5 - 90) + "px) scale(.7)", opacity: 1, offset: .5 },
+          { transform: "translate(" + dx + "px," + dy + "px) scale(.2)", opacity: .2 }
+        ], { duration: 600, easing: EASE_IO }).onfinish = function () { f.remove(); refreshSaved(true); };
+      } else refreshSaved(on);
+      toast(on ? "Termin gemerkt" : "Nicht mehr gemerkt", "Rückgängig", function () { btn.click(); });
+    });
+  });
+  refreshSaved(false);
+  function icsEsc(s) { return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n"); }
+  $$(".js-saved-ics").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var list = savedList(), stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+      var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Kinderhort Grombuehl//Webseite//DE", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+      var seen = {};
+      $$(".event[data-von]", b.closest("section") || document).forEach(function (li, i) {
+        var k = $(".save", li).getAttribute("data-key");
+        if (list.indexOf(k) < 0 || seen[k]) return;
+        seen[k] = 1;
+        var von = li.getAttribute("data-von").replace(/-/g, ""), bis = parse(li.getAttribute("data-ende"));
+        bis.setDate(bis.getDate() + 1);
+        lines.push("BEGIN:VEVENT", "UID:gemerkt-" + von + "-" + i + "@kinderhort-grombuehl.de", "DTSTAMP:" + stamp,
+          "DTSTART;VALUE=DATE:" + von, "DTEND;VALUE=DATE:" + iso(bis).replace(/-/g, ""),
+          "SUMMARY:" + icsEsc(li.getAttribute("data-titel")), "DESCRIPTION:" + icsEsc(li.getAttribute("data-text")), "END:VEVENT");
+      });
+      lines.push("END:VCALENDAR");
+      var url = URL.createObjectURL(new Blob([lines.join("\r\n") + "\r\n"], { type: "text/calendar" }));
+      var a = document.createElement("a"); a.href = url; a.download = "gemerkte-termine.ics"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      toast("Kalenderdatei erstellt");
+    });
+  });
+
+  /* ---------- Kita-Jahr als Zeitstrahl ---------- */
+  if (K && K.schliesszeiten && K.schliesszeiten.length) {
+    var first = parse(K.schliesszeiten[0].von), y0 = first.getMonth() >= 8 ? first.getFullYear() : first.getFullYear() - 1;
+    var DAYMS = 864e5, ystart = Date.UTC(y0, 8, 1), ylen = Math.round((Date.UTC(y0 + 1, 8, 1) - ystart) / DAYMS);
+    var dayIdx = function (dt) { return Math.round((Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()) - ystart) / DAYMS); };
+    var MON = ["Sep", "Okt", "Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug"];
+    $$("[data-yearline]").forEach(function (box) {
+      box.innerHTML = '<div class="yl-head"><strong>Das Kita-Jahr ' + y0 + "/" + (y0 + 1) + '</strong><span class="yl-legend"><i class="lg-closed"></i>geschlossen <i class="lg-today"></i>heute</span></div>' +
+        '<div class="yl-bar" role="slider" tabindex="0" aria-label="Tag im Kita-Jahr wählen" aria-valuemin="0" aria-valuemax="' + (ylen - 1) + '"><span class="yl-pin"></span></div>' +
+        '<div class="yl-months" aria-hidden="true">' + MON.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" +
+        '<p class="yl-info" aria-live="polite"></p>';
+      var bar = $(".yl-bar", box), pin = $(".yl-pin", box), info = $(".yl-info", box);
+      K.schliesszeiten.forEach(function (z) {
+        var s = dayIdx(parse(z.von)), e = dayIdx(parse(z.bis)) + 1, el = document.createElement("span");
+        el.className = "yl-closed"; el.title = z.name;
+        el.style.left = (s / ylen * 100) + "%"; el.style.width = Math.max(.5, (e - s) / ylen * 100) + "%";
+        bar.appendChild(el);
+      });
+      var ti = dayIdx(new Date());
+      if (ti >= 0 && ti < ylen) { var tm = document.createElement("span"); tm.className = "yl-today"; tm.style.left = (ti / ylen * 100) + "%"; bar.appendChild(tm); }
+      var cur = Math.min(ylen - 1, Math.max(0, ti));
+      function showDay(i, x) {
+        cur = i;
+        pin.style.left = x !== undefined ? x : (i + .5) / ylen * 100 + "%";
+        var dt = new Date(y0, 8, 1 + i), s = iso(dt), hit = null, next = null;
+        K.schliesszeiten.forEach(function (z) { if (s >= z.von && s <= z.bis) hit = z; if (!next && z.von > s) next = z; });
+        var reason = closedReason(dt), label = fmtLong(dt);
+        bar.setAttribute("aria-valuenow", i);
+        bar.setAttribute("aria-valuetext", label);
+        info.innerHTML = "";
+        var b = document.createElement("strong");
+        b.textContent = label + (hit ? " – geschlossen (" + hit.name + ")" : reason ? " – geschlossen (" + reason + ")" : " – geöffnet");
+        info.appendChild(b);
+        var sp = document.createElement("span");
+        if (next) { var n = dayIdx(parse(next.von)) - i; sp.textContent = "Nächste Schließzeit: " + next.name + " in " + n + (n === 1 ? " Tag" : " Tagen"); }
+        else sp.textContent = "Danach gilt der neue Ferienplan.";
+        info.appendChild(sp);
+      }
+      var dragging = false;
+      function at(e) {
+        var r = bar.getBoundingClientRect(), x = e.clientX - r.left, inside = Math.min(r.width, Math.max(0, x));
+        showDay(Math.min(ylen - 1, Math.floor(inside / r.width * ylen)), (inside + rubber(x - inside, 24)) + "px");
+      }
+      bar.addEventListener("pointerdown", function (e) { dragging = true; bar.setPointerCapture(e.pointerId); pin.style.transition = "none"; at(e); });
+      bar.addEventListener("pointermove", function (e) { if (dragging) at(e); });
+      function release() { if (!dragging) return; dragging = false; pin.style.transition = ""; showDay(cur); }
+      bar.addEventListener("pointerup", release);
+      bar.addEventListener("pointercancel", release);
+      bar.addEventListener("keydown", function (e) {
+        var k = { ArrowRight: 1, ArrowLeft: -1, PageUp: 7, PageDown: -7, Home: -999, End: 999 }[e.key];
+        if (!k) return;
+        e.preventDefault();
+        showDay(Math.min(ylen - 1, Math.max(0, cur + k)));
+      });
+      showDay(cur);
+    });
+  }
+
+  /* ---------- Fragen durchsuchen: Treffer rücken weich zusammen ---------- */
+  $$(".faq").forEach(function (faqBox) {
+    var input = $("#faq-suche", faqBox);
+    if (!input) return;
+    var items = $$("details", faqBox), count = $(".faq-count", faqBox), empty = $(".faq-empty", faqBox);
+    var norm = function (s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss"); };
+    items.forEach(function (d) { var sm = $("summary", d); sm.setAttribute("data-q", sm.textContent); });
+    function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    input.addEventListener("keydown", function (e) { if (e.key === "Escape" && input.value) { e.preventDefault(); input.value = ""; input.dispatchEvent(new Event("input")); } });
+    input.addEventListener("input", function () {
+      var v = input.value.trim(), nv = norm(v), before = new Map(), shown = 0;
+      items.forEach(function (d) { if (!d.hidden) before.set(d, d.getBoundingClientRect()); });
+      items.forEach(function (d) {
+        var sm = $("summary", d), q = sm.getAttribute("data-q"), hay = norm(q + " " + $("div", d).textContent);
+        var hit = !nv || nv.split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+        d.hidden = !hit;
+        if (hit) shown++;
+        var at = nv ? norm(q).indexOf(nv) : -1;
+        /* Umlaute ändern die Länge nicht, wenn wir im Original suchen; sonst nur ohne Markierung */
+        var raw = v ? q.toLowerCase().indexOf(v.toLowerCase()) : -1;
+        sm.innerHTML = raw >= 0 ? esc(q.slice(0, raw)) + "<mark>" + esc(q.slice(raw, raw + v.length)) + "</mark>" + esc(q.slice(raw + v.length)) : esc(q);
+        if (at < 0 && raw < 0) sm.innerHTML = esc(q);
+      });
+      empty.hidden = shown > 0;
+      count.textContent = nv ? shown + (shown === 1 ? " Frage" : " Fragen") : "";
+      if (reduced) return;
+      items.forEach(function (d) {
+        if (d.hidden) return;
+        var a = before.get(d), b = d.getBoundingClientRect();
+        if (!a) d.animate([{ opacity: 0, transform: "scale(.95)" }, { opacity: 1, transform: "none" }], { duration: 250, easing: EASE_OUT });
+        else if (Math.abs(a.top - b.top) > 1) d.animate([{ transform: "translateY(" + (a.top - b.top) + "px)" }, { transform: "none" }], { duration: 300, easing: EASE_IO });
+      });
+    });
+  });
+
+  /* ---------- Lesefortschritt und „Nach oben“ ---------- */
+  (function () {
+    var prog = document.createElement("div");
+    prog.className = "read-progress";
+    prog.setAttribute("aria-hidden", "true");
+    document.body.appendChild(prog);
+    var up = document.createElement("button");
+    up.type = "button";
+    up.className = "to-top";
+    up.setAttribute("aria-label", "Nach oben");
+    up.innerHTML = '<svg class="ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/></svg>' + svg('<path d="M6 14l6-6 6 6"/>', 20);
+    document.body.appendChild(up);
+    var ring = $(".ring circle", up), C = 2 * Math.PI * 22;
+    ring.style.strokeDasharray = C;
+    function upd() {
+      var doc = document.documentElement, max = doc.scrollHeight - innerHeight;
+      var long = doc.scrollHeight > innerHeight * 2.2, p = max > 0 ? Math.min(1, scrollY / max) : 0;
+      prog.style.scale = (long ? p : 0) + " 1";
+      ring.style.strokeDashoffset = C * (1 - p);
+      up.classList.toggle("show", long && p > 1 / 3);
+    }
+    addEventListener("scroll", upd, { passive: true });
+    addEventListener("resize", upd);
+    upd();
+    up.addEventListener("click", function () {
+      scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      /* Tastatur-Nutzer landen wieder am Seitenanfang */
+      var brand = $(".brand"); if (brand) setTimeout(function () { brand.focus({ preventScroll: true }); }, reduced ? 0 : 450);
+    });
+  })();
+
+  /* ---------- Seitenwechsel bei langsamer Verbindung ---------- */
+  /* unter 1 s nichts zeigen, ab 1 s Ladebalken, ab 10 s ein Hinweis */
+  (function () {
+    var t1 = null, t2 = null;
+    function reset() { clearTimeout(t1); clearTimeout(t2); document.body.classList.remove("nav-loading"); }
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest("a[href]");
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === "_blank" || a.hasAttribute("download")) return;
+      var url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || !/\.html$|\/$/.test(url.pathname) || (url.pathname === location.pathname && url.hash)) return;
+      reset();
+      t1 = setTimeout(function () { document.body.classList.add("nav-loading"); }, 1000);
+      t2 = setTimeout(function () { toast("Die Verbindung ist gerade langsam – die Seite lädt noch."); }, 10000);
+    });
+    addEventListener("pageshow", reset);
+    addEventListener("pagehide", function () { clearTimeout(t2); });
+  })();
+
   /* ---------- Ferienplan drucken ---------- */
   $$(".js-print-plan").forEach(function (b) {
     b.addEventListener("click", function () {

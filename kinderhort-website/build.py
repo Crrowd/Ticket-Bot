@@ -162,7 +162,8 @@ def header(active):
             continue
         cur = ' aria-current="page"' if href == active else ""
         cls = ' class="nav-cta"' if href == "kontakt.html" else ""
-        items.append(f'<li><a href="{href}"{cls}{cur}>{label}</a></li>')
+        badge = '<span class="nav-badge" aria-hidden="true"></span>' if href == "aktuelles.html" else ""
+        items.append(f'<li><a href="{href}"{cls}{cur}>{label}{badge}</a></li>')
     return f'''<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 <header class="site-header">
   <div class="container header-inner">
@@ -183,7 +184,7 @@ def header(active):
 MOBILE_BAR = f'''<nav class="mobile-bar no-print" aria-label="Schnellzugriff">
   <a href="tel:+4993127898920">{icon("phone", 22)}<span>Anrufen</span></a>
   <a href="{KRANK_MAIL}">{icon("mail", 22)}<span>Krankmelden</span></a>
-  <a href="aktuelles.html#termine">{icon("calendar", 22)}<span>Termine</span></a>
+  <a href="aktuelles.html#termine" class="cal-target">{icon("calendar", 22)}<span>Termine</span><span class="nav-badge" aria-hidden="true"></span></a>
   <button type="button" class="js-search">{icon("search", 22)}<span>Suche</span></button>
 </nav>'''
 
@@ -368,7 +369,11 @@ def faq(items):
     out = []
     for q, a in items:
         out.append(f'<details class="reveal"><summary>{q}</summary><div><p>{a}</p></div></details>')
-    return '<div class="faq">' + "".join(out) + "</div>"
+    search = ('<div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label>'
+              f'{icon("search", 20)}<input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search">'
+              '<span class="faq-count" aria-live="polite"></span></div>'
+              '<p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p>')
+    return '<div class="faq">' + search + "".join(out) + "</div>"
 
 def section(id_, kicker, title, intro, content, cls="", center=False):
     i = f"<p>{intro}</p>" if intro else ""
@@ -412,7 +417,7 @@ def plan_table():
 def ferienplan_section(cls="alt"):
     return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
-                   plan_table(), cls=cls)
+                   '<div class="yearline reveal" data-yearline></div>' + plan_table(), cls=cls)
 
 def abc_section(name, link_text):
     return f'''<section class="section tight">
@@ -435,8 +440,12 @@ def ev(r):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
     day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
     mon = f"{MONATE[b.month - 1]} {b.year}"
-    return (f'<li class="event reveal" data-ende="{b.isoformat()}"><div class="date"><b>{day}</b><span>{mon}</span></div>'
-            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p></li>')
+    key = f'{a.isoformat()}|{r["Titel"]}'
+    return (f'<li class="event reveal" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
+            f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
+            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p>'
+            f'<button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
+            f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button></li>')
 
 STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden>
         <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
@@ -556,7 +565,8 @@ home = f'''
         </ul>
         <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
         <div class="btn-row"><a class="btn btn-primary" href="aktuelles.html">Alle Termine {icon("arrow", 20)}</a>
-          <a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} In meinen Kalender</a></div>
+          <a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
+        <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
       </div>
       <div class="note-card reveal">
         <h3>Unterlagen zum Herunterladen</h3>
@@ -883,7 +893,8 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
     {"".join(ev(r) for r in TERMINE)}
   </ul>
   <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
-  <div class="btn-row"><a class="btn btn-primary" href="downloads/termine.ics" download>{icon("calendar", 20)} Termine in meinen Kalender</a></div>
+  <div class="btn-row"><a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
+  <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
   </div>
   <div class="note-card reveal">
     <h3>Sankt Martin</h3>

@@ -526,7 +526,7 @@ table.plan tfoot td { font-weight: 700; background: var(--rose); color: var(--in
 .note-card p { color: var(--fg-soft); }
 @media (max-width: 860px) { .notes-grid { grid-template-columns: minmax(0, 1fr); } }
 .event-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.event { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 18px; align-items: center; border-radius: var(--r-sm); padding: 12px; }
+.event { display: grid; grid-template-columns: 86px minmax(0, 1fr) auto; gap: 18px; align-items: center; border-radius: var(--r-sm); padding: 12px; }
 .event .date { background: var(--rose); color: var(--ink); border-radius: 10px; text-align: center; padding: 10px 6px; line-height: 1.1; }
 .event .date b { display: block; font: 700 1.6rem/1.1 var(--font-head); font-variant-numeric: tabular-nums; }
 .event .date span { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
@@ -981,3 +981,82 @@ body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0
   .kb-open .toasts { bottom: calc(16px + var(--kb, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) { .site-header, .subnav { transition: none !important; } }
+
+/* ==========================================================
+   Neue Funktionen: Termine merken, Kita-Jahr, Fragen-Suche, Lesefortschritt, Laden
+   ========================================================== */
+
+/* Termine merken */
+.event .save { position: relative; display: grid; place-items: center; min-width: 108px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 0; background: rgba(20, 42, 49, .35); color: var(--fg); font: 700 .88rem var(--font-body); cursor: pointer; transition: background var(--fast), color var(--fast), scale .12s var(--ease-out); }
+.event .save:hover { background: rgba(20, 42, 49, .55); }
+.event .save:active { scale: .97; }
+.event .save > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 6px; transition: opacity .2s var(--ease-out), filter .2s var(--ease-out), scale .2s var(--ease-out); }
+.event .save .b, .event .save.on .a { opacity: 0; filter: blur(4px); scale: .6; }
+.event .save.on { background: var(--ok); color: var(--deep); }
+.event .save.on .b { opacity: 1; filter: none; scale: 1; }
+@media (max-width: 520px) {
+  .event { grid-template-columns: 70px minmax(0, 1fr); }
+  .event .save { grid-column: 1 / -1; justify-self: start; }
+}
+.flyer { position: fixed; z-index: 800; margin: 0; pointer-events: none; }
+.saved-row { margin-top: 12px; }
+.main-nav > ul > li > a { position: relative; }
+.mobile-bar .cal-target { position: relative; }
+.nav-badge { position: absolute; top: 2px; right: 0; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--ok); color: var(--deep); font: 800 .7rem/18px var(--font-body); text-align: center; scale: 0; transition: scale .25s var(--ease-out); pointer-events: none; }
+.mobile-bar .nav-badge { top: 4px; right: calc(50% - 22px); }
+.nav-badge.show { scale: 1; }
+.nav-badge.pulse::after { content: ""; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid var(--ok); animation: ok-pulse .6s var(--ease-out); }
+
+/* Kita-Jahr als Zeitstrahl */
+.yearline { background: var(--surface); color: var(--on-surface); --fg-soft: var(--on-surface-soft); border-radius: var(--r); padding: 22px 24px 18px; box-shadow: var(--shadow); margin-bottom: 22px; display: grid; gap: 12px; }
+.yl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.yl-legend { display: inline-flex; gap: 14px; align-items: center; font-size: .82rem; color: var(--on-surface-soft); }
+.yl-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.lg-closed { background: var(--rose); } .lg-today { background: var(--ok); width: 3px !important; }
+.yl-bar { position: relative; height: 52px; border-radius: 12px; background: rgba(255, 255, 255, .1); touch-action: none; cursor: grab; }
+.yl-bar:active { cursor: grabbing; }
+.yl-bar:focus-visible { outline-color: var(--rose); }
+.yl-closed { position: absolute; top: 0; bottom: 0; background: var(--rose); border-radius: 3px; }
+.yl-today { position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; background: var(--ok); }
+.yl-pin { position: absolute; top: -8px; bottom: -8px; width: 3px; margin-left: -1.5px; background: var(--on-surface); border-radius: 2px; pointer-events: none; transition: left .3s var(--ease-out); }
+.yl-pin::after { content: ""; position: absolute; top: -7px; left: -7px; width: 17px; height: 17px; border-radius: 50%; background: var(--on-surface); box-shadow: 0 0 0 4px rgba(255, 255, 255, .22); }
+.yl-months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font-size: .72rem; color: var(--on-surface-soft); text-align: center; }
+.yl-info { margin: 0; min-height: 3.2em; }
+.yl-info strong { display: block; }
+.yl-info span { color: var(--on-surface-soft); font-size: .95rem; }
+@media (max-width: 520px) { .yl-months span:nth-child(even) { visibility: hidden; } }
+
+/* Fragen durchsuchen */
+.faq-search { display: flex; align-items: center; gap: 10px; background: var(--paper); color: var(--ink); border-radius: var(--r-sm); padding: 4px 16px; box-shadow: var(--shadow); margin-bottom: 6px; }
+.faq-search svg { flex: none; color: var(--ink-soft); }
+.faq-search input { flex: 1; min-width: 0; border: 0; background: none; outline: 0; font: 500 1.02rem var(--font-body); color: var(--ink); min-height: 48px; }
+.faq-search:focus-within { box-shadow: 0 0 0 3px var(--ink), var(--shadow); }
+.faq-count { font-size: .85rem; color: var(--ink-soft); white-space: nowrap; }
+.faq summary mark { background: var(--rose); color: var(--ink); border-radius: 3px; padding: 0 2px; }
+.faq-empty { margin: 4px 0; }
+
+/* Lesefortschritt und „Nach oben“ */
+.read-progress { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; height: 3px; background: var(--rose-deep); transform-origin: left; scale: 0 1; z-index: 150; pointer-events: none; }
+.to-top { position: fixed; right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 95; width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--ink); color: var(--on-surface); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-lg);
+  opacity: 0; scale: .95; translate: 0 10px; pointer-events: none; transition: opacity var(--t-exit) var(--ease-out), scale var(--t-exit) var(--ease-out), translate var(--t-exit) var(--ease-out); }
+.to-top.show { opacity: 1; scale: 1; translate: 0 0; pointer-events: auto; transition-duration: var(--t-enter); }
+.to-top:active { scale: .97; }
+.to-top .ring { position: absolute; inset: 0; rotate: -90deg; }
+.to-top .ring circle { fill: none; stroke: var(--rose); stroke-width: 3; }
+@media (max-width: 700px) { .to-top { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); width: 48px; height: 48px; } .kb-open .to-top { display: none; } }
+
+/* Seitenwechsel: Ladebalken erst nach 1 s */
+body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortschrittsanzeige */ background: linear-gradient(90deg, transparent, var(--rose-deep), transparent) 0 0 / 40% 100% no-repeat; animation: nav-load 1.1s var(--ease-in-out) infinite; }
+@keyframes nav-load { from { background-position: -40% 0; } to { background-position: 140% 0; } }
+
+@media print { .yearline, .faq-search, .to-top, .read-progress, .event .save, .saved-row { display: none !important; } }
+
+/* Fliegendes Datum behält seine Gestaltung außerhalb der Terminliste */
+.date.flyer { display: block; background: var(--rose); color: var(--ink); border-radius: 10px; text-align: center; padding: 10px 6px; line-height: 1.1; box-shadow: var(--shadow); }
+.date.flyer b { display: block; font: 700 1.6rem/1.1 var(--font-head); }
+.date.flyer span { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+/* Suchfeld ohne Standard-×; Esc leert das Feld */
+.faq-search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+/* „Nach oben“ weicht einer Kurzmeldung aus */
+.to-top { transition-property: opacity, scale, translate, bottom; }
+@media (max-width: 700px) { body:has(.toast) .to-top { bottom: calc(136px + env(safe-area-inset-bottom, 0px)); } }

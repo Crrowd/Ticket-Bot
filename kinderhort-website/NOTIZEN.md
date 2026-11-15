@@ -168,3 +168,19 @@ Außerdem: Räume ohne Foto stehen gesammelt in einer eigenen Zeile, bei ungerad
 ## Leiste und Tastatur (16.11.2026)
 - Kopfleiste verschwindet beim Runterscrollen (ab 120 px, nach 24 px in eine Richtung) und kommt beim Hochscrollen (12 px) zurück; Sprungmarken rücken dann nach oben. Bleibt sichtbar bei offenem Menü, Suche, Bildansicht und Tastaturfokus.
 - Handy-Tastatur: Höhe wird über `visualViewport` gemessen; Suchblatt sitzt direkt über der Tastatur, Schnellzugriff-Leiste wird ausgeblendet, Kurzmeldungen rücken hoch. Android/Chrome zusätzlich über `interactive-widget=resizes-content`.
+
+## Ideenkatalog – Entscheidung (16.11.2026)
+Katalog: `entwurf/ideen/ideen.html` (private Vorschau: https://claude.ai/artifact/K4pRXWzjjUMzevc4t5RsS3)
+
+**Eingebaut**
+- [x] 2 Termine merken – „Merken“ an jedem Termin (Startseite, Aktuelles); Datum fliegt im Bogen zum Zähler an „Aktuelles“ (Computer) bzw. „Termine“ (Handy); gemerkte Termine bleiben im Browser gespeichert und lassen sich als Kalenderdatei laden; Meldung mit „Rückgängig“.
+- [x] 3 Kita-Jahr als Zeitstrahl – über jeder Ferienplan-Tabelle; Schließzeiten aus `daten/schliesstage.csv`, „heute“-Linie, Zeiger ziehbar (Gummiband an den Enden) und per Pfeiltasten/Bild↑↓/Pos1/Ende bedienbar.
+- [x] 8 Fragen durchsuchen – Suchfeld über den häufigen Fragen; sucht in Frage und Antwort, verzeiht Umlaute, markiert den Begriff, Treffer rücken weich zusammen; Esc leert.
+- [x] 9 Lesefortschritt und „Nach oben“ – auf langen Seiten (über 2,2 Bildschirmhöhen) dünner Balken oben; ab einem Drittel Knopf mit Fortschrittsring; weicht am Handy Kurzmeldungen aus.
+- [x] 12 Laden nach Dauer – Seitenwechsel: unter 1 s nichts, ab 1 s Ladebalken oben, ab 10 s Hinweis „Verbindung langsam“; Bildansicht wie gehabt.
+
+**Gemerkt für später**
+- [ ] 5 Krankmeldung in drei Tipps (Gruppe → Zeitraum → Bestätigen). Braucht einen echten Versandweg (Formular-Postfach beim Hoster oder datenschutzkonformer Formulardienst) – bis dahin bleibt die vorbereitete E-Mail.
+- [ ] 7 Rundgang über den Grundriss. Braucht einen echten Grundriss des Hauses (Skizze reicht) und die Zuordnung der Fotos zu den Räumen.
+
+**Nicht gewünscht:** 1 Öffnungsuhr, 4 Tagesablauf in Echtzeit, 6 Speiseplan-Stapel, 10 Schriftgröße, 11 Mehrsprachigkeit.
