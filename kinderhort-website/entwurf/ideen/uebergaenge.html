@@ -129,6 +129,90 @@ button { font: inherit; color: inherit; }
 .filter { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .filter::-webkit-scrollbar { display: none; }
 .badge-in { display: inline-block; margin-left: 6px; font-size: .68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: var(--ok); color: var(--deep); vertical-align: 2px; }
+
+/* ---------- Nachtrag 20–35 ---------- */
+.blinds { display: grid; grid-template-rows: repeat(8, 1fr); }
+.blinds i { background: var(--rose); scale: 1 0; transform-origin: 50% 0; }
+.split-half { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; z-index: 4; }
+.split-half > .pg { width: 200%; }
+.split-half.r > .pg { left: -100%; }
+
+/* 25 Zeile für Zeile */
+.lines-demo { max-width: 420px; color: var(--on); font-size: 1.05rem; line-height: 1.7; }
+.lines-demo .ln2 { display: block; overflow: hidden; }
+.lines-demo .ln2 > span { display: block; translate: 0 105%; }
+.lines-demo.go .ln2 > span { translate: 0 0; transition: translate .7s var(--ease-out); transition-delay: calc(var(--i) * 90ms); }
+.lines-demo h3 { font-size: 1.4rem; margin-bottom: 8px; }
+
+/* 26 Fotoreihe rollt */
+.reel { overflow: hidden; }
+.reel-track { position: sticky; top: 70px; display: flex; gap: 10px; padding: 20px 0; will-change: transform; }
+.reel .sp:first-child { height: 70px; }
+.reel .sp:last-child { height: 420px; }
+.reel-track img { width: 150px; height: 110px; object-fit: cover; border-radius: 12px; flex: none; }
+.reel .sp { height: 110px; display: grid; place-items: center; color: var(--ink-soft); font-size: .8rem; }
+
+/* 27 Abschnitt schiebt sich heran */
+.near section { margin: 14px; padding: 22px 18px; border-radius: 24px; background: #F3F8F7; color: var(--ink); display: grid; gap: 8px; transform-origin: 50% 0; will-change: transform; }
+.near section:nth-child(odd) { background: #2D6A6A; color: var(--on); }
+.near h5 { margin: 0; font-size: 1.15rem; } .near i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.15); }
+.near section:nth-child(odd) i { background: rgba(255,255,255,.2); }
+
+/* 28 Bild bleibt, Text wandert */
+.tell { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; padding: 0 12px; }
+.tell-pic { position: sticky; top: 12px; height: 150px; margin-top: 12px; border-radius: 14px; overflow: hidden; }
+.tell-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.06; transition: opacity .5s, scale .8s var(--ease-out); }
+.tell-pic img.on { opacity: 1; scale: 1; }
+.tell-txt > div { min-height: 190px; padding-top: 30px; color: var(--ink); opacity: .35; transition: opacity .3s; }
+.tell-txt > div.on { opacity: 1; }
+.tell-txt b { display: block; font-size: 1.05rem; } .tell-txt span { font-size: .84rem; color: var(--ink-soft); }
+
+/* 29 Lichtkante */
+.shine { position: relative; overflow: hidden; }
+.shine::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); translate: 0 0; pointer-events: none; }
+.shine:hover::after, .shine:focus-visible::after { translate: 400% 0; transition: translate .7s var(--ease-out); }
+.btns-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* 30 Pfeil fliegt durch */
+.fly svg { transition: none; }
+.fly:hover svg, .fly:focus-visible svg { animation: arrfly .5s var(--ease-io); }
+@keyframes arrfly { 45% { translate: 18px 0; opacity: 0; } 46% { translate: -18px 0; opacity: 0; } 100% { translate: 0 0; opacity: 1; } }
+
+/* 31 Karten heben sich an */
+.liftc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 440px; width: 100%; }
+.liftc a { display: block; border-radius: 14px; overflow: hidden; background: #F3F8F7; color: var(--ink); text-decoration: none; box-shadow: 0 4px 10px -6px rgba(0,0,0,.4); transition: translate .3s var(--ease-out), box-shadow .3s var(--ease-out); }
+.liftc a:hover, .liftc a:focus-visible { translate: 0 -6px; box-shadow: 0 18px 28px -14px rgba(0,0,0,.55); }
+.liftc img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; transition: scale .6s var(--ease-out); }
+.liftc a:hover img { scale: 1.04; }
+.liftc span { display: block; padding: 8px 10px; font-size: .82rem; font-weight: 600; }
+
+/* 32 Häkchen zeichnet sich */
+.checks { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.chk { display: inline-flex; align-items: center; gap: 10px; border: 0; background: rgba(255,255,255,.12); color: var(--on); padding: 10px 16px; border-radius: 12px; font: 600 .9rem var(--font); cursor: pointer; transition: background .2s; }
+.chk[aria-pressed="true"] { background: #F3F8F7; color: var(--ink); }
+.chk i { width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; display: grid; place-items: center; transition: background .2s, border-color .2s; }
+.chk[aria-pressed="true"] i { background: #2D6A6A; border-color: #2D6A6A; }
+.chk svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .3s var(--ease-out) .05s; }
+.chk[aria-pressed="true"] svg { stroke-dashoffset: 0; }
+
+/* 33 Fotos wischen herein */
+.wipe { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 440px; width: 100%; }
+.wipe img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 12px; clip-path: inset(0 100% 0 0 round 12px); scale: 1.1; }
+.wipe.go img { clip-path: inset(0 0 0 0 round 12px); scale: 1; transition: clip-path .8s var(--ease-io), scale 1.2s var(--ease-out); transition-delay: calc(var(--i) * 120ms); }
+
+/* 34 Wimpel zur Begrüßung */
+.hello-flags { width: 100%; max-width: 460px; height: 150px; display: grid; place-items: center; }
+.hello-flags svg { width: 100%; height: 90px; overflow: visible; }
+.hello-flags .line { fill: none; stroke: #F3F8F7; stroke-width: 1.4; }
+.hello-flags .f { transform-box: fill-box; transform-origin: 50% 0; }
+.hello-flags.go .f { animation: helloswing 1.4s cubic-bezier(.3,1.6,.5,1) both; animation-delay: calc(var(--i) * 45ms); }
+@keyframes helloswing { 0% { rotate: -70deg; opacity: 0; } 15% { opacity: 1; } 55% { rotate: 14deg; } 80% { rotate: -5deg; } 100% { rotate: 0deg; } }
+
+/* 35 Menü-Unterstrich wandert */
+.navline { position: relative; display: flex; gap: 4px; background: rgba(243,248,247,.92); padding: 8px 10px; border-radius: 14px; }
+.navline a { position: relative; z-index: 1; padding: 8px 12px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .88rem; }
+.navline .ul { position: absolute; bottom: 8px; height: 3px; border-radius: 2px; background: var(--rose-deep, #C9A49E); transition: translate .35s var(--ease-io), width .35s var(--ease-io), opacity .2s; opacity: 0; left: 0; }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -163,7 +247,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Übergänge</span>
-    <h1>19 Übergänge zum Ausprobieren</h1>
+    <h1>35 Übergänge und Animationen</h1>
     <p>Wie soll sich die Seite bewegen, wenn man von einer Seite zur nächsten wechselt, scrollt oder etwas aufklappt? Jede Karte ist live: oben auf „Weiter“ tippen (oder direkt in den Mini-Browser), in den Boxen scrollen.</p>
   </header>
   <p class="sync-note">Unter jedem Übergang kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen. Für den Seitenwechsel reicht am Ende <b>ein</b> Favorit – die anderen können für besondere Stellen bleiben.</p>
@@ -174,6 +258,7 @@ button { font: inherit; color: inherit; }
     <button type="button" data-f="seite" aria-pressed="false">Seitenwechsel</button>
     <button type="button" data-f="abschnitt" aria-pressed="false">Abschnitte</button>
     <button type="button" data-f="element" aria-pressed="false">Elemente</button>
+    <button type="button" data-f="mikro" aria-pressed="false">Kleine Animationen</button>
     <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
   </div>
 
@@ -291,6 +376,102 @@ button { font: inherit; color: inherit; }
       <div class="stage"><div class="kb" id="kb"><img src="img/p2160110-800.webp" alt="" class="on"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""><span class="cap2" id="kbCap">Kinderkrippe</span></div></div>
       <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">19</span> Bilderwechsel mit langsamer Kamerafahrt</h2><p>Ein großes Foto wechselt alle paar Sekunden in das nächste, dabei fährt die „Kamera“ ganz langsam heran – wie in einem Dokumentarfilm. Für den Startbereich statt der festen Collage, oder für einen Bereichskopf.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="blinds"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">20</span> Jalousie</h2><p>Acht rosé Streifen schließen sich wie eine Jalousie von oben nach unten und öffnen sich auf der neuen Seite wieder. Rhythmisch und freundlich, ohne Richtung.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="flip"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">21</span> Seite blättert um</h2><p>Die alte Seite dreht sich wie ein Blatt im Buch zur Seite weg, die neue liegt darunter. Passt zu Elternbriefen oder dem Ferienplan – eher für besondere Stellen.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="diag"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">22</span> Schräg wischen</h2><p>Die neue Seite schiebt sich mit einer schrägen Kante von links unten nach rechts oben über die alte. Etwas lebhafter als das Überblenden, aber ruhig.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="split"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">23</span> Seite öffnet sich wie eine Tür</h2><p>Die alte Seite teilt sich in der Mitte und gleitet nach links und rechts auseinander – wie eine Schiebetür, hinter der die neue Seite wartet.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="swing"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">24</span> Weicher Schwenk</h2><p>Die alte Seite dreht sich minimal weg, die neue schwenkt von der anderen Seite herein, mit etwas Tiefe – als würde man sich im Raum umdrehen.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="lines-demo" id="linesDemo"><h3><span class="ln2"><span style="--i:0">Schön, dass Sie da sind</span></span></h3><span class="ln2"><span style="--i:1">Herzlich willkommen auf den Seiten</span></span><span class="ln2"><span style="--i:2">des Kath. Kinder- und Jugendhortes</span></span><span class="ln2"><span style="--i:3">Grombühl. Wir freuen uns, dass Sie sich</span></span><span class="ln2"><span style="--i:4">für unsere Kita interessieren.</span></span></div><button type="button" class="replay" data-replay="LN">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">25</span> Text steigt Zeile für Zeile auf</h2><p>Ein Begrüßungstext erscheint Zeile für Zeile, jede steigt aus einer unsichtbaren Kante auf. Wie bei den Überschriften, die schon Wort für Wort aufsteigen – nur für ausgewählte kurze Texte.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox reel" id="reelBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="sp">nach unten scrollen</div><div class="reel-track" id="reelTrack"><img src="img/p2160110-800.webp" alt=""><img src="img/turnraum-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><img src="img/p2160031-800.webp" alt=""><img src="img/werkraum-800.webp" alt=""><img src="img/lesecke-800.webp" alt=""><img src="img/maltisch-800.webp" alt=""></div><div class="sp"></div><div class="sp"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">26</span> Fotoreihe rollt beim Scrollen</h2><p>Eine Reihe Fotos wandert beim Scrollen langsam zur Seite, wie ein Filmstreifen. Man sieht viele Räume, ohne selbst zu blättern. Bei „Bewegung reduzieren“ steht sie still.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox near" id="nearBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h5>Unsere Bereiche</h5><i></i><i style="width:60%"></i></section><section><h5>Das zeichnet uns aus</h5><i></i><i style="width:70%"></i></section><section><h5>Termine</h5><i></i><i style="width:50%"></i></section><section><h5>Kontakt</h5><i></i><i style="width:65%"></i></section></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">27</span> Abschnitt schiebt sich heran</h2><p>Abschnitte kommen beim Scrollen leicht verkleinert von unten und wachsen auf volle Größe, sobald sie in der Mitte sind. Gibt der Seite Tiefe, ohne dass etwas springt.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox" id="tellBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="tell"><div class="tell-pic"><img src="img/p2160110-800.webp" alt="" class="on"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""></div><div class="tell-txt"><div class="on"><b>Kinderkrippe</b><span>Ab 11 Monaten, Sonnen- und Sternengruppe</span></div><div><b>Kindergarten</b><span>3 Jahre bis Einschulung, Bären, Bienen, Spatzen</span></div><div><b>Kinderhort</b><span>Ab der Einschulung, bis 18:00 Uhr</span></div></div></div></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">28</span> Bild bleibt, Text wandert</h2><p>Ein Foto bleibt stehen, während die Texte daneben vorbeiziehen; zu jedem Text blendet das passende Foto über. So erzählt man drei Bereiche wie eine kleine Geschichte.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="btns-row"><button type="button" class="btn shine">Platz anfragen</button><button type="button" class="btn ghost shine">Kontakt aufnehmen</button></div><p class="hint">Mit der Maus über einen Knopf fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">29</span> Lichtkante über den Knopf</h2><p>Fährt man über einen wichtigen Knopf, gleitet einmal eine weiche Lichtkante darüber – wie ein Sonnenstrahl auf glänzendem Papier. Nur bei den ein, zwei Hauptknöpfen.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="btns-row"><button type="button" class="btn fly">Unsere Bereiche <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="btn ghost fly">Alle Termine <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div><p class="hint">Mit der Maus über einen Knopf fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">30</span> Pfeil fliegt durch</h2><p>Der Pfeil in einem Knopf fliegt beim Darüberfahren nach rechts hinaus und kommt von links wieder herein – eine kleine Einladung, weiterzugehen. Jetzt rutscht er nur ein Stück.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="liftc"><a href="#"><img src="img/p2160110-800.webp" alt=""><span>Kinderkrippe</span></a><a href="#"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><span>Kindergarten</span></a><a href="#"><img src="img/kreatviraum-5-1-800.webp" alt=""><span>Kinderhort</span></a></div><p class="hint">Mit der Maus über eine Karte fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">31</span> Karten heben sich an</h2><p>Karten heben sich beim Darüberfahren ein paar Pixel an und bekommen einen weicheren, tieferen Schatten, das Foto zoomt kaum merklich. Gerader und ruhiger als das Kippen.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="checks"><button type="button" class="chk" aria-pressed="false"><i><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></i>Termin gemerkt</button><button type="button" class="chk" aria-pressed="true"><i><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></i>Gelesen</button></div><p class="hint">Antippen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">32</span> Häkchen zeichnet sich</h2><p>Wo etwas abgehakt oder gemerkt wird, zeichnet sich das Häkchen mit einem Strich, statt einfach zu erscheinen. Klein, aber man sieht, dass es geklappt hat.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="wipe" id="wipe"><img src="img/turnraum-800.webp" alt="" style="--i:0"><img src="img/werkraum-800.webp" alt="" style="--i:1"><img src="img/lesecke-800.webp" alt="" style="--i:2"></div><button type="button" class="replay" data-replay="WP">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">33</span> Fotos wischen herein</h2><p>Fotos erscheinen beim Hineinscrollen nicht einfach, sondern werden von links nach rechts aufgedeckt und zoomen dabei leicht zurück. Die Raumfotos decken sich schon von oben auf – das wäre die waagrechte Variante.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="hello-flags" id="helloFlags"><svg viewBox="0 0 480 60" preserveAspectRatio="none" aria-hidden="true"><path class="line" d="M0 4 Q240 50 480 4"/><path class="f" style="--i:0" d="M16 6.0 l18 0 -9 22z" fill="#D4B5B0"/><path class="f" style="--i:1" d="M49 12.2 l18 0 -9 22z" fill="#A8C5C0"/><path class="f" style="--i:2" d="M82 17.5 l18 0 -9 22z" fill="#F3F8F7"/><path class="f" style="--i:3" d="M115 21.6 l18 0 -9 22z" fill="#D4B5B0"/><path class="f" style="--i:4" d="M148 24.7 l18 0 -9 22z" fill="#A8C5C0"/><path class="f" style="--i:5" d="M181 26.8 l18 0 -9 22z" fill="#F3F8F7"/><path class="f" style="--i:6" d="M214 27.9 l18 0 -9 22z" fill="#D4B5B0"/><path class="f" style="--i:7" d="M247 27.9 l18 0 -9 22z" fill="#A8C5C0"/><path class="f" style="--i:8" d="M280 26.8 l18 0 -9 22z" fill="#F3F8F7"/><path class="f" style="--i:9" d="M313 24.7 l18 0 -9 22z" fill="#D4B5B0"/><path class="f" style="--i:10" d="M346 21.6 l18 0 -9 22z" fill="#A8C5C0"/><path class="f" style="--i:11" d="M379 17.5 l18 0 -9 22z" fill="#F3F8F7"/><path class="f" style="--i:12" d="M412 12.2 l18 0 -9 22z" fill="#D4B5B0"/><path class="f" style="--i:13" d="M445 6.0 l18 0 -9 22z" fill="#A8C5C0"/></svg></div><button type="button" class="replay" data-replay="HF">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">34</span> Wimpel schwingen zur Begrüßung</h2><p>Beim ersten Erscheinen schwingen die Wimpel einer Kette nacheinander ein, federn kurz nach und kommen zur Ruhe. Für die Wimpel im Fuß oder im Logo, einmal pro Besuch.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><nav class="navline" id="navline" aria-label="Beispielmenü"><span class="ul"></span><a href="#">Startseite</a><a href="#">Bereiche</a><a href="#">Aktuelles</a><a href="#">Downloads</a></nav><p class="hint">Mit der Maus über das Menü fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">35</span> Strich wandert im Menü mit</h2><p>Im Menü am Computer folgt ein rosé Strich der Maus von Eintrag zu Eintrag und dehnt sich auf die Breite des Wortes. Zeigt, wo man gerade hinzeigt, ohne laute Flächen.</p></div>
     </article>
   </div>
   <p class="foot">Alle Übergänge beachten „Bewegung reduzieren“ in den Geräte-Einstellungen – dann wechselt die Seite ohne Bewegung.</p>
@@ -416,6 +597,58 @@ button { font: inherit; color: inherit; }
   (function () { var imgs = $$("#kb img"), cap = $("#kbCap"), names = ["Kinderkrippe", "Kindergarten", "Kinderhort"], i = 0;
     if (reduced) return;
     setInterval(function () { imgs[i].classList.remove("on"); i = (i + 1) % imgs.length; void imgs[i].offsetWidth; imgs[i].classList.add("on"); cap.textContent = names[i]; }, 4200); })();
+
+
+  /* ---------- Nachtrag: weitere Seitenwechsel ---------- */
+  KIND.blinds = function (a, b, d, pt, vp) { var o = document.createElement("div"); o.className = "overlay blinds"; for (var i = 0; i < 8; i++) o.appendChild(document.createElement("i")); vp.appendChild(o); b.style.visibility = "hidden"; var bs = Array.prototype.slice.call(o.children);
+    return Promise.all(bs.map(function (x, i) { return anim(x, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], { duration: 260, delay: i * 35, easing: OUT }); })).then(function () { b.style.visibility = ""; a.style.visibility = "hidden";
+      return Promise.all(bs.map(function (x, i) { x.style.transformOrigin = "50% 100%"; return anim(x, [{ transform: "scaleY(1)" }, { transform: "scaleY(0)" }], { duration: 260, delay: i * 35, easing: "ease-in" }); })); }).then(function () { o.remove(); a.style.visibility = ""; }); };
+  KIND.flip = function (a, b, d, pt, vp) { vp.style.perspective = "1200px"; a.style.zIndex = 3; a.style.transformOrigin = d > 0 ? "0 50%" : "100% 50%";
+    return Promise.all([anim(a, [{ transform: "rotateY(0)", boxShadow: "0 0 0 rgba(0,0,0,0)" }, { transform: "rotateY(" + (-95 * d) + "deg)", boxShadow: "20px 0 40px rgba(0,0,0,.35)" }], { duration: 650, easing: IO }), anim(b, [{ filter: "brightness(.8)" }, { filter: "brightness(1)" }], { duration: 650 })]).then(function () { vp.style.perspective = ""; a.style.transformOrigin = ""; }); };
+  KIND.diag = function (a, b, d) { b.style.zIndex = 2; var from = d > 0 ? "polygon(0 100%, 0 100%, 0 100%, 0 100%)" : "polygon(100% 0, 100% 0, 100% 0, 100% 0)";
+    return anim(b, [{ clipPath: from }, { clipPath: "polygon(0 -60%, 160% 100%, 0 100%, 0 100%)", offset: .01 }, { clipPath: "polygon(0 0, 250% 0, 0 250%, 0 100%)" }], { duration: 560, easing: IO }); };
+  KIND.split = function (a, b, d, pt, vp) { var l = document.createElement("div"), r = document.createElement("div"); l.className = "split-half"; r.className = "split-half r"; l.style.left = "0"; r.style.right = "0";
+    l.appendChild(a.cloneNode(true)); r.appendChild(a.cloneNode(true)); vp.appendChild(l); vp.appendChild(r); a.style.visibility = "hidden";
+    return Promise.all([anim(l, [{ transform: "none" }, { transform: "translateX(-100%)" }], { duration: 600, easing: IO }), anim(r, [{ transform: "none" }, { transform: "translateX(100%)" }], { duration: 600, easing: IO }), anim(b, [{ transform: "scale(.96)", filter: "brightness(.85)" }, { transform: "none", filter: "brightness(1)" }], { duration: 600, easing: OUT })]).then(function () { l.remove(); r.remove(); a.style.visibility = ""; }); };
+  KIND.swing = function (a, b, d, pt, vp) { vp.style.perspective = "900px";
+    return Promise.all([anim(a, [{ transform: "none", opacity: 1 }, { transform: "rotateY(" + (-18 * d) + "deg) translateX(" + (-12 * d) + "%)", opacity: 0 }], { duration: 380, easing: "ease-in" }), anim(b, [{ transform: "rotateY(" + (18 * d) + "deg) translateX(" + (12 * d) + "%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 460, delay: 140, easing: OUT })]).then(function () { vp.style.perspective = ""; }); };
+
+  /* ---------- Text Zeile für Zeile ---------- */
+  (function () { var el = $("#linesDemo"); function play() { el.classList.remove("go"); void el.offsetWidth; requestAnimationFrame(function () { el.classList.add("go"); }); } replay.LN = play; onView(el, play); })();
+
+  /* ---------- Fotoreihe rollt ---------- */
+  (function () { var box = $("#reelBox"), tr = $("#reelTrack"); if (reduced) return;
+    function upd() { var p = box.scrollTop / Math.max(1, box.scrollHeight - box.clientHeight); tr.style.transform = "translateX(" + (-p * (tr.scrollWidth - box.clientWidth + 40)).toFixed(1) + "px)"; }
+    box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* ---------- Abschnitt schiebt sich heran ---------- */
+  (function () { var box = $("#nearBox"), ss = $$("section", box); if (reduced) return;
+    function upd() { var h = box.clientHeight, top = box.getBoundingClientRect().top;
+      ss.forEach(function (x) { var r = x.getBoundingClientRect(), p = Math.max(0, Math.min(1, 1 - (r.top - top - h * .25) / (h * .6))); x.style.transform = "scale(" + (.9 + p * .1).toFixed(3) + ")"; x.style.opacity = (.5 + p * .5).toFixed(2); }); }
+    box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* ---------- Bild bleibt, Text wandert ---------- */
+  (function () { var box = $("#tellBox"), imgs = $$(".tell-pic img", box), ts = $$(".tell-txt > div", box);
+    function upd() { var mid = box.getBoundingClientRect().top + box.clientHeight * .45, cur = 0; ts.forEach(function (t, i) { if (t.getBoundingClientRect().top < mid) cur = i; });
+      ts.forEach(function (t, i) { t.classList.toggle("on", i === cur); }); imgs.forEach(function (im, i) { im.classList.toggle("on", i === cur); }); }
+    box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* ---------- Häkchen ---------- */
+  $$(".chk").forEach(function (b) { b.addEventListener("click", function () { b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); }); });
+  $$(".liftc a, .navline a").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); }); });
+
+  /* ---------- Fotos wischen herein ---------- */
+  (function () { var el = $("#wipe"); function play() { el.classList.remove("go"); void el.offsetWidth; requestAnimationFrame(function () { el.classList.add("go"); }); } replay.WP = play; onView(el, play); })();
+
+  /* ---------- Wimpel zur Begrüßung ---------- */
+  (function () { var el = $("#helloFlags"); function play() { el.classList.remove("go"); void el.offsetWidth; requestAnimationFrame(function () { el.classList.add("go"); }); } replay.HF = play; onView(el, play); })();
+
+  /* ---------- Strich wandert im Menü ---------- */
+  (function () { var nav = $("#navline"), ul = $(".ul", nav), as = $$("a", nav), cur = as[0];
+    function to(a, show) { ul.style.width = (a.offsetWidth - 24) + "px"; ul.style.translate = (a.offsetLeft + 12) + "px 0"; ul.style.opacity = show ? 1 : 0; }
+    as.forEach(function (a) { a.addEventListener("mouseenter", function () { to(a, true); }); a.addEventListener("focus", function () { to(a, true); }); a.addEventListener("click", function () { cur = a; }); });
+    nav.addEventListener("mouseleave", function () { to(cur, true); });
+    requestAnimationFrame(function () { ul.style.transition = "none"; to(cur, true); void ul.offsetWidth; ul.style.transition = ""; }); })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {

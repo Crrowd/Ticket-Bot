@@ -301,3 +301,10 @@ Bestandsaufnahme mit dem Plugin-Leitfaden „unslop“ (Polier-Modus, Farben/Sch
 - Kopfleiste: Name am Computer zweizeilig, damit der Geöffnet-Punkt ihn nicht überdeckt
 Bewusst behalten (vom Hort gewählt): Wortwolke, Jahreszeiten, Tiefe beim Scrollen, Collage-Neigung, Tageslicht, Licht unter der Maus, Magnet-Knöpfe, Konfetti, pulsierender Geöffnet-Punkt.
 Vergleichsbilder: `entwurf/unslop/`
+
+## Übergänge – Nachtrag 20–35 (15.11.2026)
+Seitenwechsel: 20 Jalousie · 21 Seite blättert um · 22 Schräg wischen · 23 Seite öffnet sich wie eine Tür · 24 Weicher Schwenk
+Abschnitte: 25 Text steigt Zeile für Zeile auf · 26 Fotoreihe rollt beim Scrollen · 27 Abschnitt schiebt sich heran · 28 Bild bleibt, Text wandert
+Kleine Animationen: 29 Lichtkante über den Knopf · 30 Pfeil fliegt durch · 31 Karten heben sich an · 32 Häkchen zeichnet sich · 33 Fotos wischen herein · 34 Wimpel schwingen zur Begrüßung · 35 Strich wandert im Menü mit
+
+Entscheidung offen.
