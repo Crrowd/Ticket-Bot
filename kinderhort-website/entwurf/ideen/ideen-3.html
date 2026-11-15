@@ -388,6 +388,130 @@ button { font: inherit; color: inherit; }
 .endbox.wave .hand { animation: hand .5s ease-in-out 4 .4s; }
 @keyframes hand { 50% { rotate: 18deg; } }
 
+/* 23 Eingewöhnung */
+.settle { width: 100%; max-width: 500px; display: grid; gap: 14px; }
+.settle-track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); }
+.settle-track::before { content: ""; position: absolute; left: 10%; right: 10%; top: 17px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.18); }
+.settle-fill { position: absolute; left: 10%; top: 17px; height: 4px; border-radius: 2px; background: var(--rose); width: 0; transition: width .5s var(--ease-io); }
+.settle-step { position: relative; display: grid; justify-items: center; gap: 6px; border: 0; background: none; color: var(--on-soft); cursor: pointer; font: 600 .75rem var(--font); padding: 0; }
+.settle-step i { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 3px solid rgba(255,255,255,.25); font-style: normal; font-size: 1.05rem; transition: background .3s, border-color .3s, scale .35s var(--ease-out); }
+.settle-step.done i { background: var(--rose); border-color: var(--rose); }
+.settle-step[aria-current="step"] i { scale: 1.15; border-color: var(--paper); }
+.settle-step[aria-current="step"] { color: var(--on); }
+.settle-card { background: rgba(255,255,255,.1); border-radius: 14px; padding: 14px 16px; min-height: 108px; }
+.settle-card h3 { font-size: 1rem; margin-bottom: 4px; }
+.settle-card p { font-size: .9rem; color: var(--on-soft); }
+.settle-card .who { display: flex; gap: 8px; margin-top: 10px; }
+.settle-card .who span { font-size: .74rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.14); }
+
+/* 24 Team */
+.team { width: 100%; max-width: 480px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.member { border: 0; background: rgba(255,255,255,.08); border-radius: 16px; padding: 12px 6px 10px; color: var(--on); cursor: pointer; display: grid; justify-items: center; gap: 6px; font: inherit; transition: background .2s, translate .3s var(--ease-out); }
+.member:hover { background: rgba(255,255,255,.16); translate: 0 -3px; }
+.member[aria-expanded="true"] { background: var(--paper); color: var(--ink); }
+.avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 1.05rem; color: var(--ink); }
+.member b { font-size: .78rem; } .member small { font-size: .68rem; opacity: .8; }
+.team-detail { grid-column: 1 / -1; background: var(--paper); color: var(--ink); border-radius: 14px; padding: 12px 14px; font-size: .9rem; display: none; }
+.team-detail.open { display: block; animation: rise .35s var(--ease-out); }
+
+/* 25 Pinnwand */
+.board { position: relative; width: 100%; max-width: 480px; height: 250px; border-radius: 14px; background: #C9A88A radial-gradient(rgba(0,0,0,.08) 1px, transparent 1.4px) 0 0 / 7px 7px; box-shadow: inset 0 0 0 8px #A9876A; }
+.pic { position: absolute; width: 112px; background: #fff; padding: 7px 7px 20px; box-shadow: 0 8px 14px -6px rgba(0,0,0,.45); rotate: var(--r); transition: rotate .4s cubic-bezier(.34,1.56,.64,1), scale .3s var(--ease-out), z-index 0s; cursor: pointer; border: 0; }
+.pic:hover, .pic:focus-visible { rotate: 0deg; scale: 1.12; z-index: 3; }
+.pic svg { display: block; width: 100%; height: auto; background: #FFFDF7; }
+.pic::before { content: ""; position: absolute; left: 50%; top: -7px; width: 44px; height: 15px; translate: -50% 0; rotate: -4deg; background: rgba(243,248,247,.75); box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+.pic span { position: absolute; left: 0; right: 0; bottom: 3px; font: 600 .62rem var(--font); color: #556; text-align: center; }
+.pic svg path, .pic svg circle { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+/* 26 Pflanze als Lesefortschritt */
+.growbox { position: relative; width: 100%; max-width: 420px; height: 250px; border-radius: 16px; overflow: hidden; background: var(--bg); color: var(--ink); }
+.growbox .scroller { position: absolute; inset: 0; overflow-y: auto; padding: 18px 90px 18px 18px; overscroll-behavior: contain; }
+.growbox .scroller i { display: block; height: 11px; margin-bottom: 10px; border-radius: 6px; background: rgba(30,59,68,.13); }
+.growbox .scroller i:nth-child(4n) { width: 60%; margin-bottom: 22px; }
+.plant { position: absolute; right: 10px; bottom: 8px; width: 70px; height: 150px; pointer-events: none; }
+.plant .stem { fill: none; stroke: #4F8A6E; stroke-width: 4; stroke-linecap: round; }
+.plant .leaf { fill: #6FAF8C; transform-box: fill-box; scale: 0; transition: scale .4s cubic-bezier(.34,1.56,.64,1); }
+.plant .leaf.l { transform-origin: 100% 100%; } .plant .leaf.r { transform-origin: 0 100%; }
+.plant .leaf.on { scale: 1; }
+.plant .bloom { fill: var(--rose); transform-box: fill-box; transform-origin: center; scale: 0; transition: scale .5s cubic-bezier(.34,1.56,.64,1); }
+.plant .bloom.on { scale: 1; }
+.plant .pot { fill: #B9876F; }
+
+/* 27 Fragen-Helfer */
+.ask2 { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: 1fr auto; height: 290px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); }
+.chat { overflow-y: auto; padding: 14px; display: grid; gap: 8px; align-content: start; overscroll-behavior: contain; }
+.msg { max-width: 85%; padding: 9px 12px; border-radius: 16px; font-size: .88rem; line-height: 1.45; animation: rise .3s var(--ease-out); }
+.msg.me { justify-self: end; background: var(--surface); color: var(--on); border-bottom-right-radius: 5px; }
+.msg.bot { background: var(--bg-alt); border-bottom-left-radius: 5px; }
+.msg.bot small { display: block; margin-top: 4px; color: var(--ink-soft); font-size: .74rem; }
+.typing { display: inline-flex; gap: 4px; padding: 12px 14px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-soft); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: .25; translate: 0 -2px; } }
+.sugg { display: flex; gap: 6px; flex-wrap: wrap; }
+.sugg button { border: 1.5px solid rgba(30,59,68,.25); background: #fff; border-radius: 999px; padding: 5px 11px; font: 600 .78rem var(--font); color: var(--ink); cursor: pointer; }
+.ask2 form { display: flex; gap: 8px; padding: 10px; border-top: 1px solid rgba(30,59,68,.1); }
+.ask2 input { flex: 1; min-width: 0; border: 1.5px solid rgba(30,59,68,.2); border-radius: 999px; padding: 9px 14px; font: 500 .92rem var(--font); color: var(--ink); background: #fff; }
+.ask2 form button { border: 0; border-radius: 999px; padding: 0 16px; background: var(--surface); color: var(--on); font-weight: 700; cursor: pointer; }
+
+/* 28 Bereiche im Vergleich */
+.cmp { width: 100%; max-width: 500px; border-collapse: separate; border-spacing: 0; font-size: .84rem; background: var(--paper); color: var(--ink); border-radius: 14px; overflow: hidden; }
+.cmp th, .cmp td { padding: 9px 10px; text-align: left; vertical-align: top; transition: background .2s; }
+.cmp thead th { background: var(--deep); color: var(--on); font-size: .8rem; }
+.cmp tbody th { color: var(--ink-soft); font-weight: 700; font-size: .76rem; width: 22%; }
+.cmp tbody tr + tr > * { border-top: 1px solid rgba(30,59,68,.08); }
+.cmp[data-col="1"] [data-c="1"], .cmp[data-col="2"] [data-c="2"], .cmp[data-col="3"] [data-c="3"] { background: var(--rose-soft); }
+.cmp[data-col="1"] thead [data-c="1"], .cmp[data-col="2"] thead [data-c="2"], .cmp[data-col="3"] thead [data-c="3"] { background: var(--rose); color: var(--ink); }
+@media (max-width: 520px) { .cmp { font-size: .76rem; } .cmp th, .cmp td { padding: 7px 6px; } }
+
+/* 29 Knopf mit Rückmeldung */
+.morph { display: grid; gap: 14px; justify-items: center; }
+.mbtn { position: relative; height: 52px; min-width: 210px; border: 0; border-radius: 999px; background: var(--rose); color: var(--ink); font: 700 1rem var(--font); cursor: pointer; overflow: hidden; transition: min-width .35s var(--ease-io), width .35s var(--ease-io), background .3s, scale .12s; }
+.mbtn:active { scale: .97; }
+.mbtn > span { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .2s, translate .25s var(--ease-out); }
+.mbtn .s2, .mbtn .s3 { opacity: 0; translate: 0 10px; }
+.mbtn.busy { min-width: 52px; width: 52px; }
+.mbtn.busy .s1, .mbtn.ok .s1 { opacity: 0; translate: 0 -10px; }
+.mbtn.busy .s2 { opacity: 1; translate: 0 0; }
+.mbtn.ok { background: var(--paper); }
+.mbtn.ok .s3 { opacity: 1; translate: 0 0; }
+.spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid rgba(30,59,68,.25); border-top-color: var(--ink); animation: spin .8s linear infinite; }
+.mbtn .s3 svg { width: 22px; height: 22px; fill: none; stroke: #2E8B57; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; }
+.mbtn.ok .s3 svg { stroke-dashoffset: 0; transition: stroke-dashoffset .35s .1s var(--ease-out); }
+
+/* 30 Eil-Hinweis */
+.alert-demo { width: 100%; max-width: 480px; display: grid; gap: 14px; justify-items: center; }
+.alert-page { position: relative; width: 100%; height: 170px; border-radius: 16px; background: var(--bg); overflow: hidden; }
+.alert-page .bar { margin: 10px; height: 40px; border-radius: 12px; background: rgba(243,248,247,.8); }
+.alert-page .ln { margin: 10px 18px; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.alert { position: absolute; left: 10px; right: 10px; top: 58px; display: flex; gap: 10px; align-items: flex-start; padding: 11px 14px; border-radius: 12px; font-size: .86rem; color: var(--ink); box-shadow: 0 10px 22px -12px rgba(0,0,0,.5); translate: 0 -12px; opacity: 0; transition: translate .35s var(--ease-out), opacity .25s; }
+.alert.show { translate: 0 0; opacity: 1; }
+.alert b { display: block; }
+.alert .ic { font-size: 1.1rem; line-height: 1.2; }
+.alert.info { background: var(--paper); }
+.alert.wichtig { background: var(--rose-soft); box-shadow: inset 4px 0 0 var(--rose), 0 10px 22px -12px rgba(0,0,0,.5); }
+.alert.dringend { background: #F6D4CE; box-shadow: inset 4px 0 0 #B8574A, 0 10px 22px -12px rgba(0,0,0,.5); }
+.alert.dringend .ic { animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge { 0%, 70%, 100% { rotate: 0deg; } 80% { rotate: -14deg; } 90% { rotate: 12deg; } }
+
+/* 31 Ferienprogramm */
+.fp { width: 100%; max-width: 480px; display: grid; gap: 8px; }
+.fp-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; background: rgba(255,255,255,.1); padding: 10px 12px; border-radius: 14px; }
+.fp-item .d { background: var(--paper); color: var(--ink); border-radius: 10px; text-align: center; font-weight: 800; font-size: .8rem; line-height: 1.15; padding: 6px 0; }
+.fp-item .d b { display: block; font-size: 1.15rem; }
+.fp-item h3 { font-size: .92rem; }
+.fp-meter { height: 6px; border-radius: 3px; background: rgba(255,255,255,.15); margin-top: 6px; overflow: hidden; }
+.fp-meter i { display: block; height: 100%; width: 0; border-radius: 3px; background: var(--ok); transition: width .8s var(--ease-out); }
+.fp-meter i.low { background: var(--rose); }
+.fp-item small { font-size: .74rem; color: var(--on-soft); }
+.fp-item .st { font-size: .74rem; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: rgba(127,214,164,.2); color: #BDEBD2; white-space: nowrap; }
+.fp-item .st.full { background: rgba(255,255,255,.12); color: var(--on-soft); }
+
+/* 32 Bild in Ebenen */
+.layers { position: relative; width: 100%; max-width: 480px; height: 240px; border-radius: 16px; overflow: hidden; background: linear-gradient(#CFE2DE, var(--bg)); touch-action: pan-y; }
+.layers svg { position: absolute; left: -6%; width: 112%; bottom: -4%; height: auto; transition: translate .5s var(--ease-out); will-change: translate; }
+.layers .sun { position: absolute; width: 54px; height: 54px; border-radius: 50%; background: #F6E7C8; box-shadow: 0 0 40px 10px rgba(246,231,200,.7); left: 70%; top: 18%; transition: translate .5s var(--ease-out); }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -422,7 +546,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>22 neue Ideen zum Ausprobieren</h1>
+    <h1>32 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
   <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
@@ -730,6 +854,129 @@ button { font: inherit; color: inherit; }
         <p class="hint">In der Box nach unten scrollen</p></div>
       <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">22</span> Gruß am Seitenende</h2><p>Wer bis ganz unten scrollt, wird belohnt: Die Wimpelkette im Fuß wiegt sich, eine kleine Hand winkt und ein freundlicher Gruß erscheint. Einmal pro Besuch, danach bleibt es ruhig.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="settle">
+          <div class="settle-track" id="settleTrack"><span class="settle-fill" id="settleFill"></span></div>
+          <div class="settle-card" id="settleCard" aria-live="polite"></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">23</span> Eingewöhnung Schritt für Schritt</h2><p>Die Eingewöhnung als Weg in fünf Etappen: Was passiert, wer dabei ist, wie lange es ungefähr dauert. Das nimmt Eltern vor dem Start viel Unsicherheit. Laut Webseite dauert sie ca. vier Wochen. <b>Beispiel:</b> Die Etappen müsste das Team an das eigene Konzept anpassen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="team" id="team">
+          <button type="button" class="member" aria-expanded="false" data-t="Leitung des Hauses. Ansprechpartnerin für Anmeldung, Verträge und alles Organisatorische."><span class="avatar" style="background:#D4B5B0">AB</span><b>A. Beispiel</b><small>Leitung</small></button>
+          <button type="button" class="member" aria-expanded="false" data-t="Erzieherin in der Sonnengruppe. Liebt Fingerspiele und Ausflüge in den Garten."><span class="avatar" style="background:#F3D9A4">CD</span><b>C. Beispiel</b><small>Krippe</small></button>
+          <button type="button" class="member" aria-expanded="false" data-t="Erzieher bei den Bären. Baut mit den Kindern am liebsten Murmelbahnen."><span class="avatar" style="background:#A8C5C0">EF</span><b>E. Beispiel</b><small>Kindergarten</small></button>
+          <button type="button" class="member" aria-expanded="false" data-t="Sozialpädagogin im Hort. Begleitet die Hausaufgabenzeit und die Kinderkonferenz."><span class="avatar" style="background:#F1E5E3">GH</span><b>G. Beispiel</b><small>Hort</small></button>
+          <div class="team-detail" id="teamDetail" aria-live="polite"></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">24</span> Team-Vorstellung</h2><p>Gesichter schaffen Vertrauen: Das Team als freundliche Kacheln, ein Tipp zeigt ein, zwei Sätze zur Person. Statt Fotos gehen auch Initialen oder Kinderzeichnungen. <b>Beispiel:</b> Namen und Texte sind Platzhalter – das Team fehlt noch auf der Webseite.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="board"><button type="button" class="pic" style="--r:-6deg;left:6%;top:12%" aria-label="Kinderbild: Unser Haus"><svg viewBox="0 0 100 80" aria-hidden="true"><path d="M15 70 L15 38 L45 15 L75 38 L75 70 Z" stroke="#D07A6B"/><path d="M38 70 V52 H52 V70" stroke="#4F7FA8"/><circle cx="82" cy="18" r="9" stroke="#E2B24B"/></svg><span>Unser Haus</span></button><button type="button" class="pic" style="--r:5deg;left:34%;top:30%" aria-label="Kinderbild: Sonne"><svg viewBox="0 0 100 80" aria-hidden="true"><circle cx="50" cy="42" r="16" stroke="#E2B24B"/><path d="M50 12v8M50 64v8M20 42h8M72 42h8M29 21l6 6M65 57l6 6M29 63l6-6M65 27l6-6" stroke="#E2B24B"/></svg><span>Sonne</span></button><button type="button" class="pic" style="--r:-3deg;left:63%;top:8%" aria-label="Kinderbild: Familie"><svg viewBox="0 0 100 80" aria-hidden="true"><circle cx="30" cy="28" r="8" stroke="#4F7FA8"/><path d="M30 36v22M20 46h20M30 58l-8 12M30 58l8 12" stroke="#4F7FA8"/><circle cx="62" cy="34" r="6" stroke="#D07A6B"/><path d="M62 40v16M54 48h16M62 56l-6 10M62 56l6 10" stroke="#D07A6B"/></svg><span>Familie</span></button><button type="button" class="pic" style="--r:8deg;left:66%;top:52%" aria-label="Kinderbild: Regenbogen"><svg viewBox="0 0 100 80" aria-hidden="true"><path d="M12 64 A38 38 0 0 1 88 64" stroke="#D07A6B"/><path d="M22 64 A28 28 0 0 1 78 64" stroke="#E2B24B"/><path d="M32 64 A18 18 0 0 1 68 64" stroke="#6FAF8C"/></svg><span>Regenbogen</span></button></div>
+        <p class="hint">Mit der Maus über ein Bild fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">25</span> Pinnwand mit Kinderbildern</h2><p>Echte Kinderzeichnungen, mit Klebestreifen schief an eine Korkwand gepinnt. Beim Überfahren richtet sich ein Bild auf und kommt nach vorn. Passt gut auf die Startseite oder zu „Das zeichnet uns aus“. Nur mit Einverständnis der Eltern.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="growbox">
+          <div class="scroller" id="growScroll" tabindex="0" aria-label="Beispielseite zum Scrollen"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <svg class="plant" viewBox="0 0 70 150" aria-hidden="true">
+            <path class="stem" id="stem" pathLength="1" d="M35 130 C 30 105 40 85 34 62 C 30 45 38 30 35 18"/>
+            <path class="leaf l" data-at=".18" d="M33 112 C 18 112 12 102 10 96 C 22 96 30 100 33 112 Z"/>
+            <path class="leaf r" data-at=".36" d="M37 92 C 52 92 58 82 60 76 C 48 76 40 80 37 92 Z"/>
+            <path class="leaf l" data-at=".55" d="M33 70 C 18 70 12 60 10 54 C 22 54 30 58 33 70 Z"/>
+            <path class="leaf r" data-at=".72" d="M36 48 C 50 48 56 38 58 32 C 46 32 39 36 36 48 Z"/>
+            <g class="bloom" data-at=".96"><circle cx="35" cy="14" r="6"/><circle cx="27" cy="18" r="6"/><circle cx="43" cy="18" r="6"/><circle cx="31" cy="25" r="6"/><circle cx="39" cy="25" r="6"/><circle cx="35" cy="20" r="4" fill="#F3D9A4"/></g>
+            <path class="pot" d="M18 128 H52 L48 148 H22 Z"/>
+          </svg>
+        </div>
+        <p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">26</span> Wachsende Pflanze als Lesefortschritt</h2><p>Auf langen Seiten wächst in der Ecke eine kleine Pflanze mit: Stängel, Blätter, am Ende eine Blüte. Ersetzt den dünnen Balken oben durch etwas, das zum Kinderhaus passt. Zurückscrollen lässt sie wieder schrumpfen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="ask2">
+          <div class="chat" id="chat" aria-live="polite"></div>
+          <form id="chatForm"><label class="visually-hidden" for="chatIn">Frage</label><input id="chatIn" autocomplete="off" placeholder="Ihre Frage, z. B. „Brotzeit“"><button type="submit">Fragen</button></form>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">27</span> Fragen-Helfer</h2><p>Eltern tippen eine Frage, und die passende Antwort aus den häufigen Fragen erscheint wie in einem Chat, mit Hinweis, wo sie steht. Die Antworten hier sind die echten von der Webseite. Findet er nichts, verweist er freundlich aufs Telefon.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage">
+        <table class="cmp" id="cmp">
+          <thead><tr><th></th><th data-c="1">Krippe</th><th data-c="2">Kindergarten</th><th data-c="3">Hort</th></tr></thead>
+          <tbody>
+            <tr><th>Alter</th><td data-c="1">ab 11 Monaten</td><td data-c="2">3 Jahre bis Einschulung</td><td data-c="3">ab der Einschulung</td></tr>
+            <tr><th>Öffnung</th><td data-c="1">6:45–16:30</td><td data-c="2">6:45–16:30</td><td data-c="3">6:45–18:00</td></tr>
+            <tr><th>Gruppen</th><td data-c="1">Sonnen, Sternen</td><td data-c="2">Bären, Bienen, Spatzen</td><td data-c="3">offen, ohne feste Gruppen</td></tr>
+            <tr><th>Essen</th><td data-c="1" colspan="1">hauseigene Küche</td><td data-c="2">hauseigene Küche</td><td data-c="3">hauseigene Küche</td></tr>
+            <tr><th>Besonders</th><td data-c="1">Ruhezeit nach dem Essen</td><td data-c="2">Vorkurs Deutsch</td><td data-c="3">Hausaufgabenzeit</td></tr>
+          </tbody>
+        </table>
+        <p class="hint">Mit der Maus über eine Spalte fahren oder tippen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">28</span> Bereiche im Vergleich</h2><p>Eine kleine Übersicht, die die drei Bereiche nebeneinanderstellt: Alter, Zeiten, Gruppen, Besonderheiten. Die gewählte Spalte hebt sich rosé hervor. Ideal für Eltern mit mehreren Kindern. Die Angaben stammen von der Webseite.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="morph">
+          <button type="button" class="mbtn" id="mbtn"><span class="s1">Anfrage senden</span><span class="s2"><i class="spin"></i></span><span class="s3"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button>
+          <p class="label" id="mbtnTxt" aria-live="polite"></p>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">29</span> Knopf mit Rückmeldung</h2><p>Statt eines neuen Fensters verwandelt sich der Knopf selbst: Er schrumpft zum Kreis mit Ladekringel und zeichnet dann einen grünen Haken. Man sieht sofort, dass etwas passiert und dass es geklappt hat. Für alle Formulare.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="alert-demo">
+          <div class="alert-page"><div class="bar"></div><div class="ln"></div><div class="ln" style="width:60%"></div><div class="ln"></div>
+            <div class="alert" id="alert" role="status"><span class="ic"></span><span><b></b><span></span></span></div></div>
+          <div class="seg" id="alertSeg" role="group" aria-label="Stufe"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-a="info" aria-pressed="true">Info</button><button type="button" data-a="wichtig" aria-pressed="false">Wichtig</button><button type="button" data-a="dringend" aria-pressed="false">Dringend</button></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">30</span> Eil-Hinweis für das Team</h2><p>Das Team trägt in einer Datei einen kurzen Hinweis ein, und er erscheint oben auf jeder Seite, in drei Stufen. „Dringend“ (z. B. „Heute wegen Wasserschaden geschlossen“) fällt deutlich auf und wackelt kurz. Mit Ablaufdatum, damit nichts vergessen wird. <b>Beispieltexte.</b></p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="fp" id="fp">
+          <div class="fp-item"><div class="d"><b>03</b>AUG</div><div><h3>Ausflug in den Wildpark</h3><div class="fp-meter"><i data-w="80"></i></div><small>noch 4 von 20 Plätzen</small></div><span class="st">frei</span></div>
+          <div class="fp-item"><div class="d"><b>05</b>AUG</div><div><h3>Kochen wie die Profis</h3><div class="fp-meter"><i data-w="100" class="low"></i></div><small>alle 12 Plätze vergeben</small></div><span class="st full">voll</span></div>
+          <div class="fp-item"><div class="d"><b>06</b>AUG</div><div><h3>Wasserspiele im Garten</h3><div class="fp-meter"><i data-w="35"></i></div><small>noch 16 von 25 Plätzen</small></div><span class="st">frei</span></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">31</span> Ferienprogramm des Hortes</h2><p>Die Ferienangebote als Karten mit Füllstand: Grün heißt Plätze frei, rosé heißt voll. Die Balken füllen sich beim Erscheinen. Das Team trägt die Zahlen in eine Liste ein. <b>Beispiel:</b> Angebote und Zahlen sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="layers" id="layers" aria-hidden="true">
+          <span class="sun" data-d="6"></span>
+          <svg viewBox="0 0 500 200" data-d="10"><path d="M0 140 C 80 90 160 110 250 95 C 340 80 420 110 500 90 V200 H0 Z" fill="#B6D0CB"/></svg>
+          <svg viewBox="0 0 500 200" data-d="22"><path d="M0 165 C 100 130 200 150 300 140 C 380 132 440 150 500 140 V200 H0 Z" fill="#8FB5AE"/><g transform="translate(300 88)"><path d="M0 52 V20 L30 0 L60 20 V52 Z" fill="#F3F8F7"/><path d="M-6 22 L30 -4 L66 22" fill="none" stroke="#D4B5B0" stroke-width="7" stroke-linejoin="round"/><rect x="22" y="30" width="16" height="22" fill="#2D6A6A"/><rect x="8" y="24" width="10" height="9" fill="#2D6A6A"/><rect x="42" y="24" width="10" height="9" fill="#2D6A6A"/></g></svg>
+          <svg viewBox="0 0 500 200" data-d="38"><path d="M0 182 C 120 160 260 175 500 165 V200 H0 Z" fill="#2D6A6A"/><path d="M20 60 Q 250 110 480 60" fill="none" stroke="#1E3B44" stroke-width="1.5"/><g fill="#D4B5B0"><path d="M60 72 l12 0 -6 14z"/><path d="M130 86 l12 0 -6 14z"/><path d="M200 94 l12 0 -6 14z"/><path d="M270 95 l12 0 -6 14z"/><path d="M340 90 l12 0 -6 14z"/><path d="M410 78 l12 0 -6 14z"/></g></svg>
+        </div>
+        <p class="hint">Maus bewegen oder Gerät neigen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">32</span> Bild in Ebenen</h2><p>Eine kleine Zeichnung im Startbereich aus mehreren Ebenen – Hügel, Haus, Wimpel, Sonne. Bewegt man die Maus, verschieben sie sich unterschiedlich stark, das gibt Tiefe. Ganz sanft, und bei „Bewegung reduzieren“ steht alles still.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
@@ -1136,6 +1383,123 @@ button { font: inherit; color: inherit; }
     if (!("IntersectionObserver" in window)) return;
     var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting && !done) { done = true; box.classList.add("wave"); } }, { root: box, threshold: 1 });
     io.observe($("#endSentinel"));
+  })();
+
+
+  /* W Eingewöhnung */
+  (function () {
+    var S = [["👋", "Kennenlernen", "Gespräch mit den Eltern: Gewohnheiten, Schlaf, Essen, Lieblingskuscheltier.", ["Eltern", "Bezugserzieherin"], "vor dem Start"],
+      ["🤝", "Gemeinsam da", "Das Kind kommt mit Mama oder Papa für ein bis zwei Stunden, die Eltern bleiben im Raum.", ["Kind", "Eltern"], "Tag 1–3"],
+      ["🚪", "Erste Trennung", "Kurzer Abschied, die Eltern bleiben in der Nähe. Wenige Minuten, dann kommen sie zurück.", ["Kind", "Bezugserzieherin"], "ab Tag 4"],
+      ["🍽️", "Länger bleiben", "Mittagessen und Ruhezeit kommen dazu, die Zeiten werden Schritt für Schritt länger.", ["Kind", "Gruppe"], "Woche 2–3"],
+      ["⭐", "Angekommen", "Das Kind lässt sich trösten und fühlt sich wohl. Abschlussgespräch mit den Eltern.", ["Eltern", "Team"], "ca. Woche 4"]];
+    var track = $("#settleTrack"), fill = $("#settleFill"), card = $("#settleCard"), btns = [];
+    S.forEach(function (st, i) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "settle-step"; b.innerHTML = "<i>" + st[0] + "</i>" + st[1];
+      b.addEventListener("click", function () { go(i); }); track.appendChild(b); btns.push(b);
+    });
+    function go(i) {
+      btns.forEach(function (b, k) { b.classList.toggle("done", k <= i); if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+      fill.style.width = (80 * i / (S.length - 1)) + "%";
+      card.innerHTML = "<h3>" + S[i][1] + " · <span style=\"font-weight:500\">" + S[i][4] + "</span></h3><p>" + S[i][2] + '</p><div class="who">' + S[i][3].map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>";
+      if (!reduced) card.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 260, easing: "cubic-bezier(.23,1,.32,1)" });
+    }
+    go(0);
+  })();
+
+  /* X Team */
+  (function () {
+    var ms = $$("#team .member"), det = $("#teamDetail");
+    ms.forEach(function (m) { m.addEventListener("click", function () {
+      var open = m.getAttribute("aria-expanded") !== "true";
+      ms.forEach(function (x) { x.setAttribute("aria-expanded", "false"); });
+      if (open) { m.setAttribute("aria-expanded", "true"); det.textContent = m.dataset.t; det.classList.remove("open"); void det.offsetWidth; det.classList.add("open"); } else det.classList.remove("open");
+    }); });
+  })();
+
+  /* Y Pflanze */
+  (function () {
+    var sc = $("#growScroll"), stem = $("#stem"), parts = $$(".plant [data-at]");
+    stem.style.strokeDasharray = 1;
+    function upd() {
+      var p = sc.scrollTop / Math.max(1, sc.scrollHeight - sc.clientHeight);
+      stem.style.strokeDashoffset = 1 - Math.min(1, p * 1.05);
+      parts.forEach(function (x) { x.classList.toggle("on", p >= +x.dataset.at); });
+    }
+    sc.addEventListener("scroll", upd, { passive: true }); upd();
+  })();
+
+  /* Z Fragen-Helfer */
+  (function () {
+    var FAQ = [["Müssen wir Windeln usw. für unser Kind mitbringen?", "Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause."], ["Gibt es die Möglichkeit für mein Kind zum Schlafen?", "Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet."], ["Ist die Zugehörigkeit zur katholischen Kirche notwendig?", "Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen."], ["Gibt es eine Eingewöhnungszeit?", "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen."], ["Arbeitet der Kindergarten nach dem offenen Konzept?", "Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend."], ["Muss mein Kind für den Kindergarten sauber sein?", "Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden."], ["Wie verläuft die Eingewöhnung im Kindergarten?", "Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen."], ["Inwieweit muss ich für die Verpflegung meines Kindes sorgen?", "Das warme Mittagessen wird von unserer hauseigenen Küche zubereitet. Für das Frühstück und den Nachmittagssnack, je nach Buchungszeit, richten Sie für Ihr Kind eine Brotzeit und eine Trinkflasche mit Wasser im Mehrwegbehälter."], ["Sind die Schließtage in allen Abteilungen des Kinder- und Jugendhorts Grombühl gleich?", "Ja, wir haben in allen Abteilungen des Hauses an maximal 30 gleichen Tagen geschlossen."], ["Hat der Hort auch in den Schulferien geöffnet?", "In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr."], ["Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?", "Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage."], ["Braucht mein Kind im Hort eine Brotzeit?", "Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken."], ["Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?", "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig."], ["Kann ich mein Kind abholen, wann ich möchte?", "Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden."], ["Kann ich mein Kind vor der Hausaufgabenzeit abholen?", "Unsere Mindestbuchungszeit beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine."], ["Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?", "Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung."]];
+    var chat = $("#chat"), inp = $("#chatIn");
+    function norm(t) { return t.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " "); }
+    var STOP = " der die das und ist ein eine mein meine kind kinder wir ich sie es zu in im fuer mit auch noch wie was gibt muss muessen kann koennen hat haben den dem des von auf an bei oder ";
+    function words(t) { return norm(t).split(/\s+/).filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }); }
+    function best(q) {
+      var qs = words(q), top = null, sc = 0;
+      /* seltene Wörter zählen mehr, Treffer in der Frage doppelt */
+      var stems = qs.map(function (w) { return w.length > 5 ? w.slice(0, w.length - 2) : w; });
+      var idf = stems.map(function (st) { var df = FAQ.filter(function (f) { return norm(f[0] + " " + f[1]).indexOf(st) >= 0; }).length; return df ? Math.log(1 + FAQ.length / df) : 0; });
+      FAQ.forEach(function (f) { var q = norm(f[0]), a = norm(f[1]), s2 = 0; stems.forEach(function (st, k) { s2 += idf[k] * ((q.indexOf(st) >= 0 ? 2 : 0) + (a.indexOf(st) >= 0 ? 1 : 0)); }); if (s2 > sc) { sc = s2; top = f; } });
+      return sc ? top : null;
+    }
+    function add(cls, html) { var m = document.createElement("div"); m.className = "msg " + cls; m.innerHTML = html; chat.appendChild(m); chat.scrollTop = chat.scrollHeight; return m; }
+    function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+    function ask(q) {
+      add("me", esc(q));
+      var ty = add("bot typing", "<i></i><i></i><i></i>");
+      setTimeout(function () {
+        ty.remove(); var f = best(q);
+        if (f) add("bot", esc(f[1].length > 260 ? f[1].slice(0, 257).replace(/\s+\S*$/, "") + " …" : f[1]) + "<small>Aus: „" + esc(f[0]) + "“</small>");
+        else add("bot", "Dazu habe ich leider nichts gefunden. Rufen Sie uns gern an: 0931 2789892 0.");
+      }, reduced ? 0 : 700);
+    }
+    add("bot", 'Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button></div>');
+    $$(".sugg button", chat).forEach(function (b) { b.addEventListener("click", function () { ask(b.textContent); }); });
+    $("#chatForm").addEventListener("submit", function (ev) { ev.preventDefault(); var q = inp.value.trim(); if (!q) return; inp.value = ""; ask(q); });
+  })();
+
+  /* AA Vergleich */
+  (function () {
+    var t = $("#cmp");
+    $$("[data-c]", t).forEach(function (c) {
+      c.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") t.dataset.col = c.dataset.c; });
+      c.addEventListener("click", function () { t.dataset.col = t.dataset.col === c.dataset.c ? "" : c.dataset.c; });
+    });
+    t.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") t.dataset.col = ""; });
+  })();
+
+  /* AB Knopf mit Rückmeldung */
+  (function () {
+    var b = $("#mbtn"), t = $("#mbtnTxt"), busy = false;
+    b.addEventListener("click", function () {
+      if (busy) return; busy = true; b.classList.add("busy"); t.textContent = "Wird gesendet …";
+      setTimeout(function () { b.classList.remove("busy"); b.classList.add("ok"); t.textContent = "Gesendet! Wir melden uns bald."; }, 1400);
+      setTimeout(function () { b.classList.remove("ok"); t.textContent = ""; busy = false; }, 3600);
+    });
+  })();
+
+  /* AC Eil-Hinweis */
+  (function () {
+    var A = { info: ["ℹ️", "Elternabend am 20.01.", "Wir freuen uns auf Sie um 19:30 Uhr im Turnraum."], wichtig: ["📌", "Fotograf am Donnerstag", "Bitte denken Sie an die Einverständniserklärung."], dringend: ["⚠️", "Heute geschlossen", "Wegen eines Wasserschadens bleibt das Haus heute zu. Wir informieren per E-Mail."] };
+    var el = $("#alert");
+    function show(k) { el.classList.remove("show"); setTimeout(function () { el.className = "alert " + k; $(".ic", el).textContent = A[k][0]; $("b", el).textContent = A[k][1]; $("b + span", el).textContent = A[k][2]; void el.offsetWidth; el.classList.add("show"); }, reduced ? 0 : 160); }
+    segment($("#alertSeg"), function (b) { show(b.dataset.a); });
+    onView(el, function () { show("info"); });
+  })();
+
+  /* AD Ferienprogramm */
+  onView($("#fp"), function () { $$("#fp .fp-meter i").forEach(function (i, k) { setTimeout(function () { i.style.width = i.dataset.w + "%"; }, k * 90); }); });
+
+  /* AE Ebenen */
+  (function () {
+    var box = $("#layers"), ls = $$("[data-d]", box);
+    if (reduced) return;
+    function move(x, y) { ls.forEach(function (l) { var d = +l.dataset.d; l.style.translate = (-x * d) + "px " + (-y * d * .4) + "px"; }); }
+    box.addEventListener("pointermove", function (e) { var r = box.getBoundingClientRect(); move((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5); });
+    box.addEventListener("pointerleave", function () { move(0, 0); });
+    addEventListener("deviceorientation", function (e) { if (e.gamma == null) return; move(Math.max(-1, Math.min(1, e.gamma / 30)) * .5, 0); });
   })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
