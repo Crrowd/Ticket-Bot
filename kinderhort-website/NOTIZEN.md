@@ -124,3 +124,9 @@ Hinweis: Service Worker und vorbereitende Seitenaufrufe wirken nur auf einem Web
 | Shared element transition | Foto der Bereichskarte wird beim Seitenwechsel zum Kopfbild der Bereichsseite (nur auf dem Webserver, in Browsern mit View Transitions) |
 
 Dafür geändert: Kopfbild der Kindergarten-Seite ist jetzt dasselbe Foto wie auf der Startseiten-Karte.
+
+## Kopfleiste (15.11.2026)
+- Schwebende, abgerundete Leiste aus Milchglas (Abstand zum Rand, 8 px Innenabstand, Unschärfe des Hintergrunds).
+- „Bereiche“ öffnet ein großes Menü in voller Leistenbreite: 3 Spalten mit Sprungzielen, 4. Spalte zeigt das Foto des überfahrenen Bereichs.
+- Sprungmarken der Bereichsseiten als eigene Glas-Leiste darunter.
+- `view-transition-name` an der Leiste entfernt (ließ Inhalte durchscheinen).

@@ -131,23 +131,33 @@ NAV = [
     ("kontakt.html", "Kontakt"),
 ]
 BEREICHE = [
-    ("kinderkrippe.html", "Kinderkrippe", "ab 11 Monaten · Sonnen- &amp; Sternengruppe"),
-    ("kindergarten.html", "Kindergarten", "3 Jahre bis Einschulung · Bären, Bienen, Spatzen"),
-    ("kinderhort.html", "Kinderhort", "ab der Einschulung · alle Schulformen"),
-    ("index.html#rundgang", "Virtueller Rundgang", "Fotos aus allen drei Bereichen"),
+    ("krippe", "kinderkrippe.html", "Kinderkrippe", "ab 11 Monaten · Sonnen- &amp; Sternengruppe", "img/p2160110.jpg"),
+    ("kiga", "kindergarten.html", "Kindergarten", "3 Jahre bis Einschulung · Bären, Bienen, Spatzen", "img/blick-vom-fenster-in-den-raum.jpg"),
+    ("hort", "kinderhort.html", "Kinderhort", "ab der Einschulung · alle Schulformen", "img/kreatviraum-5-1.jpg"),
 ]
+MEGA_LINKS = [("ueberblick", "Zielgruppe &amp; Öffnungszeiten"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"),
+              ("tagesablauf", "Tagesablauf"), ("fragen", "Häufige Fragen")]
+
+def mega(active):
+    pages = [x[1] for x in BEREICHE]
+    default = BEREICHE[pages.index(active)][0] if active in pages else "krippe"
+    cols = "".join(
+        f'<div class="mega-col c-{k}"><a class="mega-title" href="{h}"{' aria-current="page"' if h == active else ""}>{t}<small>{sub}</small></a>'
+        + "<ul>" + "".join(f'<li><a href="{h}#{a}">{l}</a></li>' for a, l in MEGA_LINKS) + "</ul></div>"
+        for k, h, t, sub, _ in BEREICHE)
+    visual = "".join(
+        f'<figure class="v-{k}{" def" if k == default else ""}">{img(im, "", sizes="320px")}<figcaption>{t}<small>{sub}</small></figcaption></figure>'
+        for k, h, t, sub, im in BEREICHE)
+    return f'<div class="mega"><div class="mega-cols">{cols}</div><div class="mega-visual" aria-hidden="true">{visual}</div></div>'
 
 def header(active):
     items = []
     for href, label in NAV:
         if href == "BEREICHE":
-            inside = active in [b[0] for b in BEREICHE]
-            subs = "".join(
-                f'<li><a href="{h}"{' aria-current="page"' if h == active else ""}><span class="dot"></span><span>{t}<small>{sub}</small></span></a></li>'
-                for h, t, sub in BEREICHE)
+            inside = active in [x[1] for x in BEREICHE]
             items.append(
                 f'<li class="has-drop"><button class="drop-toggle{" current" if inside else ""}" type="button" aria-expanded="false" aria-haspopup="true">'
-                f'Bereiche {icon("down", 16)}</button><ul class="dropdown">{subs}</ul></li>')
+                f'Bereiche {icon("down", 16)}</button>{mega(active)}</li>')
             continue
         cur = ' aria-current="page"' if href == active else ""
         cls = ' class="nav-cta"' if href == "kontakt.html" else ""
