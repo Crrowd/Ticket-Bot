@@ -281,3 +281,11 @@ Entscheidung offen (Auswahl direkt im Katalog).
 101 Sanfte Welle zum Fußbereich · 102 Gruppensymbole, die lebendig werden · 103 Seiten merken · 104 Elternbeirat vorstellen (Namen Platzhalter) · 105 Verspielte Link-Unterstreichung · 106 Leitsatz schreibt sich · 107 Schwung unter dem Gruß · 108 „Einfach erklärt“ · 109 Bilder im Bereichsmenü wechseln · 110 Fotos in weichen Formen · 111 Bereich als Infoblatt drucken · 112 Telefonnummer am Computer (QR zum Anrufen)
 
 Entscheidung offen (Auswahl direkt im Katalog).
+
+## Übergänge-Katalog (15.11.2026)
+Seite: `entwurf/ideen/uebergaenge.html` (private Vorschau: https://claude.ai/artifact/MwFfsnHZkLRnpvEW46xg52), Auswahl in der Datenbank-Sammlung `uebergaenge`.
+Seitenwechsel: 1 Überblenden · 2 Seitlich gleiten · 3 Kreis aus dem Klickpunkt · 4 Aufsteigen aus der Unschärfe · 5 Hineinzoomen · 6 Rosé Vorhang · 7 Karte legt sich darüber · 8 Inhalte nacheinander · 9 Überschrift wandert mit · 10 Welle · 11 Mosaik
+Abschnitte: 12 Abschnitte stapeln sich · 13 Schräge Kanten · 14 Bild öffnet sich wie ein Fenster · 15 Inhalte steigen auf (schon eingebaut)
+Elemente: 16 Reiter mit mitgleitendem Inhalt · 17 Fenster wächst aus dem Knopf (schon eingebaut) · 18 Fragen klappen weich auf (schon eingebaut) · 19 Bilderwechsel mit Kamerafahrt
+
+Entscheidung offen.

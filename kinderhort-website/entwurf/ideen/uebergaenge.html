@@ -1,0 +1,476 @@
+<meta charset="utf-8">
+<title>Hort-Webseite Übergänge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: wie Katalog 1 – Karten mit Live-Bühne auf dunklem Türkis, Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 10px; right: 16px; text-align: center; pointer-events: none; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .chip:active, .seg button:active, .filter button:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.replay { position: absolute; top: 12px; right: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.14); color: var(--on); font-weight: 600; font-size: .82rem; cursor: pointer; }
+.replay:hover { background: rgba(255,255,255,.26); }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); transition: color .2s; }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+
+
+/* ---------- Mini-Browser für Seitenwechsel ---------- */
+.mb { position: relative; width: 100%; max-width: 440px; height: 270px; border-radius: 14px; overflow: hidden; background: var(--bg); box-shadow: 0 18px 36px -18px rgba(0,0,0,.6); }
+.mb .chrome { position: relative; z-index: 6; height: 26px; background: #0E1E23; display: flex; gap: 5px; align-items: center; padding: 0 10px; }
+.mb .chrome i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.25); }
+.mb .chrome span { margin-left: 8px; font-size: .66rem; color: rgba(255,255,255,.6); }
+.mb .vp { position: absolute; inset: 26px 0 0 0; overflow: hidden; }
+.pg { position: absolute; inset: 0; padding: 12px 14px; display: grid; align-content: start; gap: 8px; background: var(--bg); color: var(--ink); will-change: transform, opacity; }
+.pg .nav { height: 22px; border-radius: 8px; background: rgba(243,248,247,.85); display: flex; align-items: center; gap: 6px; padding: 0 8px; }
+.pg .nav b { width: 12px; height: 12px; border-radius: 50%; background: var(--ink); }
+.pg .nav em { width: 40px; height: 6px; border-radius: 3px; background: rgba(30,59,68,.2); }
+.pg .kick { justify-self: start; font: 800 .56rem var(--font); letter-spacing: .1em; text-transform: uppercase; background: var(--rose); padding: 3px 8px; border-radius: 999px; }
+.pg h4 { margin: 0; font-size: 1.25rem; letter-spacing: -.03em; line-height: 1.1; }
+.pg .img { height: 82px; border-radius: 10px; background: center / cover no-repeat; }
+.pg .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.pg .row span { height: 34px; border-radius: 8px; background: rgba(30,59,68,.1); }
+.pg .ln { height: 8px; border-radius: 4px; background: rgba(30,59,68,.13); } .pg .ln.s { width: 60%; }
+.pg.p1 { background: #A8C5C0; } .pg.p2 { background: #B8D0CB; } .pg.p3 { background: #C3D7D2; }
+.ctl { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+.ctl .btn { min-height: 38px; padding: 8px 16px; }
+.overlay { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.tiles { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(5, 1fr); }
+.tiles i { background: var(--rose); scale: 0; border-radius: 3px; }
+.dim { position: absolute; inset: 0; background: rgba(14,30,35,.45); pointer-events: none; opacity: 0; z-index: 2; }
+
+/* ---------- Abschnitte (Scroll-Boxen) ---------- */
+.sbox { position: relative; width: 100%; max-width: 440px; height: 270px; overflow-y: auto; border-radius: 14px; overscroll-behavior: contain; background: var(--bg); box-shadow: 0 18px 36px -18px rgba(0,0,0,.6); }
+.stackc section { position: sticky; top: 0; height: 200px; padding: 18px; border-radius: 22px 22px 0 0; box-shadow: 0 -12px 24px -14px rgba(0,0,0,.45); display: grid; align-content: start; gap: 8px; color: var(--ink); }
+.stackc section:nth-child(1) { background: #A8C5C0; } .stackc section:nth-child(2) { background: #F3F8F7; } .stackc section:nth-child(3) { background: #F1E5E3; } .stackc section:nth-child(4) { background: #2D6A6A; color: var(--on); }
+.stackc h5, .diag h5, .win h5 { margin: 0; font-size: 1.2rem; letter-spacing: -.02em; }
+.stackc i, .diag i, .win i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.15); }
+.diag section { position: relative; padding: 34px 18px 44px; display: grid; gap: 8px; color: var(--ink); }
+.diag section:nth-child(1) { background: #A8C5C0; } .diag section:nth-child(2) { background: #F3F8F7; margin-top: -26px; clip-path: polygon(0 26px, 100% 0, 100% 100%, 0 100%); } .diag section:nth-child(3) { background: #2D6A6A; color: var(--on); margin-top: -26px; clip-path: polygon(0 0, 100% 26px, 100% 100%, 0 100%); } .diag section:nth-child(4) { background: #F1E5E3; margin-top: -26px; clip-path: polygon(0 26px, 100% 0, 100% 100%, 0 100%); }
+.win .sp { height: 120px; display: grid; place-items: center; font-size: .8rem; color: var(--ink-soft); }
+.win figure { margin: 0 14px; height: 170px; border-radius: 14px; overflow: hidden; clip-path: inset(var(--ci, 30%) var(--ci, 30%) var(--ci, 30%) var(--ci, 30%) round 18px); }
+.win figure img { width: 100%; height: 100%; object-fit: cover; display: block; scale: calc(1.25 - var(--k, 0) * .25); }
+.fadein section { padding: 26px 18px; display: grid; gap: 8px; color: var(--ink); }
+.fadein section:nth-child(even) { background: #F3F8F7; }
+.fadein .it { opacity: 0; translate: 0 18px; transition: opacity .5s var(--ease-out), translate .5s var(--ease-out); }
+.fadein .it.in { opacity: 1; translate: 0 0; }
+.fadein .card2 { height: 48px; border-radius: 10px; background: rgba(30,59,68,.1); }
+
+/* ---------- Elemente ---------- */
+.tabsd { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 12px; }
+.tabsd .tl2 { position: relative; display: flex; gap: 2px; padding: 4px; border-radius: 999px; background: var(--bg-alt); margin-bottom: 12px; }
+.tabsd .tl2 button { position: relative; z-index: 1; flex: 1; border: 0; background: none; padding: 8px 0; border-radius: 999px; font: 700 .84rem var(--font); color: var(--ink); cursor: pointer; transition: color .25s; }
+.tabsd .tl2 button[aria-selected="true"] { color: var(--paper); }
+.tabsd .tl2 .k { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: var(--ink); transition: translate .35s var(--ease-io), width .35s var(--ease-io); }
+.tabsd .panel { position: relative; height: 120px; overflow: hidden; }
+.tabsd .panel > div { position: absolute; inset: 0; display: grid; gap: 6px; align-content: start; font-size: .88rem; }
+.tabsd .panel b { font-size: 1rem; }
+.modald { position: relative; width: 100%; max-width: 420px; height: 250px; border-radius: 14px; background: var(--bg); overflow: hidden; display: grid; place-items: end start; padding: 16px; }
+.modald .mbtn2 { border: 0; border-radius: 999px; padding: 10px 16px; background: var(--ink); color: var(--paper); font: 700 .86rem var(--font); cursor: pointer; }
+.modald .sheet3 { position: absolute; left: 50%; top: 50%; width: 260px; translate: -50% -50%; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 16px; box-shadow: 0 20px 40px -16px rgba(0,0,0,.6); display: none; gap: 8px; z-index: 3; }
+.modald .sheet3.open { display: grid; }
+.modald .sheet3 i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.13); }
+.modald .bd { position: absolute; inset: 0; background: rgba(14,30,35,.45); opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 2; }
+.modald .bd.on { opacity: 1; pointer-events: auto; }
+.accd { width: 100%; max-width: 420px; display: grid; gap: 8px; }
+.accd details { background: var(--paper); color: var(--ink); border-radius: 14px; overflow: hidden; }
+.accd summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; font-weight: 700; font-size: .92rem; }
+.accd summary::-webkit-details-marker { display: none; }
+.accd summary::after { content: "+"; font-size: 1.3rem; line-height: 1; transition: rotate .3s var(--ease-out); }
+.accd details[open] summary::after { rotate: 45deg; }
+.accd .body { padding: 0 16px 14px; font-size: .88rem; color: var(--ink-soft); }
+.kb { position: relative; width: 100%; max-width: 440px; height: 240px; border-radius: 14px; overflow: hidden; background: #0E1E23; }
+.kb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
+.kb img.on { opacity: 1; animation: kenburns 7s ease-out forwards; }
+@keyframes kenburns { from { scale: 1.12; translate: 2% 1%; } to { scale: 1; translate: 0 0; } }
+.kb .cap2 { position: absolute; left: 14px; bottom: 12px; color: #fff; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,.5); z-index: 2; }
+.filter { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.filter::-webkit-scrollbar { display: none; }
+.badge-in { display: inline-block; margin-left: 6px; font-size: .68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: var(--ok); color: var(--deep); vertical-align: 2px; }
+/* Auswahl je Idee */
+.vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
+.vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vote-q { font-weight: 800; font-size: .86rem; }
+.vote-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg-alt); }
+.vote-seg button { border: 0; background: none; padding: 7px 15px; min-height: 38px; border-radius: 999px; font-weight: 700; font-size: .88rem; cursor: pointer; color: var(--ink); transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.vote-seg button:active { scale: .96; }
+.vote-seg button[data-v="ja"][aria-pressed="true"] { background: var(--surface); color: var(--on); }
+.vote-seg button[data-v="merken"][aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.vote-seg button[data-v="nein"][aria-pressed="true"] { background: var(--ink-soft); color: var(--on); }
+.vote-note input { width: 100%; border: 1.5px solid rgba(30,59,68,.18); border-radius: 10px; padding: 9px 11px; font: 500 .9rem var(--font); background: #fff; color: var(--ink); }
+.vote-note input:focus { outline: none; border-color: var(--surface); box-shadow: 0 0 0 3px rgba(45,106,106,.18); }
+.card { transition: box-shadow .25s, opacity .25s; }
+.card[data-vote="ja"] { box-shadow: 0 0 0 3px var(--surface), var(--shadow); }
+.card[data-vote="merken"] { box-shadow: 0 0 0 3px var(--rose), var(--shadow); }
+.card[data-vote="nein"] { opacity: .72; }
+.card[data-vote="nein"] .stage { filter: saturate(.4) brightness(.9); }
+.tally { position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 30; margin: 26px auto 0; width: fit-content; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; padding: 10px 18px; border-radius: 999px; background: var(--deep); color: var(--on); box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); font-size: .9rem; font-weight: 600; }
+.tally b { font-size: 1rem; }
+.tally .t-ja b { color: #9FD8C4; } .tally .t-merken b { color: var(--rose); }
+.tally .saved { font-size: .8rem; color: var(--on-soft); font-weight: 500; }
+.sync-note { font-size: .85rem; color: var(--ink-soft); margin: -10px 0 22px; }
+@media (max-width: 520px) { .tally { border-radius: 18px; } }
+
+.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 .35em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Übergänge</span>
+    <h1>19 Übergänge zum Ausprobieren</h1>
+    <p>Wie soll sich die Seite bewegen, wenn man von einer Seite zur nächsten wechselt, scrollt oder etwas aufklappt? Jede Karte ist live: oben auf „Weiter“ tippen (oder direkt in den Mini-Browser), in den Boxen scrollen.</p>
+  </header>
+  <p class="sync-note">Unter jedem Übergang kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen. Für den Seitenwechsel reicht am Ende <b>ein</b> Favorit – die anderen können für besondere Stellen bleiben.</p>
+
+  <div class="filter" role="group" aria-label="Übergänge filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="seite" aria-pressed="false">Seitenwechsel</button>
+    <button type="button" data-f="abschnitt" aria-pressed="false">Abschnitte</button>
+    <button type="button" data-f="element" aria-pressed="false">Elemente</button>
+    <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
+  </div>
+
+  <div class="grid">
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="fade"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">1</span> Sanftes Überblenden</h2><p>Die alte Seite blendet aus, während die neue einblendet – ruhig und unauffällig. Der sicherste Übergang: passt immer und stört nie. So arbeitet die Seite im Moment beim normalen Seitenwechsel.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="slide"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">2</span> Seitlich gleiten</h2><p>Die neue Seite schiebt sich von rechts herein, beim Zurückgehen von links – wie beim Blättern in einer App. Die Richtung folgt dem Menü: weiter rechts im Menü heißt von rechts.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="circle"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">3</span> Kreis aus dem Klickpunkt</h2><p>Die neue Seite öffnet sich als wachsender Kreis genau dort, wo man geklickt hat. Fühlt sich an, als würde man durch den Knopf hindurch in die Seite schauen. Das Handy-Menü öffnet sich schon so.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="blur"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">4</span> Aufsteigen aus der Unschärfe</h2><p>Die neue Seite steigt ein Stück von unten auf und wird dabei scharf. Weich und modern, ohne Richtung – gut für Seiten, die nicht in einer Reihenfolge stehen, etwa Impressum oder Kontakt.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="zoom"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">5</span> Hineinzoomen</h2><p>Die alte Seite wird minimal größer und verschwindet, die neue kommt leicht von hinten nach vorn. Erzeugt Tiefe, als würde man einen Schritt in den Raum hineingehen.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="curtain"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">6</span> Rosé Vorhang</h2><p>Ein rosé Vorhang zieht kurz von unten nach oben über die Seite und gibt die neue frei. Kräftiger als die anderen – eher für besondere Wechsel, etwa vom Startbereich in einen Bereich.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="stack"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">7</span> Karte legt sich darüber</h2><p>Die neue Seite gleitet als Karte von unten über die alte, die sich dabei leicht zurückzieht und abdunkelt. Beim Zurückgehen umgekehrt. Kennt man vom Handy – Eltern verstehen es sofort.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="stagger"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">8</span> Inhalte nacheinander</h2><p>Die neue Seite baut sich in Ruhe auf: erst Überschrift, dann Bild, dann Text – jeweils 60 Millisekunden versetzt. Wirkt hochwertig und lenkt den Blick in der richtigen Reihenfolge.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="morph"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">9</span> Überschrift wandert mit</h2><p>Die Überschrift fliegt von ihrem alten an den neuen Platz und wechselt dabei den Text, der Rest blendet um. Ähnlich wie die Bereichskarten, die schon zur Seite wachsen – nur für Überschriften. <span class="badge-in">verwandt mit Eingebautem</span></p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="wave"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">10</span> Welle zieht durch</h2><p>Eine weiche Welle in Seitenfarbe läuft von unten nach oben über die Seite und nimmt die alte mit. Verspielt und passend zu einem Kinderhaus, aber ruhig genug für jeden Tag.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="tiles"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">11</span> Mosaik</h2><p>Viele kleine rosé Kacheln klappen schräg über die Seite auf und wieder zu – wie ein Mosaik, das sich neu legt. Auffällig und fröhlich; eher sparsam einsetzen.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox stackc" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h5>Willkommen</h5><i></i><i style="width:60%"></i></section><section><h5>Unsere Bereiche</h5><i></i><i style="width:70%"></i></section><section><h5>Termine</h5><i></i><i style="width:50%"></i></section><section><h5>Kontakt</h5><i></i><i style="width:65%"></i></section></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">12</span> Abschnitte stapeln sich</h2><p>Beim Scrollen schiebt sich jeder Abschnitt wie ein Blatt mit runden Ecken über den vorherigen, der kurz stehen bleibt. Ein klarer, ruhiger Rhythmus – gut für die Startseite.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox diag" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h5>Willkommen</h5><i></i><i style="width:60%"></i></section><section><h5>Unsere Bereiche</h5><i></i><i style="width:70%"></i></section><section><h5>Das zeichnet uns aus</h5><i></i><i style="width:50%"></i></section><section><h5>Kontakt</h5><i></i><i style="width:65%"></i></section></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">13</span> Schräge Kanten zwischen Abschnitten</h2><p>Abschnitte enden nicht gerade, sondern mit einer leicht schrägen Kante, abwechselnd nach links und rechts. Bringt Bewegung in die Seite, ohne dass sich etwas bewegt.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox win" id="winbox" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="sp">nach unten scrollen</div><figure><img src="img/kreatviraum-5-1-800.webp" alt=""></figure><div class="sp"></div><figure><img src="img/turnraum-800.webp" alt=""></figure><div class="sp"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">14</span> Bild öffnet sich wie ein Fenster</h2><p>Große Fotos sind zuerst ein kleines Fenster und öffnen sich beim Scrollen bis zur vollen Größe, das Bild zoomt dabei leicht heraus. Ein schöner Auftritt für die wichtigsten Fotos.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox fadein" id="fadebox" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h5 class="it">Unsere Bereiche</h5><div class="card2 it"></div><div class="card2 it"></div><div class="card2 it"></div></section><section><h5 class="it">Termine</h5><div class="card2 it"></div><div class="card2 it"></div></section><section><h5 class="it">Kontakt</h5><div class="card2 it"></div></section></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span><span class="badge-in">schon eingebaut</span></div>
+        <h2><span class="num">15</span> Inhalte steigen beim Scrollen auf</h2><p>Karten und Texte steigen beim Hineinscrollen sanft auf, eine nach der anderen. Das ist bereits auf der Seite eingebaut – hier zum Vergleich mit den anderen.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="tabsd" id="tabsd"><div class="tl2" role="tablist"><span class="k"></span><button type="button" role="tab" aria-selected="true">Krippe</button><button type="button" role="tab" aria-selected="false">Kindergarten</button><button type="button" role="tab" aria-selected="false">Hort</button></div><div class="panel"><div><b>Kinderkrippe</b>6:45 – 16:30 Uhr · ab 11 Monaten<br>Sonnen- und Sternengruppe</div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">16</span> Reiter, deren Inhalt mitgleitet</h2><p>Beim Wechsel zwischen Reitern gleitet der rosé Knopf zum neuen Reiter und der Inhalt schiebt sich in dieselbe Richtung – nach rechts, wenn man nach rechts wechselt. So weiß man immer, wohin man sich bewegt.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="modald" id="modald"><div class="bd"></div><div class="sheet3" role="dialog" aria-label="Beispielfenster"><b>Kind krankmelden</b><i></i><i></i><i style="width:60%"></i><button type="button" class="mbtn2" data-close style="justify-self:start">Schließen</button></div><button type="button" class="mbtn2" id="mOpen">Fenster öffnen</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span><span class="badge-in">schon eingebaut</span></div>
+        <h2><span class="num">17</span> Fenster wächst aus dem Knopf</h2><p>Ein Fenster öffnet sich nicht einfach in der Mitte, sondern wächst aus dem Knopf heraus, auf den man getippt hat – und kehrt beim Schließen dorthin zurück. Die Suche macht das schon so.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="accd"><details open><summary>Gibt es eine Eingewöhnungszeit?</summary><div class="body">Ja – gemeinsam mit den Eltern geplant, ca. vier Wochen.</div></details><details><summary>Braucht mein Kind eine Brotzeit?</summary><div class="body">Im Hort gibt es Mittagessen; für den Nachmittag gern eine Brotzeit und Wasser mitgeben.</div></details><details><summary>Hat der Hort in den Ferien geöffnet?</summary><div class="body">Ja, von 6:45 bis 18:00 Uhr nach gebuchten Ferientagen.</div></details></div></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span><span class="badge-in">schon eingebaut</span></div>
+        <h2><span class="num">18</span> Fragen klappen weich auf</h2><p>Antworten öffnen sich nicht ruckartig, sondern gleiten in ihrer echten Höhe auf, das Plus dreht sich zum Kreuz. Bei den häufigen Fragen schon eingebaut – hier zum Vergleich.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="kb" id="kb"><img src="img/p2160110-800.webp" alt="" class="on"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""><span class="cap2" id="kbCap">Kinderkrippe</span></div></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">19</span> Bilderwechsel mit langsamer Kamerafahrt</h2><p>Ein großes Foto wechselt alle paar Sekunden in das nächste, dabei fährt die „Kamera“ ganz langsam heran – wie in einem Dokumentarfilm. Für den Startbereich statt der festen Collage, oder für einen Bereichskopf.</p></div>
+    </article>
+  </div>
+  <p class="foot">Alle Übergänge beachten „Bewegung reduzieren“ in den Geräte-Einstellungen – dann wechselt die Seite ohne Bewegung.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover: hover)").matches;
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function onView(el, fn) {
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { fn(); io.disconnect(); } }); }, { threshold: .4 });
+    io.observe(el);
+  }
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, anim) {
+      if (!anim) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px"; knob.style.translate = b.offsetLeft + "px 0";
+      if (!anim) { void knob.offsetWidth; knob.style.transition = ""; } else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) { b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b, true); onPick(b); }); });
+    requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+  }
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f === "offen" ? !!c.dataset.vote : f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  var replay = {};
+  $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
+
+
+
+  /* ---------- Seitenwechsel im Mini-Browser ---------- */
+  var IO = "cubic-bezier(.65,0,.35,1)", OUT = "cubic-bezier(.23,1,.32,1)";
+  function anim(el, kf, o) { return el.animate(kf, Object.assign({ fill: "both" }, o)).finished; }
+  var KIND = {
+    fade: function (a, b) { return Promise.all([anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 220 }), anim(b, [{ opacity: 0 }, { opacity: 1 }], { duration: 280, delay: 60 })]); },
+    slide: function (a, b, d) { return Promise.all([anim(a, [{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-30 * d) + "%)", opacity: .4 }], { duration: 380, easing: OUT }), anim(b, [{ transform: "translateX(" + (100 * d) + "%)" }, { transform: "none" }], { duration: 380, easing: OUT })]); },
+    circle: function (a, b, d, pt) { var x = pt ? pt[0] + "px " + pt[1] + "px" : "50% 100%"; b.style.zIndex = 2; return anim(b, [{ clipPath: "circle(0% at " + x + ")" }, { clipPath: "circle(150% at " + x + ")" }], { duration: 520, easing: IO }); },
+    blur: function (a, b) { return Promise.all([anim(a, [{ opacity: 1, filter: "blur(0)" }, { opacity: 0, filter: "blur(4px)" }], { duration: 200 }), anim(b, [{ opacity: 0, transform: "translateY(18px)", filter: "blur(8px)" }, { opacity: 1, transform: "none", filter: "blur(0)" }], { duration: 420, delay: 80, easing: OUT })]); },
+    zoom: function (a, b) { return Promise.all([anim(a, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(1.06)" }], { duration: 260, easing: "ease-in" }), anim(b, [{ opacity: 0, transform: "scale(.92)" }, { opacity: 1, transform: "none" }], { duration: 420, delay: 120, easing: OUT })]); },
+    curtain: function (a, b, d, pt, vp) { var o = document.createElement("div"); o.className = "overlay"; o.style.background = "#D4B5B0"; vp.appendChild(o); b.style.visibility = "hidden";
+      return anim(o, [{ transform: "translateY(100%)" }, { transform: "none" }], { duration: 340, easing: IO }).then(function () { b.style.visibility = ""; a.style.visibility = "hidden"; return anim(o, [{ transform: "none" }, { transform: "translateY(-100%)" }], { duration: 380, easing: IO }); }).then(function () { o.remove(); a.style.visibility = ""; }); },
+    stack: function (a, b, d, pt, vp) { var dim = document.createElement("div"); dim.className = "dim"; vp.appendChild(dim);
+      if (d > 0) { b.style.zIndex = 3; b.style.boxShadow = "0 -16px 30px -12px rgba(0,0,0,.5)"; b.style.borderRadius = "16px 16px 0 0";
+        return Promise.all([anim(b, [{ transform: "translateY(100%)" }, { transform: "none" }], { duration: 460, easing: OUT }), anim(a, [{ transform: "none" }, { transform: "scale(.92)" }], { duration: 460, easing: OUT }), anim(dim, [{ opacity: 0 }, { opacity: 1 }], { duration: 460 })]).then(function () { dim.remove(); b.style.boxShadow = ""; b.style.borderRadius = ""; }); }
+      a.style.zIndex = 3; a.style.boxShadow = "0 -16px 30px -12px rgba(0,0,0,.5)"; a.style.borderRadius = "16px 16px 0 0";
+      return Promise.all([anim(a, [{ transform: "none" }, { transform: "translateY(100%)" }], { duration: 420, easing: IO }), anim(b, [{ transform: "scale(.92)" }, { transform: "none" }], { duration: 420, easing: OUT }), anim(dim, [{ opacity: 1 }, { opacity: 0 }], { duration: 420 })]).then(function () { dim.remove(); a.style.boxShadow = ""; a.style.borderRadius = ""; }); },
+    stagger: function (a, b) { var kids = Array.prototype.slice.call(b.children);
+      return anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 160 }).then(function () { return Promise.all(kids.map(function (k, i) { return anim(k, [{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 360, delay: i * 60, easing: OUT }); })); }); },
+    morph: function (a, b, d, pt, vp) { var ha = $("h4", a), hb = $("h4", b), ra = ha.getBoundingClientRect(), rb = hb.getBoundingClientRect(), v = vp.getBoundingClientRect();
+      var g = ha.cloneNode(true); g.style.cssText = "position:absolute;z-index:6;margin:0;color:#1E3B44;font-size:1.25rem;letter-spacing:-.03em;line-height:1.1;transform-origin:0 0;left:" + (ra.left - v.left) + "px;top:" + (ra.top - v.top) + "px";
+      setTimeout(function () { g.textContent = hb.textContent; }, 260); vp.appendChild(g); hb.style.opacity = 0;
+      var rest = Array.prototype.slice.call(b.children).filter(function (k) { return k !== hb; });
+      return Promise.all([anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }), anim(g, [{ transform: "none" }, { transform: "translate(" + (rb.left - ra.left) + "px," + (rb.top - ra.top + 30) + "px) scale(1.15)", offset: .5 }, { transform: "translate(" + (rb.left - ra.left) + "px," + (rb.top - ra.top) + "px)" }], { duration: 520, easing: IO }),
+        Promise.all(rest.map(function (k, i) { return anim(k, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 200 + i * 40 }); }))]).then(function () { g.remove(); hb.style.opacity = ""; }); },
+    wave: function (a, b, d, pt, vp) { var o = document.createElementNS("http://www.w3.org/2000/svg", "svg"); o.setAttribute("viewBox", "0 0 100 140"); o.setAttribute("preserveAspectRatio", "none"); o.setAttribute("class", "overlay"); o.style.height = "200%";
+      o.innerHTML = '<path d="M0 20 C 25 0 50 40 75 20 S 100 10 100 20 V120 C 75 140 50 100 25 120 S 0 130 0 120 Z" fill="#F3F8F7"/>'; vp.appendChild(o); b.style.visibility = "hidden";
+      return anim(o, [{ transform: "translateY(55%)" }, { transform: "translateY(-14%)" }], { duration: 420, easing: IO }).then(function () { b.style.visibility = ""; a.style.visibility = "hidden"; return anim(o, [{ transform: "translateY(-14%)" }, { transform: "translateY(-80%)" }], { duration: 420, easing: IO }); }).then(function () { o.remove(); a.style.visibility = ""; }); },
+    tiles: function (a, b, d, pt, vp) { var o = document.createElement("div"); o.className = "overlay tiles"; for (var i = 0; i < 40; i++) o.appendChild(document.createElement("i")); vp.appendChild(o); b.style.visibility = "hidden";
+      var ts = Array.prototype.slice.call(o.children), dl = function (i) { return ((i % 8) + Math.floor(i / 8)) * 18; };
+      return Promise.all(ts.map(function (t, i) { return anim(t, [{ scale: 0, rotate: "45deg" }, { scale: 1.05, rotate: "0deg" }], { duration: 260, delay: dl(i), easing: OUT }); })).then(function () { b.style.visibility = ""; a.style.visibility = "hidden";
+        return Promise.all(ts.map(function (t, i) { return anim(t, [{ scale: 1.05, rotate: "0deg" }, { scale: 0, rotate: "-45deg" }], { duration: 240, delay: dl(i), easing: "ease-in" }); })); }).then(function () { o.remove(); a.style.visibility = ""; }); }
+  };
+  $$(".mb").forEach(function (mbEl) {
+    var vp = $(".vp", mbEl), pgs = $$(".pg", vp), cur = 0, busy = false, kind = mbEl.dataset.kind, wrap = mbEl.parentNode;
+    function go(d, pt) {
+      if (busy) return; var nx = (cur + d + pgs.length) % pgs.length, a = pgs[cur], b = pgs[nx];
+      b.hidden = false;
+      if (reduced) { a.hidden = true; cur = nx; return; }
+      busy = true; b.style.zIndex = 1; a.style.zIndex = 0;
+      KIND[kind](a, b, d, pt, vp).then(function () {
+        a.hidden = true; [a, b].forEach(function (p) { p.getAnimations().forEach(function (x) { x.cancel(); }); Array.prototype.slice.call(p.children).forEach(function (k) { k.getAnimations().forEach(function (x) { x.cancel(); }); }); p.style.zIndex = ""; p.style.visibility = ""; });
+        cur = nx; busy = false;
+      });
+    }
+    $$(".ctl button", wrap).forEach(function (btn) { btn.addEventListener("click", function (ev) { var r = vp.getBoundingClientRect(); go(+btn.dataset.dir, [Math.max(0, Math.min(r.width, ev.clientX - r.left)), r.height]); }); });
+    vp.addEventListener("click", function (ev) { var r = vp.getBoundingClientRect(); go(1, [ev.clientX - r.left, ev.clientY - r.top]); });
+  });
+
+  /* ---------- Bild öffnet sich wie ein Fenster ---------- */
+  (function () { var box = $("#winbox"), figs = $$("figure", box);
+    function upd() { var h = box.clientHeight, top = box.getBoundingClientRect().top;
+      figs.forEach(function (f) { var r = f.getBoundingClientRect(), p = Math.max(0, Math.min(1, 1 - ((r.top - top) + r.height / 2 - h / 2) / (h * .7))); f.style.setProperty("--ci", ((1 - p) * 30).toFixed(1) + "%"); f.style.setProperty("--k", p.toFixed(3)); }); }
+    box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* ---------- Inhalte steigen auf (Vergleich) ---------- */
+  (function () { var box = $("#fadebox"), its = $$(".it", box);
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var i = its.indexOf(e.target), sib = Array.prototype.indexOf.call(e.target.parentNode.children, e.target); setTimeout(function () { e.target.classList.add("in"); }, sib * 70); io.unobserve(e.target); } }); }, { root: box, threshold: .4 });
+    its.forEach(function (x) { io.observe(x); }); })();
+
+  /* ---------- Reiter mit mitgleitendem Inhalt ---------- */
+  (function () {
+    var T = [["Kinderkrippe", "6:45 – 16:30 Uhr · ab 11 Monaten<br>Sonnen- und Sternengruppe"], ["Kindergarten", "6:45 – 16:30 Uhr · ab 3 Jahren<br>Bären, Bienen, Spatzen"], ["Kinderhort", "6:45 – 18:00 Uhr · ab der Einschulung<br>auch in den Ferien"]];
+    var box = $("#tabsd"), tabs = $$('[role="tab"]', box), k = $(".k", box), panel = $(".panel", box), cur = 0;
+    function place(b, an) { if (!an) k.style.transition = "none"; k.style.width = b.offsetWidth + "px"; k.style.translate = b.offsetLeft - 4 + "px 0"; if (!an) { void k.offsetWidth; k.style.transition = ""; } }
+    tabs.forEach(function (t, i) { t.addEventListener("click", function () {
+      if (i === cur) return; var d = i > cur ? 1 : -1; tabs.forEach(function (x, j) { x.setAttribute("aria-selected", j === i); }); place(t, true);
+      var old = $("div", panel), nw = document.createElement("div"); nw.innerHTML = "<b>" + T[i][0] + "</b>" + T[i][1]; panel.appendChild(nw); cur = i;
+      if (reduced) { old.remove(); return; }
+      old.animate([{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-40 * d) + "%)", opacity: 0 }], { duration: 320, easing: OUT, fill: "forwards" }).onfinish = function () { old.remove(); };
+      nw.animate([{ transform: "translateX(" + (40 * d) + "%)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 320, easing: OUT });
+    }); });
+    requestAnimationFrame(function () { place(tabs[0], false); });
+  })();
+
+  /* ---------- Fenster wächst aus dem Knopf ---------- */
+  (function () { var box = $("#modald"), sh = $(".sheet3", box), bd = $(".bd", box), btn = $("#mOpen");
+    function origin() { var b = btn.getBoundingClientRect(), s = sh.getBoundingClientRect(); return (b.left + b.width / 2 - s.left) + "px " + (b.top + b.height / 2 - s.top) + "px"; }
+    btn.addEventListener("click", function () { sh.classList.add("open"); bd.classList.add("on"); if (!reduced) { sh.style.transformOrigin = origin(); sh.animate([{ transform: "scale(.2)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 300, easing: OUT }); } });
+    function close() { bd.classList.remove("on"); if (reduced) { sh.classList.remove("open"); return; } sh.style.transformOrigin = origin(); sh.animate([{ transform: "none", opacity: 1 }, { transform: "scale(.2)", opacity: 0 }], { duration: 220, easing: "ease-in" }).onfinish = function () { sh.classList.remove("open"); }; }
+    $("[data-close]", box).addEventListener("click", close); bd.addEventListener("click", close); })();
+
+  /* ---------- Fragen klappen weich auf ---------- */
+  $$(".accd details").forEach(function (d) { var s = $("summary", d), body = $(".body", d);
+    s.addEventListener("click", function (e) { if (reduced || !body.animate) return; e.preventDefault();
+      if (d.open) { var h = body.offsetHeight; body.animate([{ height: h + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 240, easing: OUT }).onfinish = function () { d.open = false; }; }
+      else { d.open = true; var h2 = body.offsetHeight; body.animate([{ height: "0px", opacity: 0 }, { height: h2 + "px", opacity: 1 }], { duration: 300, easing: OUT }); } }); });
+
+  /* ---------- Bilderwechsel mit Kamerafahrt ---------- */
+  (function () { var imgs = $$("#kb img"), cap = $("#kbCap"), names = ["Kinderkrippe", "Kindergarten", "Kinderhort"], i = 0;
+    if (reduced) return;
+    setInterval(function () { imgs[i].classList.remove("on"); i = (i + 1) % imgs.length; void imgs[i].offsetWidth; imgs[i].classList.add("on"); cap.textContent = names[i]; }, 4200); })();
+
+  /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
+  (function () {
+    var cards = $$(".card"), state = {}, db = null, col = null, saveT = {}, savedEl, local = false;
+    var tally = document.createElement("div"); tally.className = "tally"; tally.setAttribute("aria-live", "polite");
+    tally.innerHTML = '<span class="t-ja"><b>0</b> Ja</span><span class="t-merken"><b>0</b> Merken</span><span class="t-nein"><b>0</b> Nein</span><span class="t-offen"><b>0</b> offen</span><span class="saved">verbinde …</span>';
+    $(".grid").after(tally); savedEl = $(".saved", tally);
+    function count() {
+      var c = { ja: 0, merken: 0, nein: 0 }; cards.forEach(function (cd) { var v = state[cd.dataset.nr]; if (v && c[v.wahl] !== undefined) c[v.wahl]++; });
+      $(".t-ja b", tally).textContent = c.ja; $(".t-merken b", tally).textContent = c.merken; $(".t-nein b", tally).textContent = c.nein;
+      $(".t-offen b", tally).textContent = cards.length - c.ja - c.merken - c.nein;
+    }
+    function paint(cd) {
+      var v = state[cd.dataset.nr] || {}; cd.dataset.vote = v.wahl || "";
+      if (!v.wahl) cd.removeAttribute("data-vote");
+      $$(".vote-seg button", cd).forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === v.wahl); });
+      var inp = $(".vote-note input", cd); if (document.activeElement !== inp) inp.value = v.notiz || "";
+    }
+    function save(cd) {
+      var nr = cd.dataset.nr, v = state[nr] || {}; savedEl.textContent = "speichert …";
+      var row = { nr: +nr, titel: cd.dataset.titel, wahl: v.wahl || "", notiz: v.notiz || "", zeit: new Date().toISOString() };
+      if (!col) { try { localStorage.setItem("uebergaenge-wahl", JSON.stringify(state)); } catch (e) {} savedEl.textContent = "nur auf diesem Gerät gespeichert"; return; }
+      clearTimeout(saveT[nr]);
+      saveT[nr] = setTimeout(function () {
+        col.doc("ue-" + ("0" + nr).slice(-2)).set(row).then(function () { delete saveT[nr]; savedEl.textContent = "✓ gespeichert – Claude sieht deine Auswahl"; }, function (e) { delete saveT[nr]; savedEl.textContent = "Speichern fehlgeschlagen (" + (e && e.code || "Fehler") + ")"; });
+      }, 250);
+    }
+    cards.forEach(function (cd) {
+      var nr = $(".num", cd).textContent, h2 = $(".about h2", cd);
+      cd.dataset.nr = nr; cd.dataset.titel = h2.textContent.replace(/^\s*\d+\s*/, "");
+      var v = document.createElement("div"); v.className = "vote";
+      v.innerHTML = '<div class="vote-row"><span class="vote-q">Einbauen?</span><div class="vote-seg" role="group" aria-label="Entscheidung zu Idee ' + nr + '"><button type="button" data-v="ja" aria-pressed="false">Ja</button><button type="button" data-v="merken" aria-pressed="false">Merken</button><button type="button" data-v="nein" aria-pressed="false">Nein</button></div></div>' +
+        '<label class="vote-note"><span class="visually-hidden">Anmerkung zu Idee ' + nr + '</span><input type="text" maxlength="300" placeholder="Anmerkung (optional), z. B. „etwas schwächer“"></label>';
+      $(".about", cd).appendChild(v);
+      $$(".vote-seg button", v).forEach(function (b) { b.addEventListener("click", function () {
+        var s = state[nr] || (state[nr] = {}); s.wahl = s.wahl === b.dataset.v ? "" : b.dataset.v; paint(cd); count(); save(cd);
+      }); });
+      var inp = $("input", v), last = "";
+      inp.addEventListener("focus", function () { last = inp.value; });
+      inp.addEventListener("change", function () { if (inp.value === last) return; var s = state[nr] || (state[nr] = {}); s.notiz = inp.value.trim(); last = inp.value; save(cd); });
+    });
+    var vh = document.createElement("style"); vh.textContent = ".visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}"; document.head.appendChild(vh);
+    function fromLocal() { local = true; try { state = JSON.parse(localStorage.getItem("uebergaenge-wahl") || "{}"); } catch (e) { state = {}; } cards.forEach(paint); count(); savedEl.textContent = "nur auf diesem Gerät gespeichert"; }
+    count();
+    var timer = setTimeout(function () { if (!col) fromLocal(); }, 10000);
+    if (!window.claude || !window.claude.use) { clearTimeout(timer); fromLocal(); return; }
+    window.claude.use("db").then(function (d) {
+      if (!d) { clearTimeout(timer); fromLocal(); return; }
+      db = d; col = db.collection("uebergaenge");
+      col.onSnapshot(function (snap) {
+        clearTimeout(timer);
+        snap.docs.forEach(function (doc) { var x = doc.data() || {}; var nr = String(x.nr); if (saveT[nr]) return; /* eigene Änderung unterwegs */ state[nr] = { wahl: x.wahl || "", notiz: x.notiz || "" }; });
+        cards.forEach(paint); count(); if (!/gespeichert/.test(savedEl.textContent)) savedEl.textContent = "verbunden – Claude sieht deine Auswahl";
+      }, function () { clearTimeout(timer); col = null; fromLocal(); });
+    }, function () { clearTimeout(timer); fromLocal(); });
+  })();
+})();
+</script>
