@@ -211,7 +211,68 @@ button { font: inherit; color: inherit; }
 /* 35 Menü-Unterstrich wandert */
 .navline { position: relative; display: flex; gap: 4px; background: rgba(243,248,247,.92); padding: 8px 10px; border-radius: 14px; }
 .navline a { position: relative; z-index: 1; padding: 8px 12px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .88rem; }
-.navline .ul { position: absolute; bottom: 8px; height: 3px; border-radius: 2px; background: var(--rose-deep, #C9A49E); transition: translate .35s var(--ease-io), width .35s var(--ease-io), opacity .2s; opacity: 0; left: 0; }
+.navline .ul { position: absolute; bottom: 8px; left: 0; width: 100px; height: 3px; border-radius: 2px; background: var(--rose-deep, #C9A49E); transform-origin: 0 50%; transition: transform .3s cubic-bezier(.22,1,.36,1), opacity .18s; opacity: 0; }
+
+
+/* ---------- Nachtrag 36–46 (nach dem unslop-Leitfaden) ---------- */
+.fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }
+.duo { position: absolute; inset: 0; z-index: 5; pointer-events: none; background: #2D6A6A; mix-blend-mode: color; opacity: 0; }
+.flagbar { position: absolute; left: 10px; right: 10px; top: 0; z-index: 6; display: flex; justify-content: space-between; pointer-events: none; }
+.flagbar::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: #1E3B44; border-radius: 1px; }
+.flagbar i { width: 18px; height: 22px; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: 50% 0; transform: scaleY(0); }
+.flagbar i:nth-child(odd) { background: #C9A49E; } .flagbar i:nth-child(even) { background: #2D6A6A; }
+
+/* 39 Buchstaben-Bild, 40 Raster-Bild */
+.pic-fx { position: relative; width: 100%; max-width: 440px; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: #A8C5C0; }
+.pic-fx canvas, .pic-fx img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pic-fx img { object-fit: cover; opacity: 0; transition: opacity .5s cubic-bezier(.22,1,.36,1); }
+.pic-fx.done img { opacity: 1; }
+.pic-fx canvas { transition: opacity .5s cubic-bezier(.22,1,.36,1); }
+.pic-fx.done canvas { opacity: 0; }
+#glyphFx { background: #142A31; }
+
+/* 42 Menü aus dem Knopf */
+.dd { position: relative; width: 100%; max-width: 420px; height: 230px; border-radius: 14px; background: var(--bg); padding: 14px; }
+.dd-btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 8px 12px; background: rgba(243,248,247,.9); color: var(--ink); font: 600 .9rem var(--font); cursor: pointer; transition: background .14s cubic-bezier(.22,1,.36,1); }
+.dd-btn:hover { background: #fff; }
+.dd-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; transition: transform .18s cubic-bezier(.22,1,.36,1); }
+.dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.dd-menu { position: absolute; left: 14px; top: 58px; width: 230px; background: var(--paper); color: var(--ink); border-radius: 14px; padding: 6px; box-shadow: 0 1px 2px rgba(20,42,49,.08), 0 16px 30px -16px rgba(20,42,49,.5); display: grid; gap: 2px; transform-origin: 20px 0;
+  opacity: 0; transform: translateY(-6px) scale(.98); visibility: hidden; transition: opacity .14s cubic-bezier(.22,1,.36,1), transform .14s cubic-bezier(.22,1,.36,1), visibility 0s .14s; }
+.dd-menu.open { opacity: 1; transform: none; visibility: visible; transition-duration: .2s; transition-delay: 0s; }
+.dd-menu a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: .88rem; transition: background .14s; }
+.dd-menu a:hover { background: var(--rose-soft); }
+.dd-menu small { display: block; color: var(--ink-soft); font-size: .76rem; }
+
+/* 43 Knöpfe nach Lehrbuch */
+.calm-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cb { border: 1.5px solid transparent; border-radius: 12px; padding: 12px 20px; font: 600 .95rem var(--font); cursor: pointer; background: #D4B5B0; color: #1E3B44; transition: background-color .14s cubic-bezier(.22,1,.36,1), border-color .14s, transform .12s cubic-bezier(.22,1,.36,1); }
+.cb:hover { background: #C9A49E; }
+.cb:active { transform: scale(.97); }
+.cb.ghost2 { background: transparent; color: #F3F8F7; border-color: rgba(243,248,247,.5); }
+.cb.ghost2:hover { background: rgba(243,248,247,.12); border-color: #F3F8F7; }
+.cb:focus-visible { outline: 3px solid #F3F8F7; outline-offset: 3px; }
+
+/* 44 Kopfleiste wird fester */
+.hdbox .bar2 { position: sticky; top: 10px; margin: 10px; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; color: var(--ink); font-weight: 600; font-size: .86rem;
+  background: rgba(243,248,247, var(--a, .35)); box-shadow: 0 0 0 1px rgba(30,59,68, var(--h, 0)), 0 12px 24px -16px rgba(20,42,49, var(--s, 0)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.hdbox .bar2 b { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); }
+.hdbox .cnt { padding: 6px 18px 30px; display: grid; gap: 10px; }
+.hdbox .cnt i { display: block; height: 40px; border-radius: 10px; background: rgba(30,59,68,.1); }
+
+/* 45 Wörter rollen um */
+.roller { display: grid; gap: 16px; justify-items: center; }
+.roll-pill { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 12px; background: #F3F8F7; color: #1E3B44; font-weight: 600; font-size: 1rem; min-width: 220px; }
+.roll-pill .dot2 { width: 10px; height: 10px; border-radius: 50%; background: #2E8B57; transition: background-color .3s cubic-bezier(.22,1,.36,1); }
+.roll-txt { position: relative; display: inline-flex; overflow: hidden; height: 1.4em; }
+.roll-txt span { display: inline-block; white-space: pre; }
+
+/* 46 Kreis um den aktiven Menüpunkt */
+.circnav { display: flex; gap: 6px; background: rgba(243,248,247,.92); padding: 10px 12px; border-radius: 14px; }
+.circnav a { position: relative; padding: 8px 12px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .9rem; }
+.circnav svg { position: absolute; left: -8%; top: -18%; width: 116%; height: 136%; overflow: visible; pointer-events: none; }
+.circnav path { fill: none; stroke: #C9A49E; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .45s cubic-bezier(.22,1,.36,1); }
+.circnav a.on path { stroke-dashoffset: 0; }
 
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
@@ -247,10 +308,11 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Übergänge</span>
-    <h1>35 Übergänge und Animationen</h1>
+    <h1>46 Übergänge und Animationen</h1>
     <p>Wie soll sich die Seite bewegen, wenn man von einer Seite zur nächsten wechselt, scrollt oder etwas aufklappt? Jede Karte ist live: oben auf „Weiter“ tippen (oder direkt in den Mini-Browser), in den Boxen scrollen.</p>
   </header>
   <p class="sync-note">Unter jedem Übergang kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen. Für den Seitenwechsel reicht am Ende <b>ein</b> Favorit – die anderen können für besondere Stellen bleiben.</p>
+  <p class="sync-note">Neu ab Nr. 36: nach dem installierten Gestaltungs-Leitfaden <i>unslop</i> von Damir Sokolovsky (@heydamir, CC BY 4.0) – eine Bewegungskurve für alles, 120–500 ms, nur Deckkraft und Verschiebung. Karten mit <b>Empfehlung</b> folgen ihm genau. Die Kurve gilt jetzt auch für alle älteren Übergänge.</p>
 
   <div class="filter" role="group" aria-label="Übergänge filtern">
     <span class="knob" aria-hidden="true"></span>
@@ -473,6 +535,72 @@ button { font: inherit; color: inherit; }
       <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">35</span> Strich wandert im Menü mit</h2><p>Im Menü am Computer folgt ein rosé Strich der Maus von Eintrag zu Eintrag und dehnt sich auf die Breite des Wortes. Zeigt, wo man gerade hinzeigt, ohne laute Flächen.</p></div>
     </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="calm"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">36</span> Ruhig nach Lehrbuch</h2><p>Der Übergang, den der unslop-Leitfaden empfiehlt: die alte Seite blendet in 180 ms aus und hebt sich dabei 6 Pixel, die neue steigt in 400 ms um 8 Pixel auf, die ersten Bausteine 50 ms versetzt. Eine Kurve, nur Deckkraft und Verschiebung – ruhig, schnell und auf jedem Handy flüssig.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="halftone"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">37</span> Rasterpunkte</h2><p>Die Seite löst sich in wachsende Rasterpunkte in der Farbe der nächsten Seite auf, wie bei einem gedruckten Bild, und die neue Seite erscheint darunter. Ein Druck-Effekt aus dem Leitfaden – passt zu Ferienplan und Elternbriefen, die man ausdruckt.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="duo"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">38</span> Zweifarbig überblenden</h2><p>Die alte Seite verliert ihre Farben und wird kurz zweifarbig in Petrol, dann kehrt die neue Seite in voller Farbe zurück. Die Fotos „gehören“ dabei einen Moment ganz zur Seite – ein Effekt aus dem Leitfaden.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="flags"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">39</span> Wimpel als Ladeanzeige</h2><p>Beim Seitenwechsel klappen oben nacheinander kleine Wimpel herunter wie ein Fortschrittsbalken; ist die Kette voll, erscheint die neue Seite. Das Kennzeichen der Seite – die Wimpel – wird zur Ladeanzeige.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="pic-fx" id="glyphFx"><canvas aria-hidden="true"></canvas><img src="img/p2160110-800.webp" alt="Gruppenraum der Krippe"></div><button type="button" class="replay" data-replay="GL">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">40</span> Foto baut sich aus Buchstaben auf</h2><p>Das große Foto im Startbereich erscheint zuerst aus lauter kleinen Buchstaben des Wortes „kinderhort“, gefärbt wie das Foto, und wird dann zum echten Bild. Ein Effekt aus dem Leitfaden – nur einmal beim ersten Besuch.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="pic-fx" id="ditherFx"><canvas aria-hidden="true"></canvas><img src="img/kreatviraum-5-1-800.webp" alt="Kreativraum im Hort"></div><button type="button" class="replay" data-replay="DI">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">41</span> Fotos laden als Rasterbild</h2><p>Solange ein Foto lädt, zeigt die Seite eine grobe Rasterfassung in den drei Farben der Seite, dann blendet das echte Foto darüber. Verspielter als die jetzige Unschärfe – wie ein Bild, das gerade gedruckt wird.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="dd"><button type="button" class="dd-btn" id="ddBtn" aria-expanded="false">Bereiche <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="dd-menu" id="ddMenu"><a href="#">Kinderkrippe<small>ab 11 Monaten</small></a><a href="#">Kindergarten<small>3 Jahre bis Einschulung</small></a><a href="#">Kinderhort<small>ab der Einschulung</small></a></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">42</span> Menü klappt aus dem Knopf</h2><p>Nach Lehrbuch: das Menü blendet in 200 ms ein und hebt sich 6 Pixel aus dem Knopf, schließt schneller in 140 ms. Kein Hüpfen, kein Federn – wirkt sofort und ruhig.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="calm-btns"><button type="button" class="cb">Platz anfragen</button><button type="button" class="cb ghost2">Kontakt aufnehmen</button></div><p class="hint">Darüberfahren und drücken</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">43</span> Knöpfe nach Lehrbuch</h2><p>Beim Darüberfahren wechselt nur die Farbe eine Stufe (140 ms), beim Drücken gibt der Knopf auf 97 % nach. Kein Anheben, kein Glanz – die ruhigste und hochwertigste Rückmeldung.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox hdbox" id="hdBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="bar2"><b></b>Kinderhort Grombühl</div><div class="cnt"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">44</span> Kopfleiste wird beim Scrollen fester</h2><p>Oben auf der Seite ist die Leiste fast durchsichtig. Beim Scrollen wird sie Pixel für Pixel deckender und bekommt eine feine Linie und einen weichen Schatten – statt plötzlich umzuschalten.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="roller"><span class="roll-pill"><span class="dot2" id="rollDot"></span><span class="roll-txt" id="rollTxt" aria-live="polite"></span></span><button type="button" class="btn ghost" id="rollBtn">Nächster Zustand</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">45</span> Wörter rollen um</h2><p>Wenn sich ein Wort ändert – etwa „Geöffnet“ zu „Schließt bald“ – blendet das alte Wort aus und das neue rollt Buchstabe für Buchstabe herein. So sieht man, dass sich etwas geändert hat.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><nav class="circnav" id="circnav" aria-label="Beispielmenü"><a href="#" class="on">Startseite<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M58 5 C 28 0 4 9 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 6"/></svg></a><a href="#">Bereiche<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M58 5 C 28 0 4 9 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 6"/></svg></a><a href="#">Aktuelles<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M58 5 C 28 0 4 9 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 6"/></svg></a><a href="#">Kontakt<svg viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M58 5 C 28 0 4 9 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 6"/></svg></a></nav><p class="hint">Einen Eintrag antippen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">46</span> Kringel um den aktiven Menüpunkt</h2><p>Die aktuelle Seite im Menü bekommt einen handgezeichneten rosé Kringel, der sich beim Wechsel neu zeichnet – das Kennzeichen der Seite (die Markierungen) wird zur Orientierung.</p></div>
+    </article>
   </div>
   <p class="foot">Alle Übergänge beachten „Bewegung reduzieren“ in den Geräte-Einstellungen – dann wechselt die Seite ohne Bewegung.</p>
 </div>
@@ -507,7 +635,7 @@ button { font: inherit; color: inherit; }
 
 
   /* ---------- Seitenwechsel im Mini-Browser ---------- */
-  var IO = "cubic-bezier(.65,0,.35,1)", OUT = "cubic-bezier(.23,1,.32,1)";
+  var IO = "cubic-bezier(.22,1,.36,1)", OUT = IO;   /* eine Kurve für alles (unslop-Leitfaden) */
   function anim(el, kf, o) { return el.animate(kf, Object.assign({ fill: "both" }, o)).finished; }
   var KIND = {
     fade: function (a, b) { return Promise.all([anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 220 }), anim(b, [{ opacity: 0 }, { opacity: 1 }], { duration: 280, delay: 60 })]); },
@@ -645,10 +773,99 @@ button { font: inherit; color: inherit; }
 
   /* ---------- Strich wandert im Menü ---------- */
   (function () { var nav = $("#navline"), ul = $(".ul", nav), as = $$("a", nav), cur = as[0];
-    function to(a, show) { ul.style.width = (a.offsetWidth - 24) + "px"; ul.style.translate = (a.offsetLeft + 12) + "px 0"; ul.style.opacity = show ? 1 : 0; }
+    function to(a, show) { ul.style.transform = "translateX(" + (a.offsetLeft + 12) + "px) scaleX(" + ((a.offsetWidth - 24) / 100).toFixed(3) + ")"; ul.style.opacity = show ? 1 : 0; }
     as.forEach(function (a) { a.addEventListener("mouseenter", function () { to(a, true); }); a.addEventListener("focus", function () { to(a, true); }); a.addEventListener("click", function () { cur = a; }); });
     nav.addEventListener("mouseleave", function () { to(cur, true); });
     requestAnimationFrame(function () { ul.style.transition = "none"; to(cur, true); void ul.offsetWidth; ul.style.transition = ""; }); })();
+
+
+  /* ---------- Nachtrag 36–46 ---------- */
+  KIND.calm = function (a, b) { var ka = Array.prototype.slice.call(a.children), kb = Array.prototype.slice.call(b.children); b.style.opacity = 0;
+    return Promise.all(ka.map(function (k) { return anim(k, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-6px)" }], { duration: 180, easing: IO }); })).then(function () {
+      b.style.opacity = ""; return Promise.all(kb.map(function (k, i) { return anim(k, [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 400, delay: Math.min(i, 5) * 50, easing: IO }); })); }); };
+  KIND.halftone = function (a, b, d, pt, vp) {
+    var cv = document.createElement("canvas"), r = vp.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), ctx = cv.getContext("2d"), cell = 14, col = getComputedStyle(b).backgroundColor;
+    cv.className = "fx-canvas"; cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.scale(dpr, dpr); vp.appendChild(cv);
+    var cols = Math.ceil(r.width / cell) + 1, rows = Math.ceil(r.height / cell) + 1, maxD = cols + rows;
+    function draw(t, grow) { ctx.clearRect(0, 0, r.width, r.height); ctx.fillStyle = col;
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) { var k = (x + y) / maxD, p = Math.max(0, Math.min(1, (t - k * .5) / .5)); if (!grow) p = 1 - p; if (p <= 0) continue; ctx.beginPath(); ctx.arc(x * cell, y * cell, p * cell * .78, 0, 6.283); ctx.fill(); } }
+    function run(dur, grow) { return new Promise(function (res) { var t0 = performance.now(); (function f(now) { var t = Math.min(1, (now - t0) / dur); draw(t, grow); if (t < 1) requestAnimationFrame(f); else res(); })(t0); }); }
+    b.style.visibility = "hidden";
+    return run(420, true).then(function () { b.style.visibility = ""; a.style.visibility = "hidden"; return run(420, false); }).then(function () { cv.remove(); a.style.visibility = ""; }); };
+  KIND.duo = function (a, b, d, pt, vp) { var o = document.createElement("div"); o.className = "duo"; vp.appendChild(o); b.style.visibility = "hidden";
+    return Promise.all([anim(o, [{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: IO }), anim(a, [{ filter: "contrast(1)" }, { filter: "contrast(1.1) brightness(.95)" }], { duration: 260 })]).then(function () { b.style.visibility = ""; a.style.visibility = "hidden";
+      return anim(o, [{ opacity: 1 }, { opacity: 0 }], { duration: 420, easing: IO }); }).then(function () { o.remove(); a.style.visibility = ""; }); };
+  KIND.flags = function (a, b, d, pt, vp) { var bar = document.createElement("div"); bar.className = "flagbar"; for (var i = 0; i < 12; i++) bar.appendChild(document.createElement("i")); vp.appendChild(bar); var fs = Array.prototype.slice.call(bar.children);
+    return Promise.all(fs.map(function (f, i) { return anim(f, [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], { duration: 180, delay: i * 28, easing: IO }); })).then(function () {
+      return Promise.all([anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 180 }), anim(b, [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 320, delay: 60, easing: IO })]); }).then(function () {
+      return anim(bar, [{ opacity: 1 }, { opacity: 0 }], { duration: 160 }); }).then(function () { bar.remove(); }); };
+
+  /* Buchstaben-Bild: Pixel einmal lesen, Zeichen-Atlas vorbereiten, dann nur zeichnen (Leitfaden: Leistung) */
+  function prepImg(img, cb) { if (img.complete && img.naturalWidth) cb(); else img.addEventListener("load", cb, { once: true }); }
+  (function () {
+    var box = $("#glyphFx"), cv = $("canvas", box), img = $("img", box), ready = null, tm = [];
+    function setup() {
+      var r = box.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), cell = 9, cols = Math.floor(r.width / cell), rows = Math.floor(r.height / cell);
+      cv.width = r.width * dpr; cv.height = r.height * dpr; var ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
+      var sm = document.createElement("canvas"); sm.width = cols; sm.height = rows; var sx = sm.getContext("2d", { willReadFrequently: true });
+      var iw = img.naturalWidth, ih = img.naturalHeight, sc = Math.max(cols / iw, rows / ih); sx.drawImage(img, (cols - iw * sc) / 2, (rows - ih * sc) / 2, iw * sc, ih * sc);
+      var px; try { px = sx.getImageData(0, 0, cols, rows).data; } catch (e) { return null; }
+      var chars = ".:irtnoehdk", cells = [];
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) { var i = (y * cols + x) * 4, l = (.2126 * px[i] + .7152 * px[i + 1] + .0722 * px[i + 2]) / 255;
+        cells.push({ x: x, y: y, ch: chars[Math.min(chars.length - 1, Math.floor(l * chars.length))], c: "rgb(" + px[i] + "," + px[i + 1] + "," + px[i + 2] + ")", d: (x + y) / (cols + rows) }); }
+      ctx.font = "600 " + (cell + 1) + "px 'Plus Jakarta Sans', system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      return { ctx: ctx, cells: cells, cell: cell, w: r.width, h: r.height };
+    }
+    function play() {
+      tm.forEach(clearTimeout); tm = []; box.classList.remove("done");
+      prepImg(img, function () {
+        ready = ready || setup(); if (!ready || reduced) { box.classList.add("done"); return; }
+        var R = ready, t0 = performance.now(), last = 0;
+        (function f(now) { if (now - last >= 1000 / 12) { last = now; var t = (now - t0) / 900; R.ctx.clearRect(0, 0, R.w, R.h);
+            R.cells.forEach(function (c) { if (t < c.d) return; R.ctx.fillStyle = c.c; R.ctx.fillText(c.ch, c.x * R.cell + R.cell / 2, c.y * R.cell + R.cell / 2); }); }
+          if (now - t0 < 1000) requestAnimationFrame(f); })(t0);
+        tm.push(setTimeout(function () { box.classList.add("done"); }, 1700));
+      });
+    }
+    replay.GL = play; onView(box, play);
+  })();
+
+  /* Raster-Bild (geordnetes Dithering in drei Farben der Seite) */
+  (function () {
+    var box = $("#ditherFx"), cv = $("canvas", box), img = $("img", box), tm = null;
+    var PAL = [[30, 59, 68], [168, 197, 192], [243, 248, 247]], B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    function draw() { var r = box.getBoundingClientRect(), w = Math.round(r.width / 3), h = Math.round(r.height / 3); cv.width = w; cv.height = h; cv.style.imageRendering = "pixelated";
+      var ctx = cv.getContext("2d", { willReadFrequently: true }), iw = img.naturalWidth, ih = img.naturalHeight, sc = Math.max(w / iw, h / ih);
+      ctx.drawImage(img, (w - iw * sc) / 2, (h - ih * sc) / 2, iw * sc, ih * sc); var d; try { d = ctx.getImageData(0, 0, w, h); } catch (e) { return; }
+      for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) { var i = (y * w + x) * 4, l = (.2126 * d.data[i] + .7152 * d.data[i + 1] + .0722 * d.data[i + 2]) / 255 + (B[(y % 4) * 4 + x % 4] / 16 - .5) * .45;
+        var p = PAL[l < .38 ? 0 : l < .72 ? 1 : 2]; d.data[i] = p[0]; d.data[i + 1] = p[1]; d.data[i + 2] = p[2]; }
+      ctx.putImageData(d, 0, 0); }
+    function play() { clearTimeout(tm); box.classList.remove("done"); prepImg(img, function () { draw(); tm = setTimeout(function () { box.classList.add("done"); }, reduced ? 0 : 1100); }); }
+    replay.DI = play; onView(box, play);
+  })();
+
+  /* Menü aus dem Knopf */
+  (function () { var b = $("#ddBtn"), m = $("#ddMenu");
+    b.addEventListener("click", function () { var o = !m.classList.contains("open"); m.classList.toggle("open", o); b.setAttribute("aria-expanded", o); });
+    $$("a", m).forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); m.classList.remove("open"); b.setAttribute("aria-expanded", "false"); }); }); })();
+
+  /* Kopfleiste wird fester */
+  (function () { var box = $("#hdBox"), bar = $(".bar2", box);
+    function upd() { var p = Math.min(1, box.scrollTop / 80); bar.style.setProperty("--a", (.35 + p * .57).toFixed(3)); bar.style.setProperty("--h", (p * .08).toFixed(3)); bar.style.setProperty("--s", (p * .5).toFixed(3)); }
+    box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* Wörter rollen um */
+  (function () { var W = [["Geöffnet", "#2E8B57"], ["Schließt bald", "#B8736A"], ["Geschlossen", "#7E9599"]], i = 0, box = $("#rollTxt"), dot = $("#rollDot");
+    function set(t, animate) { var old = Array.prototype.slice.call(box.children);
+      var nw = document.createElement("span"); nw.style.display = "inline-flex"; t.split("").forEach(function (ch) { var c = document.createElement("span"); c.textContent = ch; nw.appendChild(c); });
+      if (!animate || reduced) { box.innerHTML = ""; box.appendChild(nw); return; }
+      old.forEach(function (o) { o.style.position = "absolute"; o.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-6px)" }], { duration: 160, easing: IO, fill: "forwards" }).onfinish = function () { o.remove(); }; });
+      box.appendChild(nw); Array.prototype.slice.call(nw.children).forEach(function (c, k) { c.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: 60 + k * 22, easing: IO, fill: "backwards" }); }); }
+    set(W[0][0], false);
+    $("#rollBtn").addEventListener("click", function () { i = (i + 1) % W.length; dot.style.backgroundColor = W[i][1]; set(W[i][0], true); }); })();
+
+  /* Kringel um den aktiven Menüpunkt */
+  $$("#circnav a").forEach(function (a, i, all) { a.addEventListener("click", function (e) { e.preventDefault(); all.forEach(function (x) { x.classList.toggle("on", x === a); }); }); });
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {

@@ -308,3 +308,9 @@ Abschnitte: 25 Text steigt Zeile für Zeile auf · 26 Fotoreihe rollt beim Scrol
 Kleine Animationen: 29 Lichtkante über den Knopf · 30 Pfeil fliegt durch · 31 Karten heben sich an · 32 Häkchen zeichnet sich · 33 Fotos wischen herein · 34 Wimpel schwingen zur Begrüßung · 35 Strich wandert im Menü mit
 
 Entscheidung offen.
+
+## Übergänge – Nachtrag 36–46 (15.11.2026, nach dem Leitfaden „unslop“)
+Verbesserung für alle Übergänge: eine Bewegungskurve `cubic-bezier(.22,1,.36,1)`, Menü-Strich (35) animiert nicht mehr die Breite.
+36 Ruhig nach Lehrbuch (Empfehlung) · 37 Rasterpunkte · 38 Zweifarbig überblenden · 39 Wimpel als Ladeanzeige · 40 Foto baut sich aus Buchstaben auf · 41 Fotos laden als Rasterbild · 42 Menü klappt aus dem Knopf (Empfehlung) · 43 Knöpfe nach Lehrbuch (Empfehlung) · 44 Kopfleiste wird beim Scrollen fester · 45 Wörter rollen um · 46 Kringel um den aktiven Menüpunkt
+
+Entscheidung offen.
