@@ -1957,11 +1957,24 @@
     seen(tr, function (t) { t.classList.add("wave-go"); requestAnimationFrame(function () { t.classList.remove("wave-wait"); }); setTimeout(function () { t.classList.remove("wave-go"); }, 1200); }, "0px 0px -15% 0px");
   })();
 
-  /* Übergang 53 – Seitentitel erscheint klein in der Leiste */
+  /* Übergang 53 – Seitentitel erscheint klein in der Leiste.
+     Immer den Titel der gerade sichtbaren Seite nehmen (die Vorschau hat alle Seiten in einer Datei). */
   (function () {
-    var h = $(".page-hero h1"), brand = $(".brand"); if (!h || !brand || !("IntersectionObserver" in window)) return;
-    var t = document.createElement("span"); t.className = "b-page"; t.setAttribute("aria-hidden", "true"); t.textContent = h.textContent.trim(); brand.appendChild(t);
-    new IntersectionObserver(function (es) { header.classList.toggle("show-page", !es[0].isIntersecting && es[0].boundingClientRect.top < 0); }, { rootMargin: "-80px 0px 0px 0px" }).observe(h);
+    var brand = $(".brand"); if (!brand || !header) return;
+    var t = document.createElement("span"); t.className = "b-page"; t.setAttribute("aria-hidden", "true"); brand.appendChild(t);
+    var raf = 0;
+    function upd() {
+      raf = 0;
+      var h = $$(".page-hero h1").filter(function (x) { return x.offsetParent !== null; })[0];
+      var on = false;
+      if (h) { var r = h.getBoundingClientRect(); on = r.height > 0 && r.bottom < 80; if (on && t.textContent !== h.textContent.trim()) t.textContent = h.textContent.trim(); }
+      header.classList.toggle("show-page", on);
+    }
+    function later() { if (!raf) raf = requestAnimationFrame(upd); }
+    addEventListener("scroll", later, { passive: true });
+    addEventListener("hashchange", function () { header.classList.remove("show-page"); setTimeout(upd, 50); });
+    addEventListener("resize", later);
+    upd();
   })();
 
   /* Übergang 58 – Platzhalter atmen, wenn ein Bild länger als 1 s braucht */

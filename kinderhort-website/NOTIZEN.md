@@ -285,6 +285,10 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Raster (15.11.2026)
+Nach dem Spickzettel „Steal this grid“: Handy 4 Spalten, 16 px Rand, 16 px Abstand · Tablet (ab 701 px) 8 Spalten, 32 px Rand, 24 px Abstand · Computer 12 Spalten, Rand automatisch (Inhalt mittig, max. 1180 px), 24 px Abstand. Umgesetzt mit `--margin` und `--gutter` für `.container` und alle Karten-Raster.
+- Behoben: Der Seitenname in der Leiste (Übergang 53) blieb in der Vorschau nach dem Wechsel von „Aktuelles“ zur Startseite stehen; er richtet sich jetzt immer nach der gerade sichtbaren Seite.
+
 ## Ja-Runde Kniffe, Ideen und Übergänge (15.11.2026)
 Eingebaut nach der Abstimmung in den Sammlungen `kniffe`, `auswahl` (89–112) und `uebergaenge`.
 - **Kniffe:** 1 verschachtelte Rundungen (Sprungmarken 14, Termine 22/10, Alters-Etikett 6, Kontaktkarte 28) · 2 Ränder aus der Textfarbe (`--rule` = `color-mix(currentColor 16 %)`, Knöpfe 50–55 %) · 3 OKLCH war schon da · 4 Foto-Verläufe in OKLab · 5 alle Symbole Strichstärke 1,8 · 6 weiche Kanten an Sprungmarken, Rundgang, Tabellen · 7 Symbolwechsel mit Unschärfe (Merken, Teilen, Downloads, Menü) · 9 `dvh` statt `vh` · 10 Original-Aushang als Vorschaubild mit `mix-blend-mode: multiply`. Nein: 8 Dunkelmodus.

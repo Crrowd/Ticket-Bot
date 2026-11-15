@@ -1794,3 +1794,11 @@ img.arrived { animation: img-in .4s var(--io); }
 .page-hero-card > img.kb { view-transition-name: none !important; }
 .faq-topics button { min-height: 44px; }
 .leitsatz, .leitsatz .ch { display: inline !important; white-space: pre-wrap; }
+
+/* ---------- Raster nach Spickzettel: Handy 4 Spalten · 16 Rand · 16 Abstand,
+   Tablet 8 · 32 · 24, Computer 12 · Rand automatisch (mittig, max. 1180) · 24 ---------- */
+:root { --margin: 16px; --gutter: 16px; }
+@media (min-width: 701px) { :root { --margin: 32px; --gutter: 24px; } }
+.container { width: min(var(--container), 100% - 2 * max(var(--margin), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px))); }
+.areas, .features, .stats, .info-grid, .rooms, .pill-list, .notes-grid, .downloads, .quick-grid, .contact-grid, .teasers, .feature-groups { gap: var(--gutter); }
+.footer-grid { column-gap: var(--gutter); }
