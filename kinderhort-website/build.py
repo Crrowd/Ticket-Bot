@@ -1,5 +1,5 @@
 # Erzeugt die statischen HTML-Seiten der Kinderhort-Webseite.
-import os, html, csv, json, datetime as dt
+import os, re, html, csv, json, datetime as dt
 from urllib.parse import quote
 from PIL import Image
 
@@ -88,6 +88,7 @@ def icon(name, size=24):
         "down": '<path d="M6 9l6 6 6-6"/>',
         "file": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
         "check": '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+        "play": '<path d="M8 5.5v13l10.5-6.5z"/>',
         "search": '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>',
         "copy": '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
         "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -112,7 +113,7 @@ def bunting(colors=("#D4B5B0", "#A8C5C0", "#D4B5B0", "#F3F8F7"), n=18, bg=None):
         xm = (x0 + x1) / 2
         ym = (y0 + y1) / 2 + 26
         c = colors[i % len(colors)]
-        parts.append(f'<path d="M{x0:.1f} {y0:.1f} L{x1:.1f} {y1:.1f} L{xm:.1f} {ym:.1f} Z" fill="{c}"/>')
+        parts.append(f'<path class="flag" d="M{x0:.1f} {y0:.1f} L{x1:.1f} {y1:.1f} L{xm:.1f} {ym:.1f} Z" fill="{c}"/>')
     return f'<svg class="bunting" viewBox="0 0 {w} 46" preserveAspectRatio="none" aria-hidden="true">{"".join(parts)}</svg>'
 
 BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
@@ -228,7 +229,48 @@ FOOTER = f'''<footer class="site-footer">
   </div>
 </footer>'''
 
+
+# ---------- Fachbegriffe (Erklärungen bitte vom Hort prüfen lassen) ----------
+GLOSSAR = {
+    "BayKiBiG": "Bayerisches Kinderbildungs- und -betreuungsgesetz. Es regelt unter anderem die Förderung der Kitas und erlaubt bis zu 30 Schließtage im Jahr.",
+    "Inhouseschulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
+    "Portfolio": "Eine Mappe, in der die Entwicklung Ihres Kindes mit Fotos, Bildern und Beobachtungen festgehalten wird.",
+    "Vorkurs Deutsch": "Zusätzliche, schulvorbereitende Förderung für Vorschulkinder in Grammatik, Sprachverständnis und Wortschatz.",
+    "Fachkraftquote": "Anteil der Mitarbeitenden mit pädagogischer Fachausbildung. 100 Prozent heißt: nur staatlich anerkannte Erzieherinnen und Erzieher.",
+    "Partizipationsmöglichkeiten": "Wege, auf denen die Kinder ihren Alltag mitbestimmen, zum Beispiel in der Kinderkonferenz.",
+    "Kinderkonferenz": "Wöchentliche Runde, in der die Hortkinder Themen besprechen und zum Beispiel Ausflüge und Ferienpläne abstimmen.",
+    "Mindestbuchungszeit": "Die kürzeste Betreuungszeit pro Tag, die Sie buchen können.",
+    "Projektarbeit": "Die Kinder wählen ein Thema nach ihren Interessen und erarbeiten es über längere Zeit gemeinsam.",
+}
+
+def glossar(body):
+    """Markiert pro Seite das erste Vorkommen jedes Fachbegriffs in Fließtext (nicht in Überschriften, Links, Knöpfen)."""
+    for term in GLOSSAR:
+        for m in re.finditer(r"(?<![\w-])" + re.escape(term) + r"(?![\w-])", body):
+            pos = m.start()
+            if body.rfind("<", 0, pos) > body.rfind(">", 0, pos):
+                continue   # steht in einem Tag
+            tags = re.findall(r"<(/?)([a-z0-9]+)", body[:pos])
+            stack = []
+            for close, name in tags:
+                if name in ("br", "img", "input", "meta", "link", "source", "hr"):
+                    continue
+                if close:
+                    while stack and stack.pop() != name:
+                        pass
+                else:
+                    stack.append(name)
+            if not stack or stack[-1] not in ("p", "li", "span", "div", "blockquote"):
+                continue
+            if set(stack) & {"h1", "h2", "h3", "h4", "a", "button", "summary", "strong", "label", "small", "script", "title", "figcaption", "time"}:
+                continue
+            btn = f'<button type="button" class="term" data-term="{term}" aria-haspopup="dialog">{term}</button>'
+            body = body[:pos] + btn + body[m.end():]
+            break
+    return body
+
 def page(fname, title, desc, active, body, theme="", head=""):
+    body = glossar(body)
     full_title = f"{title} – {ORG}" if title else f"{ORG} – Weil Qualität zählt!"
     bcls = f' class="{theme}"' if theme else ""
     doc = f'''<!DOCTYPE html>
@@ -339,6 +381,7 @@ def tour(group, items):
     return f'''<div class="tour">
   <div class="tour-controls">
     <span class="count" aria-live="polite"></span>
+    <button class="btn btn-ghost story-open" type="button" data-group="{group}">{icon("play", 18)} Als Geschichte ansehen</button>
     <button class="round-btn tour-prev" type="button" aria-label="Zurück">{icon("left")}</button>
     <button class="round-btn tour-next" type="button" aria-label="Weiter">{icon("right")}</button>
   </div>
@@ -465,7 +508,7 @@ home = f'''
       <p class="lead">Weil Qualität zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
       <ul class="hero-tags"><li>Kinderkrippe</li><li>Kindergarten</li><li>Kinderhort</li></ul>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
+        <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
       {STATUS_CARD}
@@ -585,7 +628,7 @@ home = f'''
       <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931&nbsp;2789892&nbsp;0</a>
-        <a class="btn btn-ghost" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
+        <a class="btn btn-ghost js-magnet" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
       </div>
     </div>
   </div>
@@ -844,7 +887,7 @@ hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und J
   <div class="stats three">
     <div class="stat"><b>100 %</b><span>Fachkraftquote</span></div>
     <div class="stat"><b>75 %</b><span>Übertritt an weiterführende Schulen 2021</span></div>
-    <div class="stat"><b>1,4</b><span>Zufriedenheitsnote in der Elternbefragung</span></div>
+    <div class="stat"><b data-from="6">1,4</b><span>Zufriedenheitsnote in der Elternbefragung</span></div>
   </div></div>
 </div>''' + features([
     "Großzügige Räume zum Spielen und Lernen",
@@ -971,6 +1014,11 @@ kon += f'''<section class="section">
   <div class="container contact-grid">
     <div>
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
+      <div class="dial reveal">
+        <label for="durchwahl">Durchwahl finden</label>
+        <div class="dial-field">{icon("search", 20)}<input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-out" aria-live="polite"></div>
+      </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">
         {tel("Sternengruppe", "0931 2789892 15", "+49931278989215")}
         {tel("Sonnengruppe", "0931 2789892 14", "+49931278989214")}
@@ -1092,6 +1140,7 @@ kita = {
     "oeffnung": "06:45", "schluss": "18:00",
     "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"]} for r in TERMINE],
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
+    "glossar": GLOSSAR,
 }
 with open(os.path.join(W, "js/daten.js"), "w", encoding="utf-8") as f:
     f.write("/* Automatisch erzeugt aus daten/*.csv – nicht von Hand ändern, sondern build.py ausführen. */\n")

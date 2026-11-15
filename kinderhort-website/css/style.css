@@ -256,9 +256,11 @@ strong, b { font-weight: 700; }
 /* ---------- Startseite: Auftakt ---------- */
 .hero { position: relative; padding: 44px 0 84px; overflow: hidden; }
 .hero::before {
-  content: ""; position: absolute; right: -240px; top: -220px; width: 720px; height: 720px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(241, 229, 227, .75) 0%, rgba(241, 229, 227, 0) 68%); z-index: -1;
+  /* Nur das Verlaufsbild bewegt sich – kein Layout-Sprung beim Laden */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .6s var(--ease-out);
+  background: radial-gradient(circle 380px at var(--gx, 88%) var(--gy, 0%), var(--glow, rgba(241, 229, 227, .75)) 0%, transparent 68%) no-repeat;
 }
+.hero.lit::before, .no-js .hero::before { opacity: 1; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
 .hero h1 .hl { white-space: nowrap; background: linear-gradient(var(--rose), var(--rose)) no-repeat 0 88% / 100% .22em; }
 .hero .lead { font-size: 1.2rem; color: var(--fg-soft); max-width: 36ch; }
@@ -1060,3 +1062,93 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 /* „Nach oben“ weicht einer Kurzmeldung aus */
 .to-top { transition-property: opacity, scale, translate, bottom; }
 @media (max-width: 700px) { body:has(.toast) .to-top { bottom: calc(136px + env(safe-area-inset-bottom, 0px)); } }
+
+/* ==========================================================
+   Ideenkatalog 2: eingebaute Animationen und Funktionen
+   ========================================================== */
+
+/* Überschriften steigen Wort für Wort aus einer Kante auf */
+h2.words .hw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+h2.words .hw > span { display: inline-block; translate: 0 105%; }
+h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-out); transition-delay: calc(var(--w) * 40ms); }
+
+/* Zahlen zählen: gleich breite Ziffern, kein Springen */
+.stat b { font-variant-numeric: tabular-nums; display: inline-block; }
+
+/* Wimpel drehen sich um ihre Aufhängung */
+.bunting .flag { transform-box: fill-box; transform-origin: 50% 0; }
+
+/* Licht folgt der Maus auf dunklen Karten */
+@media (hover: hover) and (pointer: fine) {
+  :is(.info-card, .room, .area-card, .quick-card, .dl-group, .phone-card, .note-card, .stat, .pill-list > div, .tl-body, .event, .address-card, .status-card, .faq summary) {
+    background-image: radial-gradient(340px circle at var(--mx, -999px) var(--my, -999px), rgba(255, 255, 255, .09), transparent 62%);
+  }
+}
+
+/* Magnetische Hauptknöpfe: folgen dem Zeiger nur ein kleines Stück */
+.js-magnet { transition: translate .45s var(--ease-out), scale .12s var(--ease-out), box-shadow .25s, background .2s, color .2s, border-color .2s; }
+.js-magnet.near { transition-duration: .15s, .12s, .25s, .2s, .2s, .2s; }
+
+/* Rollende Ziffern */
+.roll { display: inline-flex; vertical-align: baseline; font-weight: 700; }
+.roll-digit { position: relative; display: inline-block; vertical-align: baseline; line-height: 1.2em; width: .62em; overflow: hidden; text-align: center; font-variant-numeric: tabular-nums; }
+.roll-col { position: absolute; left: 0; right: 0; top: 0; display: block; line-height: 1.2em; transition: translate .7s var(--ease-in-out); transition-delay: calc(var(--i, 0) * 30ms); }
+.roll-col span { display: block; height: 1.2em; }
+.roll-ghost { visibility: hidden; }
+.dragging .roll-col { transition: none; }   /* beim Ziehen nicht nachlaufen */
+.announce-in { white-space: nowrap; margin-left: .35em; color: var(--on-surface-soft); }
+
+/* Fachbegriffe */
+.term { display: inline; border: 0; background: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: help; text-decoration: underline dotted; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: currentColor; }
+.term:hover, .term[aria-expanded="true"] { text-decoration-style: solid; text-decoration-color: var(--rose-deep); }
+.term-pop { position: absolute; z-index: 600; background: var(--deep); color: var(--on-surface); border-radius: var(--r-sm); padding: 14px 16px; font-size: .92rem; line-height: 1.5; box-shadow: var(--shadow-lg);
+  opacity: 0; scale: .95; visibility: hidden; transition: opacity .16s var(--ease-out), scale .16s var(--ease-out), visibility 0s .16s; }
+.term-pop.above { translate: 0 -100%; }
+.term-pop.open { opacity: 1; scale: 1; visibility: visible; transition: opacity .2s var(--ease-out), scale .2s var(--ease-out), visibility 0s; }
+.term-pop strong { display: block; color: var(--rose); margin-bottom: 2px; }
+.term-pop p { margin: 0; color: var(--on-surface-soft); }
+
+/* Durchwahl finden */
+.dial { margin-bottom: 20px; display: grid; gap: 8px; }
+.dial label { font-weight: 700; }
+.dial-field { display: flex; align-items: center; gap: 10px; background: var(--paper); border-radius: var(--r-sm); padding: 4px 16px; box-shadow: var(--shadow); color: var(--ink-soft); }
+.dial-field input { flex: 1; min-width: 0; border: 0; background: none; outline: 0; font: 500 1.02rem var(--font-body); color: var(--ink); min-height: 48px; }
+.dial-field:focus-within { box-shadow: 0 0 0 3px var(--ink), var(--shadow); }
+.dial-field.err { box-shadow: 0 0 0 3px var(--rose-deep), var(--shadow); }
+.dial-out { min-height: 0; transition: opacity .15s var(--ease-out), filter .15s var(--ease-out); }
+.dial-out.swap { opacity: 0; filter: blur(4px); }
+.dial-out p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 6px 0 0; }
+.dial-out a { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+.dial-out a:hover { text-decoration: underline; text-decoration-color: var(--rose-deep); }
+.dial-out span { color: var(--fg-soft); font-size: .95rem; }
+@keyframes shake { 20% { translate: -6px 0; } 40% { translate: 5px 0; } 60% { translate: -3px 0; } 80% { translate: 2px 0; } }
+.shake { animation: shake .32s var(--ease-out); }
+
+/* Rundgang als Geschichte */
+.tour-controls .story-open { margin-right: 6px; min-height: 48px; padding: 10px 18px; }
+.story-view { position: fixed; inset: 0; z-index: 520; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); background: rgba(13, 27, 32, 0); visibility: hidden; transition: background-color var(--t-exit) var(--ease-out), visibility 0s .2s; }
+.story-view.open { background: rgba(13, 27, 32, .94); visibility: visible; transition: background-color .3s var(--ease-out), visibility 0s; }
+.story-card { position: relative; height: min(86vh, 760px); aspect-ratio: 9 / 16; max-width: 100%; border-radius: var(--r); overflow: hidden; background: var(--deep); color: var(--on-surface); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
+  opacity: 0; scale: .95; transform-origin: var(--ox, 50%) var(--oy, 50%); transition: opacity var(--t-exit) var(--ease-out), scale var(--t-exit) var(--ease-out); user-select: none; }
+.story-view.open .story-card { opacity: 1; scale: 1; transition-duration: .3s; }
+.story-imgs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.06; transition: opacity .45s var(--ease-out), scale 5.5s linear; }
+.story-imgs img.on { opacity: 1; scale: 1; }
+.story-bars { position: absolute; top: 12px; left: 12px; right: 64px; z-index: 3; display: flex; gap: 4px; }
+.story-bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .35); overflow: hidden; }
+.story-bars b { display: block; height: 100%; width: 0; background: #fff; }
+.story-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 60px 20px 22px; background: linear-gradient(180deg, transparent, rgba(13, 27, 32, .88)); pointer-events: none; }
+.story-cap strong { display: block; font: 700 1.2rem/1.3 var(--font-head); }
+.story-cap span { color: var(--on-surface-soft); font-size: .95rem; }
+.story-close { top: 8px; right: 8px; z-index: 4; width: 44px; height: 44px; }
+.story-zone { all: unset; position: absolute; top: 0; bottom: 0; z-index: 2; cursor: pointer; }
+.story-zone.prev { left: 0; width: 34%; } .story-zone.next { right: 0; width: 66%; }
+.story-zone:focus-visible { outline: 3px solid var(--rose); outline-offset: -6px; border-radius: var(--r); }
+.story-paused { position: absolute; top: 26px; left: 14px; z-index: 3; font-size: .75rem; font-weight: 700; background: rgba(0, 0, 0, .45); padding: 3px 10px; border-radius: 999px; opacity: 0; transition: opacity .15s; }
+.story-card.hold .story-paused { opacity: 1; }
+@media (max-width: 560px) { .story-view { padding: 0; } .story-card { height: 100%; width: 100%; aspect-ratio: auto; border-radius: 0; } .tour-controls { flex-wrap: wrap; } .tour-controls .story-open { order: 3; width: 100%; margin: 8px 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  h2.words .hw > span { translate: none; }
+  .roll-col { transition: none; }
+}
+@media print { .story-view, .term-pop, .dial { display: none !important; } }

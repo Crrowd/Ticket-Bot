@@ -70,6 +70,11 @@
   <div class="container contact-grid">
     <div>
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
+      <div class="dial reveal">
+        <label for="durchwahl">Durchwahl finden</label>
+        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-out" aria-live="polite"></div>
+      </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">
         <li><span>Sternengruppe</span><a href="tel:+49931278989215">0931&nbsp;2789892&nbsp;15</a></li>
         <li><span>Sonnengruppe</span><a href="tel:+49931278989214">0931&nbsp;2789892&nbsp;14</a></li>
@@ -97,7 +102,7 @@
 </section>
 </main>
 <footer class="site-footer">
-  <svg class="bunting" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q 600.0 22 1200 6" fill="none" stroke="#D4B5B0" stroke-width="1.5" opacity=".7"/><path d="M4.0 6.2 L62.7 9.2 L33.3 33.7 Z" fill="#D4B5B0"/><path d="M70.7 9.5 L129.3 12.2 L100.0 36.9 Z" fill="#A8C5C0"/><path d="M137.3 12.5 L196.0 14.7 L166.7 39.6 Z" fill="#D4B5B0"/><path d="M204.0 15.0 L262.7 16.9 L233.3 42.0 Z" fill="#F3F8F7"/><path d="M270.7 17.2 L329.3 18.7 L300.0 44.0 Z" fill="#D4B5B0"/><path d="M337.3 18.9 L396.0 20.2 L366.7 45.5 Z" fill="#A8C5C0"/><path d="M404.0 20.3 L462.7 21.2 L433.3 46.7 Z" fill="#D4B5B0"/><path d="M470.7 21.3 L529.3 21.8 L500.0 47.5 Z" fill="#F3F8F7"/><path d="M537.3 21.8 L596.0 22.0 L566.7 47.9 Z" fill="#D4B5B0"/><path d="M604.0 22.0 L662.7 21.8 L633.3 47.9 Z" fill="#A8C5C0"/><path d="M670.7 21.8 L729.3 21.3 L700.0 47.5 Z" fill="#D4B5B0"/><path d="M737.3 21.2 L796.0 20.3 L766.7 46.7 Z" fill="#F3F8F7"/><path d="M804.0 20.2 L862.7 18.9 L833.3 45.5 Z" fill="#D4B5B0"/><path d="M870.7 18.7 L929.3 17.2 L900.0 44.0 Z" fill="#A8C5C0"/><path d="M937.3 16.9 L996.0 15.0 L966.7 42.0 Z" fill="#D4B5B0"/><path d="M1004.0 14.7 L1062.7 12.5 L1033.3 39.6 Z" fill="#F3F8F7"/><path d="M1070.7 12.2 L1129.3 9.5 L1100.0 36.9 Z" fill="#D4B5B0"/><path d="M1137.3 9.2 L1196.0 6.2 L1166.7 33.7 Z" fill="#A8C5C0"/></svg>
+  <svg class="bunting" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q 600.0 22 1200 6" fill="none" stroke="#D4B5B0" stroke-width="1.5" opacity=".7"/><path class="flag" d="M4.0 6.2 L62.7 9.2 L33.3 33.7 Z" fill="#D4B5B0"/><path class="flag" d="M70.7 9.5 L129.3 12.2 L100.0 36.9 Z" fill="#A8C5C0"/><path class="flag" d="M137.3 12.5 L196.0 14.7 L166.7 39.6 Z" fill="#D4B5B0"/><path class="flag" d="M204.0 15.0 L262.7 16.9 L233.3 42.0 Z" fill="#F3F8F7"/><path class="flag" d="M270.7 17.2 L329.3 18.7 L300.0 44.0 Z" fill="#D4B5B0"/><path class="flag" d="M337.3 18.9 L396.0 20.2 L366.7 45.5 Z" fill="#A8C5C0"/><path class="flag" d="M404.0 20.3 L462.7 21.2 L433.3 46.7 Z" fill="#D4B5B0"/><path class="flag" d="M470.7 21.3 L529.3 21.8 L500.0 47.5 Z" fill="#F3F8F7"/><path class="flag" d="M537.3 21.8 L596.0 22.0 L566.7 47.9 Z" fill="#D4B5B0"/><path class="flag" d="M604.0 22.0 L662.7 21.8 L633.3 47.9 Z" fill="#A8C5C0"/><path class="flag" d="M670.7 21.8 L729.3 21.3 L700.0 47.5 Z" fill="#D4B5B0"/><path class="flag" d="M737.3 21.2 L796.0 20.3 L766.7 46.7 Z" fill="#F3F8F7"/><path class="flag" d="M804.0 20.2 L862.7 18.9 L833.3 45.5 Z" fill="#D4B5B0"/><path class="flag" d="M870.7 18.7 L929.3 17.2 L900.0 44.0 Z" fill="#A8C5C0"/><path class="flag" d="M937.3 16.9 L996.0 15.0 L966.7 42.0 Z" fill="#D4B5B0"/><path class="flag" d="M1004.0 14.7 L1062.7 12.5 L1033.3 39.6 Z" fill="#F3F8F7"/><path class="flag" d="M1070.7 12.2 L1129.3 9.5 L1100.0 36.9 Z" fill="#D4B5B0"/><path class="flag" d="M1137.3 9.2 L1196.0 6.2 L1166.7 33.7 Z" fill="#A8C5C0"/></svg>
   <div class="container">
     <div class="footer-grid">
       <div>

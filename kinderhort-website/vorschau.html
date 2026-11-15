@@ -263,9 +263,11 @@ strong, b { font-weight: 700; }
 /* ---------- Startseite: Auftakt ---------- */
 .hero { position: relative; padding: 44px 0 84px; overflow: hidden; }
 .hero::before {
-  content: ""; position: absolute; right: -240px; top: -220px; width: 720px; height: 720px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(241, 229, 227, .75) 0%, rgba(241, 229, 227, 0) 68%); z-index: -1;
+  /* Nur das Verlaufsbild bewegt sich – kein Layout-Sprung beim Laden */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .6s var(--ease-out);
+  background: radial-gradient(circle 380px at var(--gx, 88%) var(--gy, 0%), var(--glow, rgba(241, 229, 227, .75)) 0%, transparent 68%) no-repeat;
 }
+.hero.lit::before, .no-js .hero::before { opacity: 1; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
 .hero h1 .hl { white-space: nowrap; background: linear-gradient(var(--rose), var(--rose)) no-repeat 0 88% / 100% .22em; }
 .hero .lead { font-size: 1.2rem; color: var(--fg-soft); max-width: 36ch; }
@@ -1068,6 +1070,96 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 .to-top { transition-property: opacity, scale, translate, bottom; }
 @media (max-width: 700px) { body:has(.toast) .to-top { bottom: calc(136px + env(safe-area-inset-bottom, 0px)); } }
 
+/* ==========================================================
+   Ideenkatalog 2: eingebaute Animationen und Funktionen
+   ========================================================== */
+
+/* Überschriften steigen Wort für Wort aus einer Kante auf */
+h2.words .hw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+h2.words .hw > span { display: inline-block; translate: 0 105%; }
+h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-out); transition-delay: calc(var(--w) * 40ms); }
+
+/* Zahlen zählen: gleich breite Ziffern, kein Springen */
+.stat b { font-variant-numeric: tabular-nums; display: inline-block; }
+
+/* Wimpel drehen sich um ihre Aufhängung */
+.bunting .flag { transform-box: fill-box; transform-origin: 50% 0; }
+
+/* Licht folgt der Maus auf dunklen Karten */
+@media (hover: hover) and (pointer: fine) {
+  :is(.info-card, .room, .area-card, .quick-card, .dl-group, .phone-card, .note-card, .stat, .pill-list > div, .tl-body, .event, .address-card, .status-card, .faq summary) {
+    background-image: radial-gradient(340px circle at var(--mx, -999px) var(--my, -999px), rgba(255, 255, 255, .09), transparent 62%);
+  }
+}
+
+/* Magnetische Hauptknöpfe: folgen dem Zeiger nur ein kleines Stück */
+.js-magnet { transition: translate .45s var(--ease-out), scale .12s var(--ease-out), box-shadow .25s, background .2s, color .2s, border-color .2s; }
+.js-magnet.near { transition-duration: .15s, .12s, .25s, .2s, .2s, .2s; }
+
+/* Rollende Ziffern */
+.roll { display: inline-flex; vertical-align: baseline; font-weight: 700; }
+.roll-digit { position: relative; display: inline-block; vertical-align: baseline; line-height: 1.2em; width: .62em; overflow: hidden; text-align: center; font-variant-numeric: tabular-nums; }
+.roll-col { position: absolute; left: 0; right: 0; top: 0; display: block; line-height: 1.2em; transition: translate .7s var(--ease-in-out); transition-delay: calc(var(--i, 0) * 30ms); }
+.roll-col span { display: block; height: 1.2em; }
+.roll-ghost { visibility: hidden; }
+.dragging .roll-col { transition: none; }   /* beim Ziehen nicht nachlaufen */
+.announce-in { white-space: nowrap; margin-left: .35em; color: var(--on-surface-soft); }
+
+/* Fachbegriffe */
+.term { display: inline; border: 0; background: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: help; text-decoration: underline dotted; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: currentColor; }
+.term:hover, .term[aria-expanded="true"] { text-decoration-style: solid; text-decoration-color: var(--rose-deep); }
+.term-pop { position: absolute; z-index: 600; background: var(--deep); color: var(--on-surface); border-radius: var(--r-sm); padding: 14px 16px; font-size: .92rem; line-height: 1.5; box-shadow: var(--shadow-lg);
+  opacity: 0; scale: .95; visibility: hidden; transition: opacity .16s var(--ease-out), scale .16s var(--ease-out), visibility 0s .16s; }
+.term-pop.above { translate: 0 -100%; }
+.term-pop.open { opacity: 1; scale: 1; visibility: visible; transition: opacity .2s var(--ease-out), scale .2s var(--ease-out), visibility 0s; }
+.term-pop strong { display: block; color: var(--rose); margin-bottom: 2px; }
+.term-pop p { margin: 0; color: var(--on-surface-soft); }
+
+/* Durchwahl finden */
+.dial { margin-bottom: 20px; display: grid; gap: 8px; }
+.dial label { font-weight: 700; }
+.dial-field { display: flex; align-items: center; gap: 10px; background: var(--paper); border-radius: var(--r-sm); padding: 4px 16px; box-shadow: var(--shadow); color: var(--ink-soft); }
+.dial-field input { flex: 1; min-width: 0; border: 0; background: none; outline: 0; font: 500 1.02rem var(--font-body); color: var(--ink); min-height: 48px; }
+.dial-field:focus-within { box-shadow: 0 0 0 3px var(--ink), var(--shadow); }
+.dial-field.err { box-shadow: 0 0 0 3px var(--rose-deep), var(--shadow); }
+.dial-out { min-height: 0; transition: opacity .15s var(--ease-out), filter .15s var(--ease-out); }
+.dial-out.swap { opacity: 0; filter: blur(4px); }
+.dial-out p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 6px 0 0; }
+.dial-out a { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+.dial-out a:hover { text-decoration: underline; text-decoration-color: var(--rose-deep); }
+.dial-out span { color: var(--fg-soft); font-size: .95rem; }
+@keyframes shake { 20% { translate: -6px 0; } 40% { translate: 5px 0; } 60% { translate: -3px 0; } 80% { translate: 2px 0; } }
+.shake { animation: shake .32s var(--ease-out); }
+
+/* Rundgang als Geschichte */
+.tour-controls .story-open { margin-right: 6px; min-height: 48px; padding: 10px 18px; }
+.story-view { position: fixed; inset: 0; z-index: 520; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); background: rgba(13, 27, 32, 0); visibility: hidden; transition: background-color var(--t-exit) var(--ease-out), visibility 0s .2s; }
+.story-view.open { background: rgba(13, 27, 32, .94); visibility: visible; transition: background-color .3s var(--ease-out), visibility 0s; }
+.story-card { position: relative; height: min(86vh, 760px); aspect-ratio: 9 / 16; max-width: 100%; border-radius: var(--r); overflow: hidden; background: var(--deep); color: var(--on-surface); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
+  opacity: 0; scale: .95; transform-origin: var(--ox, 50%) var(--oy, 50%); transition: opacity var(--t-exit) var(--ease-out), scale var(--t-exit) var(--ease-out); user-select: none; }
+.story-view.open .story-card { opacity: 1; scale: 1; transition-duration: .3s; }
+.story-imgs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.06; transition: opacity .45s var(--ease-out), scale 5.5s linear; }
+.story-imgs img.on { opacity: 1; scale: 1; }
+.story-bars { position: absolute; top: 12px; left: 12px; right: 64px; z-index: 3; display: flex; gap: 4px; }
+.story-bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .35); overflow: hidden; }
+.story-bars b { display: block; height: 100%; width: 0; background: #fff; }
+.story-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 60px 20px 22px; background: linear-gradient(180deg, transparent, rgba(13, 27, 32, .88)); pointer-events: none; }
+.story-cap strong { display: block; font: 700 1.2rem/1.3 var(--font-head); }
+.story-cap span { color: var(--on-surface-soft); font-size: .95rem; }
+.story-close { top: 8px; right: 8px; z-index: 4; width: 44px; height: 44px; }
+.story-zone { all: unset; position: absolute; top: 0; bottom: 0; z-index: 2; cursor: pointer; }
+.story-zone.prev { left: 0; width: 34%; } .story-zone.next { right: 0; width: 66%; }
+.story-zone:focus-visible { outline: 3px solid var(--rose); outline-offset: -6px; border-radius: var(--r); }
+.story-paused { position: absolute; top: 26px; left: 14px; z-index: 3; font-size: .75rem; font-weight: 700; background: rgba(0, 0, 0, .45); padding: 3px 10px; border-radius: 999px; opacity: 0; transition: opacity .15s; }
+.story-card.hold .story-paused { opacity: 1; }
+@media (max-width: 560px) { .story-view { padding: 0; } .story-card { height: 100%; width: 100%; aspect-ratio: auto; border-radius: 0; } .tour-controls { flex-wrap: wrap; } .tour-controls .story-open { order: 3; width: 100%; margin: 8px 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  h2.words .hw > span { translate: none; }
+  .roll-col { transition: none; }
+}
+@media print { .story-view, .term-pop, .dial { display: none !important; } }
+
 .spa-page { display: none; }
 .spa-page.active { display: block; }
 .no-js .spa-page { display: block; }
@@ -1104,7 +1196,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
       <p class="lead">Weil Qualität zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
       <ul class="hero-tags"><li>Kinderkrippe</li><li>Kindergarten</li><li>Kinderhort</li></ul>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#index:bereiche">Unsere Bereiche <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-primary js-magnet" href="#index:bereiche">Unsere Bereiche <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-ghost" href="#kontakt">Kontakt aufnehmen</a>
       </div>
       <div class="status-card" id="status" aria-live="polite" hidden>
@@ -1247,7 +1339,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
       <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> 0931&nbsp;2789892&nbsp;0</a>
-        <a class="btn btn-ghost" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Platz anfragen</a>
+        <a class="btn btn-ghost js-magnet" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Platz anfragen</a>
       </div>
     </div>
   </div>
@@ -1294,7 +1386,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
     <div class="section-head"><span class="kicker">Elternbrief</span><h2>Liebe Eltern!</h2></div>
 
 <div class="prose reveal">
-  <p>Nach dem BayKiBiG (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von Inhouseschulungen für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p>
+  <p>Nach dem <button type="button" class="term" data-term="BayKiBiG" aria-haspopup="dialog">BayKiBiG</button> (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von <button type="button" class="term" data-term="Inhouseschulungen" aria-haspopup="dialog">Inhouseschulungen</button> für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p>
   <p>Unser Personal arbeitet mit großem Engagement. Dadurch fallen im Laufe eines Kindergarten- und Hortjahres Überstunden an (z. B. St. Martin, Ferienfreizeit, Lebensmittelsammlung, Elternabende, Weihnachtsmarkt, Feste und Feiern mit Eltern und Kindern …). Diese Überstunden gleichen unsere Mitarbeiterinnen und Mitarbeiter durch Freizeit aus.</p>
   <p>Während der „Schulferienzeiten“, in denen unsere Einrichtung geöffnet hat (Herbst, Fasching, Ostern, Pfingsten, August), wird immer ein Teil der Erzieherinnen und Erzieher die Betreuung Ihres Kindes übernehmen und gleichzeitig werden einige Erzieherinnen und Erzieher ihre geleisteten Überstunden frei nehmen können.</p>
   <p class="sign-off">Im Auftrag des Vorsitzenden<br><strong>Petra Lachnit</strong><br>Einrichtungsleiterin</p>
@@ -1352,6 +1444,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
     <div class="tour">
   <div class="tour-controls">
     <span class="count" aria-live="polite"></span>
+    <button class="btn btn-ghost story-open" type="button" data-group="krippe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg> Als Geschichte ansehen</button>
     <button class="round-btn tour-prev" type="button" aria-label="Zurück"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button class="round-btn tour-next" type="button" aria-label="Weiter"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
@@ -1368,7 +1461,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 </section><section class="section " id="auszeichnung">
   <div class="container">
     <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Was unsere Krippe besonders macht</h2></div>
-    <div class="feature-groups"><div class="feature-group reveal"><h3>Begleitung &amp; Team</h3><ul class="features"><li>Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. 4 Wochen</li><li>Behutsame Begleitung der Kinder in Pflegesituationen, bei Mahlzeiten, Ruhen und Schlafen</li><li>Portfolio als Instrument der Dokumentation über den Entwicklungsverlauf des Kindes</li><li>Hohe Fachkraftquote</li></ul></div><div class="feature-group reveal"><h3>Haus &amp; Garten</h3><ul class="features"><li>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und ihren Familien ein einheitliches Konzept und einen nahtlosen Übergang gewährleisten</li><li>Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage</li><li>Hauseigene Küche mit zwei Köchinnen, die täglich abwechslungsreiches und saisonales Essen frisch zubereiten</li></ul></div><div class="feature-group reveal"><h3>Alltag</h3><ul class="features"><li>30 Schließtage im Jahr</li><li>Das Waschen von Bettwäsche wird von der Kita übernommen</li></ul></div></div>
+    <div class="feature-groups"><div class="feature-group reveal"><h3>Begleitung &amp; Team</h3><ul class="features"><li>Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. 4 Wochen</li><li>Behutsame Begleitung der Kinder in Pflegesituationen, bei Mahlzeiten, Ruhen und Schlafen</li><li><button type="button" class="term" data-term="Portfolio" aria-haspopup="dialog">Portfolio</button> als Instrument der Dokumentation über den Entwicklungsverlauf des Kindes</li><li>Hohe <button type="button" class="term" data-term="Fachkraftquote" aria-haspopup="dialog">Fachkraftquote</button></li></ul></div><div class="feature-group reveal"><h3>Haus &amp; Garten</h3><ul class="features"><li>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und ihren Familien ein einheitliches Konzept und einen nahtlosen Übergang gewährleisten</li><li>Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage</li><li>Hauseigene Küche mit zwei Köchinnen, die täglich abwechslungsreiches und saisonales Essen frisch zubereiten</li></ul></div><div class="feature-group reveal"><h3>Alltag</h3><ul class="features"><li>30 Schließtage im Jahr</li><li>Das Waschen von Bettwäsche wird von der Kita übernommen</li></ul></div></div>
   </div>
 </section><section class="section alt" id="fragen">
   <div class="container">
@@ -1435,6 +1528,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
     <div class="tour">
   <div class="tour-controls">
     <span class="count" aria-live="polite"></span>
+    <button class="btn btn-ghost story-open" type="button" data-group="kiga"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg> Als Geschichte ansehen</button>
     <button class="round-btn tour-prev" type="button" aria-label="Zurück"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button class="round-btn tour-next" type="button" aria-label="Weiter"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
@@ -1451,11 +1545,11 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 </section><section class="section " id="auszeichnung">
   <div class="container">
     <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Was unseren Kindergarten besonders macht</h2></div>
-    <div class="feature-groups"><div class="feature-group reveal"><h3>Betreuung &amp; Team</h3><ul class="features"><li>Mit langen Öffnungszeiten entlasten wir vor allem berufstätige Eltern, auch in den Ferien</li><li>Nur max. 30 Schließtage im Jahr</li><li>Hohe Fachkraftquote</li><li>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und Familien ein einheitliches Konzept und einen nahtlosen Wechsel gewährleisten</li><li>Enge Zusammenarbeit mit der Grundschule, um den Kindern den Übergang in die Schule so angenehm wie möglich zu gestalten</li></ul></div><div class="feature-group reveal"><h3>Haus &amp; Küche</h3><ul class="features"><li>Hauseigene Küche, in der täglich von zwei Köchinnen mit regionalen Zutaten frisch gekocht wird</li><li>Weißer Raum zum Entspannen</li><li>Sehr großes Außengelände mit verschiedenen Spielmöglichkeiten, trotz Stadtlage</li><li>Großzügige Räume zum Spielen und Lernen</li></ul></div><div class="feature-group reveal"><h3>Erleben &amp; Lernen</h3><ul class="features"><li>Kurze Wege in die Natur für Spaziergänge und Spielplatzbesuche</li><li>Büchereibesuche, Exkursionen (Feuerwehrbesuch, Bäckereibesuch), Jahresausflug</li><li>Übernachtung im Kindergarten für die Kinder, die in die Schule kommen</li><li>Ab dem Vorschulalter arbeiten wir mit dem Würzburger Trainingsprogramm „Hören, Lauschen, Lernen“</li></ul></div></div><h3 class="sub-head">Besondere Vorzüge unserer Einrichtung</h3>
+    <div class="feature-groups"><div class="feature-group reveal"><h3>Betreuung &amp; Team</h3><ul class="features"><li>Mit langen Öffnungszeiten entlasten wir vor allem berufstätige Eltern, auch in den Ferien</li><li>Nur max. 30 Schließtage im Jahr</li><li>Hohe <button type="button" class="term" data-term="Fachkraftquote" aria-haspopup="dialog">Fachkraftquote</button></li><li>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und Familien ein einheitliches Konzept und einen nahtlosen Wechsel gewährleisten</li><li>Enge Zusammenarbeit mit der Grundschule, um den Kindern den Übergang in die Schule so angenehm wie möglich zu gestalten</li></ul></div><div class="feature-group reveal"><h3>Haus &amp; Küche</h3><ul class="features"><li>Hauseigene Küche, in der täglich von zwei Köchinnen mit regionalen Zutaten frisch gekocht wird</li><li>Weißer Raum zum Entspannen</li><li>Sehr großes Außengelände mit verschiedenen Spielmöglichkeiten, trotz Stadtlage</li><li>Großzügige Räume zum Spielen und Lernen</li></ul></div><div class="feature-group reveal"><h3>Erleben &amp; Lernen</h3><ul class="features"><li>Kurze Wege in die Natur für Spaziergänge und Spielplatzbesuche</li><li>Büchereibesuche, Exkursionen (Feuerwehrbesuch, Bäckereibesuch), Jahresausflug</li><li>Übernachtung im Kindergarten für die Kinder, die in die Schule kommen</li><li>Ab dem Vorschulalter arbeiten wir mit dem Würzburger Trainingsprogramm „Hören, Lauschen, Lernen“</li></ul></div></div><h3 class="sub-head">Besondere Vorzüge unserer Einrichtung</h3>
 <div class="pill-list">
-  <div class="reveal"><h3>Projektarbeit</h3><p>Wir arbeiten im Kindergarten projektbezogen. Das Thema orientiert sich an den Interessen der Kinder, es wird von ihnen ausgewählt und abgestimmt. Die Projektarbeit bietet eine kindgerechte Form des Lernens: Die Kinder können eigene Ideen einbringen und gestalten den Lernprozess mit.</p></div>
+  <div class="reveal"><h3>Projektarbeit</h3><p>Wir arbeiten im Kindergarten projektbezogen. Das Thema orientiert sich an den Interessen der Kinder, es wird von ihnen ausgewählt und abgestimmt. Die <button type="button" class="term" data-term="Projektarbeit" aria-haspopup="dialog">Projektarbeit</button> bietet eine kindgerechte Form des Lernens: Die Kinder können eigene Ideen einbringen und gestalten den Lernprozess mit.</p></div>
   <div class="reveal"><h3>Englisch</h3><p>Hier lernen die Kinder spielerisch die Farben, die Körperteile des Menschen, verschiedene Tiere und singen englische Lieder. Ziel ist es, den Kindern eine Grundlage und einen vertrauten Umgang mit der englischen Sprache zu vermitteln.</p></div>
-  <div class="reveal"><h3>Vorkurs Deutsch</h3><p>Der Vorkurs Deutsch ist für Vorschulkinder, die im sprachlichen Bereich eine zusätzliche schulvorbereitende Förderung benötigen. Die Förderung bezieht sich auf die Grammatik, das Sprachverständnis und die Erweiterung des Wortschatzes.</p></div>
+  <div class="reveal"><h3>Vorkurs Deutsch</h3><p>Der <button type="button" class="term" data-term="Vorkurs Deutsch" aria-haspopup="dialog">Vorkurs Deutsch</button> ist für Vorschulkinder, die im sprachlichen Bereich eine zusätzliche schulvorbereitende Förderung benötigen. Die Förderung bezieht sich auf die Grammatik, das Sprachverständnis und die Erweiterung des Wortschatzes.</p></div>
 </div>
   </div>
 </section><section class="section alt" id="fragen">
@@ -1520,6 +1614,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
     <div class="tour">
   <div class="tour-controls">
     <span class="count" aria-live="polite"></span>
+    <button class="btn btn-ghost story-open" type="button" data-group="hort"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg> Als Geschichte ansehen</button>
     <button class="round-btn tour-prev" type="button" aria-label="Zurück"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button class="round-btn tour-next" type="button" aria-label="Weiter"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
@@ -1531,19 +1626,19 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 </section><section class="section alt" id="tagesablauf">
   <div class="container">
     <div class="section-head"><span class="kicker">Tagesablauf</span><h2>Der Tagesablauf des Kinderhorts</h2></div>
-    <ol class="timeline"><li><time>6:45 – 8:00 Uhr</time><div class="tl-body">In der Frühbetreuung können die Kinder vor der Schule schon spielen oder sich noch ein wenig ausruhen. Gemeinsam gehen die Schulkinder dann zu Unterrichtsbeginn in die Schule.</div></li><li><time>11:15 Uhr</time><div class="tl-body">Jetzt haben die ersten Kinder bereits Schulschluss und im Hort die Möglichkeit, draußen zu spielen, das Gespräch zum Erzieher zu suchen oder sich nach dem anstrengenden Schultag erst einmal auszuruhen und zu entspannen.</div></li><li><time>12:00 – 13:45 Uhr</time><div class="tl-body">Gleitendes Mittagessen in gemütlicher Runde. Gleichzeitig stehen den Kindern in dieser Zeit alle Bereiche des Hortes zum Spielen zur Verfügung.</div></li></ol><h3 class="timeline-sub">Montag bis Donnerstag</h3><ol class="timeline"><li><time>13:45 – 14:00 Uhr</time><div class="tl-body">Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern.</div></li><li><time>14:00 – 15:30 Uhr</time><div class="tl-body">In dieser Zeit erledigt jedes Kind seine Hausaufgaben in seiner Hausaufgabengruppe. Ab 15:00 Uhr dürfen die Kinder, die bereits fertig sind, schon zum Spielen gehen.</div></li><li><time>15:00 – 16:00 Uhr</time><div class="tl-body">Freizeit für alle Hortkinder. Die Kinder können sich entscheiden, wo und mit wem sie spielen. Ab 15:30 Uhr findet ein angekündigtes Angebot statt, an dem sich die Kinder freiwillig beteiligen können.</div></li></ol><h3 class="timeline-sub">Freitags</h3><ol class="timeline"><li><time>14:00 Uhr</time><div class="tl-body">In der wöchentlichen Kinderkonferenz besprechen die Kinder wichtige Informationen und aktuelle Themen, wie z. B. Freitagsausflüge. Ferienpläne werden von den Kindern abgestimmt.</div></li><li><time>14:30 – 16:30 Uhr</time><div class="tl-body">Immer freitags findet ein Ausflug im Stadtgebiet von Würzburg statt. Die Teilnahme am Ausflug ist für die Kinder freiwillig. Freitags findet keine Hausaufgabenbetreuung im Hort statt.</div></li></ol><h3 class="timeline-sub">Täglich</h3><ol class="timeline"><li><time>16:30 – 18:00 Uhr</time><div class="tl-body">Je nach gebuchter Zeit können die Kinder bis 18:00 Uhr im Hort bleiben.</div></li></ol>
+    <ol class="timeline"><li><time>6:45 – 8:00 Uhr</time><div class="tl-body">In der Frühbetreuung können die Kinder vor der Schule schon spielen oder sich noch ein wenig ausruhen. Gemeinsam gehen die Schulkinder dann zu Unterrichtsbeginn in die Schule.</div></li><li><time>11:15 Uhr</time><div class="tl-body">Jetzt haben die ersten Kinder bereits Schulschluss und im Hort die Möglichkeit, draußen zu spielen, das Gespräch zum Erzieher zu suchen oder sich nach dem anstrengenden Schultag erst einmal auszuruhen und zu entspannen.</div></li><li><time>12:00 – 13:45 Uhr</time><div class="tl-body">Gleitendes Mittagessen in gemütlicher Runde. Gleichzeitig stehen den Kindern in dieser Zeit alle Bereiche des Hortes zum Spielen zur Verfügung.</div></li></ol><h3 class="timeline-sub">Montag bis Donnerstag</h3><ol class="timeline"><li><time>13:45 – 14:00 Uhr</time><div class="tl-body">Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern.</div></li><li><time>14:00 – 15:30 Uhr</time><div class="tl-body">In dieser Zeit erledigt jedes Kind seine Hausaufgaben in seiner Hausaufgabengruppe. Ab 15:00 Uhr dürfen die Kinder, die bereits fertig sind, schon zum Spielen gehen.</div></li><li><time>15:00 – 16:00 Uhr</time><div class="tl-body">Freizeit für alle Hortkinder. Die Kinder können sich entscheiden, wo und mit wem sie spielen. Ab 15:30 Uhr findet ein angekündigtes Angebot statt, an dem sich die Kinder freiwillig beteiligen können.</div></li></ol><h3 class="timeline-sub">Freitags</h3><ol class="timeline"><li><time>14:00 Uhr</time><div class="tl-body">In der wöchentlichen <button type="button" class="term" data-term="Kinderkonferenz" aria-haspopup="dialog">Kinderkonferenz</button> besprechen die Kinder wichtige Informationen und aktuelle Themen, wie z. B. Freitagsausflüge. Ferienpläne werden von den Kindern abgestimmt.</div></li><li><time>14:30 – 16:30 Uhr</time><div class="tl-body">Immer freitags findet ein Ausflug im Stadtgebiet von Würzburg statt. Die Teilnahme am Ausflug ist für die Kinder freiwillig. Freitags findet keine Hausaufgabenbetreuung im Hort statt.</div></li></ol><h3 class="timeline-sub">Täglich</h3><ol class="timeline"><li><time>16:30 – 18:00 Uhr</time><div class="tl-body">Je nach gebuchter Zeit können die Kinder bis 18:00 Uhr im Hort bleiben.</div></li></ol>
   </div>
 </section><section class="section " id="auszeichnung">
   <div class="container">
     <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …</h2></div>
 
 <div class="split split-top">
-  <div class="reveal"><p>Wir betrachten jedes Kind stärkenorientiert. Wir fördern die Selbstständigkeit der Schulkinder durch unser gruppenübergreifendes Konzept, das den Kindern die Möglichkeit gibt, selbst zu bestimmen, wo und mit wem sie spielen oder wie sie ihre Freizeit gestalten. Altersübergreifende Kontakte zu Jüngeren und Älteren stärken die Kinder in Verantwortungsübernahme, Rücksicht und Eigenverantwortlichkeit. Zahlreiche Partizipationsmöglichkeiten zeigen den Kindern, wie sie Einfluss auf ihren Alltag im Kinderhort nehmen und diesen selbst mitbestimmen können, z. B. in Kinderkonferenzen, Kinderbefragungen und Gruppengesprächen mit den Erziehern.</p></div>
-  <div class="reveal"><p>Unsere Fachkraftquote beträgt <strong>100 Prozent</strong>, das heißt, dass die Hortkinder ausschließlich von ausgebildeten, staatlich anerkannten Erziehern betreut werden. Wir sind Ausbildungsstätte und beschäftigen regelmäßig Studierende, die sich in der Ausbildung zum Erzieher befinden.</p>
+  <div class="reveal"><p>Wir betrachten jedes Kind stärkenorientiert. Wir fördern die Selbstständigkeit der Schulkinder durch unser gruppenübergreifendes Konzept, das den Kindern die Möglichkeit gibt, selbst zu bestimmen, wo und mit wem sie spielen oder wie sie ihre Freizeit gestalten. Altersübergreifende Kontakte zu Jüngeren und Älteren stärken die Kinder in Verantwortungsübernahme, Rücksicht und Eigenverantwortlichkeit. Zahlreiche <button type="button" class="term" data-term="Partizipationsmöglichkeiten" aria-haspopup="dialog">Partizipationsmöglichkeiten</button> zeigen den Kindern, wie sie Einfluss auf ihren Alltag im Kinderhort nehmen und diesen selbst mitbestimmen können, z. B. in Kinderkonferenzen, Kinderbefragungen und Gruppengesprächen mit den Erziehern.</p></div>
+  <div class="reveal"><p>Unsere <button type="button" class="term" data-term="Fachkraftquote" aria-haspopup="dialog">Fachkraftquote</button> beträgt <strong>100 Prozent</strong>, das heißt, dass die Hortkinder ausschließlich von ausgebildeten, staatlich anerkannten Erziehern betreut werden. Wir sind Ausbildungsstätte und beschäftigen regelmäßig Studierende, die sich in der Ausbildung zum Erzieher befinden.</p>
   <div class="stats three">
     <div class="stat"><b>100 %</b><span>Fachkraftquote</span></div>
     <div class="stat"><b>75 %</b><span>Übertritt an weiterführende Schulen 2021</span></div>
-    <div class="stat"><b>1,4</b><span>Zufriedenheitsnote in der Elternbefragung</span></div>
+    <div class="stat"><b data-from="6">1,4</b><span>Zufriedenheitsnote in der Elternbefragung</span></div>
   </div></div>
 </div><div class="feature-groups"><div class="feature-group reveal"><h3>Räume &amp; Küche</h3><ul class="features"><li>Großzügige Räume zum Spielen und Lernen</li><li>Weißer Raum zum Entspannen</li><li>Hauseigene Küche, in der täglich von zwei Köchinnen mit regionalen Zutaten frisch gekocht wird</li><li>Großer Garten zum Toben</li></ul></div><div class="feature-group reveal"><h3>Zeiten &amp; Ferien</h3><ul class="features"><li>Überlange Öffnungszeiten von 6:45 Uhr bis 18:00 Uhr, auch in den Schulferien</li><li>Tägliche Aktionen während der Schulferien mit Erlebnischarakter</li><li>Ferienbetreuung</li><li>Ausflug an jedem Freitag, z. B. Stadtbücherei, Museum …</li></ul></div><div class="feature-group reveal"><h3>Lernen &amp; Qualität</h3><ul class="features"><li>Begleitete, korrigierte Hausaufgaben</li><li>Hohe Übertrittsquote an weiterführende Schulen (Quelle: Übertritt an weiterführende Schulen 2021: 75 %)</li><li>Tägliche Aktionen für Kinder, z. B. Kinderyoga, Mathespiele, Bewegungsspiele …</li><li>Hohe Elternzufriedenheit mit dem Hort (Quelle: Elternbefragung, Zufriedenheitsnote 1,4)</li></ul></div></div>
   </div>
@@ -1561,7 +1656,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 </section><section class="section " id="fragen">
   <div class="container">
     <div class="section-head"><span class="kicker">Meist gestellte Fragen</span><h2>Häufige Fragen zum Kinderhort</h2></div>
-    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Hat der Hort auch in den Schulferien geöffnet?</summary><div><p>In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr.</p></div></details><details class="reveal"><summary>Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?</summary><div><p>Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage.</p></div></details><details class="reveal"><summary>Braucht mein Kind im Hort eine Brotzeit?</summary><div><p>Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken.</p></div></details><details class="reveal"><summary>Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?</summary><div><p>Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.</p></div></details><details class="reveal"><summary>Kann ich mein Kind abholen, wann ich möchte?</summary><div><p>Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden.</p></div></details><details class="reveal"><summary>Kann ich mein Kind vor der Hausaufgabenzeit abholen?</summary><div><p>Unsere Mindestbuchungszeit beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine.</p></div></details><details class="reveal"><summary>Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?</summary><div><p>Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">vorbereiteten Krankmeldung per E-Mail</a>.</p></div></details><details class="reveal"><summary>Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?</summary><div><p>Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung.</p></div></details></div>
+    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Hat der Hort auch in den Schulferien geöffnet?</summary><div><p>In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr.</p></div></details><details class="reveal"><summary>Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?</summary><div><p>Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage.</p></div></details><details class="reveal"><summary>Braucht mein Kind im Hort eine Brotzeit?</summary><div><p>Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken.</p></div></details><details class="reveal"><summary>Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?</summary><div><p>Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.</p></div></details><details class="reveal"><summary>Kann ich mein Kind abholen, wann ich möchte?</summary><div><p>Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden.</p></div></details><details class="reveal"><summary>Kann ich mein Kind vor der Hausaufgabenzeit abholen?</summary><div><p>Unsere <button type="button" class="term" data-term="Mindestbuchungszeit" aria-haspopup="dialog">Mindestbuchungszeit</button> beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine.</p></div></details><details class="reveal"><summary>Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?</summary><div><p>Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">vorbereiteten Krankmeldung per E-Mail</a>.</p></div></details><details class="reveal"><summary>Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?</summary><div><p>Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung.</p></div></details></div>
   </div>
 </section><section class="section tight">
   <div class="container">
@@ -1663,6 +1758,11 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
   <div class="container contact-grid">
     <div>
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
+      <div class="dial reveal">
+        <label for="durchwahl">Durchwahl finden</label>
+        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-out" aria-live="polite"></div>
+      </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">
         <li><span>Sternengruppe</span><a href="tel:+49931278989215">0931&nbsp;2789892&nbsp;15</a></li>
         <li><span>Sonnengruppe</span><a href="tel:+49931278989214">0931&nbsp;2789892&nbsp;14</a></li>
@@ -1724,7 +1824,7 @@ body.nav-loading .read-progress { scale: 1 1 !important; /* schlägt die Fortsch
 </div>
 </main>
 <footer class="site-footer">
-  <svg class="bunting" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q 600.0 22 1200 6" fill="none" stroke="#D4B5B0" stroke-width="1.5" opacity=".7"/><path d="M4.0 6.2 L62.7 9.2 L33.3 33.7 Z" fill="#D4B5B0"/><path d="M70.7 9.5 L129.3 12.2 L100.0 36.9 Z" fill="#A8C5C0"/><path d="M137.3 12.5 L196.0 14.7 L166.7 39.6 Z" fill="#D4B5B0"/><path d="M204.0 15.0 L262.7 16.9 L233.3 42.0 Z" fill="#F3F8F7"/><path d="M270.7 17.2 L329.3 18.7 L300.0 44.0 Z" fill="#D4B5B0"/><path d="M337.3 18.9 L396.0 20.2 L366.7 45.5 Z" fill="#A8C5C0"/><path d="M404.0 20.3 L462.7 21.2 L433.3 46.7 Z" fill="#D4B5B0"/><path d="M470.7 21.3 L529.3 21.8 L500.0 47.5 Z" fill="#F3F8F7"/><path d="M537.3 21.8 L596.0 22.0 L566.7 47.9 Z" fill="#D4B5B0"/><path d="M604.0 22.0 L662.7 21.8 L633.3 47.9 Z" fill="#A8C5C0"/><path d="M670.7 21.8 L729.3 21.3 L700.0 47.5 Z" fill="#D4B5B0"/><path d="M737.3 21.2 L796.0 20.3 L766.7 46.7 Z" fill="#F3F8F7"/><path d="M804.0 20.2 L862.7 18.9 L833.3 45.5 Z" fill="#D4B5B0"/><path d="M870.7 18.7 L929.3 17.2 L900.0 44.0 Z" fill="#A8C5C0"/><path d="M937.3 16.9 L996.0 15.0 L966.7 42.0 Z" fill="#D4B5B0"/><path d="M1004.0 14.7 L1062.7 12.5 L1033.3 39.6 Z" fill="#F3F8F7"/><path d="M1070.7 12.2 L1129.3 9.5 L1100.0 36.9 Z" fill="#D4B5B0"/><path d="M1137.3 9.2 L1196.0 6.2 L1166.7 33.7 Z" fill="#A8C5C0"/></svg>
+  <svg class="bunting" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6 Q 600.0 22 1200 6" fill="none" stroke="#D4B5B0" stroke-width="1.5" opacity=".7"/><path class="flag" d="M4.0 6.2 L62.7 9.2 L33.3 33.7 Z" fill="#D4B5B0"/><path class="flag" d="M70.7 9.5 L129.3 12.2 L100.0 36.9 Z" fill="#A8C5C0"/><path class="flag" d="M137.3 12.5 L196.0 14.7 L166.7 39.6 Z" fill="#D4B5B0"/><path class="flag" d="M204.0 15.0 L262.7 16.9 L233.3 42.0 Z" fill="#F3F8F7"/><path class="flag" d="M270.7 17.2 L329.3 18.7 L300.0 44.0 Z" fill="#D4B5B0"/><path class="flag" d="M337.3 18.9 L396.0 20.2 L366.7 45.5 Z" fill="#A8C5C0"/><path class="flag" d="M404.0 20.3 L462.7 21.2 L433.3 46.7 Z" fill="#D4B5B0"/><path class="flag" d="M470.7 21.3 L529.3 21.8 L500.0 47.5 Z" fill="#F3F8F7"/><path class="flag" d="M537.3 21.8 L596.0 22.0 L566.7 47.9 Z" fill="#D4B5B0"/><path class="flag" d="M604.0 22.0 L662.7 21.8 L633.3 47.9 Z" fill="#A8C5C0"/><path class="flag" d="M670.7 21.8 L729.3 21.3 L700.0 47.5 Z" fill="#D4B5B0"/><path class="flag" d="M737.3 21.2 L796.0 20.3 L766.7 46.7 Z" fill="#F3F8F7"/><path class="flag" d="M804.0 20.2 L862.7 18.9 L833.3 45.5 Z" fill="#D4B5B0"/><path class="flag" d="M870.7 18.7 L929.3 17.2 L900.0 44.0 Z" fill="#A8C5C0"/><path class="flag" d="M937.3 16.9 L996.0 15.0 L966.7 42.0 Z" fill="#D4B5B0"/><path class="flag" d="M1004.0 14.7 L1062.7 12.5 L1033.3 39.6 Z" fill="#F3F8F7"/><path class="flag" d="M1070.7 12.2 L1129.3 9.5 L1100.0 36.9 Z" fill="#D4B5B0"/><path class="flag" d="M1137.3 9.2 L1196.0 6.2 L1166.7 33.7 Z" fill="#A8C5C0"/></svg>
   <div class="container">
     <div class="footer-grid">
       <div>
@@ -2136,7 +2236,18 @@ window.KITA = {
    "u": "#datenschutz",
    "k": "datenschutz dsgvo kdg cookies"
   }
- ]
+ ],
+ "glossar": {
+  "BayKiBiG": "Bayerisches Kinderbildungs- und -betreuungsgesetz. Es regelt unter anderem die Förderung der Kitas und erlaubt bis zu 30 Schließtage im Jahr.",
+  "Inhouseschulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
+  "Portfolio": "Eine Mappe, in der die Entwicklung Ihres Kindes mit Fotos, Bildern und Beobachtungen festgehalten wird.",
+  "Vorkurs Deutsch": "Zusätzliche, schulvorbereitende Förderung für Vorschulkinder in Grammatik, Sprachverständnis und Wortschatz.",
+  "Fachkraftquote": "Anteil der Mitarbeitenden mit pädagogischer Fachausbildung. 100 Prozent heißt: nur staatlich anerkannte Erzieherinnen und Erzieher.",
+  "Partizipationsmöglichkeiten": "Wege, auf denen die Kinder ihren Alltag mitbestimmen, zum Beispiel in der Kinderkonferenz.",
+  "Kinderkonferenz": "Wöchentliche Runde, in der die Hortkinder Themen besprechen und zum Beispiel Ausflüge und Ferienpläne abstimmen.",
+  "Mindestbuchungszeit": "Die kürzeste Betreuungszeit pro Tag, die Sie buchen können.",
+  "Projektarbeit": "Die Kinder wählen ein Thema nach ihren Interessen und erarbeiten es über längere Zeit gemeinsam."
+ }
 };
 </script>
 <script>/* Kath. Kinder- und Jugendhort Grombühl – Interaktionen */
@@ -2721,6 +2832,15 @@ window.KITA = {
         '<button type="button" class="icon-btn" aria-label="Hinweis ausblenden">' + svg(ICON.x, 18) + "</button></div>";
       $("strong", note).textContent = "Nächster Termin:";
       $("p span", note).textContent = nextEv.titel + " – " + (nextEv.von === nextEv.bis ? fmtLong(a) : fmt(a) + " bis " + fmt(b2));
+      var dleft = Math.round((Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()) - Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 864e5);
+      if (dleft > 0) {
+        var when = document.createElement("span"); when.className = "announce-in";
+        when.innerHTML = 'in <span class="roll"></span> ' + (dleft === 1 ? "Tag" : "Tagen");
+        $("p", note).appendChild(when);
+        var rl = $(".roll", when); roll(rl, 0);
+        if ("IntersectionObserver" in window) new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { setTimeout(function () { roll(rl, dleft); }, 400); o.disconnect(); } }).observe(note);
+        else roll(rl, dleft);
+      }
       note.hidden = store(key) === id;
       if (!note.hidden) root.classList.remove("no-hint");
       $("button", note).addEventListener("click", function () {
@@ -2822,6 +2942,10 @@ window.KITA = {
         '<div class="yl-months" aria-hidden="true">' + MON.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" +
         '<p class="yl-info" aria-live="polite"></p>';
       var bar = $(".yl-bar", box), pin = $(".yl-pin", box), info = $(".yl-info", box);
+      var nextLine = document.createElement("span"), noneLine = document.createElement("span");
+      nextLine.innerHTML = 'Nächste Schließzeit: <span class="yl-next"></span> in <span class="roll"></span><span class="yl-unit"></span>';
+      noneLine.textContent = "Danach gilt der neue Ferienplan.";
+      var nextName = $(".yl-next", nextLine), rollEl = $(".roll", nextLine), unit = $(".yl-unit", nextLine);
       K.schliesszeiten.forEach(function (z) {
         var s = dayIdx(parse(z.von)), e = dayIdx(parse(z.bis)) + 1, el = document.createElement("span");
         el.className = "yl-closed"; el.title = z.name;
@@ -2830,7 +2954,7 @@ window.KITA = {
       });
       var ti = dayIdx(new Date());
       if (ti >= 0 && ti < ylen) { var tm = document.createElement("span"); tm.className = "yl-today"; tm.style.left = (ti / ylen * 100) + "%"; bar.appendChild(tm); }
-      var cur = Math.min(ylen - 1, Math.max(0, ti));
+      var cur = Math.min(ylen - 1, Math.max(0, ti)), dragging = false;
       function showDay(i, x) {
         cur = i;
         pin.style.left = x !== undefined ? x : (i + .5) / ylen * 100 + "%";
@@ -2839,16 +2963,17 @@ window.KITA = {
         var reason = closedReason(dt), label = fmtLong(dt);
         bar.setAttribute("aria-valuenow", i);
         bar.setAttribute("aria-valuetext", label);
-        info.innerHTML = "";
-        var b = document.createElement("strong");
+        var b = $("strong", info);
+        if (!b) { b = document.createElement("strong"); info.appendChild(b); }
         b.textContent = label + (hit ? " – geschlossen (" + hit.name + ")" : reason ? " – geschlossen (" + reason + ")" : " – geöffnet");
-        info.appendChild(b);
-        var sp = document.createElement("span");
-        if (next) { var n = dayIdx(parse(next.von)) - i; sp.textContent = "Nächste Schließzeit: " + next.name + " in " + n + (n === 1 ? " Tag" : " Tagen"); }
-        else sp.textContent = "Danach gilt der neue Ferienplan.";
-        info.appendChild(sp);
+        nextLine.hidden = !next; noneLine.hidden = !!next;
+        if (next) {
+          var n = dayIdx(parse(next.von)) - i;
+          nextName.textContent = next.name; roll(rollEl, n); unit.textContent = n === 1 ? " Tag" : " Tagen";
+          box.classList.toggle("dragging", dragging);
+        }
+        if (!nextLine.parentNode) { info.appendChild(nextLine); info.appendChild(noneLine); }
       }
-      var dragging = false;
       function at(e) {
         var r = bar.getBoundingClientRect(), x = e.clientX - r.left, inside = Math.min(r.width, Math.max(0, x));
         showDay(Math.min(ylen - 1, Math.floor(inside / r.width * ylen)), (inside + rubber(x - inside, 24)) + "px");
@@ -2950,6 +3075,311 @@ window.KITA = {
     });
     addEventListener("pageshow", reset);
     addEventListener("pagehide", function () { clearTimeout(t2); });
+  })();
+
+  /* ---------- Rollende Ziffern (Zählwerk) ---------- */
+  function roll(el, n) {
+    var s = String(Math.max(0, n)), cols = $$(".roll-col", el);
+    /* Vorleser bekommen die Zahl als Text, die Ziffernwalzen sind nur Optik */
+    var sr = $(".visually-hidden", el);
+    if (!sr) { sr = document.createElement("span"); sr.className = "visually-hidden"; el.appendChild(sr); }
+    sr.textContent = s; el.dataset.value = s;
+    while (cols.length < s.length) {
+      var d = document.createElement("span"); d.className = "roll-digit"; d.setAttribute("aria-hidden", "true");
+      var c = document.createElement("span"); c.className = "roll-col";
+      for (var k = 0; k < 10; k++) { var x = document.createElement("span"); x.textContent = k; c.appendChild(x); }
+      var g = document.createElement("span"); g.className = "roll-ghost"; g.textContent = "0"; /* hält die Schriftlinie */
+      d.appendChild(g); d.appendChild(c); el.insertBefore(d, el.firstChild); cols.unshift(c);
+    }
+    while (cols.length > s.length) { el.firstChild.remove(); cols.shift(); }
+    cols.forEach(function (c, i) { c.style.setProperty("--i", i); c.style.translate = "0 " + (-s[i] * 1.2) + "em"; });
+  }
+
+  /* ---------- Überschriften steigen Wort für Wort auf ---------- */
+  if (!reduced && "IntersectionObserver" in window) {
+    var hio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("go"); hio.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    $$(".section-head h2").forEach(function (h) {
+      var n = 0, label = h.textContent.replace(/\s+/g, " ").trim();
+      (function wrap(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+          if (c.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            c.textContent.split(/(\s+)/).forEach(function (w) {
+              if (!w) return;
+              if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
+              var o = document.createElement("span"), i = document.createElement("span");
+              o.className = "hw"; i.textContent = w; i.style.setProperty("--w", n++); o.appendChild(i); frag.appendChild(o);
+            });
+            c.replaceWith(frag);
+          } else if (c.nodeType === 1) wrap(c);
+        });
+      })(h);
+      h.setAttribute("aria-label", label);
+      $$(".hw", h).forEach(function (w) { w.setAttribute("aria-hidden", "true"); });
+      h.classList.add("words");
+      hio.observe(h);
+    });
+  }
+
+  /* ---------- Zahlen zählen hoch ---------- */
+  (function () {
+    var els = $$(".stat b");
+    if (!els.length || reduced || !("IntersectionObserver" in window)) return;
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        var el = e.target, final = el.textContent, parts = final.split(/(\d+(?:,\d+)?)/), t0 = null, from = el.getAttribute("data-from");
+        el.setAttribute("aria-label", final);
+        el.style.minWidth = el.offsetWidth + "px";
+        function frame(t) {
+          if (!t0) t0 = t;
+          var p = Math.min(1, (t - t0) / 1200), k = 1 - Math.pow(1 - p, 4);
+          el.textContent = parts.map(function (tok, i) {
+            if (i % 2 === 0) return tok;
+            var dec = (tok.split(",")[1] || "").length, to = parseFloat(tok.replace(",", ".")), f = from !== null ? parseFloat(from) : 0;
+            var v = (f + (to - f) * k).toFixed(dec).replace(".", ",");
+            if (/:$/.test(parts[i - 1])) v = v.padStart(tok.length, "0");   /* Uhrzeit: 6:05 statt 6:5 */
+            return v;
+          }).join("");
+          if (p < 1) requestAnimationFrame(frame); else { el.textContent = final; el.style.minWidth = ""; }
+        }
+        requestAnimationFrame(frame);
+      });
+    }, { threshold: .6 });
+    els.forEach(function (el) { cio.observe(el); });
+  })();
+
+  /* ---------- Wimpelkette weht beim Scrollen (reines Schmuck-Element, darf nachschwingen) ---------- */
+  (function () {
+    var flags = $$(".site-footer .bunting .flag");
+    if (!flags.length || reduced) return;
+    var st = flags.map(function (f, i) { return { el: f, a: 0, v: 0, k: .8 + (i % 3) * .15 }; });
+    var lastY = scrollY, lastT = performance.now(), wind = 0, running = false, visible = false;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(flags[0].ownerSVGElement);
+    function tick() {
+      var still = true;
+      st.forEach(function (f) {
+        var target = Math.max(-28, Math.min(28, wind * f.k));
+        f.v += (target - f.a) * .06; f.v *= .86; f.a += f.v;
+        f.el.style.transform = "rotate(" + f.a.toFixed(2) + "deg)";
+        if (Math.abs(f.v) > .02 || Math.abs(f.a) > .05) still = false;
+      });
+      wind *= .88;
+      if (Math.abs(wind) > .05) still = false;
+      if (still) { running = false; st.forEach(function (f) { f.el.style.transform = ""; }); return; }
+      requestAnimationFrame(tick);
+    }
+    addEventListener("scroll", function () {
+      var now = performance.now(), dy = scrollY - lastY, dt = Math.max(16, now - lastT);
+      lastY = scrollY; lastT = now;
+      if (!visible) return;
+      wind = Math.max(-30, Math.min(30, wind + dy / dt * 9));
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    }, { passive: true });
+  })();
+
+  /* ---------- Licht folgt der Maus auf dunklen Karten ---------- */
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+    var SPOT = ".info-card, .room, .area-card, .quick-card, .dl-group, .phone-card, .note-card, .stat, .pill-list > div, .tl-body, .event, .address-card, .status-card, .faq summary";
+    var lit = null, raf = 0, pe = null;
+    document.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      pe = e;
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        var el = pe.target.closest && pe.target.closest(SPOT);
+        if (lit && lit !== el) { lit.style.removeProperty("--mx"); lit.style.removeProperty("--my"); }
+        lit = el;
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (pe.clientX - r.left) + "px");
+        el.style.setProperty("--my", (pe.clientY - r.top) + "px");
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- Magnetische Hauptknöpfe (bewusst schwach) ---------- */
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+    $$(".js-magnet").forEach(function (m) {
+      var zone = m.parentNode;
+      zone.addEventListener("pointermove", function (e) {
+        var r = m.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy), R = 90;
+        if (d < R) { var k = 1 - d / R; m.classList.add("near"); m.style.translate = (dx * .1 * k).toFixed(1) + "px " + (dy * .14 * k).toFixed(1) + "px"; }
+        else { m.classList.remove("near"); m.style.translate = ""; }
+      });
+      zone.addEventListener("pointerleave", function () { m.classList.remove("near"); m.style.translate = ""; });
+    });
+  }
+
+  /* ---------- Licht nach Tageszeit im Auftakt der Startseite ---------- */
+  (function () {
+    var hero = $(".hero");
+    if (!hero) return;
+    var d = new Date(), m = d.getHours() * 60 + d.getMinutes(), p = Math.min(1, Math.max(0, (m - 405) / (1080 - 405)));
+    var night = m < 405 || m >= 1080;
+    /* Das Licht wandert im Bogen von links (morgens) über oben (mittags) nach rechts (abends) */
+    hero.style.setProperty("--gx", (10 + p * 80).toFixed(1) + "%");
+    hero.style.setProperty("--gy", (8 - Math.sin(p * Math.PI) * 26).toFixed(1) + "%");
+    var warm = [255, 226, 196], noon = [241, 229, 227], eve = [214, 210, 236], c;
+    if (night) c = [196, 212, 232];
+    else if (p < .5) c = warm.map(function (v, i) { return Math.round(v + (noon[i] - v) * p * 2); });
+    else c = noon.map(function (v, i) { return Math.round(v + (eve[i] - v) * (p - .5) * 2); });
+    hero.style.setProperty("--glow", "rgba(" + c.join(",") + "," + (night ? .45 : .8) + ")");
+    hero.classList.add("lit");
+  })();
+
+  /* ---------- Fachbegriffe: Erklärung wächst aus dem Wort ---------- */
+  (function () {
+    var terms = $$(".term");
+    if (!terms.length || !K || !K.glossar) return;
+    var pop = document.createElement("div");
+    pop.className = "term-pop"; pop.id = "begriff"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Erklärung");
+    pop.innerHTML = "<strong></strong><p></p>";
+    document.body.appendChild(pop);
+    var open = null;
+    function close(back) { if (!open) return; var t = open; open = null; pop.classList.remove("open"); t.setAttribute("aria-expanded", "false"); if (back) t.focus(); }
+    terms.forEach(function (t) {
+      t.setAttribute("aria-expanded", "false"); t.setAttribute("aria-controls", "begriff");
+      t.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (open === t) { close(); return; }
+        close();
+        var key = t.getAttribute("data-term");
+        $("strong", pop).textContent = key; $("p", pop).textContent = K.glossar[key] || "";
+        var r = t.getBoundingClientRect(), w = Math.min(300, innerWidth - 32);
+        var left = Math.max(16, Math.min(innerWidth - w - 16, r.left + r.width / 2 - w / 2));
+        var below = r.bottom + 10, top = below + 160 > innerHeight && r.top > 180 ? r.top - 10 : below;
+        pop.style.width = w + "px"; pop.style.left = (left + scrollX) + "px";
+        pop.classList.toggle("above", top !== below);
+        pop.style.top = (top + scrollY) + "px";
+        pop.style.transformOrigin = (r.left + r.width / 2 - left) + "px " + (top !== below ? "100%" : "0");
+        void pop.offsetWidth;
+        pop.classList.add("open"); t.setAttribute("aria-expanded", "true"); open = t;
+      });
+    });
+    document.addEventListener("click", function (e) { if (open && !pop.contains(e.target)) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) close(true); });
+    addEventListener("resize", function () { close(); });
+  })();
+
+  /* ---------- Durchwahl finden ---------- */
+  (function () {
+    var inp = $("#durchwahl");
+    if (!inp) return;
+    var box = inp.closest(".dial"), out = $(".dial-out", box), timer = null, last = "";
+    var norm = function (s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " ").trim(); };
+    var dir = [];
+    $$(".phone-card").forEach(function (card) {
+      var area = $("h3", card).textContent.trim();
+      $$(".phone-list li", card).forEach(function (li) {
+        var a = $("a", li); if (!a || !/^tel:/.test(a.getAttribute("href"))) return;
+        var label = $("span", li).textContent.trim();
+        /* Kurzformen: „Krippe“, „Kiga“, „Hort“ finden den Bereich */
+        var alias = /krippe/i.test(area) ? " krippe" : /garten/i.test(area) ? " kiga garten" : /hort/i.test(area) ? " hort schule" : "";
+        dir.push({ keys: norm(label + " " + area + " " + label.replace(/gruppe$/i, "") + alias).split(" "), label: label + " · " + area, num: a.textContent.replace(/ /g, " "), href: a.getAttribute("href") });
+      });
+    });
+    function show(html) {
+      if (html === last) return; last = html;
+      if (reduced) { out.innerHTML = html; return; }
+      out.classList.add("swap");
+      setTimeout(function () { out.innerHTML = html; out.classList.remove("swap"); }, 150);
+    }
+    inp.addEventListener("input", function () {
+      clearTimeout(timer); inp.parentNode.classList.remove("err");
+      var v = norm(inp.value);
+      if (!v) { show(""); return; }
+      var hits = dir.filter(function (d) { return v.split(" ").every(function (w) { return d.keys.some(function (k) { return k.indexOf(w) === 0; }); }); });
+      if (hits.length) {
+        show(hits.slice(0, 3).map(function (h) { return '<p><a href="' + h.href + '">' + h.num.replace(/ /g, "&nbsp;") + "</a><span>" + h.label + "</span></p>"; }).join(""));
+        return;
+      }
+      /* erst nach einer kurzen Tipp-Pause bemängeln, dann kurz wackeln */
+      timer = setTimeout(function () {
+        inp.parentNode.classList.add("err");
+        if (!reduced) { inp.parentNode.classList.remove("shake"); void inp.parentNode.offsetWidth; inp.parentNode.classList.add("shake"); }
+        show('<p><a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a><span>Keine Gruppe gefunden – die Zentrale verbindet Sie gern.</span></p>');
+      }, 650);
+    });
+  })();
+
+  /* ---------- Rundgang als Geschichte ---------- */
+  (function () {
+    var openers = $$(".story-open");
+    if (!openers.length) return;
+    var view = document.createElement("div");
+    view.className = "story-view"; view.setAttribute("role", "dialog"); view.setAttribute("aria-modal", "true"); view.setAttribute("aria-label", "Rundgang als Geschichte");
+    view.innerHTML = '<div class="story-card"><div class="story-bars"></div><div class="story-imgs"></div>' +
+      '<div class="story-cap"><strong></strong><span></span></div><span class="story-paused">Pause</span>' +
+      '<button type="button" class="story-close lb-btn" aria-label="Schließen">' + svg(ICON.x, 22) + "</button>" +
+      '<button type="button" class="story-zone prev" aria-label="Vorheriges Bild"></button><button type="button" class="story-zone next" aria-label="Nächstes Bild"></button></div>';
+    document.body.appendChild(view);
+    var card = $(".story-card", view), barsEl = $(".story-bars", view), imgsEl = $(".story-imgs", view), cap = $(".story-cap", view);
+    var items = [], fills = [], imgs = [], i = 0, p = 0, last = null, hold = false, active = false, DUR = 5000, opener = null;
+    function show(n) {
+      if (n >= items.length) { closeStory(); return; }
+      i = Math.max(0, n); p = 0;
+      imgs.forEach(function (im, k) { im.classList.toggle("on", k === i); });
+      fills.forEach(function (f, k) { f.style.width = k < i ? "100%" : "0"; });
+      $("strong", cap).textContent = items[i].title; $("span", cap).textContent = items[i].text;
+      if (imgs[i + 1] && !imgs[i + 1].src) imgs[i + 1].src = items[i + 1].full;
+    }
+    function frame(t) {
+      if (!active) return;
+      if (last !== null && !hold && !reduced) {
+        p += (t - last) / DUR;
+        if (p >= 1) show(i + 1); else fills[i].style.width = (p * 100) + "%";
+      }
+      last = t; requestAnimationFrame(frame);
+    }
+    function hideStory() {
+      active = false; view.classList.remove("open"); document.body.style.overflow = "";
+      if (opener) opener.focus({ preventScroll: true });
+    }
+    function closeStory() { hideStory(); overlayClosed(); }
+    openers.forEach(function (b) {
+      b.addEventListener("click", function () {
+        opener = b;
+        var els = $$('[data-full][data-group="' + b.getAttribute("data-group") + '"]');
+        items = els.map(function (el) { var th = el.querySelector("img"); return { full: el.getAttribute("data-full"), quick: th && th.complete && th.naturalWidth ? th.currentSrc || th.src : "", title: el.getAttribute("data-title"), text: el.getAttribute("data-text") }; });
+        barsEl.innerHTML = ""; imgsEl.innerHTML = ""; fills = []; imgs = [];
+        items.forEach(function (it, k) {
+          var bar = document.createElement("i"), f = document.createElement("b"); bar.appendChild(f); barsEl.appendChild(bar); fills.push(f);
+          var im = document.createElement("img"); im.alt = ""; if (k < 2) im.src = it.quick || it.full;
+          if (it.quick) { var hi = new Image(); hi.onload = function () { if (im.src) im.src = it.full; }; hi.src = it.full; }
+          imgsEl.appendChild(im); imgs.push(im);
+        });
+        /* Die Geschichte wächst aus dem Knopf heraus */
+        var r = b.getBoundingClientRect();
+        view.style.setProperty("--ox", (r.left + r.width / 2) + "px"); view.style.setProperty("--oy", (r.top + r.height / 2) + "px");
+        show(0); active = true; last = null; hold = false;
+        view.classList.add("open"); document.body.style.overflow = "hidden";
+        requestAnimationFrame(frame);
+        $(".story-close", view).focus({ preventScroll: true });
+        overlayOpened(hideStory);
+      });
+    });
+    $(".story-close", view).addEventListener("click", closeStory);
+    /* kurz tippen = blättern, gedrückt halten = Pause (der Balken steht sofort) */
+    var downAt = 0;
+    $$(".story-zone", view).forEach(function (z) {
+      z.addEventListener("pointerdown", function () { hold = true; downAt = performance.now(); card.classList.add("hold"); });
+      z.addEventListener("pointerup", function () { hold = false; card.classList.remove("hold"); if (performance.now() - downAt < 250) show(i + (z.classList.contains("next") ? 1 : -1)); });
+      z.addEventListener("pointerleave", function () { hold = false; card.classList.remove("hold"); });
+      z.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(i + (z.classList.contains("next") ? 1 : -1)); } });
+    });
+    view.addEventListener("click", function (e) { if (e.target === view) closeStory(); });
+    document.addEventListener("keydown", function (e) {
+      if (!view.classList.contains("open")) return;
+      if (e.key === "Escape") closeStory();
+      if (e.key === "ArrowRight") show(i + 1);
+      if (e.key === "ArrowLeft") show(i - 1);
+      if (e.key === " " && e.target === document.body) { e.preventDefault(); hold = !hold; card.classList.toggle("hold", hold); }
+    });
   })();
 
   /* ---------- Ferienplan drucken ---------- */

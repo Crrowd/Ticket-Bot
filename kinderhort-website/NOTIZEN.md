@@ -184,3 +184,24 @@ Katalog: `entwurf/ideen/ideen.html` (private Vorschau: https://claude.ai/artifac
 - [ ] 7 Rundgang über den Grundriss. Braucht einen echten Grundriss des Hauses (Skizze reicht) und die Zuordnung der Fotos zu den Räumen.
 
 **Nicht gewünscht:** 1 Öffnungsuhr, 4 Tagesablauf in Echtzeit, 6 Speiseplan-Stapel, 10 Schriftgröße, 11 Mehrsprachigkeit.
+
+## Ideenkatalog 2 – Entscheidung (16.11.2026)
+Katalog: `entwurf/ideen/ideen-2.html`, Bildschirmfotos der Umsetzung: `entwurf/runde2/`
+
+**Eingebaut**
+- [x] 1 Überschriften steigen Wort für Wort auf (Abschnittsüberschriften; Vorleser hören den ganzen Satz).
+- [x] 2 Zahlen zählen hoch (Kennzahlen der Bereiche, sobald sichtbar).
+- [x] 3 Rollende Ziffern bei „in N Tagen“ (Hinweisleiste, Kita-Jahr-Zeitstrahl).
+- [x] 4 Licht folgt der Maus auf den dunklen Karten (nur Computer).
+- [x] 5 Magnet-Knöpfe – bewusst schwach (max. ~10–14 % des Abstands, nur im Umkreis von 90 px, nur Computer).
+- [x] 7 Wimpelkette im Fuß wiegt beim Scrollen (Federbewegung).
+- [x] 9 Fachbegriffe erklären sich (Klick → kleine Erklärung wächst aus dem Wort). **Texte habe ich formuliert – bitte vom Hort prüfen lassen:** BayKiBiG, Inhouseschulungen, Portfolio, Vorkurs Deutsch, Fachkraftquote, Partizipationsmöglichkeiten, Kinderkonferenz, Mindestbuchungszeit, Projektarbeit (in `build.py`, `GLOSSAR`).
+- [x] 10 Durchwahl finden (Kontakt): Gruppe oder Bereich tippen („Spatz“, „Krippe“, „Hort“) → passende Nummer; unbekannt → Feld schüttelt kurz.
+- [x] 12 Licht nach Tageszeit im Startbereich (morgens warm links, mittags oben, abends kühl rechts).
+- [x] 14 Rundgang als Geschichte (Vollbild, 5 s pro Bild, Halten pausiert, Tippen links/rechts, Esc/Zurück schließt).
+
+**Gemerkt für später**
+- [ ] 8 Bereichs-Finder (Alter des Kindes → passender Bereich).
+- [ ] 13 Checkliste „Was braucht mein Kind?“ (abhakbar, bleibt gespeichert) – braucht die echte Liste vom Hort.
+
+**Nicht gewünscht:** 6 Fotostreifen, 11 Gruppenkarten zum Umdrehen.

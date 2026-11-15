@@ -580,6 +580,15 @@
         '<button type="button" class="icon-btn" aria-label="Hinweis ausblenden">' + svg(ICON.x, 18) + "</button></div>";
       $("strong", note).textContent = "Nächster Termin:";
       $("p span", note).textContent = nextEv.titel + " – " + (nextEv.von === nextEv.bis ? fmtLong(a) : fmt(a) + " bis " + fmt(b2));
+      var dleft = Math.round((Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()) - Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 864e5);
+      if (dleft > 0) {
+        var when = document.createElement("span"); when.className = "announce-in";
+        when.innerHTML = 'in <span class="roll"></span> ' + (dleft === 1 ? "Tag" : "Tagen");
+        $("p", note).appendChild(when);
+        var rl = $(".roll", when); roll(rl, 0);
+        if ("IntersectionObserver" in window) new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { setTimeout(function () { roll(rl, dleft); }, 400); o.disconnect(); } }).observe(note);
+        else roll(rl, dleft);
+      }
       note.hidden = store(key) === id;
       if (!note.hidden) root.classList.remove("no-hint");
       $("button", note).addEventListener("click", function () {
@@ -681,6 +690,10 @@
         '<div class="yl-months" aria-hidden="true">' + MON.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" +
         '<p class="yl-info" aria-live="polite"></p>';
       var bar = $(".yl-bar", box), pin = $(".yl-pin", box), info = $(".yl-info", box);
+      var nextLine = document.createElement("span"), noneLine = document.createElement("span");
+      nextLine.innerHTML = 'Nächste Schließzeit: <span class="yl-next"></span> in <span class="roll"></span><span class="yl-unit"></span>';
+      noneLine.textContent = "Danach gilt der neue Ferienplan.";
+      var nextName = $(".yl-next", nextLine), rollEl = $(".roll", nextLine), unit = $(".yl-unit", nextLine);
       K.schliesszeiten.forEach(function (z) {
         var s = dayIdx(parse(z.von)), e = dayIdx(parse(z.bis)) + 1, el = document.createElement("span");
         el.className = "yl-closed"; el.title = z.name;
@@ -689,7 +702,7 @@
       });
       var ti = dayIdx(new Date());
       if (ti >= 0 && ti < ylen) { var tm = document.createElement("span"); tm.className = "yl-today"; tm.style.left = (ti / ylen * 100) + "%"; bar.appendChild(tm); }
-      var cur = Math.min(ylen - 1, Math.max(0, ti));
+      var cur = Math.min(ylen - 1, Math.max(0, ti)), dragging = false;
       function showDay(i, x) {
         cur = i;
         pin.style.left = x !== undefined ? x : (i + .5) / ylen * 100 + "%";
@@ -698,16 +711,17 @@
         var reason = closedReason(dt), label = fmtLong(dt);
         bar.setAttribute("aria-valuenow", i);
         bar.setAttribute("aria-valuetext", label);
-        info.innerHTML = "";
-        var b = document.createElement("strong");
+        var b = $("strong", info);
+        if (!b) { b = document.createElement("strong"); info.appendChild(b); }
         b.textContent = label + (hit ? " – geschlossen (" + hit.name + ")" : reason ? " – geschlossen (" + reason + ")" : " – geöffnet");
-        info.appendChild(b);
-        var sp = document.createElement("span");
-        if (next) { var n = dayIdx(parse(next.von)) - i; sp.textContent = "Nächste Schließzeit: " + next.name + " in " + n + (n === 1 ? " Tag" : " Tagen"); }
-        else sp.textContent = "Danach gilt der neue Ferienplan.";
-        info.appendChild(sp);
+        nextLine.hidden = !next; noneLine.hidden = !!next;
+        if (next) {
+          var n = dayIdx(parse(next.von)) - i;
+          nextName.textContent = next.name; roll(rollEl, n); unit.textContent = n === 1 ? " Tag" : " Tagen";
+          box.classList.toggle("dragging", dragging);
+        }
+        if (!nextLine.parentNode) { info.appendChild(nextLine); info.appendChild(noneLine); }
       }
-      var dragging = false;
       function at(e) {
         var r = bar.getBoundingClientRect(), x = e.clientX - r.left, inside = Math.min(r.width, Math.max(0, x));
         showDay(Math.min(ylen - 1, Math.floor(inside / r.width * ylen)), (inside + rubber(x - inside, 24)) + "px");
@@ -809,6 +823,311 @@
     });
     addEventListener("pageshow", reset);
     addEventListener("pagehide", function () { clearTimeout(t2); });
+  })();
+
+  /* ---------- Rollende Ziffern (Zählwerk) ---------- */
+  function roll(el, n) {
+    var s = String(Math.max(0, n)), cols = $$(".roll-col", el);
+    /* Vorleser bekommen die Zahl als Text, die Ziffernwalzen sind nur Optik */
+    var sr = $(".visually-hidden", el);
+    if (!sr) { sr = document.createElement("span"); sr.className = "visually-hidden"; el.appendChild(sr); }
+    sr.textContent = s; el.dataset.value = s;
+    while (cols.length < s.length) {
+      var d = document.createElement("span"); d.className = "roll-digit"; d.setAttribute("aria-hidden", "true");
+      var c = document.createElement("span"); c.className = "roll-col";
+      for (var k = 0; k < 10; k++) { var x = document.createElement("span"); x.textContent = k; c.appendChild(x); }
+      var g = document.createElement("span"); g.className = "roll-ghost"; g.textContent = "0"; /* hält die Schriftlinie */
+      d.appendChild(g); d.appendChild(c); el.insertBefore(d, el.firstChild); cols.unshift(c);
+    }
+    while (cols.length > s.length) { el.firstChild.remove(); cols.shift(); }
+    cols.forEach(function (c, i) { c.style.setProperty("--i", i); c.style.translate = "0 " + (-s[i] * 1.2) + "em"; });
+  }
+
+  /* ---------- Überschriften steigen Wort für Wort auf ---------- */
+  if (!reduced && "IntersectionObserver" in window) {
+    var hio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("go"); hio.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    $$(".section-head h2").forEach(function (h) {
+      var n = 0, label = h.textContent.replace(/\s+/g, " ").trim();
+      (function wrap(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+          if (c.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            c.textContent.split(/(\s+)/).forEach(function (w) {
+              if (!w) return;
+              if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
+              var o = document.createElement("span"), i = document.createElement("span");
+              o.className = "hw"; i.textContent = w; i.style.setProperty("--w", n++); o.appendChild(i); frag.appendChild(o);
+            });
+            c.replaceWith(frag);
+          } else if (c.nodeType === 1) wrap(c);
+        });
+      })(h);
+      h.setAttribute("aria-label", label);
+      $$(".hw", h).forEach(function (w) { w.setAttribute("aria-hidden", "true"); });
+      h.classList.add("words");
+      hio.observe(h);
+    });
+  }
+
+  /* ---------- Zahlen zählen hoch ---------- */
+  (function () {
+    var els = $$(".stat b");
+    if (!els.length || reduced || !("IntersectionObserver" in window)) return;
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        var el = e.target, final = el.textContent, parts = final.split(/(\d+(?:,\d+)?)/), t0 = null, from = el.getAttribute("data-from");
+        el.setAttribute("aria-label", final);
+        el.style.minWidth = el.offsetWidth + "px";
+        function frame(t) {
+          if (!t0) t0 = t;
+          var p = Math.min(1, (t - t0) / 1200), k = 1 - Math.pow(1 - p, 4);
+          el.textContent = parts.map(function (tok, i) {
+            if (i % 2 === 0) return tok;
+            var dec = (tok.split(",")[1] || "").length, to = parseFloat(tok.replace(",", ".")), f = from !== null ? parseFloat(from) : 0;
+            var v = (f + (to - f) * k).toFixed(dec).replace(".", ",");
+            if (/:$/.test(parts[i - 1])) v = v.padStart(tok.length, "0");   /* Uhrzeit: 6:05 statt 6:5 */
+            return v;
+          }).join("");
+          if (p < 1) requestAnimationFrame(frame); else { el.textContent = final; el.style.minWidth = ""; }
+        }
+        requestAnimationFrame(frame);
+      });
+    }, { threshold: .6 });
+    els.forEach(function (el) { cio.observe(el); });
+  })();
+
+  /* ---------- Wimpelkette weht beim Scrollen (reines Schmuck-Element, darf nachschwingen) ---------- */
+  (function () {
+    var flags = $$(".site-footer .bunting .flag");
+    if (!flags.length || reduced) return;
+    var st = flags.map(function (f, i) { return { el: f, a: 0, v: 0, k: .8 + (i % 3) * .15 }; });
+    var lastY = scrollY, lastT = performance.now(), wind = 0, running = false, visible = false;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(flags[0].ownerSVGElement);
+    function tick() {
+      var still = true;
+      st.forEach(function (f) {
+        var target = Math.max(-28, Math.min(28, wind * f.k));
+        f.v += (target - f.a) * .06; f.v *= .86; f.a += f.v;
+        f.el.style.transform = "rotate(" + f.a.toFixed(2) + "deg)";
+        if (Math.abs(f.v) > .02 || Math.abs(f.a) > .05) still = false;
+      });
+      wind *= .88;
+      if (Math.abs(wind) > .05) still = false;
+      if (still) { running = false; st.forEach(function (f) { f.el.style.transform = ""; }); return; }
+      requestAnimationFrame(tick);
+    }
+    addEventListener("scroll", function () {
+      var now = performance.now(), dy = scrollY - lastY, dt = Math.max(16, now - lastT);
+      lastY = scrollY; lastT = now;
+      if (!visible) return;
+      wind = Math.max(-30, Math.min(30, wind + dy / dt * 9));
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    }, { passive: true });
+  })();
+
+  /* ---------- Licht folgt der Maus auf dunklen Karten ---------- */
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+    var SPOT = ".info-card, .room, .area-card, .quick-card, .dl-group, .phone-card, .note-card, .stat, .pill-list > div, .tl-body, .event, .address-card, .status-card, .faq summary";
+    var lit = null, raf = 0, pe = null;
+    document.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      pe = e;
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        var el = pe.target.closest && pe.target.closest(SPOT);
+        if (lit && lit !== el) { lit.style.removeProperty("--mx"); lit.style.removeProperty("--my"); }
+        lit = el;
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (pe.clientX - r.left) + "px");
+        el.style.setProperty("--my", (pe.clientY - r.top) + "px");
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- Magnetische Hauptknöpfe (bewusst schwach) ---------- */
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+    $$(".js-magnet").forEach(function (m) {
+      var zone = m.parentNode;
+      zone.addEventListener("pointermove", function (e) {
+        var r = m.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy), R = 90;
+        if (d < R) { var k = 1 - d / R; m.classList.add("near"); m.style.translate = (dx * .1 * k).toFixed(1) + "px " + (dy * .14 * k).toFixed(1) + "px"; }
+        else { m.classList.remove("near"); m.style.translate = ""; }
+      });
+      zone.addEventListener("pointerleave", function () { m.classList.remove("near"); m.style.translate = ""; });
+    });
+  }
+
+  /* ---------- Licht nach Tageszeit im Auftakt der Startseite ---------- */
+  (function () {
+    var hero = $(".hero");
+    if (!hero) return;
+    var d = new Date(), m = d.getHours() * 60 + d.getMinutes(), p = Math.min(1, Math.max(0, (m - 405) / (1080 - 405)));
+    var night = m < 405 || m >= 1080;
+    /* Das Licht wandert im Bogen von links (morgens) über oben (mittags) nach rechts (abends) */
+    hero.style.setProperty("--gx", (10 + p * 80).toFixed(1) + "%");
+    hero.style.setProperty("--gy", (8 - Math.sin(p * Math.PI) * 26).toFixed(1) + "%");
+    var warm = [255, 226, 196], noon = [241, 229, 227], eve = [214, 210, 236], c;
+    if (night) c = [196, 212, 232];
+    else if (p < .5) c = warm.map(function (v, i) { return Math.round(v + (noon[i] - v) * p * 2); });
+    else c = noon.map(function (v, i) { return Math.round(v + (eve[i] - v) * (p - .5) * 2); });
+    hero.style.setProperty("--glow", "rgba(" + c.join(",") + "," + (night ? .45 : .8) + ")");
+    hero.classList.add("lit");
+  })();
+
+  /* ---------- Fachbegriffe: Erklärung wächst aus dem Wort ---------- */
+  (function () {
+    var terms = $$(".term");
+    if (!terms.length || !K || !K.glossar) return;
+    var pop = document.createElement("div");
+    pop.className = "term-pop"; pop.id = "begriff"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Erklärung");
+    pop.innerHTML = "<strong></strong><p></p>";
+    document.body.appendChild(pop);
+    var open = null;
+    function close(back) { if (!open) return; var t = open; open = null; pop.classList.remove("open"); t.setAttribute("aria-expanded", "false"); if (back) t.focus(); }
+    terms.forEach(function (t) {
+      t.setAttribute("aria-expanded", "false"); t.setAttribute("aria-controls", "begriff");
+      t.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (open === t) { close(); return; }
+        close();
+        var key = t.getAttribute("data-term");
+        $("strong", pop).textContent = key; $("p", pop).textContent = K.glossar[key] || "";
+        var r = t.getBoundingClientRect(), w = Math.min(300, innerWidth - 32);
+        var left = Math.max(16, Math.min(innerWidth - w - 16, r.left + r.width / 2 - w / 2));
+        var below = r.bottom + 10, top = below + 160 > innerHeight && r.top > 180 ? r.top - 10 : below;
+        pop.style.width = w + "px"; pop.style.left = (left + scrollX) + "px";
+        pop.classList.toggle("above", top !== below);
+        pop.style.top = (top + scrollY) + "px";
+        pop.style.transformOrigin = (r.left + r.width / 2 - left) + "px " + (top !== below ? "100%" : "0");
+        void pop.offsetWidth;
+        pop.classList.add("open"); t.setAttribute("aria-expanded", "true"); open = t;
+      });
+    });
+    document.addEventListener("click", function (e) { if (open && !pop.contains(e.target)) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) close(true); });
+    addEventListener("resize", function () { close(); });
+  })();
+
+  /* ---------- Durchwahl finden ---------- */
+  (function () {
+    var inp = $("#durchwahl");
+    if (!inp) return;
+    var box = inp.closest(".dial"), out = $(".dial-out", box), timer = null, last = "";
+    var norm = function (s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " ").trim(); };
+    var dir = [];
+    $$(".phone-card").forEach(function (card) {
+      var area = $("h3", card).textContent.trim();
+      $$(".phone-list li", card).forEach(function (li) {
+        var a = $("a", li); if (!a || !/^tel:/.test(a.getAttribute("href"))) return;
+        var label = $("span", li).textContent.trim();
+        /* Kurzformen: „Krippe“, „Kiga“, „Hort“ finden den Bereich */
+        var alias = /krippe/i.test(area) ? " krippe" : /garten/i.test(area) ? " kiga garten" : /hort/i.test(area) ? " hort schule" : "";
+        dir.push({ keys: norm(label + " " + area + " " + label.replace(/gruppe$/i, "") + alias).split(" "), label: label + " · " + area, num: a.textContent.replace(/ /g, " "), href: a.getAttribute("href") });
+      });
+    });
+    function show(html) {
+      if (html === last) return; last = html;
+      if (reduced) { out.innerHTML = html; return; }
+      out.classList.add("swap");
+      setTimeout(function () { out.innerHTML = html; out.classList.remove("swap"); }, 150);
+    }
+    inp.addEventListener("input", function () {
+      clearTimeout(timer); inp.parentNode.classList.remove("err");
+      var v = norm(inp.value);
+      if (!v) { show(""); return; }
+      var hits = dir.filter(function (d) { return v.split(" ").every(function (w) { return d.keys.some(function (k) { return k.indexOf(w) === 0; }); }); });
+      if (hits.length) {
+        show(hits.slice(0, 3).map(function (h) { return '<p><a href="' + h.href + '">' + h.num.replace(/ /g, "&nbsp;") + "</a><span>" + h.label + "</span></p>"; }).join(""));
+        return;
+      }
+      /* erst nach einer kurzen Tipp-Pause bemängeln, dann kurz wackeln */
+      timer = setTimeout(function () {
+        inp.parentNode.classList.add("err");
+        if (!reduced) { inp.parentNode.classList.remove("shake"); void inp.parentNode.offsetWidth; inp.parentNode.classList.add("shake"); }
+        show('<p><a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a><span>Keine Gruppe gefunden – die Zentrale verbindet Sie gern.</span></p>');
+      }, 650);
+    });
+  })();
+
+  /* ---------- Rundgang als Geschichte ---------- */
+  (function () {
+    var openers = $$(".story-open");
+    if (!openers.length) return;
+    var view = document.createElement("div");
+    view.className = "story-view"; view.setAttribute("role", "dialog"); view.setAttribute("aria-modal", "true"); view.setAttribute("aria-label", "Rundgang als Geschichte");
+    view.innerHTML = '<div class="story-card"><div class="story-bars"></div><div class="story-imgs"></div>' +
+      '<div class="story-cap"><strong></strong><span></span></div><span class="story-paused">Pause</span>' +
+      '<button type="button" class="story-close lb-btn" aria-label="Schließen">' + svg(ICON.x, 22) + "</button>" +
+      '<button type="button" class="story-zone prev" aria-label="Vorheriges Bild"></button><button type="button" class="story-zone next" aria-label="Nächstes Bild"></button></div>';
+    document.body.appendChild(view);
+    var card = $(".story-card", view), barsEl = $(".story-bars", view), imgsEl = $(".story-imgs", view), cap = $(".story-cap", view);
+    var items = [], fills = [], imgs = [], i = 0, p = 0, last = null, hold = false, active = false, DUR = 5000, opener = null;
+    function show(n) {
+      if (n >= items.length) { closeStory(); return; }
+      i = Math.max(0, n); p = 0;
+      imgs.forEach(function (im, k) { im.classList.toggle("on", k === i); });
+      fills.forEach(function (f, k) { f.style.width = k < i ? "100%" : "0"; });
+      $("strong", cap).textContent = items[i].title; $("span", cap).textContent = items[i].text;
+      if (imgs[i + 1] && !imgs[i + 1].src) imgs[i + 1].src = items[i + 1].full;
+    }
+    function frame(t) {
+      if (!active) return;
+      if (last !== null && !hold && !reduced) {
+        p += (t - last) / DUR;
+        if (p >= 1) show(i + 1); else fills[i].style.width = (p * 100) + "%";
+      }
+      last = t; requestAnimationFrame(frame);
+    }
+    function hideStory() {
+      active = false; view.classList.remove("open"); document.body.style.overflow = "";
+      if (opener) opener.focus({ preventScroll: true });
+    }
+    function closeStory() { hideStory(); overlayClosed(); }
+    openers.forEach(function (b) {
+      b.addEventListener("click", function () {
+        opener = b;
+        var els = $$('[data-full][data-group="' + b.getAttribute("data-group") + '"]');
+        items = els.map(function (el) { var th = el.querySelector("img"); return { full: el.getAttribute("data-full"), quick: th && th.complete && th.naturalWidth ? th.currentSrc || th.src : "", title: el.getAttribute("data-title"), text: el.getAttribute("data-text") }; });
+        barsEl.innerHTML = ""; imgsEl.innerHTML = ""; fills = []; imgs = [];
+        items.forEach(function (it, k) {
+          var bar = document.createElement("i"), f = document.createElement("b"); bar.appendChild(f); barsEl.appendChild(bar); fills.push(f);
+          var im = document.createElement("img"); im.alt = ""; if (k < 2) im.src = it.quick || it.full;
+          if (it.quick) { var hi = new Image(); hi.onload = function () { if (im.src) im.src = it.full; }; hi.src = it.full; }
+          imgsEl.appendChild(im); imgs.push(im);
+        });
+        /* Die Geschichte wächst aus dem Knopf heraus */
+        var r = b.getBoundingClientRect();
+        view.style.setProperty("--ox", (r.left + r.width / 2) + "px"); view.style.setProperty("--oy", (r.top + r.height / 2) + "px");
+        show(0); active = true; last = null; hold = false;
+        view.classList.add("open"); document.body.style.overflow = "hidden";
+        requestAnimationFrame(frame);
+        $(".story-close", view).focus({ preventScroll: true });
+        overlayOpened(hideStory);
+      });
+    });
+    $(".story-close", view).addEventListener("click", closeStory);
+    /* kurz tippen = blättern, gedrückt halten = Pause (der Balken steht sofort) */
+    var downAt = 0;
+    $$(".story-zone", view).forEach(function (z) {
+      z.addEventListener("pointerdown", function () { hold = true; downAt = performance.now(); card.classList.add("hold"); });
+      z.addEventListener("pointerup", function () { hold = false; card.classList.remove("hold"); if (performance.now() - downAt < 250) show(i + (z.classList.contains("next") ? 1 : -1)); });
+      z.addEventListener("pointerleave", function () { hold = false; card.classList.remove("hold"); });
+      z.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(i + (z.classList.contains("next") ? 1 : -1)); } });
+    });
+    view.addEventListener("click", function (e) { if (e.target === view) closeStory(); });
+    document.addEventListener("keydown", function (e) {
+      if (!view.classList.contains("open")) return;
+      if (e.key === "Escape") closeStory();
+      if (e.key === "ArrowRight") show(i + 1);
+      if (e.key === "ArrowLeft") show(i - 1);
+      if (e.key === " " && e.target === document.body) { e.preventDefault(); hold = !hold; card.classList.toggle("hold", hold); }
+    });
   })();
 
   /* ---------- Ferienplan drucken ---------- */
