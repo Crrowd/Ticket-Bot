@@ -1,0 +1,808 @@
+<meta charset="utf-8">
+<title>Hort-Webseite Ideenkatalog 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: wie Katalog 1 – Karten mit Live-Bühne auf dunklem Türkis, Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 10px; right: 16px; text-align: center; pointer-events: none; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .chip:active, .seg button:active, .filter button:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.replay { position: absolute; top: 12px; right: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.14); color: var(--on); font-weight: 600; font-size: .82rem; cursor: pointer; }
+.replay:hover { background: rgba(255,255,255,.26); }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); transition: color .2s; }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+
+
+/* 1 Weg durch den Tag */
+.day { width: 100%; max-width: 540px; display: grid; gap: 14px; }
+.day svg { width: 100%; height: auto; overflow: visible; }
+.day .track { fill: none; stroke: rgba(255,255,255,.2); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 9; }
+.day .ink { fill: none; stroke: var(--rose); stroke-width: 4; stroke-linecap: round; }
+.day .st circle { fill: var(--surface); stroke: rgba(255,255,255,.35); stroke-width: 3; transition: fill .3s, stroke .3s, scale .4s var(--ease-out); transform-box: fill-box; transform-origin: center; }
+.day .st text { fill: var(--on-soft); font: 600 12.5px var(--font); text-anchor: middle; opacity: .45; transition: opacity .3s, fill .3s; }
+.day .st .t { font-weight: 800; font-size: 13px; }
+.day .st.on circle { fill: var(--rose); stroke: var(--rose); scale: 1.3; }
+.day .st.on text { opacity: 1; fill: var(--on); }
+.day .walker { fill: var(--paper); filter: drop-shadow(0 0 6px rgba(212,181,176,.9)); }
+
+@media (max-width: 520px) { .day .st text { font-size: 17px; } .day .st .t { font-size: 18px; } }
+
+/* 2 Haus mit Fenstern */
+.house { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.house svg { width: 210px; height: auto; overflow: visible; }
+.house .wall { fill: rgba(255,255,255,.08); stroke: rgba(255,255,255,.28); stroke-width: 2; }
+.house .roof { fill: var(--rose); }
+.house .win { fill: rgba(20,42,49,.55); stroke: rgba(255,255,255,.25); stroke-width: 1.5; transition: fill .45s var(--ease-out), filter .45s; }
+.house .fl.on .win { fill: #FBEFD9; filter: drop-shadow(0 0 7px rgba(251,239,217,.85)); }
+.house .fl.on .win:nth-child(2) { transition-delay: 60ms; } .house .fl.on .win:nth-child(3) { transition-delay: 120ms; }
+.house .fl-label { fill: var(--on-soft); font: 700 11px var(--font); letter-spacing: .06em; text-transform: uppercase; transition: fill .3s; }
+.house .fl.on .fl-label { fill: var(--on); }
+.house .smoke circle { fill: rgba(255,255,255,.35); animation: smoke 3.6s linear infinite; transform-box: fill-box; transform-origin: center; }
+.house .smoke circle:nth-child(2) { animation-delay: 1.2s; } .house .smoke circle:nth-child(3) { animation-delay: 2.4s; }
+@keyframes smoke { from { translate: 0 0; opacity: 0; scale: .6; } 20% { opacity: .8; } to { translate: 14px -46px; opacity: 0; scale: 1.8; } }
+.house-info { display: grid; gap: 10px; min-width: 200px; max-width: 240px; }
+.house-info .seg { flex-direction: column; border-radius: 18px; }
+.house-info .seg .knob { left: 5px; top: 0; width: calc(100% - 10px); border-radius: 14px; }
+.house-info .seg button { text-align: left; border-radius: 14px; }
+.house-info p { font-size: .88rem; color: var(--on-soft); min-height: 3em; }
+
+/* 3 Jahreszeiten */
+.season { position: relative; width: 100%; max-width: 520px; height: 230px; border-radius: 16px; overflow: hidden; background: var(--bg); color: var(--ink); }
+.season .bar { position: absolute; left: 12px; right: 12px; top: 12px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: rgba(243,248,247,.7); font-weight: 700; font-size: .9rem; z-index: 2; }
+.season .bar i { width: 26px; height: 26px; border-radius: 50%; background: var(--ink); flex: none; }
+.season h3 { position: absolute; left: 18px; top: 82px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; z-index: 1; }
+.season canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+.season-ctl { display: grid; gap: 12px; justify-items: center; width: 100%; }
+
+/* 4 Anfahrt */
+.map { width: 100%; max-width: 520px; display: grid; gap: 12px; justify-items: center; }
+.map svg { width: 100%; height: auto; border-radius: 16px; background: rgba(20,42,49,.35); }
+.map .blk { fill: rgba(255,255,255,.06); }
+.map .street { stroke: rgba(255,255,255,.2); stroke-width: 9; stroke-linecap: round; fill: none; }
+.map .tram { stroke: rgba(212,181,176,.35); stroke-width: 2; stroke-dasharray: 6 5; fill: none; }
+.map .route { fill: none; stroke: var(--rose); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.map .pin { fill: var(--paper); }
+.map .pin-dot { fill: var(--ink); }
+.map text { fill: var(--on); font: 700 11px var(--font); }
+.map .start text { fill: var(--on-soft); font-weight: 600; }
+.map .start circle { fill: var(--surface); stroke: var(--rose); stroke-width: 3; }
+.map .mover { fill: var(--paper); filter: drop-shadow(0 0 5px rgba(243,248,247,.8)); }
+.map-time { font-size: .95rem; color: var(--on); min-height: 1.6em; text-align: center; }
+.map-time b { font-size: 1.15rem; }
+
+/* 5 Wetter */
+.wx-stage { gap: 18px; align-content: center; }
+.wx { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 20px; align-items: center; width: 100%; max-width: 480px; }
+.wx-icon { width: 120px; height: 120px; position: relative; }
+.wx-icon svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; scale: .7; filter: blur(4px); transition: opacity .3s var(--ease-out), scale .4s var(--ease-out), filter .3s; }
+.wx-icon svg.on { opacity: 1; scale: 1; filter: blur(0); }
+.wx .sun g { animation: spin 14s linear infinite; transform-origin: 60px 60px; }
+@keyframes spin { to { rotate: 360deg; } }
+.wx .drop { animation: drop 1s linear infinite; }
+.wx .drop:nth-child(2) { animation-delay: .33s; } .wx .drop:nth-child(3) { animation-delay: .66s; }
+@keyframes drop { from { translate: 0 -6px; opacity: 0; } 30% { opacity: 1; } to { translate: -4px 22px; opacity: 0; } }
+.wx .flake { animation: flake 2.4s linear infinite; }
+.wx .flake:nth-child(2) { animation-delay: .8s; } .wx .flake:nth-child(3) { animation-delay: 1.6s; }
+@keyframes flake { from { translate: 0 -6px; opacity: 0; } 25% { opacity: 1; } to { translate: 6px 26px; opacity: 0; } }
+.wx ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.wx li { display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,.1); padding: 8px 12px; border-radius: 12px; font-size: .92rem; animation: rise .4s var(--ease-out) both; }
+.wx li:nth-child(2) { animation-delay: 40ms; } .wx li:nth-child(3) { animation-delay: 80ms; }
+@keyframes rise { from { opacity: 0; translate: 0 8px; } }
+.wx h3 { font-size: 1.1rem; }
+
+/* 6 Galerie-Filter */
+.gal { width: 100%; display: grid; gap: 12px; }
+.gal-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.gal-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.gal-grid figure { margin: 0; border-radius: 12px; overflow: hidden; aspect-ratio: 1; position: relative; transition: opacity .15s, scale .15s var(--ease-out); }
+.gal-grid figure.leave { opacity: 0; scale: .9; }
+.gal-grid figure[hidden] { display: none; }
+.gal-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gal-grid figcaption { position: absolute; left: 6px; bottom: 6px; font-size: .68rem; font-weight: 700; background: rgba(20,42,49,.7); padding: 2px 7px; border-radius: 999px; }
+@media (max-width: 520px) { .gal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 7 Platzanfrage */
+.ask { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); display: grid; gap: 14px; overflow: hidden; }
+.ask-prog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.ask-prog i { height: 5px; border-radius: 3px; background: rgba(30,59,68,.12); position: relative; overflow: hidden; }
+.ask-prog i::after { content: ""; position: absolute; inset: 0; background: var(--surface); scale: 0 1; transform-origin: left; transition: scale .4s var(--ease-io); }
+.ask-prog i.done::after { scale: 1 1; }
+.ask-step { display: grid; gap: 10px; animation: step-in .35s var(--ease-out); }
+.ask-step.back { animation-name: step-back; }
+@keyframes step-in { from { opacity: 0; translate: 24px 0; } }
+@keyframes step-back { from { opacity: 0; translate: -24px 0; } }
+.ask h3 { font-size: 1.05rem; }
+.ask small { color: var(--ink-soft); font-size: .8rem; }
+.ask .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.ask .opt { border: 1.5px solid rgba(30,59,68,.25); background: none; padding: 8px 14px; border-radius: 999px; font-weight: 600; cursor: pointer; color: var(--ink); transition: background .15s, border-color .15s, scale .12s; }
+.ask .opt[aria-pressed="true"] { background: var(--surface); border-color: var(--surface); color: var(--on); }
+.ask label { display: grid; gap: 4px; font-size: .82rem; font-weight: 700; }
+.ask .field { position: relative; }
+.ask input { width: 100%; border: 1.5px solid rgba(30,59,68,.25); border-radius: 12px; padding: 10px 36px 10px 12px; font: 500 1rem var(--font); color: var(--ink); background: #fff; }
+.ask input:focus { outline: none; border-color: var(--surface); box-shadow: 0 0 0 3px rgba(45,106,106,.2); }
+.ask .ok { position: absolute; right: 10px; top: 50%; translate: 0 -50%; width: 20px; height: 20px; border-radius: 50%; background: #2E8B57; color: #fff; display: grid; place-items: center; font-size: 12px; scale: 0; transition: scale .25s var(--ease-out); }
+.ask .ok.show { scale: 1; }
+.ask-nav { display: flex; justify-content: space-between; gap: 8px; }
+.ask-nav .btn { background: var(--surface); color: var(--on); }
+.ask-nav .btn:disabled { opacity: .35; cursor: default; }
+.ask-nav .btn.ghost { background: none; color: var(--ink); border: 1.5px solid rgba(30,59,68,.25); }
+.ask .sum { background: var(--rose-soft); border-radius: 12px; padding: 12px; font-size: .9rem; display: grid; gap: 4px; }
+
+/* 8 Download-Vorschau */
+.dl { width: 100%; max-width: 460px; display: grid; gap: 8px; }
+.dl a { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.1); color: var(--on); text-decoration: none; font-weight: 700; transition: background .15s; }
+.dl a:hover, .dl a:focus-visible { background: rgba(255,255,255,.18); }
+.dl .ext { font-size: .7rem; font-weight: 800; background: var(--rose); color: var(--ink); padding: 3px 7px; border-radius: 6px; }
+.dl .meta2 { margin-left: auto; font-size: .78rem; color: var(--on-soft); font-weight: 500; }
+.dl .new { font-size: .68rem; background: var(--ok); color: var(--deep); padding: 2px 7px; border-radius: 999px; }
+.peek { position: absolute; right: 18px; bottom: calc(100% - 14px); width: 92px; aspect-ratio: 1 / 1.414; background: #fff; border-radius: 4px; padding: 9px 8px; box-shadow: 0 10px 24px -8px rgba(0,0,0,.6); display: grid; align-content: start; gap: 4px; pointer-events: none;
+  opacity: 0; translate: 0 18px; rotate: 0deg; transform-origin: 50% 100%; transition: opacity .16s var(--ease-out), translate .16s var(--ease-out), rotate .16s var(--ease-out); z-index: 3; }
+.dl a:hover .peek, .dl a:focus-visible .peek { opacity: 1; translate: 0 0; rotate: 4deg; transition-duration: .3s; }
+.peek b { font-size: 7px; color: var(--ink); line-height: 1.2; }
+.peek i { height: 3px; border-radius: 2px; background: #D9E3E1; }
+.peek i:nth-child(odd) { width: 80%; }
+.peek .tbl { height: 26px; background: repeating-linear-gradient(#EEF3F2 0 5px, #fff 5px 7px); border-radius: 2px; }
+
+/* 9 Kleine Feier */
+.party { position: relative; display: grid; gap: 14px; justify-items: center; }
+.party .btn { min-width: 190px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.party .btn[aria-pressed="true"] { background: var(--paper); }
+.conf { position: absolute; left: 50%; top: 50%; width: 8px; height: 12px; border-radius: 2px; pointer-events: none; }
+.conf.round { border-radius: 50%; width: 8px; height: 8px; }
+
+/* 10 Status in der Leiste */
+.stat-demo { width: 100%; max-width: 520px; display: grid; gap: 16px; justify-items: center; align-self: start; margin-top: 18px; }
+.mini-bar { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: rgba(243,248,247,.92); color: var(--ink); position: relative; }
+.mini-bar .logo { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); flex: none; }
+.mini-bar .nm { font-weight: 700; font-size: .86rem; line-height: 1.2; }
+.pill { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 7px 12px; background: rgba(30,59,68,.08); color: var(--ink); font: 700 .82rem var(--font); cursor: pointer; overflow: hidden; white-space: nowrap; transition: width .35s var(--ease-io), background .2s; }
+.pill .dot { width: 9px; height: 9px; border-radius: 50%; background: #2E8B57; flex: none; position: relative; }
+.pill .dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid currentColor; color: #2E8B57; animation: ping 1.8s var(--ease-out) infinite; }
+.pill.soon .dot { background: #B8736A; } .pill.soon .dot::after { color: #B8736A; }
+.pill.closed .dot { background: #8A9EA2; } .pill.closed .dot::after { display: none; }
+@keyframes ping { from { scale: .6; opacity: .9; } to { scale: 1.8; opacity: 0; } }
+.pill-txt { transition: opacity .15s; }
+@media (max-width: 520px) {
+  .mini-bar .nm { display: none; }
+  #clockSeg button { padding: 8px 10px; white-space: nowrap; font-size: .85rem; }
+}
+.pill-txt.swap { opacity: 0; }
+.pop { position: absolute; right: 12px; top: calc(100% + 8px); width: 250px; background: var(--paper); color: var(--ink); border-radius: 14px; padding: 12px 14px; box-shadow: 0 16px 30px -12px rgba(0,0,0,.5); display: grid; gap: 6px; font-size: .86rem;
+  opacity: 0; scale: .96; translate: 0 -4px; transform-origin: 85% 0; visibility: hidden; transition: opacity .16s var(--ease-out), scale .16s var(--ease-out), translate .16s var(--ease-out), visibility 0s .16s; z-index: 4; }
+.pop.open { opacity: 1; scale: 1; translate: 0 0; visibility: visible; transition-duration: .22s; transition-delay: 0s; }
+.pop div { display: flex; justify-content: space-between; gap: 10px; }
+.pop .x { color: #8A9EA2; text-decoration: line-through; }
+
+/* 11 Teilen */
+.ev-card { width: 100%; max-width: 420px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; background: rgba(255,255,255,.1); padding: 14px; border-radius: 18px; }
+.ev-date { background: var(--paper); color: var(--ink); border-radius: 12px; text-align: center; padding: 8px 0; line-height: 1.1; }
+.ev-date b { display: block; font-size: 1.5rem; } .ev-date span { font-size: .7rem; font-weight: 800; letter-spacing: .1em; }
+.ev-card h3 { font-size: 1rem; } .ev-card p { font-size: .85rem; color: var(--on-soft); }
+.ev-acts { grid-column: 1 / -1; display: flex; gap: 8px; }
+.share-btn { display: inline-flex; align-items: center; gap: 8px; }
+.share-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.share-btn .i2 { display: none; }
+.share-btn.done .i1 { display: none; } .share-btn.done .i2 { display: block; animation: pop-in .35s var(--ease-out); }
+@keyframes pop-in { from { scale: .4; opacity: 0; } }
+.toast-demo { position: absolute; left: 50%; bottom: 16px; translate: -50% 20px; opacity: 0; background: var(--paper); color: var(--ink); padding: 9px 16px; border-radius: 999px; font-weight: 700; font-size: .88rem; box-shadow: 0 10px 24px -10px rgba(0,0,0,.5); transition: opacity .2s var(--ease-out), translate .25s var(--ease-out); }
+.toast-demo.show { opacity: 1; translate: -50% 0; }
+
+/* 12 Wimpel-Seitenwechsel */
+.flip-page { position: relative; width: 100%; max-width: 480px; height: 240px; border-radius: 16px; overflow: hidden; background: var(--bg); color: var(--ink); }
+.flip-page .pg { position: absolute; inset: 0; padding: 22px; display: grid; align-content: start; gap: 10px; }
+.flip-page .pg h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; }
+.flip-page .pg p { font-size: .9rem; color: var(--ink-soft); max-width: 34ch; }
+.flip-page .pg .row { display: flex; gap: 8px; margin-top: 4px; }
+.flip-page .pg .row span { flex: 1; height: 60px; border-radius: 10px; background: rgba(30,59,68,.12); }
+.flip-page nav { position: absolute; left: 22px; bottom: 18px; display: flex; gap: 6px; z-index: 1; }
+.flip-page nav button { border: 0; padding: 7px 12px; border-radius: 999px; font-weight: 700; font-size: .82rem; background: rgba(30,59,68,.1); color: var(--ink); cursor: pointer; }
+.flip-page nav button[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.curtain { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, 1fr); pointer-events: none; z-index: 2; }
+.curtain i { display: block; height: 135%; translate: 0 -100%; clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%); }
+.curtain i:nth-child(odd) { background: var(--rose); } .curtain i:nth-child(even) { background: var(--surface); }
+.curtain i:nth-child(4n+2) { background: var(--ink); } .curtain i:nth-child(4n+3) { background: #E6CFCA; }
+
+/* 13 Link-Vorschau */
+.lp-stage { place-items: end center; padding-bottom: 46px; min-height: 330px; }
+.lp { position: relative; max-width: 440px; font-size: 1.05rem; line-height: 1.75; color: var(--on); }
+.lp a { color: var(--on); text-decoration: underline; text-decoration-color: var(--rose); text-decoration-thickness: 2px; text-underline-offset: 3px; font-weight: 700; }
+.lp-card { position: absolute; width: 230px; background: var(--paper); color: var(--ink); border-radius: 14px; overflow: hidden; box-shadow: 0 18px 34px -14px rgba(0,0,0,.55); pointer-events: none; z-index: 4;
+  opacity: 0; translate: 0 6px; scale: .97; transform-origin: 50% 100%; transition: opacity .16s var(--ease-out), translate .16s var(--ease-out), scale .16s var(--ease-out); }
+.lp-card.open { opacity: 1; translate: 0 0; scale: 1; transition-duration: .22s; }
+.lp-card img { width: 100%; height: 96px; object-fit: cover; display: block; }
+.lp-card div { padding: 10px 12px 12px; display: grid; gap: 2px; }
+.lp-card b { font-size: .95rem; line-height: 1.3; } .lp-card span { font-size: .8rem; color: var(--ink-soft); line-height: 1.4; }
+.lp-card.below { transform-origin: 50% 0; translate: 0 -6px; }
+.lp-card.below.open { translate: 0 0; }
+.lp-card.below::after { bottom: auto; top: -6px; }
+.lp-card::after { content: ""; position: absolute; left: var(--ax, 50%); bottom: -6px; width: 12px; height: 12px; background: var(--paper); rotate: 45deg; translate: -50% 0; }
+
+/* 14 Aushang mit QR-Code */
+.notice-wrap { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.sheet { width: 220px; aspect-ratio: 1 / 1.414; background: #fff; color: var(--ink); border-radius: 6px; padding: 16px 14px; box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); display: grid; align-content: start; gap: 8px; rotate: -2deg; transition: rotate .3s var(--ease-out); }
+.sheet:hover { rotate: 0deg; }
+.sheet .bt { height: 14px; background: repeating-linear-gradient(90deg, var(--rose) 0 14px, transparent 14px 18px, var(--surface) 18px 32px, transparent 32px 36px); clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 0); mask: linear-gradient(#000 0 0); }
+.sheet .k { font-size: 6.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.sheet h3 { font-size: 13px; letter-spacing: -.02em; }
+.sheet ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 7.5px; }
+.sheet li b { display: block; font-size: 8px; }
+.sheet .qr { display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 7px; color: var(--ink-soft); }
+.sheet .qr div { width: 58px; height: 58px; flex: none; }
+.sheet .qr img, .sheet .qr canvas { width: 58px !important; height: 58px !important; }
+.notice-side { display: grid; gap: 10px; max-width: 220px; }
+.notice-side p { font-size: .88rem; color: var(--on-soft); }
+@media print {
+  body.print-sheet * { visibility: hidden !important; }
+  body.print-sheet .sheet, body.print-sheet .sheet * { visibility: visible !important; }
+  body.print-sheet .sheet { position: fixed; left: 0; top: 0; width: 100%; rotate: none; box-shadow: none; font-size: 200%; }
+}
+
+.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Ideenkatalog 3</span>
+    <h1>14 neue Ideen zum Ausprobieren</h1>
+    <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
+  </header>
+
+  <div class="filter" role="group" aria-label="Ideen filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="anim" aria-pressed="false">Animation</button>
+    <button type="button" data-f="funk" aria-pressed="false">Funktion</button>
+  </div>
+
+  <div class="grid">
+
+    <article class="card" data-k="anim">
+      <div class="stage"><button type="button" class="replay" data-replay="A">↻ Nochmal</button>
+        <div class="day">
+          <svg viewBox="0 0 540 200" aria-label="Tagesablauf der Krippe als Weg"><path class="track" id="dayPath" d="M24 120 C 70 120 70 60 112 60 S 160 150 205 150 S 255 60 300 60 S 350 150 395 150 S 440 60 480 60 S 516 110 516 110"/><path class="ink" id="dayInk"/><g id="daySt"></g><circle class="walker" id="dayWalk" r="6"/></svg>
+          <label class="label" for="dayRange">Scrollen simulieren</label>
+          <input class="range" id="dayRange" type="range" min="0" max="100" value="0">
+        </div>
+        </div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">1</span> Weg durch den Tag</h2><p>Der Tagesablauf wird zu einem Weg, der sich beim Scrollen zeichnet. Jede Station leuchtet auf, sobald der Weg sie erreicht. Die Zeiten sind die echten der Krippe.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage">
+        <div class="house">
+          <svg viewBox="0 0 220 250" aria-hidden="true">
+            <g class="smoke"><circle cx="160" cy="34" r="6"/><circle cx="160" cy="34" r="6"/><circle cx="160" cy="34" r="6"/></g>
+            <rect x="150" y="34" width="20" height="34" fill="rgba(255,255,255,.18)"/>
+            <path class="roof" d="M10 84 L110 20 L210 84 Z"/>
+            <rect class="wall" x="22" y="84" width="176" height="160" rx="4"/>
+            <g class="fl" data-b="hort"><text class="fl-label" x="34" y="102">Hort</text><rect class="win" x="40" y="108" width="34" height="26" rx="4"/><rect class="win" x="93" y="108" width="34" height="26" rx="4"/><rect class="win" x="146" y="108" width="34" height="26" rx="4"/></g>
+            <g class="fl" data-b="kiga"><text class="fl-label" x="34" y="152">Kindergarten</text><rect class="win" x="40" y="158" width="34" height="26" rx="4"/><rect class="win" x="93" y="158" width="34" height="26" rx="4"/><rect class="win" x="146" y="158" width="34" height="26" rx="4"/></g>
+            <g class="fl" data-b="krippe"><text class="fl-label" x="34" y="202">Krippe</text><rect class="win" x="40" y="208" width="34" height="36" rx="4"/><rect class="win" x="93" y="214" width="34" height="30" rx="16"/><rect class="win" x="146" y="208" width="34" height="26" rx="4"/></g>
+          </svg>
+          <div class="house-info">
+            <div class="seg" id="houseSeg" role="group" aria-label="Bereich wählen"><span class="knob" aria-hidden="true"></span>
+              <button type="button" data-b="krippe" aria-pressed="true">Kinderkrippe</button>
+              <button type="button" data-b="kiga" aria-pressed="false">Kindergarten</button>
+              <button type="button" data-b="hort" aria-pressed="false">Kinderhort</button></div>
+            <p id="houseTxt" aria-live="polite"></p>
+          </div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">2</span> Haus, in dem Fenster aufleuchten</h2><p>Eine Zeichnung des Hauses als Einstieg zu den Bereichen: Wer einen Bereich wählt, sieht dessen Fenster warm aufleuchten, aus dem Schornstein steigt Rauch. <b>Beispiel:</b> Welche Etage zu welchem Bereich gehört, bräuchte ich vom Hort.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="season-ctl">
+          <div class="season" id="season"><div class="bar"><i></i>Kath. Kinder- und Jugendhort Grombühl e. V.</div><h3>Willkommen!</h3><canvas id="seasonCv" aria-hidden="true"></canvas></div>
+          <div class="seg" id="seasonSeg" role="group" aria-label="Jahreszeit"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-s="fruehling" aria-pressed="false">Frühling</button><button type="button" data-s="sommer" aria-pressed="false">Sommer</button><button type="button" data-s="herbst" aria-pressed="true">Herbst</button><button type="button" data-s="winter" aria-pressed="false">Winter</button></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">3</span> Jahreszeiten im Kopfbereich</h2><p>Je nach Datum fallen im Startbereich ein paar Blüten, Blätter oder Schneeflocken, im Sommer tanzen Lichtpunkte. Höchstens 18 Teilchen, nach 8 Sekunden ist Schluss, und bei „Bewegung reduzieren“ bleibt alles still.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="map">
+          <svg viewBox="0 0 420 240" aria-label="Anfahrtsskizze zum Hort, Beispiel">
+            <rect class="blk" x="20" y="20" width="120" height="70" rx="8"/><rect class="blk" x="160" y="20" width="110" height="70" rx="8"/><rect class="blk" x="290" y="20" width="110" height="70" rx="8"/>
+            <rect class="blk" x="20" y="120" width="120" height="100" rx="8"/><rect class="blk" x="160" y="120" width="110" height="100" rx="8"/><rect class="blk" x="290" y="120" width="110" height="100" rx="8"/>
+            <path class="street" d="M0 105 H420 M150 0 V240 M280 0 V240"/>
+            <path class="tram" d="M0 99 H420"/>
+            <path class="route" id="route"/>
+            <g class="start" id="mapStart"><circle r="8"/><text x="12" y="4"></text></g>
+            <circle class="mover" id="mover" r="5"/>
+            <g transform="translate(345 70)"><path class="pin" d="M0 0 C -12 -14 -14 -20 -14 -26 A14 14 0 0 1 14 -26 C 14 -20 12 -14 0 0 Z"/><circle class="pin-dot" cy="-26" r="5"/><text x="-26" y="16">Kinderhort</text></g>
+          </svg>
+          <div class="seg" id="mapSeg" role="group" aria-label="Wie kommen Sie?"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-m="tram" aria-pressed="true">Straßenbahn</button><button type="button" data-m="rad" aria-pressed="false">Fahrrad</button><button type="button" data-m="auto" aria-pressed="false">Auto</button></div>
+          <p class="map-time" id="mapTime" aria-live="polite"></p>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">4</span> Anfahrt mit gezeichnetem Weg</h2><p>Statt einer schweren Karte eine einfache Skizze: Verkehrsmittel wählen, der Weg zeichnet sich, ein Punkt läuft mit. Lädt nichts von Google, also ohne Cookie-Abfrage. <b>Beispiel:</b> Haltestellen, Parkplätze und Zeiten müsste der Hort bestätigen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage wx-stage">
+        <div class="wx">
+          <div class="wx-icon" aria-hidden="true">
+            <svg class="sun" viewBox="0 0 120 120" data-w="sonne"><g stroke="#F3D9A4" stroke-width="5" stroke-linecap="round"><path d="M60 14v12M60 94v12M14 60h12M94 60h12M27 27l9 9M84 84l9 9M27 93l9-9M84 36l9-9"/></g><circle cx="60" cy="60" r="22" fill="#F3D9A4"/></svg>
+            <svg viewBox="0 0 120 120" data-w="regen"><path d="M36 74a18 18 0 0 1 3-36 24 24 0 0 1 45 4 16 16 0 0 1 2 32z" fill="#F3F8F7"/><g stroke="#D4B5B0" stroke-width="4" stroke-linecap="round"><path class="drop" d="M46 84l-3 8"/><path class="drop" d="M62 84l-3 8"/><path class="drop" d="M78 84l-3 8"/></g></svg>
+            <svg viewBox="0 0 120 120" data-w="kalt"><path d="M36 70a18 18 0 0 1 3-36 24 24 0 0 1 45 4 16 16 0 0 1 2 32z" fill="#F3F8F7"/><g fill="#F3F8F7"><circle class="flake" cx="46" cy="84" r="3.5"/><circle class="flake" cx="62" cy="88" r="3.5"/><circle class="flake" cx="78" cy="84" r="3.5"/></g></svg>
+          </div>
+          <div><h3 id="wxH"></h3><ul id="wxL"></ul></div>
+        </div>
+        <div class="seg" id="wxSeg" role="group" aria-label="Wetter simulieren"><span class="knob" aria-hidden="true"></span>
+          <button type="button" data-w="sonne" aria-pressed="true">Sonnig</button><button type="button" data-w="regen" aria-pressed="false">Regen</button><button type="button" data-w="kalt" aria-pressed="false">Kalt</button></div>
+      </div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">5</span> „Was zieht mein Kind heute an?“</h2><p>Ein kleiner Tipp auf der Startseite nach dem Wetter in Würzburg: Matschhose bei Regen, Mütze bei Kälte, Sonnencreme im Sommer. Die Wetterdaten kämen kostenlos und ohne Cookies von Open-Meteo. Hier zum Ausprobieren umschaltbar.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage">
+        <div class="gal">
+          <div class="gal-chips" id="galChips">
+            <button type="button" class="chip" data-g="alle" aria-pressed="true">Alle</button><button type="button" class="chip" data-g="krippe" aria-pressed="false">Krippe</button><button type="button" class="chip" data-g="kiga" aria-pressed="false">Kindergarten</button><button type="button" class="chip" data-g="hort" aria-pressed="false">Hort</button></div>
+          <div class="gal-grid" id="galGrid">
+            <figure data-g="krippe"><img src="img/p2160110-800.webp" alt="Gruppenraum der Krippe" loading="lazy"><figcaption>Krippe</figcaption></figure>
+            <figure data-g="kiga"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt="Gruppenraum im Kindergarten" loading="lazy"><figcaption>Kindergarten</figcaption></figure>
+            <figure data-g="hort"><img src="img/kreatviraum-5-1-800.webp" alt="Kreativraum im Hort" loading="lazy"><figcaption>Hort</figcaption></figure>
+            <figure data-g="hort"><img src="img/werkraum-800.webp" alt="Werkraum" loading="lazy"><figcaption>Hort</figcaption></figure>
+            <figure data-g="krippe"><img src="img/p2160031-800.webp" alt="Spielecke der Krippe" loading="lazy"><figcaption>Krippe</figcaption></figure>
+            <figure data-g="kiga"><img src="img/turnraum-800.webp" alt="Turnraum" loading="lazy"><figcaption>Kindergarten</figcaption></figure>
+            <figure data-g="hort"><img src="img/img_1251-800.webp" alt="Raum im Hort" loading="lazy"><figcaption>Hort</figcaption></figure>
+            <figure data-g="kiga"><img src="img/lesecke-800.webp" alt="Leseecke" loading="lazy"><figcaption>Kindergarten</figcaption></figure>
+          </div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">6</span> Fotos nach Bereich filtern</h2><p>Eine gemeinsame Bildergalerie für das ganze Haus. Beim Filtern verschwinden Bilder kurz, die übrigen gleiten weich an ihren neuen Platz, statt zu springen. <b>Beispiel:</b> Die Zuordnung der Fotos ist geraten.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="ask" id="ask">
+          <div class="ask-prog" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div id="askBody"></div>
+          <div class="ask-nav"><button type="button" class="btn ghost" id="askBack">Zurück</button><button type="button" class="btn" id="askNext">Weiter</button></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: groß</span></div>
+        <h2><span class="num">7</span> Platzanfrage in drei Schritten</h2><p>Statt „rufen Sie uns an“ eine kurze Anfrage: Bereich, Wunschtermin, Kontakt. Der Fortschritt füllt sich, Eingaben werden freundlich sofort geprüft. Braucht wie die Krankmeldung einen echten Versandweg (Formular-Postfach beim Hoster).</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="dl">
+          <a href="#" data-peek="Ferienplan 2026/27"><span class="ext">PDF</span>Ferienplan 2026/27 <span class="new">neu</span><span class="meta2">1 Seite</span><span class="peek"><b>Ferienplan 2026/27</b><i></i><span class="tbl"></span><i></i><i></i><span class="tbl"></span></span></a>
+          <a href="#" data-peek="Hort-ABC"><span class="ext">PDF</span>Hort-ABC<span class="meta2">mehrseitig</span><span class="peek"><b>Hort-ABC von A bis Z</b><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></a>
+          <a href="#" data-peek="Medikamente"><span class="ext">PDF</span>Medikamentenvereinbarung<span class="meta2">zum Ausfüllen</span><span class="peek"><b>Medikamenten­vereinbarung</b><i></i><i></i><span class="tbl"></span><i></i><i></i></span></a>
+        </div>
+        <p class="hint">Mit der Maus über eine Datei fahren oder mit Tab hinspringen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">8</span> Downloads mit Vorschau</h2><p>Beim Überfahren lugt eine kleine Seitenvorschau aus der Zeile hervor, dazu steht, was einen erwartet („1 Seite“, „zum Ausfüllen“). Neue Dateien tragen 30 Tage lang ein grünes „neu“.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="party" id="party">
+          <button type="button" class="btn" id="partyBtn" aria-pressed="false">☆ Termin merken</button>
+          <p class="label">Nur bei echten Erfolgen, nicht bei jedem Klick</p>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">9</span> Kleine Feier bei Erfolg</h2><p>Ein winziges Konfetti in den Farben der Seite, wenn etwas geklappt hat: Termin gemerkt, Anfrage gesendet, Checkliste fertig. Dauert unter einer Sekunde und kommt pro Aktion nur einmal.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage">
+        <div class="stat-demo">
+          <div class="seg" id="clockSeg" role="group" aria-label="Uhrzeit simulieren"><span class="knob" aria-hidden="true"></span>
+            <button type="button" data-t="1,420" aria-pressed="true">Mo 7:00</button><button type="button" data-t="1,975" aria-pressed="false">Mo 16:15</button><button type="button" data-t="1,1030" aria-pressed="false">Mo 17:10</button><button type="button" data-t="6,600" aria-pressed="false">Sa</button></div>
+          <div class="mini-bar"><span class="logo"></span><span class="nm">Kath. Kinder- und Jugendhort<br>Grombühl e. V.</span>
+            <button type="button" class="pill" id="pill" aria-expanded="false" aria-controls="pillPop"><span class="dot"></span><span class="pill-txt" id="pillTxt"></span></button>
+            <div class="pop" id="pillPop"></div></div>
+        </div>
+        <p class="hint">Auf den Status in der Leiste tippen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">10</span> Geöffnet-Anzeige in der Leiste</h2><p>Ein kleiner Punkt in der oberen Leiste zeigt auf jeder Seite, ob gerade geöffnet ist. Er pulsiert ruhig, kurz vor Schluss wird er rosé. Ein Tipp darauf zeigt die Zeiten der drei Bereiche.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage">
+        <div class="ev-card">
+          <div class="ev-date"><b>04</b><span>DEZ</span></div>
+          <div><h3>Weihnachtsmarkt mit Christbaumverkauf</h3><p>Freitag, 04.12.2026, ab 16:30 Uhr</p></div>
+          <div class="ev-acts"><button type="button" class="btn share-btn" id="shareBtn"><svg class="i1" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><svg class="i2" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Teilen</span></button><button type="button" class="btn ghost">Zum Kalender</button></div>
+        </div>
+        <div class="toast-demo" id="shareToast" role="status"></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">11</span> Termin teilen</h2><p>Ein Tipp öffnet am Handy das normale Teilen-Menü (WhatsApp, Nachrichten, E-Mail) mit Titel, Datum und Link. Am Computer wird der Link kopiert und kurz bestätigt. Praktisch für Elternbeiräte und Gruppenchats.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage">
+        <div class="flip-page" id="flipPage">
+          <div class="pg" id="pg"></div>
+          <div class="curtain" id="curtain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <nav aria-label="Beispielseiten"><button type="button" data-p="0" aria-current="page">Krippe</button><button type="button" data-p="1">Kindergarten</button><button type="button" data-p="2">Hort</button></nav>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">12</span> Wimpel-Vorhang beim Seitenwechsel</h2><p>Beim Wechsel zwischen den drei Bereichen fällt kurz eine Wimpelkette wie ein Vorhang und gibt die neue Seite frei. Unter einer Sekunde, nur zwischen den Bereichen, sonst wäre es zu viel.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage lp-stage">
+        <p class="lp" id="lp">Unsere <a href="#" data-lp="0">Kinderkrippe</a> betreut Kinder ab 11 Monaten. Für Schulkinder gibt es den <a href="#" data-lp="1">Kinderhort</a>, und alle Schließtage stehen im <a href="#" data-lp="2">Ferienplan</a>.</p>
+        <div class="lp-card" id="lpCard" aria-hidden="true"></div>
+        <p class="hint">Mit der Maus über einen Link fahren oder mit Tab hinspringen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">13</span> Link-Vorschau</h2><p>Links im Text zeigen nach kurzem Verweilen eine kleine Karte mit Bild und einem Satz, wohin es geht. Nur mit Maus und Tastatur, am Handy führt der Tipp direkt hin.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage">
+        <div class="notice-wrap">
+          <div class="sheet" id="sheet">
+            <div class="bt"></div>
+            <span class="k">Aushang · Kinderhort Grombühl</span>
+            <h3>Termine im Dezember</h3>
+            <ul><li><b>Fr, 04.12. ab 16:30 Uhr</b>Weihnachtsmarkt mit Christbaumverkauf</li><li><b>Mo, 07.12.</b>Der Nikolaus besucht uns</li><li><b>24.12.2026 – 08.01.2027</b>Schließzeit Weihnachten</li></ul>
+            <div class="qr"><div id="qr"></div><span>Alle Termine aktuell:<br>QR-Code mit der Handykamera scannen</span></div>
+          </div>
+          <div class="notice-side"><p>Ein Klick erzeugt aus den Terminen einen druckfertigen Aushang für die Pinnwand im Eingang, mit QR-Code zur Termin-Seite.</p><button type="button" class="btn" id="printBtn">Aushang drucken</button></div>
+        </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">14</span> Aushang mit QR-Code</h2><p>Das Team pflegt Termine nur noch an einer Stelle, der Aushang entsteht automatisch daraus. Der QR-Code führt Eltern direkt zur aktuellen Termin-Seite. Die Termine hier sind die echten.</p></div>
+    </article>
+
+  </div>
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Sag einfach per Nummer (1–14), welche eingebaut werden sollen.</p>
+</div>
+
+<script data-qr src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover: hover)").matches;
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function onView(el, fn) {
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { fn(); io.disconnect(); } }); }, { threshold: .4 });
+    io.observe(el);
+  }
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, anim) {
+      if (!anim) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px"; knob.style.translate = b.offsetLeft + "px 0";
+      if (!anim) { void knob.offsetWidth; knob.style.transition = ""; } else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) { b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b, true); onPick(b); }); });
+    requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+  }
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  var replay = {};
+  $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
+
+
+  /* A Weg durch den Tag */
+  (function () {
+    var path = $("#dayPath"), ink = $("#dayInk"), g = $("#daySt"), walk = $("#dayWalk"), rg = $("#dayRange");
+    var L = path.getTotalLength(); ink.setAttribute("d", path.getAttribute("d")); ink.style.strokeDasharray = L; ink.style.strokeDashoffset = L;
+    var st = [["6:45", "Ankommen"], ["9:30", "Frühstück"], ["10:00", "Morgenkreis"], ["11:15", "Mittagessen"], ["12:00", "Mittagsschlaf"], ["14:30", "Snack"], ["16:30", "Abholen"]];
+    var nodes = st.map(function (s, i) {
+      var f = i / (st.length - 1), p = path.getPointAtLength(f * L), up = i % 2 === 0;
+      var el = document.createElementNS("http://www.w3.org/2000/svg", "g"); el.setAttribute("class", "st");
+      el.innerHTML = '<circle cx="' + p.x + '" cy="' + p.y + '" r="7"/><text class="t" x="' + p.x + '" y="' + (p.y + (up ? 30 : -28)) + '">' + s[0] + '</text><text x="' + p.x + '" y="' + (p.y + (up ? 45 : -14)) + '">' + s[1] + "</text>";
+      g.appendChild(el); return { el: el, f: f };
+    });
+    function set(v) {
+      var f = v / 100; ink.style.strokeDashoffset = L * (1 - f);
+      var p = path.getPointAtLength(f * L); walk.setAttribute("cx", p.x); walk.setAttribute("cy", p.y);
+      nodes.forEach(function (n) { n.el.classList.toggle("on", f >= n.f - .001); });
+    }
+    rg.addEventListener("input", function () { set(+rg.value); });
+    function play() {
+      if (reduced) { rg.value = 100; set(100); return; }
+      var t0 = performance.now(), D = 2800;
+      (function tick(t) { var k = Math.min(1, (t - t0) / D), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; rg.value = e * 100; set(e * 100); if (k < 1) requestAnimationFrame(tick); })(t0);
+    }
+    replay.A = play; set(0); onView(rg, play);
+  })();
+
+  /* B Haus */
+  (function () {
+    var txt = { krippe: "Kinderkrippe · ab 11 Monaten · Sonnen- und Sternengruppe", kiga: "Kindergarten · 3 Jahre bis Einschulung · Bären, Bienen, Spatzen", hort: "Kinderhort · ab der Einschulung · alle Schulformen" };
+    function show(b) { $$(".house .fl").forEach(function (f) { f.classList.toggle("on", f.dataset.b === b); }); $("#houseTxt").textContent = txt[b]; }
+    var seg = $("#houseSeg"), knob = $(".knob", seg), btns = $$("button", seg);
+    function place(b) { knob.style.height = b.offsetHeight + "px"; knob.style.translate = "0 " + b.offsetTop + "px"; }
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b); show(b.dataset.b); });
+      if (fine) b.addEventListener("pointerenter", function () { show(b.dataset.b); });
+    });
+    seg.addEventListener("pointerleave", function () { show($('[aria-pressed="true"]', seg).dataset.b); });
+    requestAnimationFrame(function () { knob.style.transition = "none"; place(btns[0]); void knob.offsetWidth; knob.style.transition = ""; });
+    show("krippe");
+  })();
+
+  /* C Jahreszeiten */
+  (function () {
+    var cv = $("#seasonCv"), box = $("#season"), ctx = cv.getContext("2d"), parts = [], kind = "herbst", run = false, t0 = 0, raf = 0, W = 0, H = 0;
+    var m = new Date().getMonth(); kind = m < 2 || m === 11 ? "winter" : m < 5 ? "fruehling" : m < 8 ? "sommer" : "herbst";
+    $$("#seasonSeg button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.s === kind); });
+    function size() { var r = box.getBoundingClientRect(), d = devicePixelRatio || 1; W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+    function make() {
+      parts = [];
+      for (var i = 0; i < 18; i++) parts.push({ x: Math.random() * W, y: kind === "sommer" ? H * (.3 + Math.random() * .7) : -20 - Math.random() * H, s: 4 + Math.random() * 5, v: .4 + Math.random() * .6, a: Math.random() * 6.28, w: .01 + Math.random() * .02, c: i % 3 });
+    }
+    function draw(p) {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+      if (kind === "winter") { ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.beginPath(); ctx.arc(0, 0, p.s * .45, 0, 6.28); ctx.fill(); }
+      else if (kind === "fruehling") { ctx.fillStyle = ["#F1E5E3", "#D4B5B0", "#FFFFFF"][p.c]; ctx.beginPath(); ctx.ellipse(0, 0, p.s * .5, p.s * .9, 0, 0, 6.28); ctx.fill(); }
+      else if (kind === "herbst") { ctx.fillStyle = ["#C98F7E", "#D4B5B0", "#B9876F"][p.c]; ctx.beginPath(); ctx.moveTo(0, -p.s); ctx.quadraticCurveTo(p.s, 0, 0, p.s); ctx.quadraticCurveTo(-p.s, 0, 0, -p.s); ctx.fill(); }
+      else { var g = ctx.createRadialGradient(0, 0, 0, 0, 0, p.s); g.addColorStop(0, "rgba(255,248,230,.95)"); g.addColorStop(1, "rgba(255,248,230,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, p.s, 0, 6.28); ctx.fill(); }
+      ctx.restore();
+    }
+    function frame(t) {
+      var age = (t - t0) / 1000, fade = age > 7 ? Math.max(0, 1 - (age - 7)) : 1;
+      ctx.clearRect(0, 0, W, H); ctx.globalAlpha = fade;
+      parts.forEach(function (p) {
+        p.a += p.w; if (kind === "sommer") { p.y -= p.v * .4; p.x += Math.sin(p.a) * .4; } else { p.y += p.v * (kind === "winter" ? .9 : 1.2); p.x += Math.sin(p.a) * (kind === "winter" ? .4 : .9); }
+        if (p.y > H + 20) p.y = -20; if (p.y < -20) p.y = H + 10; draw(p);
+      });
+      if (fade > 0 && run) raf = requestAnimationFrame(frame); else ctx.clearRect(0, 0, W, H);
+    }
+    function start() { cancelAnimationFrame(raf); size(); make(); if (reduced) { parts.forEach(draw); return; } t0 = performance.now(); run = true; raf = requestAnimationFrame(frame); }
+    segment($("#seasonSeg"), function (b) { kind = b.dataset.s; start(); });
+    onView(box, start);
+  })();
+
+  /* D Anfahrt */
+  (function () {
+    var R = {
+      tram: { d: "M60 99 H280 V70 H330", s: [60, 99], l: "Haltestelle (Beispiel)", t: "<b>ca. 4 Min.</b> zu Fuß ab der Straßenbahn" },
+      rad: { d: "M20 230 V215 H150 V105 H280 V70 H330", s: [20, 230], l: "Wohngebiet", t: "<b>Fahrradständer</b> direkt am Eingang (Beispiel)" },
+      auto: { d: "M410 200 H280 V105 V70 H330", s: [410, 200], l: "Parkplatz", t: "<b>Kurz halten</b> zum Bringen und Abholen (Beispiel)" }
+    };
+    var route = $("#route"), mv = $("#mover"), st = $("#mapStart"), raf = 0;
+    function go(m) {
+      var r = R[m]; route.setAttribute("d", r.d); var L = route.getTotalLength();
+      st.setAttribute("transform", "translate(" + r.s[0] + " " + r.s[1] + ")"); var tx = $("text", st); tx.textContent = r.l;
+      tx.setAttribute("x", r.s[0] > 300 ? -64 : 12); tx.setAttribute("y", r.s[1] > 200 ? -12 : 20);
+      $("#mapTime").innerHTML = r.t;
+      cancelAnimationFrame(raf);
+      if (reduced) { route.style.strokeDasharray = "none"; var e = route.getPointAtLength(L); mv.setAttribute("cx", e.x); mv.setAttribute("cy", e.y); return; }
+      route.style.strokeDasharray = L; route.style.strokeDashoffset = L;
+      var t0 = performance.now(), D = 1400;
+      (function tick(t) { var k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3), p = route.getPointAtLength(e * L); route.style.strokeDashoffset = L * (1 - e); mv.setAttribute("cx", p.x); mv.setAttribute("cy", p.y); if (k < 1) raf = requestAnimationFrame(tick); })(t0);
+    }
+    segment($("#mapSeg"), function (b) { go(b.dataset.m); });
+    onView($("#route").closest(".map"), function () { go("tram"); });
+  })();
+
+  /* E Wetter */
+  (function () {
+    var W = { sonne: ["Sonnig, 24 °C", ["🧴 Sonnencreme schon zu Hause auftragen", "🧢 Kappe oder Sonnenhut mitgeben", "💧 Trinkflasche ist immer dabei"]],
+      regen: ["Regen, 11 °C", ["👖 Matschhose und Regenjacke", "🥾 Gummistiefel bleiben am besten im Hort", "👕 Wechselkleidung im Fach prüfen"]],
+      kalt: ["Frost, −2 °C", ["🧤 Mütze, Schal und Handschuhe", "🧦 Warme Hausschuhe für drinnen", "🧥 Schneeanzug für den Garten"]] };
+    function show(w) {
+      $$(".wx-icon svg").forEach(function (s) { s.classList.toggle("on", s.dataset.w === w); });
+      $("#wxH").textContent = W[w][0]; var ul = $("#wxL"); ul.innerHTML = "";
+      W[w][1].forEach(function (x) { var li = document.createElement("li"); li.textContent = x; ul.appendChild(li); });
+    }
+    segment($("#wxSeg"), function (b) { show(b.dataset.w); }); show("sonne");
+  })();
+
+  /* F Galerie-Filter mit FLIP */
+  (function () {
+    var grid = $("#galGrid"), figs = $$("figure", grid), chips = $$("#galChips .chip"), busy = false;
+    chips.forEach(function (c) { c.addEventListener("click", function () {
+      if (busy || c.getAttribute("aria-pressed") === "true") return;
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c); });
+      var g = c.dataset.g, keep = function (f) { return g === "alle" || f.dataset.g === g; };
+      var first = new Map(); figs.forEach(function (f) { if (!f.hidden) first.set(f, f.getBoundingClientRect()); });
+      var leaving = figs.filter(function (f) { return !f.hidden && !keep(f); });
+      if (reduced) { figs.forEach(function (f) { f.hidden = !keep(f); }); return; }
+      busy = true; leaving.forEach(function (f) { f.classList.add("leave"); });
+      setTimeout(function () {
+        figs.forEach(function (f) { f.classList.remove("leave"); f.hidden = !keep(f); });
+        figs.forEach(function (f) {
+          if (f.hidden) return; var a = first.get(f), b = f.getBoundingClientRect();
+          if (a) f.animate([{ translate: (a.left - b.left) + "px " + (a.top - b.top) + "px" }, { translate: "0 0" }], { duration: 420, easing: "cubic-bezier(.65,0,.35,1)" });
+          else f.animate([{ opacity: 0, scale: .9 }, { opacity: 1, scale: 1 }], { duration: 300, delay: 120, easing: "cubic-bezier(.23,1,.32,1)", fill: "backwards" });
+        });
+        busy = false;
+      }, leaving.length ? 150 : 0);
+    }); });
+  })();
+
+  /* G Platzanfrage */
+  (function () {
+    var step = 0, data = { b: "", m: "", n: "", e: "" }, body = $("#askBody"), next = $("#askNext"), back = $("#askBack"), bars = $$(".ask-prog i");
+    function opts(key, list) { return '<div class="opts">' + list.map(function (o) { return '<button type="button" class="opt" data-k="' + key + '" aria-pressed="' + (data[key] === o) + '">' + o + "</button>"; }).join("") + "</div>"; }
+    function valid() { return step === 0 ? !!data.b : step === 1 ? !!data.m : step === 2 ? data.n.trim().length > 1 && /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(data.e) : true; }
+    function render(dir) {
+      var h;
+      if (step === 0) h = "<h3>Für welchen Bereich?</h3><small>Schritt 1 von 3</small>" + opts("b", ["Kinderkrippe", "Kindergarten", "Kinderhort"]);
+      else if (step === 1) h = "<h3>Ab wann?</h3><small>Schritt 2 von 3</small>" + opts("m", ["Januar 2027", "April 2027", "September 2027", "Später"]);
+      else if (step === 2) h = '<h3>Wie erreichen wir Sie?</h3><small>Schritt 3 von 3</small><label>Name<span class="field"><input id="askN" autocomplete="name" value=""><span class="ok" id="okN">✓</span></span></label><label>E-Mail<span class="field"><input id="askE" type="email" autocomplete="email" inputmode="email" value=""><span class="ok" id="okE">✓</span></span></label>';
+      else h = '<h3>Danke! So sähe Ihre Anfrage aus:</h3><div class="sum"><span><b>Bereich:</b> ' + data.b + "</span><span><b>Ab:</b> " + data.m + "</span><span><b>Kontakt:</b> " + esc(data.n) + ", " + esc(data.e) + "</span></div><small>Im Beispiel wird nichts verschickt.</small>";
+      body.innerHTML = '<div class="ask-step' + (dir < 0 ? " back" : "") + '">' + h + "</div>";
+      $$(".opt", body).forEach(function (o) { o.addEventListener("click", function () { data[o.dataset.k] = o.textContent; $$(".opt", body).forEach(function (x) { x.setAttribute("aria-pressed", x === o); }); upd(); }); });
+      if (step === 2) {
+        var n = $("#askN"), e = $("#askE"); n.value = data.n; e.value = data.e;
+        [n, e].forEach(function (i) { i.addEventListener("input", function () { data.n = n.value; data.e = e.value; upd(); }); });
+      }
+      bars.forEach(function (b, i) { b.classList.toggle("done", i < step || step === 3); });
+      back.style.visibility = step === 0 || step === 3 ? "hidden" : "visible"; next.textContent = step === 2 ? "Anfrage senden" : step === 3 ? "Neu beginnen" : "Weiter"; upd();
+    }
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+    function upd() { next.disabled = !valid(); if (step === 2) { $("#okN").classList.toggle("show", data.n.trim().length > 1); $("#okE").classList.toggle("show", /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(data.e)); } }
+    next.addEventListener("click", function () { if (step === 3) { step = 0; data = { b: "", m: "", n: "", e: "" }; render(-1); return; } step++; render(1); if (step === 3) confetti(next); });
+    back.addEventListener("click", function () { step--; render(-1); });
+    render(1);
+  })();
+
+  /* H Download-Vorschau – im Beispiel nur zeigen, nicht laden */
+  $$(".dl a").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); }); });
+
+  /* I Konfetti */
+  function confetti(from) {
+    if (reduced) return;
+    var host = from.closest(".stage"), r = from.getBoundingClientRect(), h = host.getBoundingClientRect(), cols = ["#D4B5B0", "#F3F8F7", "#7FD6A4", "#F1E5E3", "#1E3B44"];
+    for (var i = 0; i < 18; i++) {
+      var c = document.createElement("span"); c.className = "conf" + (i % 3 === 0 ? " round" : ""); c.style.background = cols[i % cols.length];
+      c.style.left = (r.left - h.left + r.width / 2) + "px"; c.style.top = (r.top - h.top + r.height / 2) + "px"; host.appendChild(c);
+      var ang = -Math.PI / 2 + (Math.random() - .5) * 2.2, sp = 70 + Math.random() * 90, dx = Math.cos(ang) * sp, dy = Math.sin(ang) * sp, rot = (Math.random() - .5) * 720;
+      c.animate([{ translate: "-50% -50%", rotate: "0deg", opacity: 1 }, { translate: "calc(-50% + " + dx + "px) calc(-50% + " + dy + "px)", rotate: rot / 2 + "deg", opacity: 1, offset: .45 }, { translate: "calc(-50% + " + dx * 1.3 + "px) calc(-50% + " + (dy + 120) + "px)", rotate: rot + "deg", opacity: 0 }],
+        { duration: 900 + Math.random() * 300, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = (function (el) { return function () { el.remove(); }; })(c);
+    }
+  }
+  (function () {
+    var b = $("#partyBtn");
+    b.addEventListener("click", function () { var on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", on); b.textContent = on ? "★ Gemerkt" : "☆ Termin merken"; if (on) confetti(b); });
+  })();
+
+  /* J Status in der Leiste */
+  (function () {
+    var pill = $("#pill"), txt = $("#pillTxt"), pop = $("#pillPop"), cur = "";
+    function hm(m) { return Math.floor(m / 60) + ":" + ("0" + m % 60).slice(-2); }
+    function state(day, m) {
+      var rows = [["Kinderkrippe", 405, 990], ["Kindergarten", 405, 990], ["Kinderhort", 405, 1080]];
+      var html = rows.map(function (r) { var open = day < 6 && m >= r[1] && m < r[2]; return "<div" + (day < 6 && m >= r[2] ? ' class="x"' : "") + "><span>" + r[0] + "</span><b>" + hm(r[1]) + " – " + hm(r[2]) + " Uhr</b></div>"; }).join("");
+      if (day >= 6) return ["closed", "Geschlossen · Mo ab 6:45", html];
+      if (m < 405) return ["closed", "Öffnet um 6:45", html];
+      if (m < 960) return ["", "Geöffnet · bis 18:00", html];
+      if (m < 990) return ["soon", "Krippe & Kiga bis 16:30", html];
+      if (m < 1050) return ["", "Hort geöffnet · bis 18:00", html];
+      if (m < 1080) return ["soon", "Schließt um 18:00", html];
+      return ["closed", "Geschlossen · morgen ab 6:45", html];
+    }
+    function set(day, m) {
+      var s = state(day, m); pill.className = "pill " + s[0]; pop.innerHTML = s[2];
+      if (s[1] === cur) return; cur = s[1];
+      var w0 = pill.offsetWidth; txt.textContent = s[1]; var w1 = pill.offsetWidth;
+      if (reduced || !w0) return;
+      pill.style.width = w0 + "px"; txt.classList.add("swap"); void pill.offsetWidth; pill.style.width = w1 + "px";
+      setTimeout(function () { txt.classList.remove("swap"); }, 120); setTimeout(function () { pill.style.width = ""; }, 380);
+    }
+    pill.addEventListener("click", function () { var o = !pop.classList.contains("open"); pop.classList.toggle("open", o); pill.setAttribute("aria-expanded", o); });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#pill, #pillPop")) { pop.classList.remove("open"); pill.setAttribute("aria-expanded", "false"); } });
+    segment($("#clockSeg"), function (b) { var t = b.dataset.t.split(","); set(+t[0], +t[1]); });
+    set(1, 420);
+  })();
+
+  /* K Teilen */
+  (function () {
+    var b = $("#shareBtn"), toast = $("#shareToast"), tt = null;
+    var data = { title: "Weihnachtsmarkt mit Christbaumverkauf", text: "Kinderhort Grombühl: Weihnachtsmarkt mit Christbaumverkauf, Freitag, 04.12.2026, ab 16:30 Uhr", url: "https://kinderhort-grombuehl.de/aktuelles.html#termine" };
+    function done(msg) { b.classList.add("done"); toast.textContent = msg; toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("show"); b.classList.remove("done"); }, 2000); }
+    b.addEventListener("click", function () {
+      if (navigator.share) { navigator.share(data).then(function () { done("Geteilt"); }).catch(function () {}); return; }
+      var t = data.text + " – " + data.url;
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { done("Link kopiert"); }, function () { done("Link: kinderhort-grombuehl.de/aktuelles.html"); });
+    });
+  })();
+
+  /* L Wimpel-Vorhang */
+  (function () {
+    var P = [["Kinderkrippe", "Ab 11 Monaten. Sonnen- und Sternengruppe, viel Zeit für Nähe und Ruhe."], ["Kindergarten", "Von 3 Jahren bis zur Einschulung. Bären, Bienen und Spatzen."], ["Kinderhort", "Ab der Einschulung. Hausaufgaben, Projekte und viel Freizeit."]];
+    var pg = $("#pg"), flags = $$("#curtain i"), btns = $$("#flipPage nav button"), busy = false;
+    function fill(i) { pg.innerHTML = "<h3>" + P[i][0] + "</h3><p>" + P[i][1] + '</p><div class="row"><span></span><span></span><span></span></div>'; }
+    btns.forEach(function (b) { b.addEventListener("click", function () {
+      if (busy || b.getAttribute("aria-current")) return; var i = +b.dataset.p;
+      btns.forEach(function (x) { x.toggleAttribute("aria-current", x === b); if (x === b) x.setAttribute("aria-current", "page"); });
+      if (reduced) { fill(i); return; }
+      busy = true;
+      flags.forEach(function (f, k) { f.animate([{ translate: "0 -100%" }, { translate: "0 4%", offset: .75 }, { translate: "0 0" }], { duration: 380, delay: k * 30, easing: "cubic-bezier(.23,1,.32,1)", fill: "forwards" }); });
+      setTimeout(function () {
+        fill(i);
+        flags.forEach(function (f, k) { f.animate([{ translate: "0 0" }, { translate: "0 -100%" }], { duration: 320, delay: k * 30, easing: "cubic-bezier(.65,0,.35,1)", fill: "forwards" }); });
+        setTimeout(function () { busy = false; }, 600);
+      }, 380 + 7 * 30 + 60);
+    }); });
+    fill(0);
+  })();
+
+  /* M Link-Vorschau */
+  (function () {
+    var L = [["img/p2160110-800.webp", "Kinderkrippe", "Ab 11 Monaten · Sonnen- & Sternengruppe"], ["img/kreatviraum-5-1-800.webp", "Kinderhort", "Ab der Einschulung · Hausaufgaben & Freizeit"], ["img/blick-vom-fenster-in-den-raum-800.webp", "Ferienplan 2026/27", "Alle Schließtage als PDF und Kalender"]];
+    var card = $("#lpCard"), stage = card.closest(".stage"), tIn = null, tOut = null;
+    function show(a) {
+      var d = L[+a.dataset.lp]; card.innerHTML = '<img alt="" src="' + d[0] + '"><div><b>' + d[1] + "</b><span>" + d[2] + "</span></div>";
+      var r = a.getBoundingClientRect(), s = stage.getBoundingClientRect(), w = 230, x = Math.max(10, Math.min(s.width - w - 10, r.left - s.left + r.width / 2 - w / 2));
+      var below = r.top - s.top - 172 < 8; card.classList.toggle("below", below);
+      card.style.left = x + "px"; card.style.top = (below ? r.bottom - s.top + 12 : r.top - s.top - 172) + "px"; card.style.setProperty("--ax", (r.left - s.left + r.width / 2 - x) + "px");
+      card.classList.add("open");
+    }
+    function hide() { card.classList.remove("open"); }
+    $$("#lp a").forEach(function (a) {
+      a.addEventListener("click", function (e) { e.preventDefault(); });
+      a.addEventListener("pointerenter", function (e) { if (e.pointerType !== "mouse") return; clearTimeout(tOut); clearTimeout(tIn); tIn = setTimeout(function () { show(a); }, card.classList.contains("open") ? 0 : 300); });
+      a.addEventListener("pointerleave", function () { clearTimeout(tIn); tOut = setTimeout(hide, 150); });
+      a.addEventListener("focus", function () { show(a); }); a.addEventListener("blur", hide);
+    });
+    addEventListener("keydown", function (e) { if (e.key === "Escape") hide(); });
+  })();
+
+  /* N Aushang mit QR-Code */
+  (function () {
+    var box = $("#qr");
+    function make() { if (window.QRCode) new QRCode(box, { text: "https://kinderhort-grombuehl.de/aktuelles.html#termine", width: 116, height: 116, colorDark: "#1E3B44", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); else box.textContent = "QR"; }
+    if (window.QRCode) make(); else { var s = document.querySelector("script[data-qr]"); if (s) s.addEventListener("load", make); setTimeout(function () { if (!box.firstChild) make(); }, 3000); }
+    $("#printBtn").addEventListener("click", function () { document.body.classList.add("print-sheet"); window.print(); setTimeout(function () { document.body.classList.remove("print-sheet"); }, 500); });
+  })();
+})();
+</script>

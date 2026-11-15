@@ -205,3 +205,10 @@ Katalog: `entwurf/ideen/ideen-2.html`, Bildschirmfotos der Umsetzung: `entwurf/r
 - [ ] 13 Checkliste „Was braucht mein Kind?“ (abhakbar, bleibt gespeichert) – braucht die echte Liste vom Hort.
 
 **Nicht gewünscht:** 6 Fotostreifen, 11 Gruppenkarten zum Umdrehen.
+
+## Ideenkatalog 3 (15.11.2026)
+Katalog: `entwurf/ideen/ideen-3.html` (private Vorschau: https://claude.ai/artifact/JpzTSnT8bN3T4MZeEu5NSt), Bildschirmfotos: `entwurf/ideen3/`
+
+1 Weg durch den Tag · 2 Haus, in dem Fenster aufleuchten · 3 Jahreszeiten im Kopfbereich · 4 Anfahrt mit gezeichnetem Weg · 5 „Was zieht mein Kind heute an?“ · 6 Fotos nach Bereich filtern · 7 Platzanfrage in drei Schritten · 8 Downloads mit Vorschau · 9 Kleine Feier bei Erfolg · 10 Geöffnet-Anzeige in der Leiste · 11 Termin teilen · 12 Wimpel-Vorhang beim Seitenwechsel · 13 Link-Vorschau · 14 Aushang mit QR-Code
+
+Entscheidung offen.
