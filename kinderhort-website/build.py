@@ -87,6 +87,7 @@ def icon(name, size=24):
         "right": '<path d="M9 5l7 7-7 7"/>',
         "down": '<path d="M6 9l6 6 6-6"/>',
         "file": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+        "check": '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
         "search": '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>',
         "copy": '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
         "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -312,13 +313,19 @@ def info_cards(cards):
     return '<div class="info-grid">' + "".join(out) + "</div>"
 
 def rooms(items):
+    """Räume mit Foto im Zweierraster; bei ungerader Zahl wird der letzte breit.
+    Räume ohne Foto folgen gesammelt in einer eigenen Zeile – so steht nichts allein."""
+    pics = [r for r in items if r[2]]
+    texts = [r for r in items if not r[2]]
     out = []
-    for name, text, image in items:
-        if image:
-            out.append(f'<article class="room reveal">{img(image, name)}<div class="txt"><h3>{name}</h3><p>{text}</p></div></article>')
-        else:
-            out.append(f'<article class="room no-img reveal"><div class="txt"><h3>{name}</h3><p>{text}</p></div></article>')
-    return '<div class="rooms">' + "".join(out) + "</div>"
+    for n, (name, text, image) in enumerate(pics):
+        wide = " wide" if len(pics) % 2 and n == len(pics) - 1 else ""
+        out.append(f'<article class="room{wide} reveal">{img(image, name)}<div class="txt"><h3>{name}</h3><p>{text}</p></div></article>')
+    html = '<div class="rooms">' + "".join(out) + "</div>"
+    if texts:
+        html += f'<div class="rooms rooms-text n{len(texts)}">' + "".join(
+            f'<article class="room no-img reveal"><div class="txt"><h3>{name}</h3><p>{text}</p></div></article>' for name, text, _ in texts) + "</div>"
+    return html
 
 def tour(group, items):
     figs = []
@@ -926,7 +933,7 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 # KONTAKT
 # =====================================================================
 def copy_btn(value, label):
-    return f'<button class="copy-btn" type="button" data-copy="{e(value)}" data-label="{e(label)}" aria-label="{e(label)} kopieren">{icon("copy", 18)}</button>'
+    return f'<button class="copy-btn" type="button" data-copy="{e(value)}" data-label="{e(label)}" aria-label="{e(label)} kopieren"><span class="ic ic-copy">{icon("copy", 18)}</span><span class="ic ic-done">{icon("check", 18)}</span></button>'
 
 def tel(label, num_display, num):
     return f'<li><span>{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'

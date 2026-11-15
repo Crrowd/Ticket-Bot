@@ -130,3 +130,37 @@ Dafür geändert: Kopfbild der Kindergarten-Seite ist jetzt dasselbe Foto wie au
 - „Bereiche“ öffnet ein großes Menü in voller Leistenbreite: 3 Spalten mit Sprungzielen, 4. Spalte zeigt das Foto des überfahrenen Bereichs.
 - Sprungmarken der Bereichsseiten als eigene Glas-Leiste darunter.
 - `view-transition-name` an der Leiste entfernt (ließ Inhalte durchscheinen).
+
+## Bewegungssystem: 20 Animationsregeln + Lade-Regeln (16.11.2026)
+
+| Regel | Umsetzung |
+|---|---|
+| Ease-out für Auftritte | Eigene Kurve `--ease-out` (cubic-bezier(.23, 1, .32, 1)) für alles, was erscheint |
+| Aufklappmenüs 150–250 ms | Großes Menü: 200 ms auf, 160 ms zu |
+| Listen 30 ms versetzt | Einblenden beim Scrollen, Menüspalten und -zeilen, Suchtreffer |
+| Beim Drücken auf 0,97 | Alle Knöpfe, Karten-Links, Menüpunkte |
+| Bewegter Marker dehnt sich 12 % | Gleitender Marker in der Sprungmarken-Leiste |
+| Versetzt, bis Details sitzen | Menü: Spalten, dann Zeilen; Bildansicht: Bild, dann Unterschrift |
+| Bewegung im Bogen | Fotos der Startseite fliegen im Bogen ein (x und y mit verschiedenen Kurven) |
+| Puls bestätigt Erfolg | Kopieren-Knopf und Häkchen in Kurzmeldungen pulsieren einmal |
+| Ease-in-out für Bewegungen | Marker, Bildflug, Handy-Menü beim Schließen |
+| Aufklappendes startet bei 0,95 | Großes Menü, Suche, Kurzmeldungen |
+| Aus dem Auslöser heraus | Menü wächst aus „Bereiche“, Suche aus dem Suchknopf, Bild aus der Vorschau |
+| Zum Auslöser zurück | Bild fliegt beim Schließen in seine Vorschau zurück (Rundgang scrollt notfalls hin), Handy-Menü schrumpft in den Knopf |
+| Kein Federn im Alltag | Alle Überschwinger entfernt |
+| Nicht animieren, solange gehalten | Wischen: Bild und Suchblatt folgen dem Finger 1:1 ohne Übergang |
+| Abgänge 20 % kürzer | 250 ms rein / 200 ms raus (Menü 200/160, Bild 380/300, Handy-Menü 500/400) |
+| Alt und Neu überlappen | Beim Blättern in der Bildansicht blendet das alte Bild aus, während das neue einblendet |
+| Masken für Aufdecken und Farbe | Fotos werden beim Scrollen per Maske aufgedeckt; umrandete Knöpfe füllen sich per Maske |
+| Symbole überblenden mit Unschärfe | Kopieren-Symbol → Häkchen |
+| Gummiband an Grenzen | Rundgang-Pfeile am Anfang/Ende, Bild und Suchblatt beim Ziehen über die Grenze |
+| Dasselbe Element wiederverwenden | Vorschaubild wird zum großen Bild (FLIP); Bereichskarte wird Kopfbild; ein Marker für alle Sprungmarken |
+
+| Ladezeit | Umsetzung |
+|---|---|
+| unter 1 s | nichts zeigen: Ladeanzeige der Bildansicht erscheint erst nach 1 s; vorhandenes Vorschaubild wird sofort gezeigt |
+| 1–10 s | Gerüst: schimmernder Platzhalter in der Bildansicht, unscharfe Mini-Vorschau hinter jedem Foto |
+| über 10 s | kommt auf der Seite nicht vor (größte Datei ca. 0,5 MB); PDF-Downloads zeigt der Browser selbst mit Fortschritt |
+| Antippen | erst anzeigen, dann erledigen: Kopieren, Hinweis ausblenden |
+
+Außerdem: Räume ohne Foto stehen gesammelt in einer eigenen Zeile, bei ungerader Zahl ist der letzte Raum mit Foto breit.
