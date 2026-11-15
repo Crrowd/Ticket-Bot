@@ -234,7 +234,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <html lang="de" class="no-js">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <script>(function (c) {{ try {{ if (localStorage.getItem("hinweis-aus")) c += " no-hint"; }} catch (e) {{}} document.documentElement.className = c; }})("js");</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">

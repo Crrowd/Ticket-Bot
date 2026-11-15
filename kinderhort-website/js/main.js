@@ -39,9 +39,41 @@
 
   /* ---------- Kopfbereich ---------- */
   var header = $(".site-header");
-  function onScroll() { if (header) header.classList.toggle("scrolled", window.scrollY > 8); }
+  /* Leiste blendet sich beim Runterscrollen aus und kommt beim Hochscrollen zurück */
+  var lastY = window.scrollY, travel = 0;
+  function busy() {
+    return document.body.classList.contains("nav-open") || $(".has-drop.open") || $(".search-panel[open]") ||
+      (header && header.matches(":focus-within, :hover")) || ($(".lightbox") && $(".lightbox").classList.contains("open"));
+  }
+  function onScroll() {
+    if (!header) return;
+    var y = window.scrollY, dy = y - lastY;
+    lastY = y;
+    header.classList.toggle("scrolled", y > 8);
+    if (y < 120 || busy()) { header.classList.remove("hide"); travel = 0; return; }
+    /* erst nach ein paar Pixeln in dieselbe Richtung reagieren – kein Flackern bei kleinen Bewegungen */
+    travel = (travel > 0) === (dy > 0) ? travel + dy : dy;
+    if (travel > 24) header.classList.add("hide");
+    else if (travel < -12) header.classList.remove("hide");
+  }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+  if (header) header.addEventListener("focusin", function () { header.classList.remove("hide"); });
+
+  /* Handy-Tastatur: Höhe messen, damit nichts unter ihr verschwindet */
+  var vv = window.visualViewport;
+  function onViewport() {
+    var kb = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
+    root.style.setProperty("--kb", kb + "px");
+    root.style.setProperty("--vvh", Math.round(vv.height) + "px");
+    root.classList.toggle("kb-open", kb > 80);
+  }
+  if (vv) { vv.addEventListener("resize", onViewport); vv.addEventListener("scroll", onViewport); onViewport(); }
+  /* Eingabefeld beim Antippen in den sichtbaren Bereich holen */
+  document.addEventListener("focusin", function (e) {
+    if (!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || window.innerWidth > 700) return;
+    setTimeout(function () { e.target.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" }); }, 300);
+  });
 
   var toggle = $(".nav-toggle");
   function setMenu(open) {
@@ -110,7 +142,9 @@
         $$("a", ul).forEach(function (l) { l.removeAttribute("aria-current"); });
         a.setAttribute("aria-current", "true");
         knobTo(ul, a);
-        ul.scrollTo({ left: a.offsetLeft - 16, behavior: reduced ? "auto" : "smooth" });
+        /* nur verschieben, wenn der aktive Eintrag nicht ganz zu sehen ist – dann mittig */
+        if (a.offsetLeft < ul.scrollLeft || a.offsetLeft + a.offsetWidth > ul.scrollLeft + ul.clientWidth)
+          ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: reduced ? "auto" : "smooth" });
       });
     }, { rootMargin: "-140px 0px -65% 0px" });
     subLinks.forEach(function (a) {

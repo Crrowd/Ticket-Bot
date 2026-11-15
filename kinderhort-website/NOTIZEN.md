@@ -164,3 +164,7 @@ Dafür geändert: Kopfbild der Kindergarten-Seite ist jetzt dasselbe Foto wie au
 | Antippen | erst anzeigen, dann erledigen: Kopieren, Hinweis ausblenden |
 
 Außerdem: Räume ohne Foto stehen gesammelt in einer eigenen Zeile, bei ungerader Zahl ist der letzte Raum mit Foto breit.
+
+## Leiste und Tastatur (16.11.2026)
+- Kopfleiste verschwindet beim Runterscrollen (ab 120 px, nach 24 px in eine Richtung) und kommt beim Hochscrollen (12 px) zurück; Sprungmarken rücken dann nach oben. Bleibt sichtbar bei offenem Menü, Suche, Bildansicht und Tastaturfokus.
+- Handy-Tastatur: Höhe wird über `visualViewport` gemessen; Suchblatt sitzt direkt über der Tastatur, Schnellzugriff-Leiste wird ausgeblendet, Kurzmeldungen rücken hoch. Android/Chrome zusätzlich über `interactive-widget=resizes-content`.

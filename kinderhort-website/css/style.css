@@ -341,13 +341,13 @@ strong, b { font-weight: 700; }
 }
 
 /* Sprungmarken: laufen unter dem Kopfbereich mit und zeigen den aktuellen Abschnitt */
-.subnav { position: sticky; top: calc(82px + env(safe-area-inset-top, 0px)); z-index: 60; margin-top: 18px; padding: 6px 0; }
+.subnav { position: sticky; top: calc(82px + env(safe-area-inset-top, 0px)); z-index: 60; margin-top: 18px; padding: 6px 0; transition: top .25s var(--ease-out); }
 .subnav ul { background: rgba(243, 248, 247, .5); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); border: 1px solid rgba(255, 255, 255, .5); border-radius: var(--r); padding: 6px !important; width: fit-content; max-width: 100%; }
 .subnav ul { list-style: none; padding: 2px; margin: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
 .subnav ul::-webkit-scrollbar { display: none; }
 .subnav li { flex: none; scroll-snap-align: start; }
 .subnav ul { position: relative; }
-.subnav a { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 44px; padding: 9px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .9rem; white-space: nowrap; color: var(--ink); transition: background var(--fast), color var(--fast); }
+.subnav a { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 44px; padding: 9px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .9rem; white-space: nowrap; color: var(--ink); transition: background var(--fast), color var(--fast); }
 .subnav a:hover { background: rgba(30, 59, 68, .08); }
 .subnav a[aria-current="true"], .subnav a[aria-current="true"]:hover { background: transparent; }
 .subnav:not(:has(.subnav-knob.on)) a[aria-current="true"] { background: var(--rose); }   /* ohne Skript: einfache Markierung */
@@ -730,7 +730,7 @@ kbd { font: 700 .7rem var(--font-body); padding: 3px 7px; border-radius: 6px; ba
 .search-foot span { display: inline-flex; gap: 6px; align-items: center; }
 @media (max-width: 700px) {
   /* Auf dem Handy als Blatt von unten, zum Schließen nach unten wischen */
-  .search-panel { margin: auto 0 0; width: 100%; max-width: none; max-height: 86vh; border-radius: var(--r-lg) var(--r-lg) 0 0; translate: 0 100%; scale: 1; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .search-panel { margin: auto 0 var(--kb, 0px); width: 100%; max-width: none; max-height: calc(var(--vvh, 100vh) * .86); border-radius: var(--r-lg) var(--r-lg) 0 0; translate: 0 100%; scale: 1; padding-bottom: env(safe-area-inset-bottom, 0px); }
   .search-panel[open] { translate: 0 var(--drag, 0px); }
   @starting-style { .search-panel[open] { opacity: 1; translate: 0 100%; scale: 1; } }
   .search-grip { display: block; width: 44px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .35); margin: 10px auto 0; flex: none; }
@@ -963,3 +963,21 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 .room.no-img { border-left: 5px solid var(--rose); }
 @media (max-width: 960px) { .rooms-text { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .room.wide { grid-template-columns: minmax(0, 1fr); } .room.wide img { min-height: 0; } }
+
+/* ---------- Leiste nur beim Hochscrollen ---------- */
+.site-header { transition: translate var(--t-exit) var(--ease-out); }
+.site-header.hide { translate: 0 calc(-100% - 8px); }
+.site-header:not(.hide) { transition-duration: var(--t-enter); }
+/* Ohne Leiste rücken die Sprungmarken nach oben */
+body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0px)); transition-duration: var(--t-exit); }
+
+/* ---------- Handy-Tastatur ---------- */
+/* Suche sitzt direkt über der Tastatur und passt in den verbleibenden Platz */
+@media (max-width: 700px) {
+  .search-panel { transition-property: opacity, translate, scale, margin-bottom, max-height, overlay, display; }
+  .kb-open .search-panel { border-radius: var(--r-lg); padding-bottom: 0; }
+  /* Schnellzugriff weicht der Tastatur, Kurzmeldungen bleiben darüber sichtbar */
+  .kb-open .mobile-bar { display: none; }
+  .kb-open .toasts { bottom: calc(16px + var(--kb, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .site-header, .subnav { transition: none !important; } }
