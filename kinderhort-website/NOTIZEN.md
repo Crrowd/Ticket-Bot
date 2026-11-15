@@ -260,3 +260,8 @@ Geplant: info@, krippe@, kindergarten@kinderhort-grombuehl.de über das Webhosti
 **Merken:** 63, 64, 66, 67, 69, 70, 72, 73, 74 · **Nein:** 75
 
 **Menü (Wunsch):** Beim geöffneten Menü auf Handy/Tablet verschwindet die Leiste mit dem Namen, es bleibt nur das Kreuz zum Schließen.
+
+## Ideenkatalog 3 – Nachtrag 76–88 (15.11.2026)
+76 Ferienplan mit Ampel · 77 Anrufen mit Gruppenauswahl · 78 Bildunterschriften gleiten hoch · 79 Doppeltipp-Zoom · 80 Wimpel weichen der Maus aus · 81 „Das Wichtigste in Kürze“ · 82 Ferienplan als Jahresposter · 83 Fotos legen sich wie Abzüge hin · 84 Foto-Collage neigt sich mit · 85 Route mit der Karten-App · 86 „Wie geht’s weiter?“ · 87 Abreißkalender · 88 Geöffnet-Punkt im Browser-Tab
+
+Entscheidung offen (Auswahl direkt im Katalog).
