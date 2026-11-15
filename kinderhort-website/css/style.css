@@ -137,7 +137,7 @@ strong, b { font-weight: 700; }
 /* Voller Name in einer Zeile; wird es eng, bricht er sauber in zwei Zeilen um */
 .brand-text { display: block; min-width: 0; font: 700 1.16rem/1.2 var(--font-head); letter-spacing: -.015em; white-space: nowrap; }
 .brand-text .b-pre, .brand-text .b-name { display: inline; }
-@media (min-width: 1181px) and (max-width: 1400px), (max-width: 620px) {
+@media (min-width: 1181px), (max-width: 620px) {
   .brand-text { font-size: 1rem; line-height: 1.18; }
   .brand-text .b-pre, .brand-text .b-name { display: block; }
 }
