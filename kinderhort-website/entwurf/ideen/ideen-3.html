@@ -512,6 +512,167 @@ button { font: inherit; color: inherit; }
 .layers svg { position: absolute; left: -6%; width: 112%; bottom: -4%; height: auto; transition: translate .5s var(--ease-out); will-change: translate; }
 .layers .sun { position: absolute; width: 54px; height: 54px; border-radius: 50%; background: #F6E7C8; box-shadow: 0 0 40px 10px rgba(246,231,200,.7); left: 70%; top: 18%; transition: translate .5s var(--ease-out); }
 
+/* 33 Fotostapel */
+.stack { position: relative; width: 260px; height: 230px; touch-action: pan-y; }
+.stack figure { position: absolute; inset: 0; margin: 0; background: #fff; padding: 8px 8px 30px; border-radius: 6px; box-shadow: 0 12px 26px -12px rgba(0,0,0,.6); rotate: var(--r, 0deg); cursor: grab; user-select: none; }
+.stack figure img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; border-radius: 3px; }
+.stack figcaption { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; color: var(--ink); font: 700 .82rem var(--font); }
+.stack figure.drag { cursor: grabbing; transition: none; }
+.stack-ctl { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+
+/* 34 Formular-Lotse */
+.guide { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 10px; }
+.guide h3 { font-size: 1rem; }
+.guide .opts { display: grid; gap: 6px; }
+.guide .opts button { text-align: left; border: 1.5px solid rgba(30,59,68,.18); background: #fff; border-radius: 12px; padding: 10px 12px; font: 600 .9rem var(--font); color: var(--ink); cursor: pointer; transition: border-color .15s, translate .2s var(--ease-out); }
+.guide .opts button:hover { border-color: var(--surface); translate: 3px 0; }
+.guide .res { display: grid; gap: 8px; animation: step-in .35s var(--ease-out); }
+.guide .doc { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--rose-soft); font-weight: 700; font-size: .9rem; }
+.guide .doc .ext { font-size: .68rem; font-weight: 800; background: var(--rose); padding: 3px 7px; border-radius: 6px; }
+.guide .back { justify-self: start; border: 0; background: none; color: var(--ink-soft); font: 600 .84rem var(--font); cursor: pointer; padding: 4px 0; }
+
+/* 35 Schulstart */
+.school { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.bag { width: 120px; height: 140px; position: relative; }
+.bag svg { width: 100%; height: 100%; overflow: visible; }
+.bag .fillr { transition: height 1s var(--ease-out), y 1s var(--ease-out); }
+.school-txt { display: grid; gap: 4px; }
+.school-txt .big { font-size: 2.6rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.school-txt small { color: var(--on-soft); font-size: .84rem; max-width: 22ch; }
+
+/* 36 Kontakt-Knopf */
+.fabbox { position: relative; width: 100%; max-width: 420px; height: 250px; border-radius: 16px; background: var(--bg); overflow: hidden; }
+.fabbox .ln { margin: 14px 18px; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.fab { position: absolute; right: 18px; bottom: 18px; width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 22px -8px rgba(0,0,0,.6); transition: rotate .3s var(--ease-out), background .2s; z-index: 2; }
+.fab[aria-expanded="true"] { rotate: 45deg; background: var(--surface); }
+.fab-item { position: absolute; right: 22px; bottom: 26px; display: flex; align-items: center; gap: 10px; flex-direction: row-reverse; opacity: 0; translate: 0 0; scale: .6; pointer-events: none; transition: opacity .2s, translate .35s var(--ease-out), scale .35s var(--ease-out); text-decoration: none; }
+.fab-item i { width: 46px; height: 46px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; font-style: normal; font-size: 1.15rem; box-shadow: 0 6px 14px -6px rgba(0,0,0,.5); }
+.fab-item span { background: var(--deep); color: var(--on); font: 700 .8rem var(--font); padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+.fabbox.open .fab-item { opacity: 1; scale: 1; pointer-events: auto; }
+.fabbox.open .fab-item:nth-of-type(1) { translate: 0 -64px; } .fabbox.open .fab-item:nth-of-type(2) { translate: 0 -120px; transition-delay: 30ms; } .fabbox.open .fab-item:nth-of-type(3) { translate: 0 -176px; transition-delay: 60ms; }
+.fabbox::after { content: ""; position: absolute; inset: 0; background: rgba(20,42,49,.35); opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 1; }
+.fabbox.open::after { opacity: 1; }
+.fab-item, .fab { z-index: 2; }
+
+/* 37 Wortwolke */
+.cloud { position: relative; width: 100%; max-width: 480px; height: 230px; }
+.cloud span { position: absolute; translate: -50% -50%; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; color: var(--on); cursor: default; transition: scale .3s var(--ease-out), color .2s; animation: float 6s ease-in-out infinite; animation-delay: var(--d); }
+.cloud span:hover { scale: 1.25; color: var(--rose); }
+@keyframes float { 50% { translate: -50% calc(-50% - 6px); } }
+
+/* 38 Bringzeit */
+.bring { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.ring { width: 130px; height: 130px; position: relative; }
+.ring svg { width: 100%; height: 100%; rotate: -90deg; }
+.ring circle { fill: none; stroke-width: 10; }
+.ring .bg { stroke: rgba(255,255,255,.15); }
+.ring .fg { stroke: var(--rose); stroke-linecap: round; transition: stroke-dashoffset .6s var(--ease-out), stroke .3s; }
+.ring.late .fg { stroke: #E8A79D; }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: 1.5rem; line-height: 1.05; }
+.ring b small { display: block; font-size: .66rem; font-weight: 600; color: var(--on-soft); }
+.bring-side { display: grid; gap: 10px; max-width: 220px; }
+.bring-side p { font-size: .88rem; color: var(--on-soft); }
+
+/* 39 Elternbriefe */
+.letters { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 14px; display: grid; gap: 10px; }
+.letters input { width: 100%; border: 1.5px solid rgba(30,59,68,.2); border-radius: 999px; padding: 9px 14px; font: 500 .92rem var(--font); color: var(--ink); background: #fff; }
+.letters ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 170px; overflow: auto; }
+.letters li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 10px; font-size: .88rem; font-weight: 600; transition: background .15s; }
+.letters li:hover { background: var(--rose-soft); }
+.letters li small { color: var(--ink-soft); font-weight: 500; white-space: nowrap; }
+.letters mark { background: var(--rose); color: inherit; border-radius: 3px; padding: 0 2px; }
+.letters .none { color: var(--ink-soft); font-size: .86rem; padding: 6px 10px; }
+
+/* 40 Fokus-Rahmen */
+.focusdemo { position: relative; display: grid; gap: 12px; justify-items: center; }
+.focusdemo .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.focusdemo .row button { border: 0; border-radius: 12px; padding: 12px 16px; background: rgba(255,255,255,.12); color: var(--on); font: 700 .9rem var(--font); }
+.focusdemo .row button:focus { outline: none; }
+.fring { position: absolute; border: 3px solid var(--rose); border-radius: 14px; pointer-events: none; opacity: 0; transition: left .25s var(--ease-out), top .25s var(--ease-out), width .25s var(--ease-out), height .25s var(--ease-out), opacity .15s; box-shadow: 0 0 0 4px rgba(212,181,176,.25); }
+
+/* 41 Vorher/Nachher */
+.ba { position: relative; width: 100%; max-width: 460px; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; touch-action: none; --p: 50%; }
+.ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.ba .top { clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+.ba .handle { position: absolute; top: 0; bottom: 0; left: var(--p); width: 3px; translate: -50% 0; background: var(--paper); }
+.ba .handle::after { content: "‹ ›"; position: absolute; top: 50%; left: 50%; translate: -50% -50%; width: 40px; height: 40px; border-radius: 50%; background: var(--paper); color: var(--ink); display: grid; place-items: center; font-weight: 800; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+.ba .lbl { position: absolute; top: 10px; font: 700 .72rem var(--font); background: rgba(20,42,49,.7); color: var(--on); padding: 3px 9px; border-radius: 999px; }
+.ba input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+
+/* 42 Jahreskreis */
+.wheel-wrap { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.wheel { width: 220px; height: 220px; position: relative; }
+.wheel svg { width: 100%; height: 100%; transition: rotate .8s var(--ease-io); }
+.wheel .pointer { position: absolute; left: 50%; top: -6px; translate: -50% 0; width: 0; height: 0; border: 9px solid transparent; border-top: 14px solid var(--paper); }
+.wheel text { font: 700 9px var(--font); fill: var(--ink); }
+.fest { max-width: 220px; display: grid; gap: 6px; }
+.fest h3 { font-size: 1.15rem; } .fest p { font-size: .88rem; color: var(--on-soft); }
+.fest .nav { display: flex; gap: 6px; }
+
+/* 43 Suchspiel */
+.seek { position: relative; width: 100%; max-width: 460px; aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden; background: #CFE2DE; }
+.seek svg { width: 100%; height: 100%; display: block; }
+.seek .hid { cursor: pointer; }
+.seek .hid.found { animation: found .5s cubic-bezier(.34,1.56,.64,1); }
+.seek .hid.found path { fill: var(--rose); stroke: var(--ink); stroke-width: 1.5; }
+@keyframes found { 50% { scale: 1.6; } }
+.seek-bar { position: absolute; left: 10px; top: 10px; background: rgba(243,248,247,.9); color: var(--ink); font: 700 .82rem var(--font); padding: 5px 11px; border-radius: 999px; }
+
+/* 44 Tastenkürzel */
+.keys { width: 100%; max-width: 380px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 8px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); opacity: 0; scale: .95; transition: opacity .2s var(--ease-out), scale .2s var(--ease-out); }
+.keys.open { opacity: 1; scale: 1; }
+.keys h3 { font-size: 1rem; }
+.keys div { display: flex; justify-content: space-between; align-items: center; font-size: .88rem; padding: 4px 0; border-top: 1px solid rgba(30,59,68,.08); }
+.keys kbd { font: 700 .76rem var(--font); background: var(--bg-alt); border-radius: 6px; padding: 3px 8px; border: 1px solid rgba(30,59,68,.15); }
+.keys-hint { display: flex; align-items: center; gap: 8px; font-size: .9rem; }
+.keys-hint kbd { font: 800 .9rem var(--font); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 4px 10px; }
+
+/* 45 Bildzeichen */
+.picto { width: 100%; max-width: 460px; display: grid; gap: 12px; }
+.picto-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; align-items: center; }
+.picto-row b { font-size: .86rem; } .picto-row b small { display: block; font-weight: 500; color: var(--on-soft); font-size: .74rem; }
+.picto-icons { display: flex; flex-wrap: wrap; gap: 3px; }
+.picto-icons i { font-style: normal; font-size: 1rem; line-height: 1; opacity: 0; scale: .3; transition: opacity .25s, scale .35s cubic-bezier(.34,1.56,.64,1); transition-delay: calc(var(--k) * 25ms); }
+.picto.go .picto-icons i { opacity: 1; scale: 1; }
+
+/* 46 Bildkarten-Tagesplan */
+.pcards { width: 100%; display: flex; gap: 8px; overflow-x: auto; padding: 6px 2px 12px; scroll-snap-type: x mandatory; }
+.pcard { flex: none; width: 92px; scroll-snap-align: start; background: var(--paper); color: var(--ink); border-radius: 14px; padding: 10px 6px; text-align: center; display: grid; gap: 4px; transition: translate .3s var(--ease-out), box-shadow .3s; }
+.pcard span { font-size: 2rem; line-height: 1.1; }
+.pcard b { font-size: .78rem; } .pcard small { font-size: .68rem; color: var(--ink-soft); }
+.pcard.now { translate: 0 -6px; box-shadow: 0 0 0 3px var(--rose), 0 10px 18px -8px rgba(0,0,0,.5); }
+.pcard.past { opacity: .5; }
+
+/* 47 Wimpel-Ladeanzeige */
+.loadflags { display: flex; gap: 6px; height: 50px; align-items: flex-start; }
+.loadflags span { width: 26px; height: 32px; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: 50% 0; animation: lf 1.1s ease-in-out infinite; animation-delay: calc(var(--i) * 90ms); }
+.loadflags span:nth-child(odd) { background: var(--rose); } .loadflags span:nth-child(even) { background: var(--paper); }
+@keyframes lf { 0%, 60%, 100% { translate: 0 0; rotate: 0deg; } 30% { translate: 0 10px; rotate: 8deg; } }
+.loadbox { display: grid; gap: 12px; justify-items: center; }
+.loadbox .label { min-height: 1.3em; }
+
+/* 48 Vibration */
+.haptic { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.haptic .btn.buzz { animation: buzz .3s linear; }
+@keyframes buzz { 20% { translate: -2px 0; } 40% { translate: 2px 0; } 60% { translate: -2px 0; } 80% { translate: 2px 0; } }
+
+/* 49 Kindermund */
+.kmund { position: relative; width: 100%; max-width: 380px; perspective: 900px; }
+.kcard { background: var(--paper); color: var(--ink); border-radius: 18px; padding: 22px 20px; min-height: 160px; display: grid; gap: 10px; align-content: center; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); transition: rotate .5s var(--ease-io); transform-style: preserve-3d; }
+.kcard.flip { rotate: x 90deg; }
+.kcard p { font-size: 1.12rem; font-weight: 700; line-height: 1.45; }
+.kcard small { color: var(--ink-soft); font-size: .8rem; }
+.kcard .bub { font-size: 1.6rem; }
+
+/* 50 Spendenbarometer */
+.donate { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.thermo { position: relative; width: 44px; height: 200px; border-radius: 22px; background: rgba(255,255,255,.15); overflow: hidden; }
+.thermo i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(var(--rose), #E6CFCA); border-radius: 22px; transition: height 1.4s var(--ease-out); }
+.thermo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 19px, rgba(255,255,255,.18) 19px 20px); }
+.donate-txt { display: grid; gap: 6px; max-width: 220px; }
+.donate-txt .big { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; }
+.donate-txt small { color: var(--on-soft); }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -546,7 +707,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>32 neue Ideen zum Ausprobieren</h1>
+    <h1>50 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
   <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
@@ -977,6 +1138,123 @@ button { font: inherit; color: inherit; }
         <p class="hint">Maus bewegen oder Gerät neigen</p></div>
       <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">32</span> Bild in Ebenen</h2><p>Eine kleine Zeichnung im Startbereich aus mehreren Ebenen – Hügel, Haus, Wimpel, Sonne. Bewegt man die Maus, verschieben sie sich unterschiedlich stark, das gibt Tiefe. Ganz sanft, und bei „Bewegung reduzieren“ steht alles still.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div><div class="stack" id="stack"><figure style="--r:-5deg"><img src="img/baueckenstadion-800.webp" alt="Bauecke" loading="lazy"><figcaption>Bauecke</figcaption></figure><figure style="--r:4deg"><img src="img/esstisch-800.webp" alt="Essen" loading="lazy"><figcaption>Essen</figcaption></figure><figure style="--r:-2deg"><img src="img/schlafen-800.webp" alt="Schlafraum" loading="lazy"><figcaption>Schlafraum</figcaption></figure><figure style="--r:3deg"><img src="img/maltisch-800.webp" alt="Maltisch" loading="lazy"><figcaption>Maltisch</figcaption></figure><figure style="--r:0deg"><img src="img/baellebad-800.webp" alt="Bällebad" loading="lazy"><figcaption>Bällebad</figcaption></figure></div><div class="stack-ctl"><button type="button" class="btn ghost" id="stackNext">Nächstes Bild</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">33</span> Fotostapel zum Durchwischen</h2><p>Statt einer langen Bildreihe ein Stapel Fotos zum Wegwischen, wie echte Abzüge auf dem Tisch. Das oberste Bild folgt dem Finger und fliegt mit Schwung zur Seite, dann rutscht es unten wieder hinein. Mit Knopf auch ohne Wischen bedienbar.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="guide" id="guide"></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">34</span> Formular-Lotse</h2><p>Eltern beantworten eine Frage („Was möchten Sie tun?“) und bekommen genau das richtige Formular oder den richtigen Weg. Kein Suchen mehr in der Download-Liste. Die beiden Formulare gibt es wirklich, die Abhol-Vollmacht ist ein <b>Beispiel</b>.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="school"><div class="bag" aria-hidden="true"><svg viewBox="0 0 120 140"><defs><clipPath id="bagClip"><rect x="14" y="30" width="92" height="104" rx="18"/></clipPath></defs><path d="M38 30 V18 a22 22 0 0 1 44 0 V30" fill="none" stroke="#F3F8F7" stroke-width="7"/><rect x="14" y="30" width="92" height="104" rx="18" fill="rgba(255,255,255,.14)"/><rect class="fillr" id="bagFill" clip-path="url(#bagClip)" x="14" y="134" width="92" height="0" fill="#D4B5B0"/><rect x="30" y="70" width="60" height="34" rx="8" fill="none" stroke="#F3F8F7" stroke-width="4"/></svg></div>
+          <div class="school-txt"><span class="big" id="schoolN">0</span><b>Tage bis zum Schulstart</b><small>für unsere Vorschulkinder – der Ranzen füllt sich mit jedem Tag (Beispiel: 14.09.2027)</small></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">35</span> Countdown zum Schulstart</h2><p>Für die Vorschulkinder und ihre Eltern: ein Schulranzen, der sich im Laufe des letzten Kindergartenjahres füllt, mit Tagen bis zum ersten Schultag. Macht Vorfreude und ist auf dem Handy schön anzusehen. <b>Beispiel:</b> Datum des Schulstarts bitte prüfen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="fabbox" id="fabbox"><div class="ln"></div><div class="ln" style="width:60%"></div><div class="ln"></div><div class="ln" style="width:75%"></div><div class="ln"></div>
+          <a class="fab-item" href="#" tabindex="-1"><i>📞</i><span>Anrufen</span></a><a class="fab-item" href="#" tabindex="-1"><i>✉️</i><span>E-Mail</span></a><a class="fab-item" href="#" tabindex="-1"><i>📍</i><span>Route</span></a>
+          <button type="button" class="fab" id="fab" aria-expanded="false" aria-label="Kontakt">+</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">36</span> Kontakt-Knopf, der sich auffächert</h2><p>Ein runder Knopf unten rechts auf jeder Seite: Ein Tipp fächert Anrufen, E-Mail und Route auf, der Hintergrund dunkelt leicht ab. Für Computer und Tablet, am Handy gibt es schon die untere Leiste.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="cloud" aria-label="Was Kinder bei uns erleben"><span style="left:50%;top:46%;font-size:1.9rem;--d:-0.00s;opacity:0.97">spielen</span><span style="left:22%;top:26%;font-size:1.4rem;--d:-0.45s;opacity:0.88">lachen</span><span style="left:78%;top:24%;font-size:1.2rem;--d:-0.90s;opacity:0.85">forschen</span><span style="left:18%;top:70%;font-size:1.05rem;--d:-1.35s;opacity:0.83">singen</span><span style="left:80%;top:70%;font-size:1.3rem;--d:-1.80s;opacity:0.87">basteln</span><span style="left:46%;top:80%;font-size:1.6rem;--d:-2.25s;opacity:0.92">Freunde</span><span style="left:30%;top:48%;font-size:1.0rem;--d:-2.70s;opacity:0.82">toben</span><span style="left:70%;top:48%;font-size:1.1rem;--d:-3.15s;opacity:0.83">lesen</span><span style="left:58%;top:18%;font-size:0.95rem;--d:-3.60s;opacity:0.81">kochen</span><span style="left:10%;top:18%;font-size:1.15rem;--d:-4.05s;opacity:0.84">Natur</span><span style="left:86%;top:92%;font-size:0.9rem;--d:-4.50s;opacity:0.80">Hausaufgaben</span><span style="left:14%;top:92%;font-size:1.0rem;--d:-4.95s;opacity:0.82">Feste</span><span style="left:92%;top:46%;font-size:0.9rem;--d:-5.40s;opacity:0.80">Musik</span></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">37</span> Wortwolke „Was Kinder bei uns erleben“</h2><p>Lauter kleine Wörter, die sanft schweben: spielen, forschen, lachen, Freunde. Beim Überfahren wird ein Wort größer und rosé. Ein fröhlicher Auftakt für „Das zeichnet uns aus“, die Wörter könnten die Kinder selbst auswählen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="bring"><div class="ring" id="ring"><svg viewBox="0 0 130 130" aria-hidden="true"><circle class="bg" cx="65" cy="65" r="55"/><circle class="fg" id="ringFg" cx="65" cy="65" r="55"/></svg><b id="ringTxt"></b></div>
+          <div class="bring-side"><p id="bringTxt"></p><div class="seg" id="bringSeg" role="group" aria-label="Uhrzeit simulieren"><span class="knob" aria-hidden="true"></span><button type="button" data-m="430" aria-pressed="false">7:10</button><button type="button" data-m="505" aria-pressed="true">8:25</button><button type="button" data-m="532" aria-pressed="false">8:52</button></div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">38</span> Bringzeit-Uhr am Morgen</h2><p>Morgens zeigt die Startseite, wie lange die Bringzeit noch läuft (bis 9:00 Uhr). Der Ring leert sich, in den letzten 10 Minuten wird er kräftiger. Nach 9 Uhr verschwindet er wieder.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="letters"><input id="letIn" type="search" placeholder="Elternbriefe durchsuchen, z. B. „Fasching“" aria-label="Elternbriefe durchsuchen"><ul id="letList"></ul></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">39</span> Elternbrief-Archiv mit Suche</h2><p>Alle Elternbriefe an einem Ort, neueste oben, mit Suche, die den Begriff markiert. Nie wieder „Wo war nochmal der Brief zum Fotografen?“. <b>Beispiel:</b> Die Briefe hier sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="focusdemo" id="focusdemo"><span class="keys-hint"><kbd>Tab</kbd> drücken</span><div class="row"><button type="button">Startseite</button><button type="button">Bereiche</button><button type="button">Aktuelles</button><button type="button">Kontakt</button></div><span class="fring" id="fring" aria-hidden="true"></span></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">40</span> Gleitender Fokus-Rahmen</h2><p>Wer mit der Tastatur unterwegs ist, sieht einen rosé Rahmen, der weich von Element zu Element gleitet, statt zu springen. Hilft Menschen, die keine Maus nutzen, und sieht dabei ruhig und hochwertig aus.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="ba" id="ba"><img src="img/puppenecke-800.webp" alt="Puppenecke, Ansicht 1"><img class="top" src="img/puppenecke2-800.webp" alt="Puppenecke, Ansicht 2"><span class="lbl" style="left:10px">vorher</span><span class="lbl" style="right:10px">nachher</span><span class="handle" aria-hidden="true"></span><input type="range" min="0" max="100" value="50" aria-label="Vorher-Nachher-Regler"></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">41</span> Vorher-Nachher-Regler</h2><p>Zwei Fotos übereinander, ein Regler in der Mitte: So lässt sich zeigen, was sich getan hat – nach dem Umbau, der neuen Spielecke oder dem Garten im Sommer und Winter. <b>Beispiel:</b> Zwei Ansichten der Puppenecke.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="wheel-wrap"><div class="wheel"><span class="pointer" aria-hidden="true"></span><svg id="wheel" viewBox="-110 -110 220 220" aria-hidden="true"></svg></div><div class="fest" aria-live="polite"><h3 id="festH"></h3><p id="festP"></p><div class="nav"><button type="button" class="btn ghost" id="festPrev" aria-label="Voriges Fest">‹</button><button type="button" class="btn ghost" id="festNext" aria-label="Nächstes Fest">›</button></div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">42</span> Jahreskreis der Feste</h2><p>Ein Rad mit den Festen des Kirchenjahres, die das Haus feiert: St. Martin, Nikolaus, Weihnachten, Ostern, Erntedank … Es dreht sich zum nächsten Fest, mit ein paar Sätzen, wie es bei uns gefeiert wird. Passt zur katholischen Einrichtung. <b>Beispieltexte.</b></p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="seek" id="seek"><svg viewBox="0 0 600 300" aria-label="Suchbild">
+  <rect width="600" height="300" fill="#CFE2DE"/><circle cx="510" cy="60" r="30" fill="#F6E7C8"/>
+  <path d="M0 220 C 120 190 240 210 360 200 C 460 192 540 210 600 200 V300 H0Z" fill="#8FB5AE"/>
+  <g transform="translate(200 110)"><path d="M0 100 V40 L70 0 L140 40 V100 Z" fill="#F3F8F7"/><path d="M-10 44 L70 -6 L150 44" fill="none" stroke="#D4B5B0" stroke-width="10" stroke-linejoin="round"/><rect x="58" y="60" width="26" height="40" fill="#2D6A6A"/><rect x="18" y="52" width="22" height="18" fill="#2D6A6A"/><rect x="100" y="52" width="22" height="18" fill="#2D6A6A"/></g>
+  <g fill="#4F8A6E"><circle cx="90" cy="190" r="34"/><circle cx="470" cy="180" r="28"/><rect x="86" y="200" width="8" height="40" fill="#8B6A55"/><rect x="466" y="190" width="8" height="40" fill="#8B6A55"/></g>
+  <path d="M0 300 C 150 260 300 280 600 262 V300 Z" fill="#2D6A6A"/><g class="hid" transform="translate(60 40)" tabindex="0" role="button" aria-label="Wimpel"><path d="M0 0 h14 l-7 14z" fill="#B6D0CB"/></g><g class="hid" transform="translate(300 70)" tabindex="0" role="button" aria-label="Wimpel"><path d="M0 0 h14 l-7 14z" fill="#B6D0CB"/></g><g class="hid" transform="translate(420 150)" tabindex="0" role="button" aria-label="Wimpel"><path d="M0 0 h14 l-7 14z" fill="#B6D0CB"/></g><g class="hid" transform="translate(150 200)" tabindex="0" role="button" aria-label="Wimpel"><path d="M0 0 h14 l-7 14z" fill="#B6D0CB"/></g><g class="hid" transform="translate(520 230)" tabindex="0" role="button" aria-label="Wimpel"><path d="M0 0 h14 l-7 14z" fill="#B6D0CB"/></g></svg><span class="seek-bar" id="seekBar" aria-live="polite">0 von 5 Wimpeln gefunden</span></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">43</span> Suchspiel für Kinder</h2><p>Eine kleine Ecke für Kinder: Im Bild verstecken sich fünf Wimpel. Gefundene hüpfen und werden rosé, am Ende gibt es eine kleine Feier. Gut zum gemeinsamen Anschauen mit Eltern, bevor es losgeht.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div style="display:grid;gap:12px;justify-items:center"><button type="button" class="btn" id="keysBtn">Tastenkürzel zeigen (?)</button><div class="keys" id="keys" aria-hidden="true"><h3>Tastenkürzel</h3><div><span>Suche öffnen</span><kbd>Strg K</kbd></div><div><span>Zur Startseite</span><kbd>G dann S</kbd></div><div><span>Termine</span><kbd>G dann T</kbd></div><div><span>Nach oben</span><kbd>Pos1</kbd></div><div><span>Diese Hilfe</span><kbd>?</kbd></div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">44</span> Tastenkürzel-Hilfe</h2><p>Ein Druck auf „?“ zeigt eine kleine Übersicht der Tastenkürzel. Für Vielnutzer im Team, die schnell zu Terminen oder zur Suche wollen. Stört niemanden, der sie nicht braucht.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="picto" id="picto"><div class="picto-row"><b>Mahlzeiten<small>≈ 25.000 (Beispiel)</small></b><div class="picto-icons" aria-label="Mahlzeiten: ≈ 25.000 (Beispiel)"><i style="--k:0">🍎</i><i style="--k:1">🍎</i><i style="--k:2">🍎</i><i style="--k:3">🍎</i><i style="--k:4">🍎</i><i style="--k:5">🍎</i><i style="--k:6">🍎</i><i style="--k:7">🍎</i><i style="--k:8">🍎</i><i style="--k:9">🍎</i><i style="--k:10">🍎</i><i style="--k:11">🍎</i><i style="--k:12">🍎</i><i style="--k:13">🍎</i><i style="--k:14">🍎</i><i style="--k:15">🍎</i><i style="--k:16">🍎</i><i style="--k:17">🍎</i><i style="--k:18">🍎</i><i style="--k:19">🍎</i><i style="--k:20">🍎</i><i style="--k:21">🍎</i><i style="--k:22">🍎</i><i style="--k:23">🍎</i><i style="--k:24">🍎</i><i style="--k:25">🍎</i><i style="--k:26">🍎</i><i style="--k:27">🍎</i><i style="--k:28">🍎</i><i style="--k:29">🍎</i><i style="--k:30">🍎</i><i style="--k:31">🍎</i><i style="--k:32">🍎</i><i style="--k:33">🍎</i><i style="--k:34">🍎</i><i style="--k:35">🍎</i><i style="--k:36">🍎</i><i style="--k:37">🍎</i><i style="--k:38">🍎</i><i style="--k:39">🍎</i></div></div><div class="picto-row"><b>Ausflüge<small>24 (Beispiel)</small></b><div class="picto-icons" aria-label="Ausflüge: 24 (Beispiel)"><i style="--k:0">🚌</i><i style="--k:1">🚌</i><i style="--k:2">🚌</i><i style="--k:3">🚌</i><i style="--k:4">🚌</i><i style="--k:5">🚌</i><i style="--k:6">🚌</i><i style="--k:7">🚌</i><i style="--k:8">🚌</i><i style="--k:9">🚌</i><i style="--k:10">🚌</i><i style="--k:11">🚌</i><i style="--k:12">🚌</i><i style="--k:13">🚌</i><i style="--k:14">🚌</i><i style="--k:15">🚌</i><i style="--k:16">🚌</i><i style="--k:17">🚌</i><i style="--k:18">🚌</i><i style="--k:19">🚌</i><i style="--k:20">🚌</i><i style="--k:21">🚌</i><i style="--k:22">🚌</i><i style="--k:23">🚌</i></div></div><div class="picto-row"><b>Geburtstage<small>120 (Beispiel)</small></b><div class="picto-icons" aria-label="Geburtstage: 120 (Beispiel)"><i style="--k:0">🎂</i><i style="--k:1">🎂</i><i style="--k:2">🎂</i><i style="--k:3">🎂</i><i style="--k:4">🎂</i><i style="--k:5">🎂</i><i style="--k:6">🎂</i><i style="--k:7">🎂</i><i style="--k:8">🎂</i><i style="--k:9">🎂</i><i style="--k:10">🎂</i><i style="--k:11">🎂</i><i style="--k:12">🎂</i><i style="--k:13">🎂</i><i style="--k:14">🎂</i><i style="--k:15">🎂</i><i style="--k:16">🎂</i><i style="--k:17">🎂</i><i style="--k:18">🎂</i><i style="--k:19">🎂</i><i style="--k:20">🎂</i><i style="--k:21">🎂</i><i style="--k:22">🎂</i><i style="--k:23">🎂</i><i style="--k:24">🎂</i><i style="--k:25">🎂</i><i style="--k:26">🎂</i><i style="--k:27">🎂</i><i style="--k:28">🎂</i><i style="--k:29">🎂</i></div></div><div class="picto-row"><b>Bücher<small>≈ 600 (Beispiel)</small></b><div class="picto-icons" aria-label="Bücher: ≈ 600 (Beispiel)"><i style="--k:0">📚</i><i style="--k:1">📚</i><i style="--k:2">📚</i><i style="--k:3">📚</i><i style="--k:4">📚</i><i style="--k:5">📚</i><i style="--k:6">📚</i><i style="--k:7">📚</i><i style="--k:8">📚</i><i style="--k:9">📚</i><i style="--k:10">📚</i><i style="--k:11">📚</i><i style="--k:12">📚</i><i style="--k:13">📚</i><i style="--k:14">📚</i><i style="--k:15">📚</i><i style="--k:16">📚</i><i style="--k:17">📚</i><i style="--k:18">📚</i><i style="--k:19">📚</i><i style="--k:20">📚</i><i style="--k:21">📚</i><i style="--k:22">📚</i><i style="--k:23">📚</i><i style="--k:24">📚</i><i style="--k:25">📚</i><i style="--k:26">📚</i><i style="--k:27">📚</i><i style="--k:28">📚</i><i style="--k:29">📚</i><i style="--k:30">📚</i><i style="--k:31">📚</i><i style="--k:32">📚</i><i style="--k:33">📚</i><i style="--k:34">📚</i><i style="--k:35">📚</i></div></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">45</span> Ein Jahr in Bildzeichen</h2><p>Statt nüchterner Zahlen kleine Bildzeichen, die nacheinander erscheinen: Mahlzeiten, Ausflüge, Geburtstage, vorgelesene Bücher. Kinder verstehen es sofort, Eltern schmunzeln. <b>Beispiel:</b> Die Zahlen sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div style="width:100%;display:grid;gap:10px"><div class="pcards" id="pcards"><div class="pcard" data-t="6:45"><span aria-hidden="true">🏠</span><b>Ankommen</b><small>6:45</small></div><div class="pcard" data-t="9:30"><span aria-hidden="true">🥐</span><b>Frühstück</b><small>9:30</small></div><div class="pcard" data-t="10:00"><span aria-hidden="true">🎵</span><b>Morgenkreis</b><small>10:00</small></div><div class="pcard" data-t="11:15"><span aria-hidden="true">🍝</span><b>Mittagessen</b><small>11:15</small></div><div class="pcard" data-t="12:00"><span aria-hidden="true">😴</span><b>Ausruhen</b><small>12:00</small></div><div class="pcard" data-t="14:30"><span aria-hidden="true">🍌</span><b>Snack</b><small>14:30</small></div><div class="pcard" data-t="15:00"><span aria-hidden="true">🧸</span><b>Spielen</b><small>15:00</small></div><div class="pcard" data-t="bis 16:30"><span aria-hidden="true">👋</span><b>Abholen</b><small>bis 16:30</small></div></div><div class="seg" id="pcSeg" role="group" aria-label="Uhrzeit simulieren" style="justify-self:center"><span class="knob" aria-hidden="true"></span><button type="button" data-m="575" aria-pressed="false">9:35</button><button type="button" data-m="690" aria-pressed="true">11:30</button><button type="button" data-m="880" aria-pressed="false">14:40</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">46</span> Bildkarten-Tagesplan für Kinder</h2><p>Der Tagesablauf als große Bildkarten, wie sie viele Kitas an der Wand haben – zum gemeinsamen Anschauen mit dem Kind („Nach dem Essen wird ausgeruht“). Die aktuelle Karte hebt sich hervor. Zeiten der Krippe.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="loadbox"><div class="loadflags" aria-hidden="true"><span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span></div><p class="label" role="status">Wird geladen …</p></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">47</span> Wimpel-Ladeanzeige</h2><p>Wenn etwas länger als eine Sekunde lädt, hüpft statt eines Kreisels eine kleine Wimpelkette. Passt zum Logo und macht Warten freundlicher. Erscheint nur, wenn es wirklich dauert.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="haptic"><button type="button" class="btn" id="buzzBtn">Termin merken</button><p class="label" id="buzzTxt">Am Handy kurz spürbar</p></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">48</span> Spürbare Rückmeldung am Handy</h2><p>Bei wichtigen Aktionen (Termin gemerkt, Nachricht gesendet) vibriert das Handy ganz kurz. Man spürt, dass es geklappt hat, ohne hinzusehen. Am iPhone ist das im Browser leider nicht möglich, dort bleibt es bei der Animation.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="kmund"><div class="kcard" id="kcard"><span class="bub" aria-hidden="true">💬</span><p id="kText"></p><small id="kWho"></small></div><div style="display:flex;justify-content:center;margin-top:14px"><button type="button" class="btn ghost" id="kNext">Nächster Spruch</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">49</span> Kindermund</h2><p>Lustige und kluge Sätze der Kinder, jede Woche ein neuer, die Karte dreht sich beim Wechsel. Zeigt, wie viel Freude im Haus steckt. <b>Beispiel:</b> Die Sprüche sind erfunden – echte nur ohne Namen und mit Einverständnis.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="donate"><div class="thermo" aria-hidden="true"><i id="thermo"></i></div><div class="donate-txt"><b>Neues Klettergerüst für den Garten</b><span class="big" id="donN">0 €</span><small id="donS">von 8.000 € gesammelt (Beispiel)</small><button type="button" class="btn" style="justify-self:start">So können Sie helfen</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">50</span> Spendenbarometer</h2><p>Für Förderverein oder Elternbeirat: ein Barometer, das zeigt, wie weit ein Spendenziel schon ist. Füllt sich beim Erscheinen, die Zahl zählt mit. <b>Beispiel:</b> Projekt und Beträge sind erfunden.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
@@ -1501,6 +1779,182 @@ button { font: inherit; color: inherit; }
     box.addEventListener("pointerleave", function () { move(0, 0); });
     addEventListener("deviceorientation", function (e) { if (e.gamma == null) return; move(Math.max(-1, Math.min(1, e.gamma / 30)) * .5, 0); });
   })();
+
+
+  /* AF Fotostapel */
+  (function () {
+    var st = $("#stack");
+    function top() { var f = $$("figure", st); return f[f.length - 1]; }
+    function fling(dir) {
+      var f = top(); if (!f || f.dataset.busy) return; f.dataset.busy = 1;
+      var done = function () { f.style.translate = ""; f.style.rotate = ""; f.style.opacity = ""; st.insertBefore(f, st.firstChild); delete f.dataset.busy; };
+      if (reduced) { done(); return; }
+      f.animate([{ translate: (f.style.translate || "0 0"), opacity: 1 }, { translate: (dir * 420) + "px -40px", rotate: (dir * 25) + "deg", opacity: 0 }], { duration: 380, easing: "cubic-bezier(.23,1,.32,1)" }).onfinish = function () {
+        done(); f.animate([{ opacity: 0, scale: .92 }, { opacity: 1, scale: 1 }], { duration: 250 });
+      };
+    }
+    $("#stackNext").addEventListener("click", function () { fling(1); });
+    var sx = 0, dx = 0, cur = null;
+    st.addEventListener("pointerdown", function (e) { cur = top(); if (!cur) return; sx = e.clientX; dx = 0; cur.classList.add("drag"); cur.setPointerCapture(e.pointerId); });
+    st.addEventListener("pointermove", function (e) { if (!cur) return; dx = e.clientX - sx; cur.style.translate = dx + "px 0"; cur.style.rotate = (dx / 14) + "deg"; });
+    function up() { if (!cur) return; cur.classList.remove("drag"); var f = cur; cur = null;
+      if (Math.abs(dx) > 70) fling(dx > 0 ? 1 : -1);
+      else { f.animate([{ translate: dx + "px 0", rotate: (dx / 14) + "deg" }, { translate: "0 0", rotate: getComputedStyle(f).getPropertyValue("--r") || "0deg" }], { duration: 300, easing: "cubic-bezier(.34,1.56,.64,1)" }); f.style.translate = ""; f.style.rotate = ""; } }
+    st.addEventListener("pointerup", up); st.addEventListener("pointercancel", up);
+  })();
+
+  /* AG Formular-Lotse */
+  (function () {
+    var g = $("#guide"), Q = [
+      ["Mein Kind ist krank", "Bitte bis 8:30 Uhr krankmelden – per E-Mail oder telefonisch in der Gruppe.", [["MAIL", "Krankmeldung per E-Mail vorbereiten"], ["TEL", "Durchwahl der Gruppe finden"]]],
+      ["Mein Kind braucht Medikamente", "Medikamente geben wir nur mit unterschriebener Vereinbarung.", [["PDF", "Medikamentenvereinbarung"]]],
+      ["Jemand anderes holt mein Kind ab", "Dafür brauchen wir eine schriftliche Abhol-Vollmacht.", [["PDF", "Abhol-Vollmacht (Beispiel)"]]],
+      ["Ich will wissen, wann zu ist", "Alle Schließtage stehen im Ferienplan, auch als Kalenderdatei.", [["PDF", "Ferienplan 2026/27"], ["ICS", "Schließtage in den Kalender"]]],
+      ["Ich habe eine Frage zum Hort", "Viele Antworten stehen schon im Hort-ABC.", [["PDF", "Hort-ABC"]]]];
+    function start(back) {
+      g.innerHTML = '<h3>Was möchten Sie tun?</h3><div class="opts">' + Q.map(function (q, i) { return '<button type="button" data-i="' + i + '">' + q[0] + "</button>"; }).join("") + "</div>";
+      $$(".opts button", g).forEach(function (b) { b.addEventListener("click", function () { res(+b.dataset.i); }); });
+      if (back) $(".opts button", g).focus();
+    }
+    function res(i) {
+      var q = Q[i]; g.innerHTML = '<div class="res"><h3>' + q[0] + "</h3><p style=\"font-size:.9rem;color:var(--ink-soft)\">" + q[1] + "</p>" + q[2].map(function (d) { return '<div class="doc"><span class="ext">' + d[0] + "</span>" + d[1] + "</div>"; }).join("") + '<button type="button" class="back">‹ andere Frage</button></div>';
+      $(".back", g).addEventListener("click", function () { start(true); }); $(".back", g).focus();
+    }
+    start(false);
+  })();
+
+  /* AH Schulstart */
+  onView($("#schoolN"), function () {
+    var target = new Date(2027, 8, 14), now = new Date(), days = Math.max(0, Math.ceil((target - now) / 864e5)), yearStart = new Date(2026, 8, 14);
+    var frac = Math.min(1, Math.max(0, (now - yearStart) / (target - yearStart))), f = $("#bagFill"), h = 104 * frac;
+    f.setAttribute("height", h); f.setAttribute("y", 134 - h);
+    var el = $("#schoolN"); if (reduced) { el.textContent = days; return; }
+    var t0 = performance.now(); (function tick(t) { var k = Math.min(1, (t - t0) / 1200), e2 = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(days * e2); if (k < 1) requestAnimationFrame(tick); })(t0);
+  });
+
+  /* AI Kontakt-Knopf */
+  (function () {
+    var box = $("#fabbox"), fab = $("#fab"), items = $$(".fab-item", box);
+    function set(o) { box.classList.toggle("open", o); fab.setAttribute("aria-expanded", o); items.forEach(function (a) { a.tabIndex = o ? 0 : -1; }); }
+    fab.addEventListener("click", function () { set(!box.classList.contains("open")); });
+    items.forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); set(false); fab.focus(); }); });
+    box.addEventListener("click", function (e) { if (e.target === box) set(false); });
+    box.addEventListener("keydown", function (e) { if (e.key === "Escape") { set(false); fab.focus(); } });
+  })();
+
+  /* AJ Bringzeit */
+  (function () {
+    var C = 2 * Math.PI * 55, fg = $("#ringFg"); fg.style.strokeDasharray = C;
+    function set(m) {
+      var left = 540 - m, span = 540 - 405, frac = Math.max(0, Math.min(1, left / span));
+      fg.style.strokeDashoffset = C * (1 - frac); $("#ring").classList.toggle("late", left <= 10);
+      $("#ringTxt").innerHTML = left > 0 ? left + "<small>Min. Bringzeit</small>" : "<small>Bringzeit vorbei</small>";
+      $("#bringTxt").textContent = left > 10 ? "Die Bringzeit läuft noch bis 9:00 Uhr." : left > 0 ? "Gleich ist die Bringzeit vorbei – bitte bis 9:00 Uhr da sein." : "Ab 9:00 Uhr beginnt der Vormittag in den Gruppen.";
+    }
+    segment($("#bringSeg"), function (b) { set(+b.dataset.m); }); set(505);
+  })();
+
+  /* AK Elternbriefe */
+  (function () {
+    var L = [["Fotograf kommt am Donnerstag", "Nov 2026"], ["Laternenumzug zu St. Martin", "Nov 2026"], ["Weihnachtsmarkt: Helfer gesucht", "Nov 2026"], ["Elternabend Hort", "Okt 2026"], ["Neue Abholregeln im Kindergarten", "Okt 2026"], ["Erntedank-Fest", "Sep 2026"], ["Willkommen im neuen Kita-Jahr", "Sep 2026"], ["Faschingsfeier: Kostüme erlaubt", "Feb 2027"]];
+    var inp = $("#letIn"), ul = $("#letList");
+    function norm(t) { return t.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss"); }
+    function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+    function render() {
+      var q = norm(inp.value.trim()), hits = L.filter(function (l) { return !q || norm(l[0] + " " + l[1]).indexOf(q) >= 0; });
+      ul.innerHTML = hits.length ? hits.map(function (l) {
+        var t = esc(l[0]); if (q) { var i = norm(l[0]).indexOf(q); if (i >= 0) t = esc(l[0].slice(0, i)) + "<mark>" + esc(l[0].slice(i, i + q.length)) + "</mark>" + esc(l[0].slice(i + q.length)); }
+        return "<li><span>" + t + "</span><small>" + l[1] + "</small></li>"; }).join("") : '<li class="none">Kein Brief gefunden.</li>';
+    }
+    inp.addEventListener("input", render); render();
+  })();
+
+  /* AL Fokus-Rahmen */
+  (function () {
+    var box = $("#focusdemo"), ring = $("#fring");
+    $$(".row button", box).forEach(function (b) {
+      b.addEventListener("focus", function () { var r = b.getBoundingClientRect(), o = box.getBoundingClientRect(); ring.style.left = (r.left - o.left - 5) + "px"; ring.style.top = (r.top - o.top - 5) + "px"; ring.style.width = (r.width + 10) + "px"; ring.style.height = (r.height + 10) + "px"; ring.style.opacity = 1; });
+      b.addEventListener("blur", function () { setTimeout(function () { if (!box.contains(document.activeElement)) ring.style.opacity = 0; }, 0); });
+    });
+  })();
+
+  /* AM Vorher/Nachher */
+  (function () { var b = $("#ba"), r = $("input", b); r.addEventListener("input", function () { b.style.setProperty("--p", r.value + "%"); }); })();
+
+  /* AN Jahreskreis */
+  (function () {
+    var F = [["Erntedank", 9, "Wir danken für die Ernte und schmücken gemeinsam einen Gabentisch."], ["St. Martin", 10, "Laternen basteln, singen und gemeinsam durch Grombühl ziehen."], ["Nikolaus", 11, "Der Nikolaus besucht uns – in diesem Jahr am 07.12."], ["Weihnachten", 11, "Adventskreis jeden Morgen und der Weihnachtsmarkt mit Christbaumverkauf."], ["Fasching", 1, "Verkleiden, Krapfen und eine große Faschingsfeier im Turnraum."], ["Ostern", 2, "Ostereier färben und die Ostergeschichte im Morgenkreis."], ["Sommerfest", 6, "Ein Fest für alle Familien im Garten, bevor die Ferien beginnen."]];
+    var svg = $("#wheel"), n = F.length, cols = ["#D4B5B0", "#F3F8F7", "#B6D0CB", "#F1E5E3"], h = "", i = 0, rot = 0;
+    F.forEach(function (f, k) {
+      var a0 = (k / n) * 2 * Math.PI - Math.PI / 2 - Math.PI / n, a1 = a0 + 2 * Math.PI / n, R = 100;
+      h += '<path d="M0 0 L' + (R * Math.cos(a0)).toFixed(1) + " " + (R * Math.sin(a0)).toFixed(1) + " A" + R + " " + R + " 0 0 1 " + (R * Math.cos(a1)).toFixed(1) + " " + (R * Math.sin(a1)).toFixed(1) + ' Z" fill="' + cols[k % cols.length] + '" stroke="#2D6A6A" stroke-width="2"/>';
+      var am = (a0 + a1) / 2, deg = am * 180 / Math.PI + 90;
+      h += '<text transform="rotate(' + deg.toFixed(1) + ') translate(0 -62)" text-anchor="middle">' + f[0] + "</text>";
+    });
+    h += '<circle r="22" fill="#1E3B44"/>'; svg.innerHTML = h;
+    var m = new Date().getMonth(), start = 0; F.forEach(function (f, k) { if (f[1] >= m && (F[start][1] < m || f[1] < F[start][1])) start = k; }); i = start;
+    function show(k, d) { i = (k + n) % n; rot -= (d || 0) * 360 / n; if (!d) rot = -i * 360 / n; svg.style.rotate = rot + "deg"; $("#festH").textContent = F[i][0]; $("#festP").textContent = F[i][2]; }
+    $("#festNext").addEventListener("click", function () { show(i + 1, 1); }); $("#festPrev").addEventListener("click", function () { show(i - 1, -1); });
+    show(i, 0);
+  })();
+
+  /* AO Suchspiel */
+  (function () {
+    var hs = $$("#seek .hid"), found = 0, bar = $("#seekBar");
+    hs.forEach(function (h) {
+      function hit() { if (h.classList.contains("found")) return; h.classList.add("found"); h.style.transformBox = "fill-box"; h.style.transformOrigin = "center"; found++;
+        bar.textContent = found === hs.length ? "Alle 5 gefunden – super! 🎉" : found + " von 5 Wimpeln gefunden"; if (found === hs.length) confetti(bar); }
+      h.addEventListener("click", hit); h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hit(); } });
+    });
+  })();
+
+  /* AP Tastenkürzel */
+  (function () {
+    var k = $("#keys");
+    function t(o) { k.classList.toggle("open", o); k.setAttribute("aria-hidden", !o); }
+    $("#keysBtn").addEventListener("click", function () { t(!k.classList.contains("open")); });
+    addEventListener("keydown", function (e) { if (e.key === "?" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) t(!k.classList.contains("open")); if (e.key === "Escape") t(false); });
+  })();
+
+  /* AQ Bildzeichen */
+  onView($("#picto"), function () { $("#picto").classList.add("go"); });
+
+  /* AR Bildkarten */
+  (function () {
+    var cs = $$("#pcards .pcard"), mins = [405, 570, 600, 675, 720, 870, 900, 990];
+    function set(m) { var cur = 0; mins.forEach(function (x, k) { if (m >= x) cur = k; }); cs.forEach(function (c, k) { c.classList.toggle("now", k === cur); c.classList.toggle("past", k < cur); });
+      var c = cs[cur], box = $("#pcards"); box.scrollTo({ left: c.offsetLeft - box.offsetLeft - 20, behavior: reduced ? "auto" : "smooth" }); }
+    segment($("#pcSeg"), function (b) { set(+b.dataset.m); }); set(690);
+  })();
+
+  /* AS Vibration */
+  (function () {
+    var b = $("#buzzBtn"), t = $("#buzzTxt");
+    b.addEventListener("click", function () {
+      var ok = navigator.vibrate ? navigator.vibrate([12, 40, 18]) : false;
+      if (!reduced) { b.classList.remove("buzz"); void b.offsetWidth; b.classList.add("buzz"); }
+      t.textContent = ok ? "Gespürt? Das Handy hat kurz vibriert." : "Dieses Gerät kann im Browser nicht vibrieren – hier bleibt die Animation.";
+    });
+  })();
+
+  /* AT Kindermund */
+  (function () {
+    var K = [["„Wenn ich groß bin, werde ich Bagger.“", "Junge, 4 Jahre (Beispiel)"], ["„Der Mond ist heute nur halb aufgeladen.“", "Mädchen, 5 Jahre (Beispiel)"], ["„Hausaufgaben sind wie Gemüse: am Ende ist man froh.“", "Hortkind, 8 Jahre (Beispiel)"], ["„Ich hab nicht getrödelt, ich hab nachgedacht.“", "Junge, 6 Jahre (Beispiel)"]];
+    var i = 0, c = $("#kcard");
+    function fill() { $("#kText").textContent = K[i][0]; $("#kWho").textContent = K[i][1]; }
+    $("#kNext").addEventListener("click", function () {
+      i = (i + 1) % K.length; if (reduced) { fill(); return; }
+      c.classList.add("flip"); setTimeout(function () { fill(); c.classList.remove("flip"); }, 260);
+    });
+    fill();
+  })();
+
+  /* AU Spendenbarometer */
+  onView($("#thermo"), function () {
+    var goal = 8000, have = 5240, el = $("#donN"); $("#thermo").style.height = (have / goal * 100) + "%";
+    if (reduced) { el.textContent = have.toLocaleString("de-DE") + " €"; return; }
+    var t0 = performance.now(); (function tick(t) { var k = Math.min(1, (t - t0) / 1400), e2 = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(have * e2).toLocaleString("de-DE") + " €"; if (k < 1) requestAnimationFrame(tick); })(t0);
+  });
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
