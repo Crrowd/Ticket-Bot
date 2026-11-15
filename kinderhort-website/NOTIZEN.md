@@ -314,3 +314,8 @@ Verbesserung für alle Übergänge: eine Bewegungskurve `cubic-bezier(.22,1,.36,
 36 Ruhig nach Lehrbuch (Empfehlung) · 37 Rasterpunkte · 38 Zweifarbig überblenden · 39 Wimpel als Ladeanzeige · 40 Foto baut sich aus Buchstaben auf · 41 Fotos laden als Rasterbild · 42 Menü klappt aus dem Knopf (Empfehlung) · 43 Knöpfe nach Lehrbuch (Empfehlung) · 44 Kopfleiste wird beim Scrollen fester · 45 Wörter rollen um · 46 Kringel um den aktiven Menüpunkt
 
 Entscheidung offen.
+
+## Übergänge – Nachtrag 47–59 (15.11.2026)
+47 Foto wird zur Seite (schon eingebaut, Empfehlung) · 48 Nach oben schieben · 49 Wimpel öffnet die Seite · 50 Weicher Fokuswechsel · 51 Trennlinie zeichnet sich (Empfehlung) · 52 Fotos erscheinen als Welle (Empfehlung) · 53 Großer Titel wird zur Leiste · 54 Fotoreihe mit Vorschau · 55 Telefon klingelt kurz · 56 Link füllt sich mit Farbe · 57 Kalenderblatt blättert · 58 Platzhalter beim Laden · 59 Wimpel im Logo wehen
+
+Entscheidung offen.

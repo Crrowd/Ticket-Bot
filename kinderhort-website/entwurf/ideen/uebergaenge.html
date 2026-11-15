@@ -274,6 +274,73 @@ button { font: inherit; color: inherit; }
 .circnav path { fill: none; stroke: #C9A49E; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .45s cubic-bezier(.22,1,.36,1); }
 .circnav a.on path { stroke-dashoffset: 0; }
 
+
+/* ---------- Nachtrag 47–59 ---------- */
+.ghost-img { position: absolute; z-index: 6; border-radius: 10px; background: center / cover no-repeat; pointer-events: none; transform-origin: 0 0; }
+
+/* 51 Linie zeichnet sich */
+.lineb section { padding: 22px 18px; display: grid; gap: 8px; color: var(--ink); }
+.lineb hr { border: 0; height: 2px; background: #1E3B44; opacity: .25; margin: 0 18px; transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s cubic-bezier(.22,1,.36,1); }
+.lineb hr.in { transform: scaleX(1); }
+.lineb h5 { margin: 0; font-size: 1.1rem; } .lineb i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.13); }
+
+/* 52 Diagonale Welle */
+.wavegrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 440px; }
+.wavegrid div { aspect-ratio: 1; border-radius: 12px; background: center / cover; opacity: 0; transform: translateY(10px); }
+.wavegrid.go div { opacity: 1; transform: none; transition: opacity .4s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1); transition-delay: calc(var(--d) * 50ms); }
+
+/* 53 Großer Titel wird zur Leiste */
+.ttl .bar3 { position: sticky; top: 0; z-index: 2; height: 46px; display: flex; align-items: center; padding: 0 16px; background: rgba(243,248,247, var(--a, 0)); box-shadow: 0 1px 0 rgba(30,59,68, calc(var(--a, 0) * .1)); }
+.ttl .bar3 b { font-size: 1rem; color: var(--ink); opacity: var(--a, 0); transform: translateY(calc((1 - var(--a, 0)) * 8px)); }
+.ttl h3 { margin: 0; padding: 4px 16px 14px; font-size: 2rem; letter-spacing: -.03em; color: var(--ink); transform-origin: 0 0; transform: scale(calc(1 - var(--a, 0) * .3)); opacity: calc(1 - var(--a, 0)); }
+.ttl .cnt { padding: 0 16px 30px; display: grid; gap: 10px; } .ttl .cnt i { display: block; height: 44px; border-radius: 10px; background: rgba(30,59,68,.1); }
+
+/* 54 Fotoreihe mit Vorschau */
+.peekc { width: 100%; max-width: 440px; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 12px; padding: 6px 40px 14px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.peekc::-webkit-scrollbar { display: none; }
+.peekc figure { flex: none; width: 76%; margin: 0; scroll-snap-align: center; border-radius: 14px; overflow: hidden; background: #F3F8F7; transform: scale(var(--sc, .92)); opacity: var(--op, .6); transition: transform .3s cubic-bezier(.22,1,.36,1), opacity .3s cubic-bezier(.22,1,.36,1); }
+.peekc img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.peekc figcaption { padding: 8px 12px; font-size: .84rem; font-weight: 600; color: var(--ink); }
+
+/* 55 Telefon klingelt */
+.ring-btn { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 12px; padding: 12px 18px; background: #F3F8F7; color: #1E3B44; font: 600 .95rem var(--font); cursor: pointer; }
+.ring-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transform-origin: 50% 50%; }
+.ring-btn:hover svg, .ring-btn:focus-visible svg { animation: ringit .45s cubic-bezier(.22,1,.36,1); }
+@keyframes ringit { 20% { transform: rotate(-14deg); } 40% { transform: rotate(12deg); } 60% { transform: rotate(-8deg); } 80% { transform: rotate(4deg); } }
+
+/* 56 Link füllt sich */
+.fill-text { max-width: 400px; color: var(--on); font-size: 1.05rem; line-height: 1.9; }
+.fill-text a { color: var(--on); text-decoration: none; font-weight: 600; padding: 1px 3px; margin: 0 -3px; border-radius: 4px; background: linear-gradient(#D4B5B0, #D4B5B0) no-repeat 0 100% / 100% 2px; transition: background-size .25s cubic-bezier(.22,1,.36,1), color .25s cubic-bezier(.22,1,.36,1); }
+.fill-text a:hover, .fill-text a:focus-visible { background-size: 100% 100%; color: #1E3B44; }
+
+/* 57 Kalenderblatt blättert */
+.calbtn { display: inline-flex; align-items: center; gap: 12px; border: 0; border-radius: 12px; padding: 10px 16px 10px 10px; background: #F3F8F7; color: #1E3B44; font: 600 .95rem var(--font); cursor: pointer; }
+.calic { position: relative; width: 34px; height: 36px; perspective: 120px; }
+.calic .base, .calic .leaf { position: absolute; left: 0; right: 0; border-radius: 6px; }
+.calic .base { top: 0; bottom: 0; background: #fff; box-shadow: inset 0 0 0 1.5px #1E3B44; display: grid; place-items: end center; font: 700 .8rem var(--font); padding-bottom: 3px; }
+.calic .top { position: absolute; left: 0; right: 0; top: 0; height: 11px; background: #C9A49E; border-radius: 6px 6px 0 0; box-shadow: inset 0 0 0 1.5px #1E3B44; z-index: 2; }
+.calic .leaf { top: 9px; height: 27px; background: #fff; box-shadow: inset 0 0 0 1.5px #1E3B44; transform-origin: 50% 0; display: grid; place-items: end center; font: 700 .8rem var(--font); padding-bottom: 3px; z-index: 1; }
+.calbtn:hover .leaf, .calbtn:focus-visible .leaf { animation: leafflip .5s cubic-bezier(.22,1,.36,1); }
+@keyframes leafflip { 0% { transform: rotateX(0); opacity: 1; } 60% { transform: rotateX(-110deg); opacity: 0; } 61% { transform: rotateX(0); opacity: 0; } 100% { opacity: 1; } }
+
+/* 58 Platzhalter beim Laden */
+.skel { width: 100%; max-width: 420px; display: grid; gap: 10px; }
+.skel .it { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; background: #F3F8F7; border-radius: 14px; padding: 10px; color: var(--ink); }
+.skel .d { width: 56px; height: 56px; border-radius: 10px; background: #D4B5B0; display: grid; place-items: center; font-weight: 700; font-size: .8rem; text-align: center; line-height: 1.1; }
+.skel .t b { display: block; font-size: .92rem; } .skel .t span { font-size: .8rem; color: var(--ink-soft); }
+.skel.loading .d, .skel.loading .t b, .skel.loading .t span { color: transparent; background: #DCE6E4; border-radius: 6px; }
+.skel.loading .t b { width: 70%; height: 12px; margin-bottom: 6px; } .skel.loading .t span { display: block; width: 45%; height: 10px; }
+.skel.loading .it { animation: skelpulse 1.2s ease-in-out infinite; }
+@keyframes skelpulse { 50% { opacity: .55; } }
+.skel .it.show { animation: rise .4s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(var(--i) * 50ms); }
+
+/* 59 Wimpel im Logo */
+.logo-demo { display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 14px; background: rgba(243,248,247,.92); color: #1E3B44; font-weight: 600; text-decoration: none; }
+.logo-demo svg { width: 46px; height: 46px; flex: none; }
+.logo-demo .lf { transform-box: fill-box; transform-origin: 50% 0; }
+.logo-demo:hover .lf, .logo-demo:focus-visible .lf { animation: lfw .6s cubic-bezier(.22,1,.36,1); animation-delay: calc(var(--i) * 50ms); }
+@keyframes lfw { 30% { transform: rotate(16deg); } 65% { transform: rotate(-8deg); } }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -308,7 +375,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Übergänge</span>
-    <h1>46 Übergänge und Animationen</h1>
+    <h1>59 Übergänge und Animationen</h1>
     <p>Wie soll sich die Seite bewegen, wenn man von einer Seite zur nächsten wechselt, scrollt oder etwas aufklappt? Jede Karte ist live: oben auf „Weiter“ tippen (oder direkt in den Mini-Browser), in den Boxen scrollen.</p>
   </header>
   <p class="sync-note">Unter jedem Übergang kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen. Für den Seitenwechsel reicht am Ende <b>ein</b> Favorit – die anderen können für besondere Stellen bleiben.</p>
@@ -601,6 +668,84 @@ button { font: inherit; color: inherit; }
       <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">46</span> Kringel um den aktiven Menüpunkt</h2><p>Die aktuelle Seite im Menü bekommt einen handgezeichneten rosé Kringel, der sich beim Wechsel neu zeichnet – das Kennzeichen der Seite (die Markierungen) wird zur Orientierung.</p></div>
     </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="share"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="badge-in">schon eingebaut</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">47</span> Foto wird zur Seite</h2><p>Das Foto der alten Seite fliegt an seinen Platz auf der neuen Seite und wächst dabei mit, der Rest blendet um. So funktionieren schon die Bereichskarten auf der Startseite – hier im Vergleich mit den anderen.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="push"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">48</span> Nach oben schieben</h2><p>Die alte Seite rutscht nach oben weg, die neue kommt von unten – wie beim Weiterscrollen. Für Seiten, die logisch nacheinander kommen, z. B. von den Bereichen zu den Terminen.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="flagmask"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">49</span> Wimpel öffnet die Seite</h2><p>Die neue Seite erscheint in der Form eines Wimpels, der von oben wächst, bis er alles bedeckt. Das Kennzeichen der Seite als Fenster – fröhlich, aber nur einen Moment.</p></div>
+    </article>
+
+    <article class="card" data-k="seite">
+      <div class="stage"><div style="width:100%;max-width:440px"><div class="mb" data-kind="focus"><div class="chrome"><i></i><i></i><i></i><span>kinderhort-grombuehl.de</span></div><div class="vp"><div class="pg p1"><div class="nav"><b></b><em></em><em></em></div><span class="kick">Willkommen</span><h4>Startseite</h4><div class="img" style="background-image:url(img/p2160031-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p2" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 11 Monaten</span><h4>Kinderkrippe</h4><div class="img" style="background-image:url(img/p2160110-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div><div class="pg p3" hidden><div class="nav"><b></b><em></em><em></em></div><span class="kick">Ab 3 Jahren</span><h4>Kindergarten</h4><div class="img" style="background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div class="row"><span></span><span></span><span></span></div><div class="ln"></div><div class="ln s"></div></div></div></div><div class="ctl"><button type="button" class="btn ghost" data-dir="-1">← Zurück</button><button type="button" class="btn" data-dir="1">Weiter →</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Seitenwechsel</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">50</span> Weicher Fokuswechsel</h2><p>Die alte Seite wird minimal unscharf und tritt zurück, die neue kommt scharf nach vorn – wie wenn eine Kamera den Fokus wechselt. Höchstens 3 Pixel Unschärfe, damit es flüssig bleibt.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox lineb" id="lineBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h5>Unsere Bereiche</h5><i></i><i style="width:60%"></i></section><hr><section><h5>Das zeichnet uns aus</h5><i></i><i style="width:70%"></i></section><hr><section><h5>Termine</h5><i></i><i style="width:50%"></i></section><hr><section><h5>Kontakt</h5><i></i><i style="width:65%"></i></section></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">51</span> Trennlinie zeichnet sich</h2><p>Zwischen Abschnitten zeichnet sich beim Hineinscrollen eine feine Linie von links nach rechts. Fast unsichtbar – aber die Seite wirkt dadurch gebaut statt gestapelt.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="wavegrid" id="waveGrid"><div style="--d:0;background-image:url(img/p2160110-800.webp)"></div><div style="--d:1;background-image:url(img/turnraum-800.webp)"></div><div style="--d:2;background-image:url(img/kreatviraum-5-1-800.webp)"></div><div style="--d:3;background-image:url(img/blick-vom-fenster-in-den-raum-800.webp)"></div><div style="--d:1;background-image:url(img/p2160031-800.webp)"></div><div style="--d:2;background-image:url(img/werkraum-800.webp)"></div><div style="--d:3;background-image:url(img/lesecke-800.webp)"></div><div style="--d:4;background-image:url(img/maltisch-800.webp)"></div><div style="--d:2;background-image:url(img/p2160110-800.webp)"></div><div style="--d:3;background-image:url(img/kreatviraum-5-1-800.webp)"></div><div style="--d:4;background-image:url(img/turnraum-800.webp)"></div><div style="--d:5;background-image:url(img/lesecke-800.webp)"></div></div><button type="button" class="replay" data-replay="WG">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag" style="background:#E3F2E9">Empfehlung</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">52</span> Fotos erscheinen als Welle</h2><p>Viele Fotos auf einmal erscheinen nicht alle gleichzeitig, sondern als diagonale Welle von oben links nach unten rechts, jedes 50 ms später. Für den virtuellen Rundgang oder eine Bildreihe.</p></div>
+    </article>
+
+    <article class="card" data-k="abschnitt">
+      <div class="stage"><div class="sbox ttl" id="ttlBox" tabindex="0" aria-label="Beispielseite zum Scrollen"><div class="bar3"><b>Kinderkrippe</b></div><h3>Kinderkrippe</h3><div class="cnt"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Abschnitte</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">53</span> Großer Titel wird zur Leiste</h2><p>Der große Seitentitel wird beim Scrollen kleiner und blasser, gleichzeitig erscheint er klein oben in der Leiste – wie in den Einstellungen am iPhone. Man weiß immer, auf welcher Seite man ist.</p></div>
+    </article>
+
+    <article class="card" data-k="element">
+      <div class="stage"><div class="peekc" id="peekc"><figure><img src="img/p2160110-800.webp" alt=""><figcaption>Gruppenraum der Krippe</figcaption></figure><figure><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><figcaption>Gruppenraum im Kindergarten</figcaption></figure><figure><img src="img/kreatviraum-5-1-800.webp" alt=""><figcaption>Kreativraum im Hort</figcaption></figure><figure><img src="img/turnraum-800.webp" alt=""><figcaption>Turnraum</figcaption></figure></div><p class="hint">Seitlich wischen</p></div>
+      <div class="about"><div class="meta"><span class="tag">Elemente</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">54</span> Fotoreihe mit Vorschau</h2><p>Beim Wischen durch Fotos rastet jedes Bild in der Mitte ein, die Nachbarn lugen kleiner und blasser hervor. Man sieht sofort, dass es weitergeht – für den Rundgang am Handy.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><button type="button" class="ring-btn"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> 0931 2789892 0</button><p class="hint">Mit der Maus darüberfahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">55</span> Telefon klingelt kurz</h2><p>Fährt man über eine Telefonnummer, wackelt das Hörer-Symbol einmal kurz wie beim Klingeln. Eine kleine Geste, die sagt: hier kann man anrufen.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><p class="fill-text">Alle Schließtage stehen im <a href="#">Ferienplan</a>, Antworten im <a href="#">KinderhortABC</a> und die Durchwahlen unter <a href="#">Kontakt</a>.</p><p class="hint">Mit der Maus über einen Link fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">56</span> Link füllt sich mit Farbe</h2><p>Die rosé Unterstreichung eines Links wächst beim Darüberfahren nach oben, bis das ganze Wort hinterlegt ist. Ruhiger als die Wellen-Linie, gut lesbar.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><button type="button" class="calbtn"><span class="calic" aria-hidden="true"><span class="base">5</span><span class="top"></span><span class="leaf">4</span></span>Alle Termine</button><p class="hint">Mit der Maus darüberfahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">57</span> Kalenderblatt blättert</h2><p>Beim Termine-Knopf blättert das Kalenderblatt im Symbol einmal um, als würde ein Tag abgerissen. Ein kleines Augenzwinkern für die Termine.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><div class="skel loading" id="skel"><div class="it" style="--i:0"><span class="d">04<br>DEZ</span><span class="t"><b>Weihnachtsmarkt</b><span>Fr, 04.12., ab 16:30 Uhr</span></span></div><div class="it" style="--i:1"><span class="d">07<br>DEZ</span><span class="t"><b>Der Nikolaus besucht uns</b><span>Mo, 07.12.</span></span></div><div class="it" style="--i:2"><span class="d">24<br>DEZ</span><span class="t"><b>Weihnachten – geschlossen</b><span>bis 08.01.2027</span></span></div></div><button type="button" class="replay" data-replay="SK">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">58</span> Platzhalter beim Laden</h2><p>Dauert das Laden länger als eine Sekunde, zeigt die Seite graue Platzhalter in der richtigen Form, die ruhig atmen. Dann gleiten die echten Einträge nacheinander herein. Passt zu euren Lade-Regeln.</p></div>
+    </article>
+
+    <article class="card" data-k="mikro">
+      <div class="stage"><a href="#" class="logo-demo" id="logoDemo"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1E3B44"/><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path class="lf" style="--i:0" d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path class="lf" style="--i:1" d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path class="lf" style="--i:2" d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path class="lf" style="--i:3" d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg><span>Kath. Kinder- und Jugendhort<br>Grombühl e. V.</span></a><p class="hint">Mit der Maus über das Logo fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag">Kleine Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">59</span> Wimpel im Logo wehen</h2><p>Fährt man über das Logo oben links, wehen die vier Wimpel darin einmal nacheinander, wie in einem Lufthauch. Ein kleines Detail, das nur diese Seite hat.</p></div>
+    </article>
   </div>
   <p class="foot">Alle Übergänge beachten „Bewegung reduzieren“ in den Geräte-Einstellungen – dann wechselt die Seite ohne Bewegung.</p>
 </div>
@@ -866,6 +1011,31 @@ button { font: inherit; color: inherit; }
 
   /* Kringel um den aktiven Menüpunkt */
   $$("#circnav a").forEach(function (a, i, all) { a.addEventListener("click", function (e) { e.preventDefault(); all.forEach(function (x) { x.classList.toggle("on", x === a); }); }); });
+
+
+  /* ---------- Nachtrag 47–59 ---------- */
+  KIND.share = function (a, b, d, pt, vp) { var ia = $(".img", a), ib = $(".img", b), v = vp.getBoundingClientRect(), ra = ia.getBoundingClientRect(), rb;
+    b.style.visibility = "hidden"; b.hidden = false; rb = ib.getBoundingClientRect(); b.style.visibility = "";
+    var g = document.createElement("div"); g.className = "ghost-img"; g.style.backgroundImage = getComputedStyle(ib).backgroundImage; g.style.left = (rb.left - v.left) + "px"; g.style.top = (rb.top - v.top) + "px"; g.style.width = rb.width + "px"; g.style.height = rb.height + "px"; vp.appendChild(g); ib.style.opacity = 0;
+    var sx = ra.width / rb.width, sy = ra.height / rb.height, dx = ra.left - rb.left, dy = ra.top - rb.top + 40;
+    var rest = Array.prototype.slice.call(b.children).filter(function (k) { return k !== ib; });
+    return Promise.all([anim(a, [{ opacity: 1 }, { opacity: 0 }], { duration: 180 }), anim(g, [{ transform: "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy * .6 + ")", opacity: .3 }, { transform: "none", opacity: 1 }], { duration: 460, easing: IO }),
+      Promise.all(rest.map(function (k, i) { return anim(k, [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: 360, delay: 120 + Math.min(i, 5) * 40, easing: IO }); }))]).then(function () { g.remove(); ib.style.opacity = ""; }); };
+  KIND.push = function (a, b, d) { return Promise.all([anim(a, [{ transform: "none", opacity: 1 }, { transform: "translateY(" + (-35 * d) + "%)", opacity: 0 }], { duration: 420, easing: IO }), anim(b, [{ transform: "translateY(" + (100 * d) + "%)" }, { transform: "none" }], { duration: 420, easing: IO })]); };
+  KIND.flagmask = function (a, b) { b.style.zIndex = 2; return anim(b, [{ clipPath: "polygon(45% 0, 55% 0, 50% 0)" }, { clipPath: "polygon(30% 0, 70% 0, 50% 40%)", offset: .35 }, { clipPath: "polygon(-60% 0, 160% 0, 50% 260%)" }], { duration: 560, easing: IO }); };
+  KIND.focus = function (a, b) { return Promise.all([anim(a, [{ filter: "blur(0)", opacity: 1, transform: "none" }, { filter: "blur(3px)", opacity: 0, transform: "scale(.98)" }], { duration: 260, easing: IO }), anim(b, [{ filter: "blur(3px)", opacity: 0, transform: "scale(1.02)" }, { filter: "blur(0)", opacity: 1, transform: "none" }], { duration: 380, delay: 100, easing: IO })]); };
+
+  (function () { var box = $("#lineBox"), hrs = $$("hr", box); var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) en.target.classList.add("in"); }); }, { root: box, threshold: 1 }); hrs.forEach(function (h) { io.observe(h); }); })();
+  (function () { var g = $("#waveGrid"); function play() { g.classList.remove("go"); void g.offsetWidth; requestAnimationFrame(function () { g.classList.add("go"); }); } replay.WG = play; onView(g, play); })();
+  (function () { var box = $("#ttlBox"); function upd() { box.style.setProperty("--a", Math.min(1, box.scrollTop / 70).toFixed(3)); } box.addEventListener("scroll", upd, { passive: true }); upd(); })();
+  (function () { var c = $("#peekc"), fs = $$("figure", c);
+    function upd() { var mid = c.getBoundingClientRect().left + c.clientWidth / 2; fs.forEach(function (f) { var r = f.getBoundingClientRect(), dd = Math.min(1, Math.abs(r.left + r.width / 2 - mid) / r.width); f.style.setProperty("--sc", (1 - dd * .08).toFixed(3)); f.style.setProperty("--op", (1 - dd * .4).toFixed(3)); }); }
+    c.addEventListener("scroll", upd, { passive: true }); upd(); })();
+  $$(".fill-text a, #logoDemo").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); }); });
+  (function () { var sk = $("#skel"), its = $$(".it", sk), t = null;
+    function play() { clearTimeout(t); its.forEach(function (i) { i.classList.remove("show"); }); sk.classList.add("loading");
+      t = setTimeout(function () { sk.classList.remove("loading"); its.forEach(function (i) { void i.offsetWidth; i.classList.add("show"); }); }, reduced ? 0 : 1600); }
+    replay.SK = play; onView(sk, play); })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
