@@ -1044,6 +1044,115 @@ button { font: inherit; color: inherit; }
 .tab-m .fav i.c { background: #8A9EA2; }
 .tab-m span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+/* 89 Weg zur Anmeldung */
+.enrol { width: 100%; max-width: 480px; display: grid; gap: 0; }
+.en-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; position: relative; padding-bottom: 14px; opacity: .4; transition: opacity .35s; }
+.en-step.on { opacity: 1; }
+.en-step:not(:last-child)::before { content: ""; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: rgba(255,255,255,.2); }
+.en-step:not(:last-child)::after { content: ""; position: absolute; left: 19px; top: 40px; width: 2px; height: 0; background: var(--rose); transition: height .5s var(--ease-io); }
+.en-step.done::after { height: calc(100% - 40px); }
+.en-step .n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.12); font-weight: 800; transition: background .3s, color .3s; }
+.en-step.on .n { background: var(--rose); color: var(--ink); }
+.en-step b { display: block; color: var(--on); } .en-step span { font-size: .84rem; color: var(--on-soft); }
+
+/* 90 Besichtigung */
+.visit { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.visit h3 { font-size: 1rem; } .visit small { color: var(--ink-soft); }
+.visit .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.visit .opt { border: 1.5px solid rgba(30,59,68,.22); background: #fff; color: var(--ink); border-radius: 999px; padding: 7px 13px; font: 600 .84rem var(--font); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.visit .opt[aria-pressed="true"] { background: var(--surface); color: var(--on); border-color: var(--surface); }
+.visit .sum2 { font-size: .86rem; background: var(--rose-soft); border-radius: 12px; padding: 10px 12px; min-height: 2.6em; }
+.visit .btn { background: var(--surface); color: var(--on); justify-self: start; }
+.visit .btn:disabled { opacity: .4; }
+
+/* 91 Fragen nach Themen */
+.faqf { width: 100%; max-width: 460px; display: grid; gap: 10px; }
+.faqf .chips2 { display: flex; flex-wrap: wrap; gap: 6px; }
+.faqf .q { background: var(--paper); color: var(--ink); border-radius: 12px; padding: 11px 14px; font-size: .88rem; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; transition: opacity .2s, scale .2s var(--ease-out); }
+.faqf .q small { font-weight: 700; font-size: .7rem; color: var(--ink-soft); background: var(--bg-alt); padding: 2px 8px; border-radius: 999px; white-space: nowrap; align-self: center; }
+.faqf .q.hide { display: none; }
+
+/* 92 Karten heben sich räumlich */
+.lift-wrap { width: 100%; max-width: 460px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; perspective: 800px; }
+.lift { text-decoration: none; border-radius: 16px; overflow: hidden; background: var(--paper); color: var(--ink); transform-style: preserve-3d; transition: transform .25s var(--ease-out), box-shadow .25s; box-shadow: 0 6px 14px -8px rgba(0,0,0,.5); will-change: transform; }
+.lift img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.lift div { padding: 8px 10px 10px; font-size: .82rem; font-weight: 800; }
+.lift div small { display: block; font-weight: 500; font-size: .7rem; color: var(--ink-soft); }
+
+/* 93 Schließtage als Balken */
+.bars { width: 100%; max-width: 480px; display: grid; gap: 10px; }
+.bars-track { display: flex; height: 34px; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,.1); }
+.bars-track i { height: 100%; width: 0; transition: width .8s var(--ease-out); position: relative; }
+.bars-track i:nth-child(odd) { background: var(--rose); } .bars-track i:nth-child(even) { background: #E6CFCA; }
+.bars-track i + i { box-shadow: inset 2px 0 0 var(--surface); }
+.bars-leg { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px 14px; font-size: .82rem; color: var(--on-soft); }
+.bars-leg span b { color: var(--on); }
+.bars-leg span i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+.bars-total { display: flex; justify-content: space-between; color: var(--on); font-weight: 700; font-size: .9rem; }
+
+/* 94 Einzelne Schließzeit in den Kalender */
+.onecal { width: 100%; max-width: 460px; background: var(--paper); color: var(--ink); border-radius: 16px; overflow: hidden; font-size: .86rem; }
+.onecal .r { display: flex; align-items: center; gap: 10px; padding: 9px 12px; }
+.onecal .r + .r { border-top: 1px solid rgba(30,59,68,.08); }
+.onecal .r span { flex: 1; } .onecal .r small { color: var(--ink-soft); }
+.onecal .r button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 11px; background: var(--bg-alt); color: var(--ink); font: 700 .74rem var(--font); cursor: pointer; transition: background .2s, color .2s; white-space: nowrap; }
+.onecal .r button.got { background: #DDF3E6; color: #1F6B43; }
+.onecal svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* 95 Wann wieder kommen */
+.back2 { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.back2 h3 { font-size: 1rem; }
+.back2 .ans { border-radius: 12px; padding: 12px 14px; background: var(--bg-alt); font-size: .9rem; min-height: 4.2em; display: grid; gap: 4px; }
+.back2 .ans b { font-size: 1.05rem; }
+.back2 .warn { font-size: .74rem; color: #7E504A; font-weight: 700; }
+
+/* 96 Familien-Ansicht */
+.fam { width: 100%; max-width: 460px; display: grid; gap: 12px; }
+.fam .kids { display: flex; flex-wrap: wrap; gap: 6px; }
+.fam .kid { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 8px 14px; background: rgba(255,255,255,.12); color: var(--on); font: 700 .86rem var(--font); cursor: pointer; transition: background .2s, color .2s; }
+.fam .kid[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.fam .kid i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center; font-size: .6rem; font-style: normal; }
+.fam .kid[aria-pressed="true"] i::after { content: "✓"; }
+.fam-card { background: var(--paper); color: var(--ink); border-radius: 16px; padding: 14px 16px; display: grid; gap: 8px; font-size: .88rem; }
+.fam-card h4 { margin: 0; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.fam-card .row2 { display: flex; justify-content: space-between; gap: 10px; animation: rise .3s var(--ease-out) both; }
+.fam-card .row2 b { font-variant-numeric: tabular-nums; }
+
+/* 97 Offline-Hinweis */
+.offl { width: 100%; max-width: 440px; display: grid; gap: 14px; justify-items: center; }
+.off-page { position: relative; width: 100%; height: 150px; border-radius: 16px; background: var(--bg); overflow: hidden; }
+.off-page .ln { margin: 12px 18px; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.off-bar { position: absolute; left: 50%; bottom: 12px; translate: -50% 30px; opacity: 0; display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 999px; background: var(--ink); color: var(--on); font-size: .82rem; font-weight: 600; white-space: nowrap; box-shadow: 0 10px 22px -10px rgba(0,0,0,.6); transition: translate .35s var(--ease-out), opacity .25s, background .3s; }
+.off-bar.show { translate: -50% 0; opacity: 1; }
+.off-bar.ok { background: #1F6B43; }
+.off-bar svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* 98 Kurznachricht an die Gruppe */
+.note2 { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 16px; display: grid; gap: 10px; }
+.note2 .tpls { display: flex; flex-wrap: wrap; gap: 6px; }
+.note2 .tpl { border: 1.5px solid rgba(30,59,68,.2); background: #fff; color: var(--ink); border-radius: 999px; padding: 6px 12px; font: 600 .8rem var(--font); cursor: pointer; }
+.note2 .tpl[aria-pressed="true"] { background: var(--surface); color: var(--on); border-color: var(--surface); }
+.note2 .mail { border-radius: 12px; background: var(--bg-alt); padding: 10px 12px; font-size: .84rem; line-height: 1.5; white-space: pre-line; min-height: 7em; }
+.note2 .mail b { display: block; margin-bottom: 4px; }
+
+/* 99 Begriffe A–Z */
+.az { width: 100%; max-width: 460px; background: var(--paper); color: var(--ink); border-radius: 18px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; height: 280px; }
+.az-bar { display: flex; flex-wrap: wrap; gap: 2px; padding: 8px; border-bottom: 1px solid rgba(30,59,68,.1); }
+.az-bar button { width: 24px; height: 26px; border: 0; border-radius: 6px; background: none; color: var(--ink); font: 800 .74rem var(--font); cursor: pointer; }
+.az-bar button:disabled { color: rgba(30,59,68,.25); cursor: default; }
+.az-bar button.on { background: var(--rose); }
+.az-list { overflow-y: auto; padding: 4px 14px 14px; scroll-behavior: smooth; overscroll-behavior: contain; }
+.az-list h4 { margin: 12px 0 4px; font-size: 1.2rem; color: var(--rose-deep, #C9A49E); }
+.az-list dl { margin: 0; } .az-list dt { font-weight: 800; font-size: .9rem; margin-top: 8px; } .az-list dd { margin: 2px 0 0; font-size: .84rem; color: var(--ink-soft); }
+
+/* 100 Seite per QR zeigen */
+.showqr { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.qr-sheet { position: relative; width: 210px; background: var(--paper); color: var(--ink); border-radius: 20px; padding: 16px; display: grid; justify-items: center; gap: 8px; box-shadow: 0 20px 40px -18px rgba(0,0,0,.6); scale: .6; opacity: 0; transition: scale .4s cubic-bezier(.34,1.56,.64,1), opacity .2s; }
+.qr-sheet.open { scale: 1; opacity: 1; }
+.qr-sheet #qr2 { width: 150px; height: 150px; }
+.qr-sheet #qr2 img, .qr-sheet #qr2 canvas { width: 150px !important; height: 150px !important; }
+.qr-sheet b { font-size: .86rem; text-align: center; } .qr-sheet small { font-size: .72rem; color: var(--ink-soft); text-align: center; }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -1068,7 +1177,7 @@ button { font: inherit; color: inherit; }
 .sync-note { font-size: .85rem; color: var(--ink-soft); margin: -10px 0 22px; }
 @media (max-width: 520px) { .tally { border-radius: 18px; } }
 
-.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
+.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 .35em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
 .foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
@@ -1078,7 +1187,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>88 neue Ideen zum Ausprobieren</h1>
+    <h1>100 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
   <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
@@ -1863,6 +1972,84 @@ button { font: inherit; color: inherit; }
       <div class="stage"><div class="tabdemo"><div class="tabs-mock"><div class="tab-m act"><span class="fav"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1E3B44"/><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg><i id="favDot"></i></span><span id="tabTitle">Geöffnet · Kinderhort Grombühl</span></div><div class="tab-m"><span>Wetter</span></div></div><div class="seg" id="tabSeg" role="group" aria-label="Uhrzeit"><span class="knob" aria-hidden="true"></span><button type="button" data-o="1" aria-pressed="true">Mo 10:00</button><button type="button" data-o="0" aria-pressed="false">Sa 10:00</button></div></div></div>
       <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
         <h2><span class="num">88</span> Geöffnet-Punkt im Browser-Tab</h2><p>Das kleine Symbol im Browser-Tab bekommt einen grünen oder grauen Punkt – so sieht man auch zwischen vielen offenen Tabs, ob gerade geöffnet ist. Eine winzige Ergänzung zur Geöffnet-Anzeige, die schon eingebaut ist.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="enrol" id="enrol">
+          <div class="en-step"><span class="n">1</span><div><b>Anfrage schicken</b><span>Vorbereitete E-Mail oder Anruf in der Zentrale</span></div></div>
+          <div class="en-step"><span class="n">2</span><div><b>Haus kennenlernen</b><span>Besichtigung und erstes Gespräch</span></div></div>
+          <div class="en-step"><span class="n">3</span><div><b>Platzzusage</b><span>Sie hören von uns, sobald ein Platz frei ist</span></div></div>
+          <div class="en-step"><span class="n">4</span><div><b>Vertrag &amp; Buchungszeit</b><span>Unterlagen ausfüllen, Stunden festlegen</span></div></div>
+          <div class="en-step"><span class="n">5</span><div><b>Erster Tag</b><span>Eingewöhnung gemeinsam mit Ihnen</span></div></div></div><button type="button" class="replay" data-replay="EN">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">89</span> Weg zur Anmeldung</h2><p>Fünf Schritte von der ersten Anfrage bis zum ersten Tag, die sich nacheinander mit einer rosé Linie verbinden. Eltern wissen sofort, was als Nächstes kommt und wie lange es ungefähr dauert. <b>Beispiel:</b> Den genauen Ablauf müsste der Hort bestätigen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="visit"><h3>Besichtigung anfragen</h3><small>Wann passt es Ihnen? (mehrere möglich)</small><div class="opts" id="visDay"><button type="button" class="opt" aria-pressed="false">Mo</button><button type="button" class="opt" aria-pressed="false">Di</button><button type="button" class="opt" aria-pressed="false">Mi</button><button type="button" class="opt" aria-pressed="false">Do</button><button type="button" class="opt" aria-pressed="false">Fr</button></div><div class="opts" id="visTime"><button type="button" class="opt" aria-pressed="false">vormittags</button><button type="button" class="opt" aria-pressed="false">nachmittags</button></div><div class="sum2" id="visSum"></div><button type="button" class="btn" id="visBtn" disabled>E-Mail vorbereiten</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">90</span> Besichtigung mit Wunschzeiten</h2><p>Eltern tippen Wochentage und Tageszeit an, die ihnen passen, und bekommen eine fertige E-Mail mit allen Angaben. Das Team sieht sofort, wann ein Termin klappt – kein Hin und Her. Funktioniert ohne Formular-Postfach.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="faqf"><div class="chips2 seg" id="faqSeg" role="group" aria-label="Thema" style="background:rgba(255,255,255,.12)"><span class="knob" aria-hidden="true"></span><button type="button" data-t="alle" aria-pressed="true">Alle</button><button type="button" data-t="essen" aria-pressed="false">Essen</button><button type="button" data-t="zeiten" aria-pressed="false">Zeiten</button><button type="button" data-t="start" aria-pressed="false">Start</button></div>
+          <div class="q" data-t="essen">Braucht mein Kind eine Brotzeit?<small>Essen</small></div><div class="q" data-t="zeiten">Kann ich mein Kind abholen, wann ich möchte?<small>Zeiten</small></div><div class="q" data-t="start">Gibt es eine Eingewöhnungszeit?<small>Start</small></div><div class="q" data-t="zeiten">Hat der Hort in den Ferien geöffnet?<small>Zeiten</small></div><div class="q" data-t="start">Muss mein Kind sauber sein?<small>Start</small></div><div class="q" data-t="essen">Wer kocht das Mittagessen?<small>Essen</small></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">91</span> Fragen nach Themen filtern</h2><p>Über den häufigen Fragen ein paar Themen-Knöpfe: Essen, Zeiten, Start. Ein Tipp, und nur die passenden Fragen bleiben stehen – die anderen gleiten weich weg. Ergänzt die Suche, die es schon gibt. Die Fragen sind die echten.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="lift-wrap" id="lift"><a class="lift" href="#"><img src="img/p2160110-800.webp" alt=""><div>Kinderkrippe<small>ab 11 Monaten</small></div></a><a class="lift" href="#"><img src="img/blick-vom-fenster-in-den-raum-800.webp" alt=""><div>Kindergarten<small>ab 3 Jahren</small></div></a><a class="lift" href="#"><img src="img/kreatviraum-5-1-800.webp" alt=""><div>Kinderhort<small>Schulkinder</small></div></a></div><p class="hint">Mit der Maus über eine Karte fahren</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">92</span> Bereichskarten heben sich räumlich</h2><p>Die drei Bereichskarten auf der Startseite kippen beim Überfahren ganz leicht zur Maus hin und heben sich mit einem weichen Schatten ab, wie ein Foto, das man in die Hand nimmt. Nur am Computer und sehr dezent.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="bars" id="bars"><div class="bars-total"><span>Schließtage 2026/27</span><span>30 Tage</span></div><div class="bars-track" id="barsTrack"></div><div class="bars-leg" id="barsLeg"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">93</span> Schließtage als Balken</h2><p>Unter dem Ferienplan ein einziger Balken, der zeigt, wie sich die 30 Schließtage auf das Jahr verteilen: der größte Block im Sommer, ein paar einzelne Tage dazwischen. Auf einen Blick verständlich. Die Zahlen sind die echten.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="onecal" id="onecal"></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">94</span> Einzelne Schließzeit in den Kalender</h2><p>Neben jeder Zeile im Ferienplan ein kleiner Knopf, der genau diese eine Schließzeit in den Handy-Kalender legt – praktisch, wenn man nicht gleich alle 30 Tage im Kalender haben möchte. Die Zeiten sind die echten.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="back2"><h3>Wann darf mein Kind wieder kommen?</h3><div class="opts seg" id="backSeg" role="group" aria-label="Was hatte Ihr Kind?" style="background:var(--bg-alt);flex-wrap:wrap;border-radius:18px"><span class="knob" aria-hidden="true"></span><button type="button" data-k="fieber" aria-pressed="true" style="color:var(--ink)">Fieber</button><button type="button" data-k="magen" aria-pressed="false" style="color:var(--ink)">Erbrechen/Durchfall</button><button type="button" data-k="laeuse" aria-pressed="false" style="color:var(--ink)">Läuse</button></div><div class="ans" id="backAns" aria-live="polite"></div><span class="warn">Beispieltexte – verbindlich ist, was der Hort und Ihr Kinderarzt sagen.</span></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">95</span> „Wann darf mein Kind wieder kommen?“</h2><p>Eine kleine Hilfe für die häufigste Elternfrage nach einer Krankheit: Symptom antippen, und es erscheint die Regel des Hauses, z. B. „24 Stunden fieberfrei“. Spart viele Anrufe. <b>Wichtig:</b> Die Texte müsste der Hort festlegen, die hier sind nur Beispiele.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="fam"><div class="kids" id="kids"><button type="button" class="kid" data-b="krippe" aria-pressed="true"><i></i>Kind in der Krippe</button><button type="button" class="kid" data-b="kiga" aria-pressed="false"><i></i>im Kindergarten</button><button type="button" class="kid" data-b="hort" aria-pressed="false"><i></i>im Hort</button></div><div class="fam-card" id="famCard" aria-live="polite"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">96</span> Familien-Ansicht für mehrere Kinder</h2><p>Familien wählen einmal aus, in welchen Bereichen ihre Kinder sind. Danach zeigt die Startseite nur noch die passenden Öffnungszeiten und Durchwahlen – bei Geschwistern in Krippe und Hort alles auf einmal. Wird nur im eigenen Browser gemerkt.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="offl"><div class="off-page"><div class="ln"></div><div class="ln" style="width:60%"></div><div class="ln"></div><div class="off-bar" id="offBar" role="status"><svg viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01M3 3l18 18"/></svg><span>Kein Internet – Sie sehen die gespeicherte Seite</span></div></div><div class="seg" id="offSeg" role="group" aria-label="Verbindung"><span class="knob" aria-hidden="true"></span><button type="button" data-o="1" aria-pressed="true">Online</button><button type="button" data-o="0" aria-pressed="false">Offline</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">97</span> Hinweis ohne Internet</h2><p>Wenn das Handy kein Netz hat, zeigt die Seite die zuletzt gespeicherte Fassung und sagt das unten freundlich dazu. Kommt die Verbindung zurück, wird der Hinweis kurz grün und verschwindet. Die Technik dafür hat die Seite schon.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="note2"><b>Kurze Nachricht an die Gruppe</b><div class="tpls" id="tpls"><button type="button" class="tpl" data-t="oma" aria-pressed="true">Oma holt ab</button><button type="button" class="tpl" data-t="frueh" aria-pressed="false">Heute früher abholen</button><button type="button" class="tpl" data-t="arzt" aria-pressed="false">Arzttermin</button></div><div class="mail" id="mailPrev"></div><button type="button" class="btn" style="background:var(--surface);color:var(--on);justify-self:start">E-Mail öffnen</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">98</span> Kurznachricht an die Gruppe</h2><p>Fertige Vorlagen für die häufigsten Mitteilungen – „Oma holt heute ab“, „früher abholen“, „Arzttermin“. Ein Tipp öffnet die E-Mail an die richtige Adresse, nur noch Namen eintragen. Passt gut zu den neuen Adressen krippe@ und kindergarten@.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="az"><div class="az-bar" id="azBar"></div><div class="az-list" id="azList" tabindex="0"></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">99</span> Begriffe von A bis Z</h2><p>Eine eigene Seite mit allen Fachbegriffen und Infos von A bis Z, mit Buchstabenleiste zum Springen – eine durchsuchbare Online-Fassung des KinderhortABC. Die meisten Erklärungen stammen aus den Fachbegriffen, die auf der Seite schon erklärt werden; ein paar habe ich ergänzt.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="showqr"><div style="display:grid;gap:10px;max-width:200px"><p style="font-size:.9rem;color:var(--on)">Eine andere Mutter fragt nach der Webseite? Einfach den Code zeigen.</p><button type="button" class="btn" id="qrBtn">Code zeigen</button></div><div class="qr-sheet" id="qrSheet" aria-hidden="true"><div id="qr2"></div><b>Kinderhort Grombühl</b><small>Mit der Handykamera scannen</small></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">100</span> Seite per QR-Code zeigen</h2><p>Ein Knopf zeigt einen großen QR-Code der aktuellen Seite auf dem Bildschirm. Die andere Person scannt ihn mit der Kamera – ohne Nummern austauschen oder Links abtippen. Ideal beim Abholen oder am Elternabend.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
@@ -2834,6 +3021,85 @@ button { font: inherit; color: inherit; }
 
   /* CA Punkt im Tab */
   segment($("#tabSeg"), function (b) { var o = b.dataset.o === "1"; $("#favDot").classList.toggle("c", !o); $("#tabTitle").textContent = (o ? "Geöffnet" : "Geschlossen") + " · Kinderhort Grombühl"; });
+
+
+  /* CB Weg zur Anmeldung */
+  (function () { var st = $$("#enrol .en-step"), tm = [];
+    function play() { tm.forEach(clearTimeout); tm = []; st.forEach(function (s) { s.classList.remove("on", "done"); });
+      st.forEach(function (s, k) { tm.push(setTimeout(function () { s.classList.add("on"); if (k > 0) st[k - 1].classList.add("done"); }, reduced ? 0 : 200 + k * 450)); }); }
+    replay.EN = play; onView($("#enrol"), play); })();
+
+  /* CC Besichtigung */
+  (function () { var sum = $("#visSum"), btn = $("#visBtn");
+    function sel(id) { return $$("#" + id + " .opt").filter(function (b) { return b.getAttribute("aria-pressed") === "true"; }).map(function (b) { return b.textContent; }); }
+    function upd() { var d = sel("visDay"), t = sel("visTime"); btn.disabled = !d.length;
+      sum.textContent = d.length ? "Wir könnten am " + d.join(", ") + (t.length ? " (" + t.join(" oder ") + ")" : "") + " zur Besichtigung kommen." : "Bitte mindestens einen Tag wählen."; }
+    $$(".visit .opt").forEach(function (b) { b.addEventListener("click", function () { b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); upd(); }); });
+    btn.addEventListener("click", function () { sum.textContent = "Auf der echten Seite öffnet sich jetzt die E-Mail mit diesem Text."; }); upd(); })();
+
+  /* CD Fragen nach Themen */
+  segment($("#faqSeg"), function (b) { var t = b.dataset.t, qs = $$(".faqf .q");
+    var first = new Map(); qs.forEach(function (q) { if (!q.classList.contains("hide")) first.set(q, q.getBoundingClientRect()); });
+    qs.forEach(function (q) { q.classList.toggle("hide", t !== "alle" && q.dataset.t !== t); });
+    if (reduced) return;
+    qs.forEach(function (q) { if (q.classList.contains("hide")) return; var a = first.get(q), r = q.getBoundingClientRect();
+      if (a) q.animate([{ translate: "0 " + (a.top - r.top) + "px" }, { translate: "0 0" }], { duration: 350, easing: "cubic-bezier(.65,0,.35,1)" });
+      else q.animate([{ opacity: 0, scale: .96 }, { opacity: 1, scale: 1 }], { duration: 250, easing: "cubic-bezier(.23,1,.32,1)" }); }); });
+
+  /* CE Karten heben sich */
+  (function () { if (reduced) return; $$("#lift .lift").forEach(function (c) {
+    c.addEventListener("click", function (e) { e.preventDefault(); });
+    c.addEventListener("pointermove", function (e) { var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.transform = "rotateX(" + (-y * 10).toFixed(1) + "deg) rotateY(" + (x * 12).toFixed(1) + "deg) translateZ(14px)"; c.style.boxShadow = (-x * 16).toFixed(0) + "px " + (14 - y * 10).toFixed(0) + "px 26px -12px rgba(0,0,0,.55)"; });
+    c.addEventListener("pointerleave", function () { c.style.transform = ""; c.style.boxShadow = ""; }); }); })();
+
+  /* CF Schließtage als Balken */
+  (function () { var Z = [["Herbstferien", 2], ["Weihnachten", 7], ["Fasching", 2], ["Ostern", 2], ["Pfingsten", 2], ["Sommerferien", 15]], tot = 30;
+    var tr = $("#barsTrack"), lg = $("#barsLeg"), cols = ["#D4B5B0", "#E6CFCA"];
+    tr.innerHTML = Z.map(function (z) { return '<i title="' + z[0] + ': ' + z[1] + ' Tage"></i>'; }).join("");
+    lg.innerHTML = Z.map(function (z, k) { return '<span><i style="background:' + cols[k % 2] + '"></i>' + z[0] + " <b>" + z[1] + "</b></span>"; }).join("");
+    onView($("#bars"), function () { $$("i", tr).forEach(function (b, k) { setTimeout(function () { b.style.width = (Z[k][1] / tot * 100) + "%"; }, k * 80); }); }); })();
+
+  /* CG Einzelne Schließzeit */
+  (function () { var Z = [["Weihnachten", "24.12. – 08.01."], ["Fasching", "08.02. – 09.02."], ["Ostern", "25.03. – 30.03."], ["Pfingsten", "18.05."], ["Sommerferien", "09.08. – 27.08."]], ic = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+    $("#onecal").innerHTML = Z.map(function (z) { return '<div class="r"><span><b>' + z[0] + "</b><br><small>" + z[1] + '</small></span><button type="button">' + ic + "In den Kalender</button></div>"; }).join("");
+    $$("#onecal button").forEach(function (b) { b.addEventListener("click", function () { b.classList.add("got"); b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Eingetragen'; }); }); })();
+
+  /* CH Wann wieder kommen */
+  (function () { var A = { fieber: ["Nach 24 Stunden ohne Fieber", "ohne fiebersenkende Mittel gemessen"], magen: ["48 Stunden nach dem letzten Erbrechen oder Durchfall", "damit sich niemand ansteckt"], laeuse: ["Am Tag nach der ersten Behandlung", "mit Bestätigung der Eltern"] };
+    function show(k) { $("#backAns").innerHTML = "<b>" + A[k][0] + "</b><span>" + A[k][1] + "</span>"; if (!reduced) $("#backAns").animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 250 }); }
+    segment($("#backSeg"), function (b) { show(b.dataset.k); }); show("fieber"); })();
+
+  /* CI Familien-Ansicht */
+  (function () { var B = { krippe: ["Kinderkrippe", "6:45 – 16:30 Uhr", "… 14 / … 15"], kiga: ["Kindergarten", "6:45 – 16:30 Uhr", "… 11 / 12 / 13"], hort: ["Kinderhort", "6:45 – 18:00 Uhr", "… 0"] };
+    function render() { var sel = $$("#kids .kid").filter(function (k) { return k.getAttribute("aria-pressed") === "true"; }).map(function (k) { return k.dataset.b; });
+      $("#famCard").innerHTML = sel.length ? "<h4>Ihre Familie</h4>" + sel.map(function (b) { return '<div class="row2"><span>' + B[b][0] + "</span><b>" + B[b][1] + "</b></div>"; }).join("") + '<h4 style="margin-top:6px">Durchwahlen</h4>' + sel.map(function (b) { return '<div class="row2"><span>' + B[b][0] + "</span><b>" + B[b][2] + "</b></div>"; }).join("") : "<span>Bitte mindestens einen Bereich wählen.</span>"; }
+    $$("#kids .kid").forEach(function (k) { k.addEventListener("click", function () { k.setAttribute("aria-pressed", k.getAttribute("aria-pressed") !== "true"); render(); }); }); render(); })();
+
+  /* CJ Offline */
+  (function () { var bar = $("#offBar"), t = null;
+    segment($("#offSeg"), function (b) { clearTimeout(t);
+      if (b.dataset.o === "0") { bar.classList.remove("ok"); $("span", bar).textContent = "Kein Internet – Sie sehen die gespeicherte Seite"; bar.classList.add("show"); }
+      else if (bar.classList.contains("show")) { bar.classList.add("ok"); $("span", bar).textContent = "Wieder verbunden"; t = setTimeout(function () { bar.classList.remove("show"); }, 1600); } }); })();
+
+  /* CK Kurznachricht */
+  (function () { var T = { oma: ["Abholung heute durch die Oma", "Liebes Team,\nheute holt die Oma, Frau …, unser Kind … ab.\nViele Grüße"], frueh: ["Heute früher abholen", "Liebes Team,\nwir holen unser Kind … heute schon um … Uhr ab.\nViele Grüße"], arzt: ["Arzttermin", "Liebes Team,\nunser Kind … hat am … einen Arzttermin und kommt erst gegen … Uhr.\nViele Grüße"] };
+    function show(k) { $("#mailPrev").innerHTML = "<b>An: krippe@… · Betreff: " + T[k][0] + "</b>" + T[k][1].replace(/</g, "&lt;"); }
+    $$("#tpls .tpl").forEach(function (b) { b.addEventListener("click", function () { $$("#tpls .tpl").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); show(b.dataset.t); }); }); show("oma"); })();
+
+  /* CL Begriffe A–Z */
+  (function () { var G = [["BayKiBiG", "Bayerisches Kinderbildungs- und -betreuungsgesetz – regelt u. a. Förderung, Buchungszeiten und Schließtage."], ["Buchungszeit", "Die Stunden pro Tag, die Sie für Ihr Kind buchen."], ["Eingewöhnung", "Die ersten Wochen, in denen Ihr Kind mit Ihnen gemeinsam ankommt."], ["Fachkraftquote", "Anteil pädagogischer Fachkräfte am Personal."], ["Ferienplan", "Übersicht aller Schließtage im Kita-Jahr."], ["Inhouseschulungen", "Fortbildungen für das ganze Team im eigenen Haus."], ["Kinderkonferenz", "Runde, in der die Hortkinder mitbestimmen."], ["Mindestbuchungszeit", "Die kürzeste Betreuungszeit pro Tag, die Sie buchen können."], ["Partizipation", "Kinder entscheiden bei Dingen mit, die sie betreffen."], ["Portfolio", "Ordner, der die Entwicklung Ihres Kindes sammelt."], ["Projektarbeit", "Ein Thema wird über längere Zeit gemeinsam erforscht."], ["Vorkurs Deutsch", "Sprachförderung vor der Einschulung."]];
+    var by = {}; G.forEach(function (g) { var l = g[0][0].toUpperCase(); (by[l] = by[l] || []).push(g); });
+    var bar = $("#azBar"), list = $("#azList");
+    list.innerHTML = Object.keys(by).sort().map(function (l) { return '<h4 id="az-' + l + '">' + l + "</h4><dl>" + by[l].map(function (g) { return "<dt>" + g[0] + "</dt><dd>" + g[1] + "</dd>"; }).join("") + "</dl>"; }).join("");
+    bar.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(function (l) { return '<button type="button"' + (by[l] ? "" : " disabled") + ">" + l + "</button>"; }).join("");
+    $$("button", bar).forEach(function (b) { b.addEventListener("click", function () { var h = document.getElementById("az-" + b.textContent); list.scrollTop = h.offsetTop - list.offsetTop - 4; $$("button", bar).forEach(function (x) { x.classList.toggle("on", x === b); }); }); }); })();
+
+  /* CM Seite per QR zeigen */
+  (function () { var sh = $("#qrSheet"), box = $("#qr2"), made = false;
+    $("#qrBtn").addEventListener("click", function () {
+      if (!made && window.QRCode) { new QRCode(box, { text: "https://kinderhort-grombuehl.de/", width: 300, height: 300, colorDark: "#1E3B44", colorLight: "#F3F8F7", correctLevel: QRCode.CorrectLevel.M }); made = true; }
+      var o = !sh.classList.contains("open"); sh.classList.toggle("open", o); sh.setAttribute("aria-hidden", !o); this.textContent = o ? "Code ausblenden" : "Code zeigen"; }); })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {

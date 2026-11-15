@@ -271,3 +271,8 @@ Entscheidung offen (Auswahl direkt im Katalog).
 **Merken:** 88 · **Nein:** 77, 83, 86, 87
 
 **Entfernt (Wunsch):** Abschnitt „Einblicke in die 3 Bereiche“ auf der Startseite – war doppelt zum Rundgang.
+
+## Ideenkatalog 3 – Nachtrag 89–100 (15.11.2026)
+89 Weg zur Anmeldung · 90 Besichtigung mit Wunschzeiten · 91 Fragen nach Themen filtern · 92 Bereichskarten heben sich räumlich · 93 Schließtage als Balken · 94 Einzelne Schließzeit in den Kalender · 95 „Wann darf mein Kind wieder kommen?“ (Texte nur Beispiel – müsste der Hort festlegen) · 96 Familien-Ansicht für mehrere Kinder · 97 Hinweis ohne Internet · 98 Kurznachricht an die Gruppe · 99 Begriffe von A bis Z · 100 Seite per QR-Code zeigen
+
+Entscheidung offen (Auswahl direkt im Katalog).
