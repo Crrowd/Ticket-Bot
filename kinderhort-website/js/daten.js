@@ -315,12 +315,6 @@ window.KITA = {
    "k": "frage antwort hilfe chat"
   },
   {
-   "t": "Einblicke ins Haus",
-   "s": "Startseite · Fotos",
-   "u": "index.html#einblicke",
-   "k": "fotos bilder galerie räume"
-  },
-  {
    "t": "Ferienplan & Schließtage",
    "s": "Aktuelles",
    "u": "aktuelles.html#ferienplan",

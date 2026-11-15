@@ -265,3 +265,9 @@ Geplant: info@, krippe@, kindergarten@kinderhort-grombuehl.de über das Webhosti
 76 Ferienplan mit Ampel · 77 Anrufen mit Gruppenauswahl · 78 Bildunterschriften gleiten hoch · 79 Doppeltipp-Zoom · 80 Wimpel weichen der Maus aus · 81 „Das Wichtigste in Kürze“ · 82 Ferienplan als Jahresposter · 83 Fotos legen sich wie Abzüge hin · 84 Foto-Collage neigt sich mit · 85 Route mit der Karten-App · 86 „Wie geht’s weiter?“ · 87 Abreißkalender · 88 Geöffnet-Punkt im Browser-Tab
 
 Entscheidung offen (Auswahl direkt im Katalog).
+
+## Nachtrag 76–88 – Entscheidung (15.11.2026)
+**Eingebaut:** 76 Ferienplan mit Ampel (vergangen blass, aktuell rosé, nächste grün mit „in N Tagen“), 78 Bildunterschriften im Rundgang gleiten hoch (nur mit Maus), 79 Doppeltipp-/Doppelklick-Zoom in der Bildansicht, 80 Wimpel im Fuß weichen der Maus aus, 81 „Das Wichtigste in Kürze“ oben auf den drei Bereichsseiten (mit Symbolen statt Emojis), 82 Jahresposter drucken (Knopf beim Ferienplan, ein A4-Blatt), 84 Foto-Collage im Startbereich neigt sich mit der Maus (Android: beim Neigen), 85 „Route planen“ auf der Kontaktseite (iPhone: Apple Karten, sonst Google Maps; Datenschutztext angepasst).
+**Merken:** 88 · **Nein:** 77, 83, 86, 87
+
+**Entfernt (Wunsch):** Abschnitt „Einblicke in die 3 Bereiche“ auf der Startseite – war doppelt zum Rundgang.

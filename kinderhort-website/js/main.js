@@ -252,7 +252,22 @@
       if (lbImg.complete && lbImg.naturalWidth) lbImg.onload();
     }
   }
+  /* Doppeltipp-Zoom: genau die angetippte Stelle vergrößern, dann verschieben */
+  var zoom = { on: false, s: 2.5, tx: 0, ty: 0 }, lastTap = 0, pan = null;
+  function zoomApply() { lbImg.style.scale = zoom.on ? zoom.s : ""; lbImg.style.translate = zoom.on ? zoom.tx + "px " + zoom.ty + "px" : ""; lb.classList.toggle("zoomed", zoom.on); }
+  function zoomClamp() { var w = lbImg.offsetWidth, h = lbImg.offsetHeight, mx = (zoom.s - 1) * w / 2, my = (zoom.s - 1) * h / 2; zoom.tx = Math.max(-mx, Math.min(mx, zoom.tx)); zoom.ty = Math.max(-my, Math.min(my, zoom.ty)); }
+  function zoomReset() { if (!zoom.on) return; zoom.on = false; lb.classList.add("unzoom"); zoomApply(); setTimeout(function () { lb.classList.remove("unzoom"); }, 320); }
+  function zoomToggle(x, y) {
+    if (zoom.on) { zoomReset(); return; }
+    var r = lbImg.getBoundingClientRect(), px = x - (r.left + r.width / 2), py = y - (r.top + r.height / 2);
+    zoom.on = true; zoom.tx = -px * (zoom.s - 1); zoom.ty = -py * (zoom.s - 1); zoomClamp(); zoomApply();
+  }
+  lbImg.addEventListener("dblclick", function (e) { e.preventDefault(); zoomToggle(e.clientX, e.clientY); });
+  lbImg.addEventListener("mousedown", function (e) { if (!zoom.on) return; e.preventDefault(); pan = { x: e.clientX, y: e.clientY, tx: zoom.tx, ty: zoom.ty }; lb.classList.add("panning"); });
+  addEventListener("mousemove", function (e) { if (!pan) return; zoom.tx = pan.tx + e.clientX - pan.x; zoom.ty = pan.ty + e.clientY - pan.y; zoomClamp(); zoomApply(); });
+  addEventListener("mouseup", function () { if (pan) { pan = null; lb.classList.remove("panning"); } });
   function show(i, dir) {
+    zoomReset();
     var prev = lbImg.classList.contains("ready") && lb.classList.contains("open") ? lbImg.getBoundingClientRect() : null;
     if (prev && !reduced) {
       /* Altes und neues Bild überlappen: das alte blendet aus, während das neue einblendet */
@@ -293,6 +308,7 @@
   }
   function hideLb() {
     var el = group[idx];
+    zoom.on = false; zoomApply();
     if (flight) flight.cancel();
     /* Zurück in die Vorschau: falls sie in der Reihe verborgen ist, erst dorthin scrollen */
     if (el && el.closest(".tour-track")) el.scrollIntoView({ block: "nearest", inline: "nearest" });
@@ -326,15 +342,19 @@
   lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
   document.addEventListener("keydown", function (e) {
     if (!lb.classList.contains("open")) return;
-    if (e.key === "Escape") closeLb();
+    if (e.key === "Escape") { if (zoom.on) { zoomReset(); return; } closeLb(); }
     if (e.key === "ArrowLeft") show(idx - 1, -1);
     if (e.key === "ArrowRight") show(idx + 1, 1);
   });
   /* Wischen: Das Bild folgt dem Finger 1:1, ohne Übergang. Nach oben und bei nur einem Bild seitlich: Gummiband */
   var t0 = null;
-  lb.addEventListener("touchstart", function (e) { t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null }; lbFig.style.transition = "none"; }, { passive: true });
+  lb.addEventListener("touchstart", function (e) {
+    t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null, t: Date.now(), tx: zoom.tx, ty: zoom.ty, multi: e.touches.length > 1 };
+    lbFig.style.transition = "none"; if (zoom.on) lb.classList.add("panning");
+  }, { passive: true });
   lb.addEventListener("touchmove", function (e) {
     if (!t0) return;
+    if (zoom.on) { zoom.tx = t0.tx + e.touches[0].clientX - t0.x; zoom.ty = t0.ty + e.touches[0].clientY - t0.y; zoomClamp(); zoomApply(); return; }
     var dy = e.touches[0].clientY - t0.y, dx = e.touches[0].clientX - t0.x;
     if (!t0.axis && Math.abs(dx) + Math.abs(dy) > 8) t0.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
     if (t0.axis === "y") lbFig.style.setProperty("--drag", (dy > 0 ? dy : rubber(dy, 60)) + "px");
@@ -343,6 +363,13 @@
   lb.addEventListener("touchend", function (e) {
     if (!t0) return;
     var dx = e.changedTouches[0].clientX - t0.x, dy = e.changedTouches[0].clientY - t0.y, axis = t0.axis;
+    lb.classList.remove("panning");
+    /* kurzer Tipp ohne Bewegung: zweimal kurz hintereinander = Zoom */
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && Date.now() - t0.t < 250 && e.target === lbImg) {
+      if (Date.now() - lastTap < 320) { zoomToggle(e.changedTouches[0].clientX, e.changedTouches[0].clientY); lastTap = 0; } else lastTap = Date.now();
+      t0 = null; lbFig.style.removeProperty("--drag"); lbFig.style.removeProperty("--dx"); return;
+    }
+    if (zoom.on) { t0 = null; return; }
     lbFig.style.transition = "translate .3s " + EASE_OUT;
     lbFig.style.removeProperty("--drag"); lbFig.style.removeProperty("--dx");
     if (axis === "y" && dy > 110) closeLb();
@@ -1571,6 +1598,98 @@
     addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; top(); }); } }, { passive: true });
     addEventListener("resize", top); top();
   })();
+
+  /* =====================================================================
+     Ideenkatalog 3 – Nachtrag 76–88
+     ===================================================================== */
+
+  /* ---------- Ferienplan mit Ampel ---------- */
+  $$("table.plan tbody tr[data-von]").forEach(function (tr) {
+    var von = tr.getAttribute("data-von"), bis = tr.getAttribute("data-bis"), th = $("th", tr), tag = null;
+    if (bis < heute) tr.classList.add("past");
+    else if (von <= heute) { tr.classList.add("now"); tag = "jetzt geschlossen"; }
+    else if (!$("tr.next", tr.parentNode)) {
+      tr.classList.add("next");
+      var n = Math.round((Date.UTC(+von.slice(0, 4), +von.slice(5, 7) - 1, +von.slice(8, 10)) - Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 864e5);
+      tag = n === 1 ? "morgen" : "in " + n + " Tagen";
+    }
+    if (tag) { var s = document.createElement("span"); s.className = "amp-tag"; s.textContent = tag; th.appendChild(s); }
+  });
+
+  /* ---------- Wimpel weichen der Maus aus ---------- */
+  (function () {
+    var svgEl = $(".site-footer .bunting");
+    if (!svgEl || reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var flags = $$(".flag", svgEl), st = flags.map(function (f) { return { el: f, a: 0, v: 0 }; }), running = false, lastX = null;
+    function tick() {
+      var still = true;
+      st.forEach(function (f) { f.v += -f.a * .07; f.v *= .88; f.a += f.v; f.el.style.rotate = f.a.toFixed(2) + "deg"; if (Math.abs(f.v) > .02 || Math.abs(f.a) > .05) still = false; });
+      if (still) { running = false; st.forEach(function (f) { f.el.style.rotate = ""; }); return; }
+      requestAnimationFrame(tick);
+    }
+    svgEl.parentNode.addEventListener("pointermove", function (e) {
+      var dx = lastX === null ? 0 : e.clientX - lastX; lastX = e.clientX;
+      st.forEach(function (f) {
+        var r = f.el.getBoundingClientRect(), d = r.left + r.width / 2 - e.clientX, near = 1 - Math.min(1, Math.abs(d) / 80);
+        if (near > 0 && e.clientY < r.bottom + 70) f.v += Math.max(-6, Math.min(6, dx * .6)) * near;
+      });
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    });
+    svgEl.parentNode.addEventListener("pointerleave", function () { lastX = null; });
+  })();
+
+  /* ---------- Foto-Collage neigt sich mit ---------- */
+  (function () {
+    var hero = $(".hero"), col = $(".hero-collage");
+    if (!hero || !col || reduced) return;
+    function set(x, y) { col.style.transform = "perspective(1100px) rotateX(" + (-y * 5).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg)"; }
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      hero.addEventListener("pointermove", function (e) { var r = col.getBoundingClientRect(); set(Math.max(-.5, Math.min(.5, (e.clientX - r.left) / r.width - .5)), Math.max(-.5, Math.min(.5, (e.clientY - r.top) / r.height - .5))); });
+      hero.addEventListener("pointerleave", function () { set(0, 0); });
+    } else if ("DeviceOrientationEvent" in window && typeof DeviceOrientationEvent.requestPermission !== "function") {
+      /* Android: Neigen des Handys; iPhone bräuchte eine Erlaubnis-Abfrage – darauf verzichten wir bewusst */
+      var tickO = false;
+      addEventListener("deviceorientation", function (e) {
+        if (e.gamma == null || tickO || scrollY > innerHeight) return; tickO = true;
+        requestAnimationFrame(function () { tickO = false; set(Math.max(-.5, Math.min(.5, e.gamma / 50)), Math.max(-.5, Math.min(.5, ((e.beta || 45) - 45) / 60))); });
+      });
+    }
+  })();
+
+  /* ---------- Route mit der eigenen Karten-App ---------- */
+  $$(".js-route").forEach(function (a) {
+    var apple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+    if (apple) { a.href = "https://maps.apple.com/?daddr=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg"; $("span", a).textContent = "Route mit Apple Karten"; }
+    else $("span", a).textContent = "Route mit Google Maps";
+  });
+
+  /* ---------- Ferienplan als Jahresposter drucken ---------- */
+  $$(".js-poster").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (!K) return;
+      var end = parse(K.planEnde), y1 = end.getFullYear() - 1, MN = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+      var feier = {}; K.feiertage.forEach(function (f) { feier[f.datum] = f.name; });
+      var h = "<h1>Schließtage " + y1 + "/" + (y1 + 1) + "</h1><p class=\"sub\">Kath. Kinder- und Jugendhort Grombühl · Kinderkrippe, Kindergarten und Kinderhort</p><div class=\"months\">";
+      for (var k = 0; k < 12; k++) {
+        var y = k < 4 ? y1 : y1 + 1, m = (8 + k) % 12, off = (new Date(y, m, 1).getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate();
+        var g = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].map(function (w) { return '<span class="wd">' + w + "</span>"; }).join("");
+        for (var i = 0; i < off; i++) g += "<span></span>";
+        for (var d = 1; d <= n; d++) {
+          var dt = new Date(y, m, d), s = iso(dt), wd = dt.getDay(), we = wd === 0 || wd === 6;
+          var zu = !we && K.schliesszeiten.some(function (z) { return s >= z.von && s <= z.bis; });
+          g += '<span class="' + (we ? "we" : feier[s] ? "f" : zu ? "z" : "") + '">' + d + "</span>";
+        }
+        h += '<div class="mo"><b>' + MN[m] + " " + y + '</b><div class="g">' + g + "</div></div>";
+      }
+      var total = K.schliesszeiten.reduce(function (a, z) { return a + z.tage; }, 0);
+      h += '</div><div class="leg"><span><i></i>Schließtag</span><span style="color:#B8574A;font-weight:800">12</span><span>= Feiertag</span><span>' + total + ' Schließtage im Kita-Jahr</span></div><p class="foot">Stand: ' + fmt(new Date()) + " · Alle Termine aktuell auf der Webseite unter „Aktuelles“</p>";
+      var box = document.createElement("div"); box.className = "poster-print"; box.innerHTML = h; document.body.appendChild(box);
+      document.body.classList.add("print-poster");
+      var done = function () { document.body.classList.remove("print-poster"); box.parentNode && box.parentNode.removeChild(box); window.removeEventListener("afterprint", done); };
+      window.addEventListener("afterprint", done);
+      window.print();
+    });
+  });
   /* ---------- Schnelle Wiederbesuche ---------- */
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* ohne geht es auch */ }); });

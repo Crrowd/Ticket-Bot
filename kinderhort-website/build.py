@@ -96,6 +96,9 @@ def icon(name, size=24):
         "list": '<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
         "grid": '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M9 9v12M15 9v12M3 15h18"/>',
         "home": '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+        "book": '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7"/>',
+        "route": '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/>',
+        "poster": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h2M12 8h4M8 12h2M12 12h4M8 16h2M12 16h4"/>',
     }[name]
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
@@ -439,6 +442,13 @@ def faq(items):
               '<p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p>')
     return '<div class="faq">' + search + "".join(out) + "</div>"
 
+def kurz(items):
+    """Kasten „Das Wichtigste in Kürze“ oben auf den Bereichsseiten (Symbole statt Emojis)."""
+    li = "".join(f'<li style="--i:{i}"><span class="kurz-ic">{icon(ic, 20)}</span><span><b>{b}</b> {t}</span></li>' for i, (ic, b, t) in enumerate(items))
+    return f'''<section class="section kurz-sec">
+  <div class="container"><div class="kurz reveal"><h2 class="kurz-t">Das Wichtigste in Kürze</h2><ul>{li}</ul></div></div>
+</section>'''
+
 def section(id_, kicker, title, intro, content, cls="", center=False):
     i = f"<p>{intro}</p>" if intro else ""
     c = " center" if center else ""
@@ -460,7 +470,7 @@ def plan_table():
     for name, open_until, first, fn, last, ln, reopen, n in PLAN:
         f = first + (f"<small>({fn})</small>" if fn else "")
         l = last + (f"<small>({ln})</small>" if ln else "")
-        rows.append(f"<tr><th scope=\"row\">{name}</th><td>{open_until}</td><td>{f}</td><td>{l}</td><td>{reopen}</td><td class=\"num\">{n:02d}</td></tr>")
+        rows.append(f"<tr data-von=\"{d(first).isoformat()}\" data-bis=\"{d(last).isoformat()}\"><th scope=\"row\">{name}</th><td>{open_until}</td><td>{f}</td><td>{l}</td><td>{reopen}</td><td class=\"num\">{n:02d}</td></tr>")
     total = sum(p[-1] for p in PLAN)
     return f'''<div class="table-wrap reveal" tabindex="0" role="region" aria-label="Ferienplan – Tabelle, seitlich scrollbar">
 <table class="plan">
@@ -476,6 +486,7 @@ def plan_table():
 <div class="btn-row no-print">
   <a class="btn btn-primary" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a>
   <button class="btn btn-ghost js-print-plan" type="button">{icon("file", 20)} Ferienplan drucken</button>
+  <button class="btn btn-ghost js-poster" type="button">{icon("poster", 20)} Jahresposter drucken</button>
 </div>'''
 
 def ferienplan_section(cls="alt"):
@@ -633,8 +644,6 @@ home = f'''
   </div>
 </section>
 
-<!--EINBLICKE-->
-
 <section class="section" id="aktuell">
   <div class="container">
     <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
@@ -710,6 +719,12 @@ krippe = page_hero("Kinderkrippe", "Herzlich Willkommen beim Kath. Kinder- und J
                    "img/p2160110.jpg", "Sonnen- &amp; Sternengruppe",
                    [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
                    alt="Gruppenraum der Kinderkrippe")
+krippe += kurz([
+    ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
+    ("users", "ab 11 Monaten", "in der Sonnen- und Sternengruppe"),
+    ("pot", "Frisch gekocht", "in der hauseigenen Küche"),
+    ("phone", "Durchwahlen", "0931&nbsp;2789892&nbsp;14 und …&nbsp;15"),
+])
 krippe += section("ueberblick", "Auf einen Blick", "Die Kinderkrippe", "", info_cards([
     ("users", "Zielgruppe", "ab 11 Monaten", "<p>Die Kinderkrippe besuchen Kinder ab dem Alter von 11 Monaten bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p>"),
     ("clock", "Öffnungszeiten", "6:45 – 16:30 Uhr", "<p>Bringzeit von 6:45 bis 9:00 Uhr, Abholen ab 14:00 Uhr entsprechend der gebuchten Stunden. Um 16:30 Uhr schließt die Kinderkrippe.</p>"),
@@ -790,6 +805,12 @@ kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in groß
                  "img/blick-vom-fenster-in-den-raum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
                  [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
                  alt="Gruppenraum im Kindergarten")
+kiga += kurz([
+    ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
+    ("users", "3 Jahre bis zur Einschulung", "in der Bären-, Bienen- und Spatzengruppe"),
+    ("book", "Projektarbeit, Englisch", "und Vorkurs Deutsch"),
+    ("phone", "Durchwahlen", "0931&nbsp;2789892&nbsp;11, …&nbsp;12 und …&nbsp;13"),
+])
 kiga += section("ueberblick", "Auf einen Blick", "Der Kindergarten", "", info_cards([
     ("users", "Zielgruppe", "3 Jahre bis Einschulung", "<p>Den Kindergarten besuchen Kinder im Alter von 3 Jahren bis zur Einschulung.</p>"),
     ("clock", "Öffnungszeiten", "6:45 – 16:30 Uhr", "<p>Der Kindergarten öffnet um 6:45 Uhr. Bis 8:00 Uhr wird die gruppenübergreifende Frühbetreuung angeboten. Um 16:30 Uhr schließt der Kindergarten. Es kann nach Bedarf der Spätdienst im Hort bis 17:30 Uhr dazugebucht werden.</p>"),
@@ -887,6 +908,12 @@ hort = page_hero("Kinderhort", "Nach der Schule ankommen, Hausaufgaben mit Unter
                  "img/kreatviraum-5-1.jpg", "Für alle Schulformen",
                  [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
                  alt="Kreativraum im Kinderhort")
+hort += kurz([
+    ("clock", "6:45 – 18:00 Uhr", "geöffnet, auch in den Schulferien"),
+    ("users", "ab der Einschulung", "für alle Schulformen"),
+    ("book", "Hausaufgaben", "begleitet und korrigiert"),
+    ("phone", "Telefon", "0931&nbsp;2789892&nbsp;0"),
+])
 hort += section("ueberblick", "Auf einen Blick", "Der Kinderhort", "", info_cards([
     ("users", "Zielgruppe", "ab der Einschulung", "<p>Den Kinderhort besuchen Kinder ab der Einschulung. Gerne begleiten wir die Kinder über die Grundschulzeit hinaus. Wir sind offen für alle Schulformen, wie z. B. Mittelschulen, Realschulen, Gymnasien sowie auch Förderschulen. Jedes Kind darf den Kinderhort so lange besuchen, wie es möchte und es seiner Entwicklung angemessen ist.</p>"),
     ("clock", "Öffnungszeiten", "6:45 – 18:00 Uhr", "<p>Während der Schulzeit von 6:45 bis 8:00 Uhr und vom jeweiligen Unterrichtsende bis 18:00 Uhr. Während der Schulferien, in denen der Hort geöffnet ist, können die Kinder ganztags durchgängig von 6:45 bis 18:00 Uhr betreut werden. Eltern buchen die Zeiten, die sie für die Betreuung ihres Kindes benötigen.</p>"),
@@ -1139,8 +1166,9 @@ kon += f'''<section class="section">
       </address>
       <div class="btn-row">
         <a class="btn btn-primary" href="downloads/kinderhort-grombuehl.vcf" download>{icon("users", 20)} Kontakt aufs Handy speichern</a>
-        <a class="btn btn-ghost" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
+        <a class="btn btn-ghost js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("route", 20)} <span>Route planen</span></a>
       </div>
+      <p class="route-alt muted">Route öffnen mit <a href="https://maps.apple.com/?daddr=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">Apple Karten</a> · <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">Google Maps</a> · <a href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">OpenStreetMap</a></p>
       <p class="vcf-note muted">Legt den Kinderhort mit allen Durchwahlen im Adressbuch an.</p>
     </aside>
   </div>
@@ -1192,7 +1220,7 @@ dsg += f'''<section class="section"><div class="container"><div class="prose">
 <h2>5. Kontakt per E-Mail und Telefon</h2>
 <p>Wenn Sie uns per E-Mail oder Telefon kontaktieren (z. B. für eine Krankmeldung oder Platzanfrage), verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihres Anliegens. Die Buttons „Kind krankmelden“ und „Platz anfragen“ öffnen lediglich Ihr eigenes E-Mail-Programm; über diese Webseite selbst werden keine Daten übertragen oder gespeichert.</p>
 <h2>6. Externe Links</h2>
-<p>Der Link „Auf der Karte anzeigen“ führt zu OpenStreetMap. Erst wenn Sie ihn anklicken, wird eine Verbindung zu den Servern der OpenStreetMap Foundation hergestellt; dort gelten deren Datenschutzbestimmungen.</p>
+<p>Die Links „Route planen“, „Apple Karten“, „Google Maps“ und „OpenStreetMap“ öffnen die Wegbeschreibung beim jeweiligen Kartendienst (Apple, Google bzw. OpenStreetMap Foundation). Erst wenn Sie einen davon anklicken, wird eine Verbindung zu diesem Anbieter hergestellt; dort gelten dessen Datenschutzbestimmungen. Auf dieser Webseite selbst ist keine Karte eingebunden.</p>
 <h2>7. Ihre Rechte</h2>
 <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten sowie ein Widerspruchsrecht. Zudem können Sie sich bei der zuständigen kirchlichen Datenschutzaufsicht beschweren: <mark>[Bitte ergänzen: zuständige Datenschutzaufsicht, z. B. Gemeinsame Datenschutzaufsicht der bayerischen (Erz-)Diözesen]</mark>.</p>
 <p class="muted">Stand: <mark>[Datum ergänzen]</mark></p>
@@ -1232,10 +1260,6 @@ def einblicke():
     chips = "".join(f'<button type="button" data-cat="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{n}</button>' for k, n in [("alle", "Alle"), ("krippe", "Krippe"), ("kiga", "Kindergarten"), ("hort", "Hort")])
     return section("einblicke", "Einblicke", "Ein Blick in alle drei Bereiche", "Wählen Sie einen Bereich – die Fotos sortieren sich neu. Ein Klick vergrößert das Bild.",
                    f'<div class="gal-chips no-print" role="group" aria-label="Bereich wählen">{chips}</div><div class="gal-grid">{"".join(figs)}</div>')
-_p = os.path.join(W, "index.html")
-_h = open(_p, encoding="utf-8").read()
-assert "<!--EINBLICKE-->" in _h
-open(_p, "w", encoding="utf-8").write(_h.replace("<!--EINBLICKE-->", glossar(einblicke())))
 
 # ---------- Alle häufigen Fragen für den Fragen-Helfer ----------
 FAQ_ALLE = []
@@ -1289,7 +1313,6 @@ SUCHE += [
     ("Was möchten Sie tun?", "Downloads · Formular-Lotse", "downloads.html#lotse", "formular welches formular medikamente krank lotse hilfe"),
     ("Kalender abonnieren", "Downloads", "downloads.html#abo", "abo abonnieren webcal kalender automatisch outlook google iphone"),
     ("Fragen Sie einfach", "Kontakt · Schnelle Antwort", "kontakt.html#frag", "frage antwort hilfe chat"),
-    ("Einblicke ins Haus", "Startseite · Fotos", "index.html#einblicke", "fotos bilder galerie räume"),
     ("Ferienplan & Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
     ("Downloads", "Unterlagen", "downloads.html", "pdf formulare unterlagen herunterladen"),
     ("KinderhortABC", "Download · PDF", "downloads/HortABC.pdf", "hort abc infos a bis z"),

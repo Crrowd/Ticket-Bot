@@ -1473,3 +1473,74 @@ body.nav-loading .nav-loader { opacity: 1; translate: -50% 0; }
 /* 71 Kontakt speichern */
 .address-card .btn-row { margin-top: 4px; }
 .vcf-note { font-size: .86rem; margin: 10px 0 0; }
+
+/* =====================================================================
+   Ideenkatalog 3 – Nachtrag 76–88
+   ===================================================================== */
+
+/* 81 Das Wichtigste in Kürze */
+.kurz-sec { padding: 26px 0 0 !important; }
+.kurz { max-width: 860px; background: var(--paper); color: var(--ink); border-radius: var(--r); padding: 22px 26px; box-shadow: var(--shadow), inset 5px 0 0 var(--rose); }
+.kurz-t { margin: 0 0 14px; font: 800 .76rem var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.kurz ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 26px; }
+.kurz li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: center; line-height: 1.4; }
+.kurz-ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--rose-soft); color: var(--ink); }
+.js .kurz.reveal li { opacity: 0; translate: -8px 0; }
+.js .kurz.reveal.visible li { opacity: 1; translate: 0 0; transition: opacity .35s var(--ease-out), translate .35s var(--ease-out); transition-delay: calc(var(--i) * 70ms + 120ms); }
+@media (max-width: 700px) { .kurz ul { grid-template-columns: minmax(0, 1fr); } .kurz { padding: 18px 20px; } }
+
+/* 76 Ferienplan mit Ampel */
+table.plan tr.past > * { color: #D6E6E3; }
+table.plan tr.past th, table.plan tr.past td:not(.num) { text-decoration: line-through; text-decoration-color: rgba(30, 59, 68, .4); }
+table.plan tr.now > * { background: var(--rose-soft); }
+table.plan tr.next > * { background: #E3F2E9; }
+table.plan tr.now > *, table.plan tr.next > * { color: var(--ink); }
+table.plan tr.now small, table.plan tr.next small { color: var(--ink-soft); }
+table.plan tr th .amp-tag { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 999px; font: 800 .7rem var(--font-body); letter-spacing: .02em; vertical-align: 2px; white-space: nowrap; text-decoration: none; }
+table.plan tr.now .amp-tag { background: #B8574A; color: #fff; }
+table.plan tr.next .amp-tag { background: #23704A; color: #fff; }
+
+/* 78 Bildunterschriften gleiten hoch (Rundgang, nur mit Maus) */
+@media (hover: hover) and (pointer: fine) {
+  .tour-item { position: relative; }
+  .tour-item figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 16px; background: linear-gradient(rgba(20, 42, 49, 0), rgba(20, 42, 49, .88)); color: var(--on-surface); pointer-events: none;
+    translate: 0 calc(100% - 52px); transition: translate .35s var(--ease-out); }
+  .tour-item figcaption span { color: #D5E7E4; opacity: 0; transition: opacity .25s var(--ease-out) .05s; }
+  .tour-item:hover figcaption, .tour-item:focus-within figcaption { translate: 0 0; }
+  .tour-item:hover figcaption span, .tour-item:focus-within figcaption span { opacity: 1; }
+}
+
+/* 79 Doppeltipp-Zoom in der Bildansicht */
+.lightbox figure img { cursor: zoom-in; }
+.lightbox.zoomed figure img { cursor: grab; transition: scale .35s var(--ease-out), translate .35s var(--ease-out); }
+.lightbox.zoomed.panning figure img { cursor: grabbing; transition: none; }
+.lightbox.zoomed :is(.lb-prev, .lb-next, .lb-hints) { opacity: 0; pointer-events: none; }
+.lightbox.unzoom figure img { transition: scale .3s var(--ease-out), translate .3s var(--ease-out); }
+
+/* 84 Foto-Collage neigt sich mit */
+.hero-collage { transition: transform .5s var(--ease-out); transform-style: preserve-3d; }
+
+/* 85 Route */
+.route-alt { font-size: .86rem; margin: 10px 0 0; }
+.route-alt a { color: inherit; }
+
+/* 82 Jahresposter (nur Druck) */
+.poster-print { display: none; }
+@media print {
+  body.print-poster > *:not(.poster-print) { display: none !important; }
+  body.print-poster .poster-print { display: block !important; color: #1E3B44; font-family: var(--font-body); }
+  .poster-print h1 { font-size: 20pt; margin: 0 0 4pt; text-align: center; }
+  .poster-print .sub { text-align: center; font-size: 10pt; margin: 0 0 14pt; color: #3A5860; }
+  .poster-print .months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12pt 16pt; }
+  .poster-print .mo b { display: block; font-size: 11pt; margin-bottom: 4pt; }
+  .poster-print .g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2pt; font-size: 8pt; text-align: center; }
+  .poster-print .g span { padding: 2pt 0; border-radius: 3pt; }
+  .poster-print .g .wd { font-weight: 800; color: #3A5860; font-size: 7pt; }
+  .poster-print .g .we { color: #9AABAE; }
+  .poster-print .g .z { background: #D4B5B0; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .poster-print .g .f { color: #B8574A; font-weight: 800; }
+  .poster-print .leg { display: flex; justify-content: center; gap: 18pt; margin-top: 14pt; font-size: 9pt; }
+  .poster-print .leg i { display: inline-block; width: 10pt; height: 10pt; border-radius: 2pt; background: #D4B5B0; vertical-align: -1pt; margin-right: 4pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .poster-print .foot { text-align: center; font-size: 8pt; color: #3A5860; margin-top: 10pt; }
+  @page { size: A4 portrait; margin: 14mm; }
+}
