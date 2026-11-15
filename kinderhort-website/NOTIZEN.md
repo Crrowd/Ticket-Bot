@@ -212,3 +212,37 @@ Katalog: `entwurf/ideen/ideen-3.html` (private Vorschau: https://claude.ai/artif
 1 Weg durch den Tag · 2 Haus, in dem Fenster aufleuchten · 3 Jahreszeiten im Kopfbereich · 4 Anfahrt mit gezeichnetem Weg · 5 „Was zieht mein Kind heute an?“ · 6 Fotos nach Bereich filtern · 7 Platzanfrage in drei Schritten · 8 Downloads mit Vorschau · 9 Kleine Feier bei Erfolg · 10 Geöffnet-Anzeige in der Leiste · 11 Termin teilen · 12 Wimpel-Vorhang beim Seitenwechsel · 13 Link-Vorschau · 14 Aushang mit QR-Code · 15 Monatskalender mit Schließtagen · 16 Buchungszeit-Rechner · 17 Fotos mit Entdecker-Punkten · 18 Elternstimmen · 19 Handgezeichnete Markierungen · 20 Als App auf den Startbildschirm · 21 AG-Wochenplan im Hort · 22 Gruß am Seitenende · 23 Eingewöhnung Schritt für Schritt · 24 Team-Vorstellung · 25 Pinnwand mit Kinderbildern · 26 Wachsende Pflanze als Lesefortschritt · 27 Fragen-Helfer · 28 Bereiche im Vergleich · 29 Knopf mit Rückmeldung · 30 Eil-Hinweis für das Team · 31 Ferienprogramm des Hortes · 32 Bild in Ebenen · 33 Fotostapel zum Durchwischen · 34 Formular-Lotse · 35 Countdown zum Schulstart · 36 Kontakt-Knopf, der sich auffächert · 37 Wortwolke · 38 Bringzeit-Uhr · 39 Elternbrief-Archiv mit Suche · 40 Gleitender Fokus-Rahmen · 41 Vorher-Nachher-Regler · 42 Jahreskreis der Feste · 43 Suchspiel für Kinder · 44 Tastenkürzel-Hilfe · 45 Ein Jahr in Bildzeichen · 46 Bildkarten-Tagesplan · 47 Wimpel-Ladeanzeige · 48 Spürbare Rückmeldung · 49 Kindermund · 50 Spendenbarometer · 51 Wandernde Wimpel-Tapete · 52 Neu seit Ihrem letzten Besuch · 53 Zufallsfoto · 54 Kalender-Abo-Assistent · 55 Termine als Liste oder Kalender · 56 So wächst ein Kind bei uns · 57 Maskottchen Pip · 58 Freundliche Fehlerseite · 59 Kurze Elternumfrage · 60 Fotos mit Tiefe beim Scrollen · 61 Wochenrückblick · 62 Reaktionen auf Neuigkeiten
 
 Auswahl: direkt im Katalog (Ja / Merken / Nein + Anmerkung je Idee), gespeichert in der Datenbank des Artefakts, Sammlung `auswahl`.
+
+## Ideenkatalog 3 – Entscheidung (15.11.2026, Auswahl direkt im Katalog)
+Auswahl gespeichert im Katalog (Datenbank `auswahl`): 23× Ja, 20× Merken, 15× Nein, 4 offen (32, 33, 41, 42).
+
+**Eingebaut (Ja)**
+- [x] 1 Weg durch den Tag – Tagesablauf-Linie zeichnet sich beim Scrollen, Stationen leuchten auf (alle drei Bereiche).
+- [x] 3 Jahreszeiten im Auftakt – ein paar Blüten/Lichtpunkte/Blätter/Flocken je nach Monat, höchstens 18, nach 8 s vorbei.
+- [x] 6 Fotos nach Bereich filtern – neuer Abschnitt „Einblicke“ auf der Startseite (je 4 Fotos pro Bereich, Bildansicht zeigt nur die gefilterten).
+- [x] 8 Downloads mit Vorschau – echte Vorschaubilder der ersten PDF-Seite (automatisch erzeugt), Seitenzahl und Größe automatisch, „neu“ 30 Tage lang (`NEU_SEIT` in build.py).
+- [x] 9 Kleine Feier – Konfetti beim Merken eines Termins.
+- [x] 10 Geöffnet-Anzeige in der Leiste – Punkt (grün/rosé/grau) mit Text, Tipp zeigt Zeiten aller Bereiche; am Handy als Abzeichen am Logo.
+- [x] 11 Termin teilen – Teilen-Knopf an jedem Termin (Handy: Teilen-Menü, Computer: Link kopieren).
+- [x] 15 + 55 Termine als Liste oder Kalender – Monatskalender mit Terminen und Schließtagen, Wahl wird gemerkt.
+- [x] 19 Handgezeichnete Markierungen – Kringel um „Qualität“ (Startseite), Unterstreichung „kennen“.
+- [x] 20 Als App aufs Handy – Web-App-Manifest, App-Symbole, Link im Fuß mit Anleitung (Android: direkte Installation).
+- [x] 27 Fragen-Helfer – Kontakt → „Fragen Sie einfach“, Antworten aus allen häufigen Fragen der drei Bereiche.
+- [x] 29 Knopf mit Rückmeldung – Downloads/Kalenderdateien zeigen kurz einen grünen Haken.
+- [x] 34 Formular-Lotse – Downloads → „Was möchten Sie tun?“.
+- [x] 37 Wortwolke – Startseite, Abschnitt „Mehr als Betreuung“.
+- [x] 39 Elternbrief-Archiv – Aktuelles, Briefe aus `daten/elternbriefe.csv`, Suche ab 2 Briefen.
+- [x] 40 Gleitender Fokus-Rahmen – für Tastatur-Nutzer auf allen Seiten.
+- [x] 47 Wimpel-Ladeanzeige – bei langsamem Seitenwechsel (ab 1 s).
+- [x] 54 Kalender-Abo – Downloads → „Kalender abonnieren“ (webcal-Links, Anleitung je Gerät). Funktioniert erst, wenn die Seite unter kinderhort-grombuehl.de läuft.
+- [x] 58 Freundliche Fehlerseite – `404.html`, in `.htaccess` eingetragen.
+- [x] 60 Fotos mit Tiefe – große Kopfbilder und Teaser bewegen sich beim Scrollen leicht.
+
+**Vorbereitet, wartet auf Inhalte**
+- [ ] 18 Elternstimmen – erscheint automatisch, sobald `daten/elternstimmen.csv` echte Zitate enthält (nur mit Einverständnis, ohne Namen).
+
+**Nicht umgesetzt (braucht einen Server)**
+- [ ] 62 Reaktionen auf Neuigkeiten – gemeinsame Zähler für alle Besucher brauchen einen kleinen Dienst auf dem Server; außerdem gibt es noch keine Neuigkeiten-Beiträge.
+
+**Merken:** 4, 5, 7, 13, 14, 16, 17, 21, 23, 24, 25, 31, 36, 38, 48, 49, 50, 51, 61
+**Nein:** 2, 12, 22, 26, 28, 30, 35, 43, 44, 45, 46, 52, 53, 56, 57, 59

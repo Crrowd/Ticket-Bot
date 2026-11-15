@@ -291,10 +291,34 @@ window.KITA = {
    "k": "termine veranstaltungen kalender weihnachtsmarkt nikolaus martin"
   },
   {
-   "t": "Elternbrief",
+   "t": "Elternbriefe",
    "s": "Aktuelles",
    "u": "aktuelles.html#elternbrief",
-   "k": "brief eltern überstunden schließzeit"
+   "k": "brief briefe eltern elternbrief archiv überstunden schließzeit"
+  },
+  {
+   "t": "Was möchten Sie tun?",
+   "s": "Downloads · Formular-Lotse",
+   "u": "downloads.html#lotse",
+   "k": "formular welches formular medikamente krank lotse hilfe"
+  },
+  {
+   "t": "Kalender abonnieren",
+   "s": "Downloads",
+   "u": "downloads.html#abo",
+   "k": "abo abonnieren webcal kalender automatisch outlook google iphone"
+  },
+  {
+   "t": "Fragen Sie einfach",
+   "s": "Kontakt · Schnelle Antwort",
+   "u": "kontakt.html#frag",
+   "k": "frage antwort hilfe chat"
+  },
+  {
+   "t": "Einblicke ins Haus",
+   "s": "Startseite · Fotos",
+   "u": "index.html#einblicke",
+   "k": "fotos bilder galerie räume"
   },
   {
    "t": "Ferienplan & Schließtage",
@@ -373,5 +397,115 @@ window.KITA = {
   "Kinderkonferenz": "Wöchentliche Runde, in der die Hortkinder Themen besprechen und zum Beispiel Ausflüge und Ferienpläne abstimmen.",
   "Mindestbuchungszeit": "Die kürzeste Betreuungszeit pro Tag, die Sie buchen können.",
   "Projektarbeit": "Die Kinder wählen ein Thema nach ihren Interessen und erarbeiten es über längere Zeit gemeinsam."
- }
+ },
+ "faq": [
+  {
+   "q": "Müssen wir Windeln usw. für unser Kind mitbringen?",
+   "a": "Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause.",
+   "u": "kinderkrippe.html#fragen",
+   "b": "Kinderkrippe"
+  },
+  {
+   "q": "Gibt es die Möglichkeit für mein Kind zum Schlafen?",
+   "a": "Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet.",
+   "u": "kinderkrippe.html#fragen",
+   "b": "Kinderkrippe"
+  },
+  {
+   "q": "Ist die Zugehörigkeit zur katholischen Kirche notwendig?",
+   "a": "Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.",
+   "u": "kinderkrippe.html#fragen",
+   "b": "Kinderkrippe"
+  },
+  {
+   "q": "Gibt es eine Eingewöhnungszeit?",
+   "a": "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen.",
+   "u": "kinderkrippe.html#fragen",
+   "b": "Kinderkrippe"
+  },
+  {
+   "q": "Arbeitet der Kindergarten nach dem offenen Konzept?",
+   "a": "Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Muss mein Kind für den Kindergarten sauber sein?",
+   "a": "Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Wie verläuft die Eingewöhnung im Kindergarten?",
+   "a": "Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Inwieweit muss ich für die Verpflegung meines Kindes sorgen?",
+   "a": "Das warme Mittagessen wird von unserer hauseigenen Küche zubereitet. Für das Frühstück und den Nachmittagssnack, je nach Buchungszeit, richten Sie für Ihr Kind eine Brotzeit und eine Trinkflasche mit Wasser im Mehrwegbehälter.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Ist die Zugehörigkeit zur katholischen Kirche notwendig?",
+   "a": "Nein. Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, beten vor dem Mittagessen, sind aber weltoffen für alle Religionen und Kulturen.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Sind die Schließtage in allen Abteilungen des Kinder- und Jugendhorts Grombühl gleich?",
+   "a": "Ja, wir haben in allen Abteilungen des Hauses an maximal 30 gleichen Tagen geschlossen.",
+   "u": "kindergarten.html#fragen",
+   "b": "Kindergarten"
+  },
+  {
+   "q": "Hat der Hort auch in den Schulferien geöffnet?",
+   "a": "In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?",
+   "a": "Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Braucht mein Kind im Hort eine Brotzeit?",
+   "a": "Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?",
+   "a": "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Kann ich mein Kind abholen, wann ich möchte?",
+   "a": "Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Kann ich mein Kind vor der Hausaufgabenzeit abholen?",
+   "a": "Unsere Mindestbuchungszeit beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?",
+   "a": "Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer vorbereiteten Krankmeldung per E-Mail.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  },
+  {
+   "q": "Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?",
+   "a": "Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung.",
+   "u": "kinderhort.html#fragen",
+   "b": "Kinderhort"
+  }
+ ]
 };

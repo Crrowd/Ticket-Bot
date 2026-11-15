@@ -8,6 +8,12 @@ termine.csv       – Termine für die Seite "Aktuelles" und die Kalenderdatei.
                     Vergangene Termine werden auf der Webseite automatisch ausgeblendet.
 schliesstage.csv  – Ferienplan (Tabelle, "Nächster Schließtag" auf der Startseite, Kalenderdatei).
 feiertage.csv     – Gesetzliche Feiertage in Bayern (für die Anzeige "Heute geöffnet/geschlossen").
+elternbriefe.csv  – Elternbriefe auf der Seite "Aktuelles". Neueste Zeile ganz oben.
+                    Spalten: Stand (z. B. "November 2026"); Titel; Text; Gruß.
+                    Absätze im Text und Zeilen im Gruß mit || trennen.
+elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von, z. B. "Mutter, Kindergarten").
+                    Nur echte Zitate mit Einverständnis der Eltern, ohne Namen.
+                    Solange die Datei leer ist, erscheint der Abschnitt nicht.
 
 Datumsformat immer TT.MM.JJJJ, z. B. 04.12.2026.
 

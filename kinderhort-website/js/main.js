@@ -310,7 +310,7 @@
     var el = e.target.closest("[data-full]");
     if (!el) return;
     e.preventDefault();
-    group = $$('[data-full][data-group="' + el.getAttribute("data-group") + '"]');
+    group = $$('[data-full][data-group="' + el.getAttribute("data-group") + '"]').filter(function (x) { return !x.closest("[hidden]"); });
     lastFocus = el;
     lbImg.getAnimations && lbImg.getAnimations().forEach(function (a) { a.cancel(); });
     show(group.indexOf(el));
@@ -1139,6 +1139,390 @@
     });
   });
   window.addEventListener("afterprint", function () { document.body.classList.remove("print-plan"); });
+
+
+  /* =====================================================================
+     Ideenkatalog 3 – eingebaute Ideen
+     ===================================================================== */
+
+  /* ---------- Kleine Feier bei Erfolg (Konfetti in den Farben der Seite) ---------- */
+  function confetti(from) {
+    if (reduced || !from || !document.body.animate) return;
+    var r = from.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var cols = ["#D4B5B0", "#1E3B44", "#7FD6A4", "#F1E5E3", "#2D6A6A"];
+    for (var i = 0; i < 16; i++) {
+      var c = document.createElement("span");
+      c.className = "confetti" + (i % 3 === 0 ? " round" : "");
+      c.style.background = cols[i % cols.length]; c.style.left = cx + "px"; c.style.top = cy + "px";
+      document.body.appendChild(c);
+      var ang = -Math.PI / 2 + (Math.random() - .5) * 2.2, sp = 60 + Math.random() * 80, dx = Math.cos(ang) * sp, dy = Math.sin(ang) * sp, rot = (Math.random() - .5) * 720;
+      c.animate([{ translate: "-50% -50%", rotate: "0deg", opacity: 1 },
+        { translate: "calc(-50% + " + dx + "px) calc(-50% + " + dy + "px)", rotate: rot / 2 + "deg", opacity: 1, offset: .45 },
+        { translate: "calc(-50% + " + dx * 1.3 + "px) calc(-50% + " + (dy + 110) + "px)", rotate: rot + "deg", opacity: 0 }],
+        { duration: 850 + Math.random() * 250, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = (function (el) { return function () { el.remove(); }; })(c);
+    }
+  }
+  $$(".event .save").forEach(function (b) { b.addEventListener("click", function () { if (b.classList.contains("on")) confetti(b); }); });
+
+  /* ---------- Termin teilen ---------- */
+  $$(".event .share").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var li = b.closest(".event"), t = li.getAttribute("data-titel"), v = parse(li.getAttribute("data-von")), bis = parse(li.getAttribute("data-ende"));
+      var when = li.getAttribute("data-von") === li.getAttribute("data-ende") ? fmtLong(v) : fmt(v) + " – " + fmt(bis);
+      var url = new URL("aktuelles.html#termine", location.href).href, text = "Kinderhort Grombühl: " + t + ", " + when;
+      function ok(msg) { b.classList.add("done"); setTimeout(function () { b.classList.remove("done"); }, 1800); toast(msg); }
+      if (navigator.share) { navigator.share({ title: t, text: text, url: url }).catch(function () {}); return; }
+      if (navigator.clipboard) navigator.clipboard.writeText(text + " – " + url).then(function () { ok("Link zum Termin kopiert"); }, function () { ok("Link: " + url); });
+      else ok("Link: " + url);
+    });
+  });
+
+  /* ---------- Gleitender Knopf in Umschaltern ---------- */
+  function slideKnob(group, btn, anim) {
+    var k = $(".vs-knob", group); if (!k || !btn) return;
+    if (!anim || reduced) k.style.transition = "none";
+    k.style.width = btn.offsetWidth + "px"; k.style.translate = btn.offsetLeft + "px 0";
+    if (!anim || reduced) { void k.offsetWidth; k.style.transition = ""; }
+  }
+
+  /* ---------- Termine als Liste oder Kalender (mit Schließtagen) ---------- */
+  (function () {
+    var sw = $(".view-switch"), cal = $(".month-cal");
+    if (!sw || !cal || !K) return;
+    var list = $(".event-list", sw.parentNode), extra = [$(".events-empty", sw.parentNode)];
+    var MON = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    var now = new Date(), y = now.getFullYear(), m = now.getMonth(), end = parse(K.planEnde), maxI = end.getFullYear() * 12 + end.getMonth(), minI = y * 12 + m;
+    K.termine.forEach(function (t) { var d = parse(t.bis); maxI = Math.max(maxI, d.getFullYear() * 12 + d.getMonth()); });
+    function evOn(s) { return K.termine.filter(function (t) { return s >= t.von && s <= t.bis; }); }
+    function render(dir) {
+      var first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), cells = "";
+      for (var i = 0; i < off; i++) cells += "<span></span>";
+      for (var d = 1; d <= n; d++) {
+        var dt = new Date(y, m, d), s = iso(dt), wd = dt.getDay(), why = closedReason(dt), evs = evOn(s), cls = [];
+        if (wd === 0 || wd === 6) cls.push("we"); else if (why) cls.push("zu");
+        if (s === heute) cls.push("today");
+        var label = d + ". " + MON[m] + (why && wd !== 0 && wd !== 6 ? ", geschlossen (" + why + ")" : "") + (evs.length ? ", " + evs.map(function (e) { return e.titel; }).join(", ") : "");
+        if (evs.length) cells += '<button type="button" class="ev ' + cls.join(" ") + '" data-d="' + s + '" aria-pressed="false" aria-label="' + label.replace(/"/g, "&quot;") + '">' + d + "</button>";
+        else cells += '<span class="' + cls.join(" ") + '" aria-label="' + label.replace(/"/g, "&quot;") + '">' + d + "</span>";
+      }
+      var i0 = y * 12 + m, zu = K.schliesszeiten.filter(function (z) { var a = z.von.slice(0, 7), b = z.bis.slice(0, 7), c = y + "-" + String(m + 1).padStart(2, "0"); return a <= c && b >= c; });
+      cal.innerHTML = '<div class="mc-head"><button type="button" class="mc-prev" aria-label="Voriger Monat"' + (i0 <= minI ? " disabled" : "") + ">" + svg(ICON.left, 20) + "</button><b aria-live=\"polite\">" + MON[m] + " " + y +
+        '</b><button type="button" class="mc-next" aria-label="Nächster Monat"' + (i0 >= maxI ? " disabled" : "") + ">" + svg(ICON.right, 20) + "</button></div>" +
+        '<div class="mc-wd" aria-hidden="true"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div><div class="mc-grid">' + cells + "</div>" +
+        '<div class="mc-legend"><span><i style="background:var(--ink)"></i>Termin</span><span><i style="background:var(--rose-soft);box-shadow:inset 0 0 0 1px var(--rose-deep)"></i>geschlossen</span></div>' +
+        '<p class="mc-note" aria-live="polite">' + (zu.length ? zu.map(function (z) { return "<b>" + z.name + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") : "") + "</p>";
+      $(".mc-prev", cal).addEventListener("click", function () { step(-1); });
+      $(".mc-next", cal).addEventListener("click", function () { step(1); });
+      $$(".ev", cal).forEach(function (b) { b.addEventListener("click", function () {
+        $$(".ev", cal).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+        $(".mc-note", cal).innerHTML = evOn(b.getAttribute("data-d")).map(function (e) { var a = parse(e.von); return "<b>" + e.titel + "</b>" + (e.von === e.bis ? fmtLong(a) : fmt(a) + " – " + fmt(parse(e.bis))); }).join("");
+      }); });
+      if (dir && !reduced) $(".mc-grid", cal).animate([{ opacity: 0, translate: (dir * 24) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 260, easing: "cubic-bezier(.23,1,.32,1)" });
+    }
+    function step(dd) { var i = y * 12 + m + dd; if (i < minI || i > maxI) return; y = Math.floor(i / 12); m = i % 12; render(dd); var f = $(dd > 0 ? ".mc-next" : ".mc-prev", cal); if (f && !f.disabled) f.focus(); else $(dd > 0 ? ".mc-prev" : ".mc-next", cal).focus(); }
+    var sx = null; cal.addEventListener("pointerdown", function (e) { sx = e.clientX; });
+    cal.addEventListener("pointerup", function (e) { if (sx === null) return; var dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
+    function show(v, anim) {
+      var showCal = v === "cal", out = showCal ? list : cal, inn = showCal ? cal : list;
+      if (showCal) render(0);
+      var swap = function () { out.hidden = true; inn.hidden = false; extra.forEach(function (x) { if (x && showCal) x.dataset.wasHidden = x.hidden, x.hidden = true; else if (x && x.dataset.wasHidden) x.hidden = x.dataset.wasHidden === "true"; }); };
+      if (!anim || reduced || !out.animate) { swap(); return; }
+      out.animate([{ opacity: 1 }, { opacity: 0, scale: .98 }], { duration: 140, easing: "ease-in" }).onfinish = function () { swap(); inn.animate([{ opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1 }], { duration: 240, easing: "cubic-bezier(.23,1,.32,1)" }); };
+    }
+    var btns = $$("button", sw);
+    btns.forEach(function (b) { b.addEventListener("click", function () {
+      if (b.getAttribute("aria-pressed") === "true") return;
+      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); slideKnob(sw, b, true); show(b.getAttribute("data-view"), true); store("termine-ansicht", b.getAttribute("data-view"));
+    }); });
+    var pref = store("termine-ansicht") === "cal" ? btns[1] : btns[0];
+    btns.forEach(function (x) { x.setAttribute("aria-pressed", x === pref); });
+    requestAnimationFrame(function () { slideKnob(sw, pref, false); });
+    if (pref === btns[1]) show("cal", false);
+    addEventListener("resize", function () { slideKnob(sw, $('[aria-pressed="true"]', sw), false); });
+  })();
+
+  /* ---------- Elternbriefe durchsuchen ---------- */
+  (function () {
+    var inp = document.getElementById("brief-suche"); if (!inp) return;
+    var briefe = $$(".brief"), cnt = $(".brief-search .faq-count"), empty = $(".brief-empty");
+    function norm(t) { return t.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss"); }
+    briefe.forEach(function (b) { b._orig = $("div", b).innerHTML; b._t = $(".brief-t", b).textContent; });
+    function mark(html, q) {
+      if (!q) return html;
+      return html.replace(/>([^<]+)</g, function (m0, txt) {
+        var n = norm(txt), out = "", i = 0, k;
+        while ((k = n.indexOf(q, i)) >= 0) { out += txt.slice(i, k) + "<mark>" + txt.slice(k, k + q.length) + "</mark>"; i = k + q.length; }
+        return ">" + out + txt.slice(i) + "<";
+      });
+    }
+    inp.addEventListener("input", function () {
+      var q = norm(inp.value.trim()), n = 0;
+      briefe.forEach(function (b) {
+        var hit = !q || norm(b._t + " " + $("div", b).textContent).indexOf(q) >= 0;
+        b.hidden = !hit; if (hit) n++;
+        $("div", b).innerHTML = mark(b._orig, q); if (q && hit) b.open = true;
+      });
+      empty.hidden = n > 0; cnt.textContent = q ? n + (n === 1 ? " Brief" : " Briefe") : "";
+    });
+  })();
+
+  /* ---------- Einblicke: Fotos nach Bereich filtern (weiches Umsortieren) ---------- */
+  (function () {
+    var chips = $$(".gal-chips button"), grid = $(".gal-grid"); if (!grid) return;
+    var items = $$(".gal-item", grid), busy = false;
+    chips.forEach(function (c) { c.addEventListener("click", function () {
+      if (busy || c.getAttribute("aria-pressed") === "true") return;
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c); });
+      var cat = c.getAttribute("data-cat"), keep = function (f) { return cat === "alle" || f.getAttribute("data-cat") === cat; };
+      var first = new Map(); items.forEach(function (f) { if (!f.hidden) first.set(f, f.getBoundingClientRect()); });
+      var leaving = items.filter(function (f) { return !f.hidden && !keep(f); });
+      if (reduced || !grid.animate) { items.forEach(function (f) { f.hidden = !keep(f); }); return; }
+      busy = true; leaving.forEach(function (f) { f.classList.add("leave"); });
+      setTimeout(function () {
+        items.forEach(function (f) { f.classList.remove("leave"); f.hidden = !keep(f); });
+        items.forEach(function (f) {
+          if (f.hidden) return; var a = first.get(f), b = f.getBoundingClientRect();
+          if (a) f.animate([{ translate: (a.left - b.left) + "px " + (a.top - b.top) + "px" }, { translate: "0 0" }], { duration: 420, easing: EASE_IO });
+          else f.animate([{ opacity: 0, scale: .92 }, { opacity: 1, scale: 1 }], { duration: 300, delay: 100, easing: EASE_OUT, fill: "backwards" });
+        });
+        busy = false;
+      }, leaving.length ? 150 : 0);
+    }); });
+  })();
+
+  /* ---------- Downloads: „neu“ 30 Tage lang ---------- */
+  $$(".dl-link .new[data-neu]").forEach(function (n) {
+    var a = parse(n.getAttribute("data-neu")), until = new Date(a.getFullYear(), a.getMonth(), a.getDate() + 30);
+    n.hidden = new Date() > until;
+  });
+
+  /* ---------- Knopf mit Rückmeldung bei Downloads ---------- */
+  $$('a[download], .js-saved-ics').forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (a.classList.contains("got")) return;
+      var ic = a.classList.contains("dl-link") ? $(".ficon", a) : null, old = ic ? ic.textContent : null, sv = !ic && $("svg", a), oldSvg = sv ? sv.outerHTML : null;
+      a.classList.add("got");
+      if (ic) ic.textContent = "✓"; else if (sv) sv.outerHTML = svg(ICON.check, 20);
+      setTimeout(function () { a.classList.remove("got"); if (ic) ic.textContent = old; else if (oldSvg) { var s2 = $("svg", a); if (s2) s2.outerHTML = oldSvg; } }, 2200);
+    });
+  });
+
+  /* ---------- Kalender-Abo: Gerät wählen (Reiter) ---------- */
+  (function () {
+    var tl = $(".abo-tabs"); if (!tl) return;
+    var tabs = $$('[role="tab"]', tl);
+    function pick(t, focus, anim) {
+      tabs.forEach(function (x) { var on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+      slideKnob(tl, t, anim); if (focus) t.focus();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { pick(t, false, true); });
+      t.addEventListener("keydown", function (e) {
+        var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
+        if (j === null) return; e.preventDefault(); pick(tabs[(j + tabs.length) % tabs.length], true, true);
+      });
+    });
+    var ua = navigator.userAgent, start = /Android/i.test(ua) ? tabs[1] : /iPhone|iPad|Macintosh/.test(ua) ? tabs[0] : /Windows/.test(ua) ? tabs[2] : tabs[0];
+    requestAnimationFrame(function () { pick(start, false, false); });
+    addEventListener("resize", function () { slideKnob(tl, $('[aria-selected="true"]', tl), false); });
+  })();
+
+  /* ---------- Fragen-Helfer (Antworten aus den häufigen Fragen) ---------- */
+  (function () {
+    var box = $(".ask"); if (!box || !K || !K.faq) return;
+    var log = $(".ask-log", box), inp = $("#ask-in", box), F = K.faq;
+    function norm(t) { return t.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " "); }
+    var STOP = " der die das und ist ein eine einen mein meine meinem kind kinder wir ich sie es zu in im fuer mit auch noch wie was gibt muss muessen kann koennen hat haben den dem des von auf an bei oder ihr ihre unser unsere wann wo wer ";
+    function stems(t) { return norm(t).split(/\s+/).filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }).map(function (w) { return w.length > 5 ? w.slice(0, -2) : w; }); }
+    function best(q) {
+      var st = stems(q), top = null, sc = 0;
+      var idf = st.map(function (s) { var df = F.filter(function (f) { return norm(f.q + " " + f.a).indexOf(s) >= 0; }).length; return df ? Math.log(1 + F.length / df) : 0; });
+      F.forEach(function (f) { var q2 = norm(f.q), a2 = norm(f.a), v = 0; st.forEach(function (s, k) { v += idf[k] * ((q2.indexOf(s) >= 0 ? 2 : 0) + (a2.indexOf(s) >= 0 ? 1 : 0)); }); if (v > sc) { sc = v; top = f; } });
+      return sc >= 1 ? top : null;
+    }
+    function add(cls, node) { var m = document.createElement("div"); m.className = "msg " + cls; if (typeof node === "string") m.textContent = node; else m.appendChild(node); log.appendChild(m); log.scrollTop = log.scrollHeight; return m; }
+    function ask(q) {
+      add("me", q);
+      var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht");
+      setTimeout(function () {
+        ty.remove(); var f = best(q), frag = document.createDocumentFragment();
+        if (f) {
+          frag.appendChild(document.createTextNode(f.a));
+          var a = document.createElement("a"); a.href = f.u; a.textContent = "Aus: „" + f.q + "“ (" + f.b + ")"; frag.appendChild(document.createElement("br")); frag.appendChild(a);
+        } else {
+          frag.appendChild(document.createTextNode("Dazu habe ich in unseren häufigen Fragen leider nichts gefunden. Rufen Sie uns gern an: "));
+          var t = document.createElement("a"); t.href = "tel:+4993127898920"; t.textContent = "0931 2789892 0"; frag.appendChild(t);
+        }
+        add("bot", frag);
+      }, reduced ? 0 : 650);
+    }
+    $$(".sugg button", box).forEach(function (b) { b.addEventListener("click", function () { ask(b.textContent); }); });
+    $(".ask-form", box).addEventListener("submit", function (e) { e.preventDefault(); var q = inp.value.trim(); if (!q) return; inp.value = ""; ask(q); });
+  })();
+
+  /* ---------- Geöffnet-Anzeige in der Leiste ---------- */
+  (function () {
+    var wrap = $(".open-wrap"); if (!wrap || !K) return;
+    var pill = $(".open-pill", wrap), pop = $(".open-pop", wrap), txt = $(".open-txt", wrap);
+    function hm(m) { return Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0"); }
+    function update() {
+      var now = new Date(), reason = closedReason(now), m = now.getHours() * 60 + now.getMinutes(), o = 405, kk = 990, h = 1080, cls = "", t;
+      if (reason) { cls = "closed"; t = "Heute geschlossen"; }
+      else if (m < o) { cls = "closed"; t = "Öffnet um 6:45"; }
+      else if (m < kk - 30) t = "Geöffnet";
+      else if (m < kk) { cls = "soon"; t = "Krippe & Kiga bis 16:30"; }
+      else if (m < h - 30) t = "Hort geöffnet";
+      else if (m < h) { cls = "soon"; t = "Schließt um 18:00"; }
+      else { cls = "closed"; t = "Für heute geschlossen"; }
+      pill.className = "open-pill " + cls; txt.textContent = t; pill.setAttribute("aria-label", t + " – Öffnungszeiten anzeigen");
+      var rows = [["Kinderkrippe", o, kk], ["Kindergarten", o, kk], ["Kinderhort", o, h]].map(function (r) {
+        return '<div class="row' + (!reason && m >= r[2] ? " done" : "") + '"><span>' + r[0] + "</span><b>" + hm(r[1]) + " – " + hm(r[2]) + " Uhr</b></div>"; }).join("");
+      var st = status();
+      pop.innerHTML = "<strong>" + st.today + "</strong>" + rows + '<p class="next">' + (reason || m >= h ? st.sub : st.next) + "</p>";
+    }
+    function setOpen(on) {
+      pop.hidden = !on; pill.setAttribute("aria-expanded", on);
+      if (on) { overlayOpened(function () { setOpen(false); }); } else if (closeTop) overlayClosed();
+    }
+    pill.addEventListener("click", function () { var on = pop.hidden; if (on) update(); setOpen(on); });
+    document.addEventListener("click", function (e) { if (!pop.hidden && !e.target.closest(".open-wrap")) setOpen(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !pop.hidden) { setOpen(false); pill.focus(); } });
+    update(); wrap.hidden = false; setInterval(update, 60000);
+  })();
+
+  /* ---------- Jahreszeiten im Auftakt (höchstens 18 Teilchen, 8 Sekunden) ---------- */
+  (function () {
+    var cv = $(".season-fx"); if (!cv || reduced || !cv.getContext) return;
+    var box = cv.parentNode, ctx = cv.getContext("2d"), W = 0, H = 0, parts = [], t0 = 0, run = false;
+    var mo = new Date().getMonth(), kind = mo < 2 || mo === 11 ? "winter" : mo < 5 ? "fruehling" : mo < 8 ? "sommer" : "herbst";
+    function size() { var r = box.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+    function make() { parts = []; for (var i = 0; i < 18; i++) parts.push({ x: Math.random() * W, y: kind === "sommer" ? H * (.3 + Math.random() * .7) : -20 - Math.random() * H * .8, s: 4 + Math.random() * 5, v: .4 + Math.random() * .6, a: Math.random() * 6.28, w: .01 + Math.random() * .02, c: i % 3 }); }
+    function draw(p) {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+      if (kind === "winter") { ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.beginPath(); ctx.arc(0, 0, p.s * .45, 0, 6.28); ctx.fill(); }
+      else if (kind === "fruehling") { ctx.fillStyle = ["#F1E5E3", "#D4B5B0", "#FFFFFF"][p.c]; ctx.beginPath(); ctx.ellipse(0, 0, p.s * .5, p.s * .9, 0, 0, 6.28); ctx.fill(); }
+      else if (kind === "herbst") { ctx.fillStyle = ["#C98F7E", "#D4B5B0", "#B9876F"][p.c]; ctx.beginPath(); ctx.moveTo(0, -p.s); ctx.quadraticCurveTo(p.s, 0, 0, p.s); ctx.quadraticCurveTo(-p.s, 0, 0, -p.s); ctx.fill(); }
+      else { var g = ctx.createRadialGradient(0, 0, 0, 0, 0, p.s); g.addColorStop(0, "rgba(255,248,230,.95)"); g.addColorStop(1, "rgba(255,248,230,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, p.s, 0, 6.28); ctx.fill(); }
+      ctx.restore();
+    }
+    function frame(t) {
+      var age = (t - t0) / 1000, fade = age > 7 ? Math.max(0, 1 - (age - 7)) : Math.min(1, age * 2);
+      ctx.clearRect(0, 0, W, H); ctx.globalAlpha = fade;
+      parts.forEach(function (p) {
+        p.a += p.w;
+        if (kind === "sommer") { p.y -= p.v * .4; p.x += Math.sin(p.a) * .4; } else { p.y += p.v * (kind === "winter" ? .9 : 1.15); p.x += Math.sin(p.a) * (kind === "winter" ? .4 : .9); }
+        draw(p);
+      });
+      if (fade > 0 && run && !document.hidden) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, W, H); run = false; }
+    }
+    setTimeout(function () { size(); make(); t0 = performance.now(); run = true; requestAnimationFrame(frame); }, 900);
+  })();
+
+  /* ---------- Handgezeichnete Markierungen zeichnen sich beim Erscheinen ---------- */
+  (function () {
+    var ms = $$(".mark"); if (!ms.length) return;
+    if (!("IntersectionObserver" in window)) { ms.forEach(function (m) { m.classList.add("go"); }); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("go"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -15% 0px" });
+    ms.forEach(function (m) { io.observe(m); });
+  })();
+
+  /* ---------- Elternstimmen wechseln weich ---------- */
+  (function () {
+    var box = $(".quotes"); if (!box) return;
+    var qs = $$(".quote", box), dots = $$(".q-dots button", box), i = 0;
+    function show(n) { i = n; qs.forEach(function (q, k) { q.classList.toggle("on", k === n); q.setAttribute("aria-hidden", k !== n); }); dots.forEach(function (d, k) { d.classList.remove("on"); void d.offsetWidth; d.classList.toggle("on", k === n); d.setAttribute("aria-current", k === n); }); }
+    dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); }); if (!reduced) $("i", d).addEventListener("animationend", function () { show((i + 1) % qs.length); }); });
+    show(0);
+  })();
+
+  /* ---------- Weg durch den Tag: der Tagesablauf zeichnet sich beim Scrollen ---------- */
+  (function () {
+    var tls = $$(".timeline"); if (!tls.length || reduced) return;
+    tls.forEach(function (t) { t.classList.add("tl-draw"); });
+    var ticking = false;
+    function upd() {
+      ticking = false; var mid = innerHeight * .6;
+      tls.forEach(function (t) {
+        var r = t.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) return;
+        var p = Math.max(0, Math.min(1, (mid - r.top - 14) / Math.max(1, r.height - 28)));
+        t.style.setProperty("--tl", p.toFixed(3));
+        $$("li", t).forEach(function (li) { var lr = li.getBoundingClientRect(); li.classList.toggle("on", lr.top + 24 <= mid); });
+      });
+    }
+    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener("resize", upd); upd();
+  })();
+
+  /* ---------- Gleitender Fokus-Rahmen für die Tastatur ---------- */
+  (function () {
+    if (!CSS.supports || !CSS.supports("selector(:focus-visible)")) return;
+    var ring = document.createElement("div"), cur = null; ring.className = "focus-ring"; ring.setAttribute("aria-hidden", "true"); document.body.appendChild(ring);
+    function place(jump) {
+      if (!cur) return; var r = cur.getBoundingClientRect(), cs = getComputedStyle(cur), rad = parseFloat(cs.borderTopLeftRadius) || 8;
+      ring.classList.toggle("jump", !!jump);
+      ring.style.translate = (r.left - 5) + "px " + (r.top - 5) + "px"; ring.style.width = (r.width + 10) + "px"; ring.style.height = (r.height + 10) + "px";
+      ring.style.borderRadius = Math.min(rad + 5, (r.height + 10) / 2) + "px";
+    }
+    document.addEventListener("focusin", function (e) {
+      var el = e.target;
+      if (!el.matches(":focus-visible") || el.closest("dialog, .lightbox, .story-view") || el === document.body) { off(); return; }
+      var first = !ring.classList.contains("on"); cur = el; place(first || reduced); ring.classList.add("on"); root.classList.add("fring");
+    });
+    function off() { cur = null; ring.classList.remove("on"); root.classList.remove("fring"); }
+    document.addEventListener("focusout", function (e) { if (!e.relatedTarget) off(); });
+    document.addEventListener("pointerdown", off, true);
+    addEventListener("scroll", function () { if (cur) place(true); }, { passive: true });
+    addEventListener("resize", function () { if (cur) place(true); });
+  })();
+
+  /* ---------- Wimpel-Ladeanzeige bei langsamem Seitenwechsel ---------- */
+  (function () {
+    var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen");
+    l.innerHTML = '<span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>';
+    document.body.appendChild(l);
+  })();
+
+  /* ---------- Fotos mit Tiefe beim Scrollen ---------- */
+  (function () {
+    if (reduced) return;
+    var imgs = $$(".page-hero-card > img, .teaser > img"); if (!imgs.length) return;
+    imgs.forEach(function (im) { im.classList.add("depth"); });
+    var ticking = false;
+    function upd() {
+      ticking = false; var h = innerHeight;
+      imgs.forEach(function (im) {
+        var box = im.parentNode.getBoundingClientRect(); if (box.bottom < 0 || box.top > h) return;
+        var p = (box.top + box.height / 2 - h / 2) / h, max = box.height * (im.closest(".teaser") ? .05 : .08);
+        im.style.setProperty("--py", Math.max(-max, Math.min(max, -p * max * 1.6)).toFixed(1) + "px");
+      });
+    }
+    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  })();
+
+  /* ---------- Als App auf den Startbildschirm ---------- */
+  (function () {
+    var deferred = null, links = $$(".js-app"); if (!links.length) return;
+    addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferred = e; });
+    if (matchMedia("(display-mode: standalone)").matches || navigator.standalone) { links.forEach(function (l) { l.closest("li").hidden = true; }); return; }
+    var dlg = null;
+    function open() {
+      if (deferred) { deferred.prompt(); deferred.userChoice.then(function (c) { if (c.outcome === "accepted") toast("Als App gespeichert"); deferred = null; }); return; }
+      var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if (!dlg) {
+        dlg = document.createElement("dialog"); dlg.className = "app-dialog"; dlg.setAttribute("aria-labelledby", "app-t");
+        dlg.innerHTML = '<div><h2 id="app-t"><img src="img/apple-touch-icon.png" alt="" width="48" height="48">Als App aufs Handy</h2><p>Mit einem Symbol auf dem Startbildschirm sind Termine, Krankmelden und Kontakt nur einen Tipp entfernt.</p><ol class="app-steps"></ol><div class="btn-row"><button class="btn btn-primary" type="button" value="ok">Verstanden</button></div></div>';
+        document.body.appendChild(dlg);
+        $("button", dlg).addEventListener("click", function () { dlg.close(); });
+        dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+      }
+      $(".app-steps", dlg).innerHTML = ios
+        ? "<li>Unten in Safari auf das Teilen-Symbol tippen.</li><li>„Zum Home-Bildschirm“ wählen.</li><li>„Hinzufügen“ antippen – fertig.</li>"
+        : "<li>Im Browser das Menü (⋮) öffnen.</li><li>„App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen.</li><li>Bestätigen – fertig.</li>";
+      dlg.showModal();
+    }
+    links.forEach(function (l) { l.addEventListener("click", open); });
+  })();
 
   /* ---------- Schnelle Wiederbesuche ---------- */
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {

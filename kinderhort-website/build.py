@@ -92,6 +92,10 @@ def icon(name, size=24):
         "search": '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>',
         "copy": '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
         "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+        "share": '<path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
+        "list": '<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+        "grid": '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M9 9v12M15 9v12M3 15h18"/>',
+        "home": '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
     }[name]
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>')
@@ -180,6 +184,10 @@ def header(active):
       {BRAND_MARK}
       <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name">Grombühl e. V.</span></span>
     </a>
+    <div class="open-wrap" hidden>
+      <button class="open-pill" type="button" aria-expanded="false" aria-controls="oeffnung-pop"><span class="open-dot" aria-hidden="true"></span><span class="open-txt"></span></button>
+      <div class="open-pop" id="oeffnung-pop" role="dialog" aria-label="Öffnungszeiten heute" hidden></div>
+    </div>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
@@ -228,6 +236,7 @@ FOOTER = f'''<footer class="site-footer">
           <li><a href="kinderhort.html">Kinderhort</a></li>
           <li><a href="aktuelles.html">Aktuelles</a></li>
           <li><a href="downloads.html">Downloads</a></li>
+          <li><button type="button" class="link-btn js-app">Als App aufs Handy</button></li>
         </ul>
       </div>
     </div>
@@ -302,6 +311,9 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{SITE}{'' if fname == 'index.html' else fname}">{head}
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Kinderhort">
 <link rel="preload" href="fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -496,8 +508,9 @@ def ev(r):
     return (f'<li class="event reveal" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
             f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
             f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p>'
-            f'<button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
-            f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button></li>')
+            f'<div class="ev-acts"><button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
+            f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button>'
+            f'<button class="share" type="button" aria-label="{e(r["Titel"])} teilen">{icon("share", 18)}</button></div></li>')
 
 STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden>
         <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
@@ -505,16 +518,30 @@ STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden
         <p class="status-next">{icon("calendar", 18)} <span></span></p>
       </div>'''
 
+MARK_CIRCLE = '<svg class="mark-svg" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M60 6 C 30 0 4 8 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 5"/></svg>'
+MARK_UNDER = '<svg class="mark-svg" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 12 C 25 6 55 4 97 9 M12 17 C 40 13 70 13 90 15"/></svg>'
+
 # =====================================================================
 # STARTSEITE
 # =====================================================================
+STIMMEN_DATEN = read_csv("elternstimmen.csv") if os.path.exists(os.path.join(W, "daten/elternstimmen.csv")) else []
+STIMMEN = "" if not STIMMEN_DATEN else ('<section class="section alt" id="stimmen"><div class="container"><div class="section-head center"><span class="kicker">Elternstimmen</span><h2>Das sagen Familien</h2></div>'
+    '<div class="quotes reveal" tabindex="0" aria-roledescription="Karussell" aria-label="Elternstimmen">' + "".join(
+    f'<figure class="quote{" on" if i == 0 else ""}"><blockquote><p>{e(r["Zitat"])}</p></blockquote><figcaption>{e(r["Von"])}</figcaption></figure>' for i, r in enumerate(STIMMEN_DATEN)) +
+    '<div class="q-dots">' + "".join(f'<button type="button" aria-label="Stimme {i + 1}"{" class=\"on\"" if i == 0 else ""}><i></i></button>' for i in range(len(STIMMEN_DATEN))) + '</div></div></div></section>')
+
+WORDS = [('spielen', 1.9, 50, 48), ('lachen', 1.4, 22, 24), ('forschen', 1.25, 79, 22), ('singen', 1.05, 14, 70), ('basteln', 1.3, 82, 72), ('Freunde', 1.6, 46, 82), ('toben', 1.0, 30, 50), ('lesen', 1.1, 70, 50), ('kochen', 0.95, 56, 16), ('Natur', 1.15, 8, 30), ('Hausaufgaben', 0.9, 88, 94), ('Feste', 1.05, 12, 94), ('Musik', 0.95, 93, 47), ('Englisch', 0.9, 36, 12), ('Ausflüge', 1.0, 64, 92), ('turnen', 0.95, 4, 52)]
+WORDCLOUD = ('<div class="word-cloud reveal" role="img" aria-label="Was Kinder bei uns erleben: ' + ", ".join(w for w, *_ in WORDS) + '">' + "".join(
+    f'<span style="left:{x}%;top:{y}%;font-size:{z}rem;--d:{i * -0.45:.2f}s">{w}</span>' for i, (w, z, x, y) in enumerate(WORDS)) + "</div>")
+
 home = f'''
 <section class="hero">
+  <canvas class="season-fx" aria-hidden="true"></canvas>
   <div class="container hero-grid">
     <div>
       <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
       <h1>Kath. Kinder- und Jugendhort <span class="hl">Grombühl</span></h1>
-      <p class="lead">Weil Qualität zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
+      <p class="lead">Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt! Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
       <div class="hero-actions">
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
@@ -567,6 +594,7 @@ home = f'''
       <div class="stat reveal"><b>2</b><span>Köchinnen kochen täglich frisch mit regionalen Zutaten</span></div>
       <div class="stat reveal"><b>11 M.–16 J.</b><span>breites Altersspektrum in einem Haus</span></div>
     </div>
+    {WORDCLOUD}
     <div class="teasers">
       <a class="teaser reveal" href="#" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}">{img("img/p2160031.jpg", "Weißer Raum")}<div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
       <a class="teaser reveal" href="#" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht.">{img("img/p2160054.jpg", "Hauseigene Küche")}<div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
@@ -605,6 +633,8 @@ home = f'''
   </div>
 </section>
 
+<!--EINBLICKE-->
+
 <section class="section" id="aktuell">
   <div class="container">
     <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
@@ -629,11 +659,11 @@ home = f'''
 </section>
 
 {ferienplan_section()}
-
+{STIMMEN}
 <section class="section tight">
   <div class="container">
     <div class="cta-band reveal">
-      <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
+      <div><h2>Lernen Sie uns <span class="mark under">kennen{MARK_UNDER}</span></h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931&nbsp;2789892&nbsp;0</a>
         <a class="btn btn-ghost js-magnet" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
@@ -940,6 +970,9 @@ akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
 <div class="notes-grid">
   <div>
+  <div class="view-switch no-print" role="group" aria-label="Ansicht der Termine"><span class="vs-knob" aria-hidden="true"></span>
+    <button type="button" data-view="list" aria-pressed="true">{icon("list", 18)} Liste</button><button type="button" data-view="cal" aria-pressed="false">{icon("grid", 18)} Kalender</button></div>
+  <div class="month-cal" hidden></div>
   <ul class="event-list">
     {"".join(ev(r) for r in TERMINE)}
   </ul>
@@ -955,12 +988,17 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
     <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
   </div>
 </div>''')
-akt += section("elternbrief", "Elternbrief", "Liebe Eltern!", "", '''
-<div class="prose reveal">
-  <p>Nach dem BayKiBiG (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von Inhouseschulungen für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p>
-  <p>Unser Personal arbeitet mit großem Engagement. Dadurch fallen im Laufe eines Kindergarten- und Hortjahres Überstunden an (z. B. St. Martin, Ferienfreizeit, Lebensmittelsammlung, Elternabende, Weihnachtsmarkt, Feste und Feiern mit Eltern und Kindern …). Diese Überstunden gleichen unsere Mitarbeiterinnen und Mitarbeiter durch Freizeit aus.</p>
-  <p>Während der „Schulferienzeiten“, in denen unsere Einrichtung geöffnet hat (Herbst, Fasching, Ostern, Pfingsten, August), wird immer ein Teil der Erzieherinnen und Erzieher die Betreuung Ihres Kindes übernehmen und gleichzeitig werden einige Erzieherinnen und Erzieher ihre geleisteten Überstunden frei nehmen können.</p>
-  <p class="sign-off">Im Auftrag des Vorsitzenden<br><strong>Petra Lachnit</strong><br>Einrichtungsleiterin</p>
+BRIEFE = read_csv("elternbriefe.csv")
+def brief(i, r):
+    paras = "".join(f"<p>{p.strip()}</p>" for p in r["Text"].split("||") if p.strip())
+    gruss = f'<p class="sign-off">{r["Gruß"].replace("||", "<br>")}</p>' if r.get("Gruß") else ""
+    return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
+            f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
+akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
+<div class="briefe">
+  <div class="faq-search brief-search reveal"{" hidden" if len(BRIEFE) < 2 else ""}><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label>{icon("search", 20)}<input type="search" id="brief-suche" placeholder="Elternbriefe durchsuchen" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
+  {"".join(brief(i, r) for i, r in enumerate(BRIEFE))}
+  <p class="brief-empty muted" hidden>Kein Elternbrief gefunden.</p>
 </div>''', cls="alt")
 akt += ferienplan_section(cls="")
 page("aktuelles.html", "Aktuelles", "Aktuelle Termine, Vormerktermine und Schließtage des Kath. Kinder- und Jugendhorts Grombühl in Würzburg.", "aktuelles.html", akt)
@@ -968,17 +1006,53 @@ page("aktuelles.html", "Aktuelles", "Aktuelle Termine, Vormerktermine und Schlie
 # =====================================================================
 # DOWNLOADS
 # =====================================================================
-def dl(href, title, sub):
-    return f'<li><a class="dl-link" href="{href}" download><span class="ficon">PDF</span><span>{title}<small>{sub}</small></span></a></li>'
-plan_dl = dl("downloads/Ferienplan_2026_27.pdf", "Schließtage 2026/2027", "Ferienplan · PDF, 131 KB")
+def copy_btn(value, label):
+    return f'<button class="copy-btn" type="button" data-copy="{e(value)}" data-label="{e(label)}" aria-label="{e(label)} kopieren"><span class="ic ic-copy">{icon("copy", 18)}</span><span class="ic ic-done">{icon("check", 18)}</span></button>'
+
+NEU_SEIT = {"downloads/Ferienplan_2026_27.pdf": "2026-11-15"}   # „neu“-Hinweis 30 Tage lang
+def pdf_meta(href):
+    p = os.path.join(W, href)
+    size = os.path.getsize(p)
+    raw = open(p, "rb").read()
+    pages = len(re.findall(rb"/Type\s*/Page[^s]", raw)) or 1
+    thumb = "img/dl-" + os.path.splitext(os.path.basename(href))[0].lower().replace("_", "-") + ".webp"
+    tp = os.path.join(W, thumb)
+    if not os.path.exists(tp) or os.path.getmtime(tp) < os.path.getmtime(p):
+        try:
+            import subprocess, tempfile
+            from PIL import Image
+            with tempfile.TemporaryDirectory() as td:
+                subprocess.run(["pdftoppm", "-png", "-r", "40", "-f", "1", "-l", "1", "-singlefile", p, os.path.join(td, "s")], check=True, capture_output=True)
+                Image.open(os.path.join(td, "s.png")).convert("RGB").save(tp, "WEBP", quality=72)
+        except Exception:
+            thumb = None
+    return size, pages, thumb if thumb and os.path.exists(tp) else None
+
+def dl(href, title, kind):
+    size, pages, thumb = pdf_meta(href)
+    sub = f"{kind} · PDF, {round(size / 1024)} KB, {pages} {'Seite' if pages == 1 else 'Seiten'}"
+    neu = f'<span class="new" data-neu="{NEU_SEIT[href]}" hidden>neu</span>' if href in NEU_SEIT else ""
+    peek = f'<span class="peek" aria-hidden="true"><img src="{thumb}" alt="" loading="lazy" width="120" height="170"></span>' if thumb else ""
+    return f'<li><a class="dl-link" href="{href}" download><span class="ficon">PDF</span><span>{title}{neu}<small>{sub}</small></span>{peek}</a></li>'
+plan_dl = dl("downloads/Ferienplan_2026_27.pdf", "Schließtage 2026/2027", "Ferienplan")
 downl = page_hero("Downloads", "Hier finden Sie weitere Informationsblätter.", "img/p2160170.jpg", "Infoblätter &amp; Formulare", alt="Spielbereich")
+def lotse(q, text, links):
+    return (f'<details class="lotse-item" name="lotse"><summary>{q}</summary><div><p>{text}</p><div class="lotse-links">' +
+            "".join(f'<a class="btn {"btn-primary" if i == 0 else "btn-ghost"}" href="{h}"{" download" if h.endswith((".pdf", ".ics")) else ""}>{icon(ic, 20)} {t}</a>' for i, (h, ic, t) in enumerate(links)) + "</div></div></details>")
+downl += section("lotse", "Schnell zum Ziel", "Was möchten Sie tun?", "Eine Frage antippen – und Sie bekommen genau das passende Formular oder den richtigen Weg.", '<div class="lotse reveal">' + "".join([
+    lotse("Mein Kind ist krank", "Bitte melden Sie Ihr Kind per E-Mail oder telefonisch direkt in der Gruppe ab.", [(KRANK_MAIL, "mail", "Krankmeldung per E-Mail"), ("kontakt.html#durchwahl-finden", "phone", "Durchwahl der Gruppe")]),
+    lotse("Mein Kind braucht Medikamente", "Medikamente können wir nur mit einer unterschriebenen Medikamentenvereinbarung geben.", [("downloads/Medikamentenvereinbarung.pdf", "file", "Medikamentenvereinbarung")]),
+    lotse("Ich möchte wissen, wann geschlossen ist", "Alle Schließtage stehen im Ferienplan – auch als Kalenderdatei fürs Handy.", [("downloads/Ferienplan_2026_27.pdf", "file", "Ferienplan als PDF"), ("downloads/schliesstage.ics", "calendar", "Schließtage in den Kalender")]),
+    lotse("Ich habe Fragen zum Hort", "Viele Antworten stehen im KinderhortABC – oder Sie fragen uns direkt.", [("downloads/HortABC.pdf", "file", "KinderhortABC"), ("kontakt.html#frag", "search", "Schnelle Antwort finden")]),
+    lotse("Ich möchte einen Platz anfragen", "Die vorbereitete E-Mail enthält alle Angaben, die wir für Ihre Anfrage brauchen.", [(PLATZ_MAIL, "mail", "Platz anfragen")]),
+]) + "</div>", cls="tight")
 downl += section("dateien", "Downloads", "Informationsblätter zum Herunterladen", "", f'''
 <div class="downloads">
   <div class="dl-group theme-krippe reveal"><h3>Kinderkrippe</h3><ul>{plan_dl}</ul></div>
   <div class="dl-group theme-kiga reveal"><h3>Kindergarten</h3><ul>{plan_dl}</ul></div>
   <div class="dl-group theme-hort reveal"><h3>Kinderhort</h3><ul>{plan_dl}
-    {dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z · PDF, 224 KB")}
-    {dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular · PDF, 110 KB")}</ul></div>
+    {dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z")}
+    {dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular zum Ausfüllen")}</ul></div>
 </div>''')
 def ics_dl(href, title, sub):
     return f'<li><a class="dl-link" href="{href}" download><span class="ficon">ICS</span><span>{title}<small>{sub}</small></span></a></li>'
@@ -986,6 +1060,18 @@ downl += section("kalender", "Kalender", "Termine direkt ins Handy übernehmen",
 <div class="downloads two">
   <div class="dl-group reveal"><h3>Schließtage</h3><ul>{ics_dl("downloads/schliesstage.ics", f"Schließtage {PLAN_JAHR}", "Kalenderdatei für alle Bereiche")}</ul></div>
   <div class="dl-group reveal"><h3>Termine</h3><ul>{ics_dl("downloads/termine.ics", "Termine &amp; Veranstaltungen", "Kalenderdatei")}</ul></div>
+</div>
+<div class="abo reveal" id="abo">
+  <div class="abo-head"><h3>Noch einfacher: Kalender abonnieren</h3><p>Dann erscheinen neue Termine und Schließtage <strong>von selbst</strong> in Ihrem Kalender – ohne erneutes Herunterladen.</p></div>
+  <div class="abo-tabs" role="tablist" aria-label="Gerät wählen"><span class="vs-knob" aria-hidden="true"></span>
+    <button type="button" role="tab" id="abo-t1" aria-controls="abo-ios" aria-selected="true">iPhone / iPad</button><button type="button" role="tab" id="abo-t2" aria-controls="abo-android" aria-selected="false" tabindex="-1">Android</button><button type="button" role="tab" id="abo-t3" aria-controls="abo-pc" aria-selected="false" tabindex="-1">Outlook</button></div>
+  <div class="abo-panel" role="tabpanel" id="abo-ios" aria-labelledby="abo-t1"><ol><li>Unten auf „Termine abonnieren“ oder „Schließtage abonnieren“ tippen.</li><li>„Abonnieren“ bestätigen.</li><li>Fertig – neue Einträge erscheinen automatisch im Kalender.</li></ol></div>
+  <div class="abo-panel" role="tabpanel" id="abo-android" aria-labelledby="abo-t2" hidden><ol><li>Abo-Adresse unten kopieren.</li><li>Am Computer Google Kalender öffnen: „Weitere Kalender“ → „Per URL“ → Adresse einfügen.</li><li>Fertig – der Kalender erscheint auch auf dem Handy.</li></ol></div>
+  <div class="abo-panel" role="tabpanel" id="abo-pc" aria-labelledby="abo-t3" hidden><ol><li>Abo-Adresse unten kopieren.</li><li>In Outlook: „Kalender hinzufügen“ → „Aus dem Internet abonnieren“ → Adresse einfügen.</li><li>Fertig – Outlook holt neue Termine von selbst.</li></ol></div>
+  <div class="abo-links">
+    <a class="btn btn-primary" href="webcal://{SITE.split("//", 1)[1].rstrip("/")}/downloads/termine.ics">{icon("calendar", 20)} Termine abonnieren</a>{copy_btn(SITE + "downloads/termine.ics", "Abo-Adresse Termine")}
+    <a class="btn btn-ghost" href="webcal://{SITE.split("//", 1)[1].rstrip("/")}/downloads/schliesstage.ics">{icon("calendar", 20)} Schließtage abonnieren</a>{copy_btn(SITE + "downloads/schliesstage.ics", "Abo-Adresse Schließtage")}
+  </div>
 </div>''', cls="alt")
 downl += section("", "Aktuelles", "Hier finden Sie alle aktuellen Termine", "",
                  f'<a class="btn btn-primary" href="aktuelles.html">Zu den Terminen {icon("arrow", 20)}</a>', cls="tight")
@@ -994,8 +1080,6 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 # =====================================================================
 # KONTAKT
 # =====================================================================
-def copy_btn(value, label):
-    return f'<button class="copy-btn" type="button" data-copy="{e(value)}" data-label="{e(label)}" aria-label="{e(label)} kopieren"><span class="ic ic-copy">{icon("copy", 18)}</span><span class="ic ic-done">{icon("check", 18)}</span></button>'
 
 def tel(label, num_display, num):
     return f'<li><span>{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'
@@ -1018,11 +1102,16 @@ kon += f'''<section class="section tight" id="schnell">
     </div>
   </div>
 </section>'''
+kon += section("frag", "Schnelle Antwort", "Fragen Sie einfach", "Tippen Sie Ihre Frage ein – die Antwort kommt aus unseren häufigen Fragen. Findet sich nichts, rufen Sie uns gern an.", f'''
+<div class="ask reveal">
+  <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
+  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“"><button class="btn btn-primary" type="submit">Fragen</button></form>
+</div>''', cls="tight alt")
 kon += f'''<section class="section">
   <div class="container contact-grid">
     <div>
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
-      <div class="dial reveal">
+      <div class="dial reveal" id="durchwahl-finden">
         <label for="durchwahl">Durchwahl finden</label>
         <div class="dial-field">{icon("search", 20)}<input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
         <div class="dial-out" aria-live="polite"></div>
@@ -1106,6 +1195,60 @@ dsg += f'''<section class="section"><div class="container"><div class="prose">
 </div></div></section>'''
 page("datenschutz.html", "Datenschutz", "Datenschutzerklärung des Kath. Kinder- und Jugendhorts Grombühl e. V., Würzburg.", "datenschutz.html", dsg)
 
+# =====================================================================
+# FEHLERSEITE (404)
+# =====================================================================
+nf = f'''<section class="section e404">
+  <div class="container">
+    <div class="e404-card">
+      <div class="num4" aria-label="404"><span>4</span><i aria-hidden="true"></i><span>4</span></div>
+      <h1>Hoppla, diese Seite gibt es nicht (mehr).</h1>
+      <p>Vielleicht hat sich die Adresse geändert – unsere Webseite ist neu. Eines davon hilft bestimmt weiter:</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="index.html">{icon("home", 20)} Startseite</a>
+        <a class="btn btn-ghost" href="aktuelles.html#termine">{icon("calendar", 20)} Termine</a>
+        <a class="btn btn-ghost" href="kontakt.html">{icon("phone", 20)} Kontakt</a>
+        <button class="btn btn-ghost js-search" type="button">{icon("search", 20)} Suchen</button>
+      </div>
+    </div>
+  </div>
+</section>'''
+page("404.html", "Seite nicht gefunden", "Diese Seite gibt es leider nicht.", "", nf, head='\n<meta name="robots" content="noindex">\n<base href="/">')
+PAGES_WRITTEN.remove("404.html")
+
+# ---------- Einblicke ins Haus (gemeinsame Galerie mit Filter) ----------
+def einblicke():
+    pick = [("krippe", "Krippe", krippe_tour[:4]), ("kiga", "Kindergarten", kiga_tour[:4]), ("hort", "Hort", hort_tour[:4])]
+    figs = []
+    for k in range(4):
+        for key, name, items in pick:
+            if k < len(items):
+                im, t, sub = items[k]
+                figs.append(f'<figure class="gal-item" data-cat="{key}"><button type="button" data-full="{im}" data-group="einblicke" data-title="{e(t)}" data-text="{e(name + " – " + sub)}" aria-label="{e(t)} – {e(sub)}, {name} (Bild vergrößern)">{img(im, t + " – " + sub, sizes="(max-width: 700px) 50vw, 25vw")}</button><figcaption>{name}</figcaption></figure>')
+    chips = "".join(f'<button type="button" data-cat="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{n}</button>' for k, n in [("alle", "Alle"), ("krippe", "Krippe"), ("kiga", "Kindergarten"), ("hort", "Hort")])
+    return section("einblicke", "Einblicke", "Ein Blick in alle drei Bereiche", "Wählen Sie einen Bereich – die Fotos sortieren sich neu. Ein Klick vergrößert das Bild.",
+                   f'<div class="gal-chips no-print" role="group" aria-label="Bereich wählen">{chips}</div><div class="gal-grid">{"".join(figs)}</div>')
+_p = os.path.join(W, "index.html")
+_h = open(_p, encoding="utf-8").read()
+assert "<!--EINBLICKE-->" in _h
+open(_p, "w", encoding="utf-8").write(_h.replace("<!--EINBLICKE-->", glossar(einblicke())))
+
+# ---------- Alle häufigen Fragen für den Fragen-Helfer ----------
+FAQ_ALLE = []
+for _pg, _name in [("kinderkrippe.html", "Kinderkrippe"), ("kindergarten.html", "Kindergarten"), ("kinderhort.html", "Kinderhort")]:
+    _h = open(os.path.join(W, _pg), encoding="utf-8").read()
+    for _q, _a in re.findall(r'<details class="reveal"><summary>(.*?)</summary><div><p>(.*?)</p></div></details>', _h, flags=re.S):
+        FAQ_ALLE.append({"q": re.sub(r"<[^>]+>", "", _q), "a": re.sub(r"<[^>]+>", "", _a), "u": _pg + "#fragen", "b": _name})
+
+# ---------- Web-App-Manifest („Als App auf den Startbildschirm“) ----------
+with open(os.path.join(W, "manifest.webmanifest"), "w", encoding="utf-8") as f:
+    json.dump({"name": ORG, "short_name": "Kinderhort", "description": "Termine, Schließtage, Krankmeldung und Kontakt des Kinderhorts Grombühl.",
+               "lang": "de", "start_url": "./index.html", "scope": "./", "display": "standalone", "background_color": "#A8C5C0", "theme_color": "#A8C5C0",
+               "icons": [{"src": "img/app-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "img/app-512.png", "sizes": "512x512", "type": "image/png"},
+                         {"src": "img/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
+               "shortcuts": [{"name": "Termine", "url": "./aktuelles.html#termine"}, {"name": "Kind krankmelden", "url": "./kontakt.html#schnell"}]},
+              f, ensure_ascii=False, indent=1)
+
 # ---------- Suchindex (Schnellsuche, Strg+K) ----------
 def _bereich(page, name, extra):
     secs = [("ueberblick", "Zielgruppe & Öffnungszeiten", "alter uhrzeit zeiten wann geöffnet küche essen mittagessen"),
@@ -1126,7 +1269,11 @@ SUCHE += _bereich("kinderhort.html", "Kinderhort", "hort schulkind schule hausau
 SUCHE += [
     ("Zusammenarbeit mit den Schulen", "Kinderhort", "kinderhort.html#schulen", "schule josefschule grundschule"),
     ("Aktuelle Termine", "Aktuelles", "aktuelles.html#termine", "termine veranstaltungen kalender weihnachtsmarkt nikolaus martin"),
-    ("Elternbrief", "Aktuelles", "aktuelles.html#elternbrief", "brief eltern überstunden schließzeit"),
+    ("Elternbriefe", "Aktuelles", "aktuelles.html#elternbrief", "brief briefe eltern elternbrief archiv überstunden schließzeit"),
+    ("Was möchten Sie tun?", "Downloads · Formular-Lotse", "downloads.html#lotse", "formular welches formular medikamente krank lotse hilfe"),
+    ("Kalender abonnieren", "Downloads", "downloads.html#abo", "abo abonnieren webcal kalender automatisch outlook google iphone"),
+    ("Fragen Sie einfach", "Kontakt · Schnelle Antwort", "kontakt.html#frag", "frage antwort hilfe chat"),
+    ("Einblicke ins Haus", "Startseite · Fotos", "index.html#einblicke", "fotos bilder galerie räume"),
     ("Ferienplan & Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
     ("Downloads", "Unterlagen", "downloads.html", "pdf formulare unterlagen herunterladen"),
     ("KinderhortABC", "Download · PDF", "downloads/HortABC.pdf", "hort abc infos a bis z"),
@@ -1149,6 +1296,7 @@ kita = {
     "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"]} for r in TERMINE],
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
     "glossar": GLOSSAR,
+    "faq": FAQ_ALLE,
 }
 with open(os.path.join(W, "js/daten.js"), "w", encoding="utf-8") as f:
     f.write("/* Automatisch erzeugt aus daten/*.csv – nicht von Hand ändern, sondern build.py ausführen. */\n")
