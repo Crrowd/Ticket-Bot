@@ -224,7 +224,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script>document.documentElement.className = "js";</script>
+<script>(function (c) {{ try {{ if (localStorage.getItem("hinweis-aus")) c += " no-hint"; }} catch (e) {{}} document.documentElement.className = c; }})("js");</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="theme-color" content="#A8C5C0">
@@ -454,7 +454,7 @@ home = f'''
   </div>
 </section>
 
-<div class="announce" id="hinweis" hidden></div>
+<div class="announce" id="hinweis"></div>
 
 <section class="section alt" id="bereiche">
   <div class="container">
@@ -506,8 +506,10 @@ home = f'''
       <blockquote>
         <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
         <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
+        <details class="read-more"><summary><span>Den ganzen Gruß lesen</span></summary>
         <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
         <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
+        </details>
       </blockquote>
       <div class="signature">Herzliche Grüße, Ihre<strong>Petra Lachnit</strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
     </div>
@@ -677,7 +679,7 @@ kiga_tour = [
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht."),
 ]
 kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in großen, hellen Räumen und einem riesigen Garten mitten in der Stadt.",
-                 "img/blick-vom-nebenraum-in-den-gruppenraum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
+                 "img/blick-vom-fenster-in-den-raum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
                  [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
                  alt="Gruppenraum im Kindergarten")
 kiga += section("ueberblick", "Auf einen Blick", "Der Kindergarten", "", info_cards([

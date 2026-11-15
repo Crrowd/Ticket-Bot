@@ -97,3 +97,30 @@ Stand: 13.11.2026
 | Frequency of use | Häufigstes zuerst: Öffnungsstatus, Krankmelden, Anrufen, Termine |
 
 Hinweis: Service Worker und vorbereitende Seitenaufrufe wirken nur auf einem Webserver (https), nicht beim Öffnen der Datei vom Computer.
+
+## 20 Gestaltungsbegriffe (15.11.2026)
+
+| Begriff | Umsetzung |
+|---|---|
+| Kerning | Für Fließtext an; für Versal-Etiketten und Ziffernspalten aus, damit Zahlen exakt untereinander stehen |
+| Optical centre | Plakette, Plus-Zeichen, Pfeile und Bildansicht sitzen leicht über bzw. neben der rechnerischen Mitte |
+| Tabular numbers | Überall gleich breite Ziffern |
+| Layout shift | Platz für Status-Karte und Terminhinweis wird freigehalten, Ersatzschrift hat angeglichene Maße; gemessen: CLS 0,000–0,003 (gut ist < 0,1) |
+| Tracking | Große Überschriften enger, kleine Schrift und Versalien weiter |
+| Optimistic update | Kopieren-Knopf bestätigt sofort (sonst speichert die Seite nichts) |
+| x-height | Ersatzschrift auf 104,8 % skaliert – Breite und x-Höhe passen zur Hausschrift |
+| Touch target | Mindestens 44 px: Sprungmarken, Knöpfe, vergrößerte Trefferflächen kleiner Links |
+| Leading | Überschriften 1,06–1,14 · Text 1,62 · lange Lesetexte 1,72 |
+| Origin-aware animation | Bildansicht wächst aus dem angeklickten Foto, Handy-Menü aus dem Menü-Knopf, Aufklappmenü aus seinem Menüpunkt |
+| OKLCH | Dieselben Farben als OKLCH; Abstufungen (hell/dunkel) werden aus den Grundfarben berechnet |
+| Widow | `text-wrap: pretty/balance` gegen einzelne Wörter in der letzten Zeile |
+| Safe area | Ränder für Aussparung und Systemleisten |
+| Stagger | Karten, Auftakt und Menüeinträge erscheinen leicht versetzt |
+| Line length | Lesetexte höchstens 60–70 Zeichen je Zeile |
+| Affordance | Vergrößerbare Fotos tragen ein Lupen-Zeichen, Links in Texten sind unterstrichen |
+| Combobox | Suche folgt dem ARIA-Combobox-Muster (Vorlesehilfen sagen Treffer und Auswahl an) |
+| Interruptible animation | Bedien-Animationen sind Übergänge und jederzeit unterbrechbar |
+| Progressive disclosure | Gruß der Leitung zeigt zwei Absätze, Rest per „Den ganzen Gruß lesen“; Fragen klappen auf; Startseite zeigt 3 Termine |
+| Shared element transition | Foto der Bereichskarte wird beim Seitenwechsel zum Kopfbild der Bereichsseite (nur auf dem Webserver, in Browsern mit View Transitions) |
+
+Dafür geändert: Kopfbild der Kindergarten-Seite ist jetzt dasselbe Foto wie auf der Startseiten-Karte.

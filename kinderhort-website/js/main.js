@@ -189,6 +189,9 @@
     group = $$('[data-full][data-group="' + el.getAttribute("data-group") + '"]');
     lastFocus = el;
     show(group.indexOf(el));
+    /* Bild wächst aus der angeklickten Stelle heraus */
+    var from = (el.querySelector("img") || el).getBoundingClientRect(), box = lbFig.getBoundingClientRect();
+    lbFig.style.transformOrigin = (from.left + from.width / 2 - box.left) + "px " + (from.top + from.height / 2 - box.top) + "px";
     lb.classList.add("open");
     document.body.style.overflow = "hidden";
     $(".lb-close", lb).focus();
@@ -232,7 +235,7 @@
     dlg.innerHTML =
       '<span class="search-grip" aria-hidden="true"></span>' +
       '<div class="search-head">' + svg(ICON.search, 20) +
-      '<input type="search" id="suche" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon" autocomplete="off" aria-label="Suchbegriff" aria-controls="suchliste">' +
+      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
       "<kbd>Esc</kbd></div>" +
       '<ul class="search-list" id="suchliste" role="listbox" aria-label="Treffer"></ul>' +
       '<div class="search-foot" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> auswählen</span><span><kbd>↵</kbd> öffnen</span><span><kbd>Esc</kbd> schließen</span></div>';
@@ -283,6 +286,8 @@
     var render = function () {
       hits = search(input.value);
       sel = 0;
+      input.setAttribute("aria-expanded", hits.length ? "true" : "false");
+      if (hits.length) input.setAttribute("aria-activedescendant", "treffer-0"); else input.removeAttribute("aria-activedescendant");
       if (!hits.length) { list.innerHTML = '<li><p class="search-empty">Nichts gefunden. Versuchen Sie einen anderen Begriff – oder rufen Sie uns an: 0931 2789892 0.</p></li>'; return; }
       list.innerHTML = hits.map(function (h, i) {
         return '<li role="presentation"><a role="option" id="treffer-' + i + '" href="' + h.u + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
@@ -443,6 +448,7 @@
       $("strong", note).textContent = "Nächster Termin:";
       $("p span", note).textContent = nextEv.titel + " – " + (nextEv.von === nextEv.bis ? fmtLong(a) : fmt(a) + " bis " + fmt(b2));
       note.hidden = store(key) === id;
+      if (!note.hidden) root.classList.remove("no-hint");
       $("button", note).addEventListener("click", function () {
         note.hidden = true;
         store(key, id);
@@ -450,6 +456,7 @@
       });
     }
   }
+  if (note && !note.firstChild) note.hidden = true;
 
   /* ---------- Ferienplan drucken ---------- */
   $$(".js-print-plan").forEach(function (b) {
