@@ -276,3 +276,8 @@ Entscheidung offen (Auswahl direkt im Katalog).
 89 Weg zur Anmeldung · 90 Besichtigung mit Wunschzeiten · 91 Fragen nach Themen filtern · 92 Bereichskarten heben sich räumlich · 93 Schließtage als Balken · 94 Einzelne Schließzeit in den Kalender · 95 „Wann darf mein Kind wieder kommen?“ (Texte nur Beispiel – müsste der Hort festlegen) · 96 Familien-Ansicht für mehrere Kinder · 97 Hinweis ohne Internet · 98 Kurznachricht an die Gruppe · 99 Begriffe von A bis Z · 100 Seite per QR-Code zeigen
 
 Entscheidung offen (Auswahl direkt im Katalog).
+
+## Ideenkatalog 3 – Nachtrag 101–112 (15.11.2026)
+101 Sanfte Welle zum Fußbereich · 102 Gruppensymbole, die lebendig werden · 103 Seiten merken · 104 Elternbeirat vorstellen (Namen Platzhalter) · 105 Verspielte Link-Unterstreichung · 106 Leitsatz schreibt sich · 107 Schwung unter dem Gruß · 108 „Einfach erklärt“ · 109 Bilder im Bereichsmenü wechseln · 110 Fotos in weichen Formen · 111 Bereich als Infoblatt drucken · 112 Telefonnummer am Computer (QR zum Anrufen)
+
+Entscheidung offen (Auswahl direkt im Katalog).
