@@ -32,6 +32,7 @@ RewriteRule ^(build|build_vorschau)\.py$ - [F,L]
 AddType text/calendar .ics
 AddType image/webp .webp
 AddType application/manifest+json .webmanifest
+AddType text/vcard .vcf
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/webp "access plus 1 month"

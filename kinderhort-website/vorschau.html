@@ -218,7 +218,11 @@ strong, b { font-weight: 700; }
 
 @media (max-width: 1180px) {
   .header-inner { padding-left: 12px; }
-  .nav-open .header-inner::before { background: var(--paper); }
+  /* Offenes Menü: keine Leiste mehr, nur das Kreuz zum Schließen */
+  .nav-open .header-inner::before { opacity: 0; }
+  .header-inner > .brand, .header-inner > .search-btn, .header-inner > .open-wrap { transition: opacity var(--t-exit) var(--ease-out), visibility 0s; }
+  .nav-open .header-inner > .brand, .nav-open .header-inner > .search-btn, .nav-open .header-inner > .open-wrap { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--t-exit) var(--ease-out), visibility 0s var(--t-exit); }
+  .nav-open .nav-toggle { background: var(--paper); box-shadow: var(--shadow); }
   .nav-toggle { display: inline-flex; }
   .main-nav {
     position: fixed; inset: 0; z-index: -2; margin: 0; background: var(--bg); overflow-y: auto; pointer-events: auto;
@@ -1462,6 +1466,21 @@ body.nav-loading .nav-loader { opacity: 1; translate: -50% 0; }
 
 .no-js .view-switch { display: none; }
 
+/* 65 Mitlaufende Abschnittstitel (nur in langen Abschnitten) */
+.sticky-title { position: sticky; top: calc(var(--st-top, 82px) + env(safe-area-inset-top, 0px)); z-index: 55; height: 44px; margin-bottom: -44px; pointer-events: none; transition: top .25s var(--ease-out); }
+.sticky-title span { display: inline-flex; align-items: center; height: 40px; max-width: 100%; padding: 0 16px; border-radius: 999px; background: rgba(243, 248, 247, .82); backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); box-shadow: var(--shadow); color: var(--ink); font: 700 .95rem var(--font-head); letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; translate: 0 -6px; transition: opacity var(--t-exit) var(--ease-out), translate var(--t-exit) var(--ease-out); }
+.sticky-title.on span { opacity: 1; translate: 0 0; transition-duration: var(--t-enter); }
+@media print { .sticky-title { display: none; } }
+
+/* 68 Zuletzt angesehen */
+.search-list .recent-tag { display: inline-block; margin-right: 8px; padding: 1px 7px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: .7rem; font-weight: 700; letter-spacing: .02em; vertical-align: 1px; }
+.search-list a[aria-selected="true"] .recent-tag { background: rgba(30, 59, 68, .14); }
+
+/* 71 Kontakt speichern */
+.address-card .btn-row { margin-top: 4px; }
+.vcf-note { font-size: .86rem; margin: 10px 0 0; }
+
 .spa-page { display: none; }
 .spa-page.active { display: block; }
 .no-js .spa-page { display: block; }
@@ -2120,14 +2139,18 @@ body.nav-loading .nav-loader { opacity: 1; translate: -50% 0; }
         <li><span>Mail</span><a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></li>
       </ul></div>
     </div>
-    <aside class="address-card reveal">
+    <aside class="address-card reveal" id="anschrift">
       <h2>Anschrift</h2>
       <address>
         <div class="contact-row"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Kath. Kinder- und Jugendhort Grombühl e. V.<br>Lindleinstraße 20<br>97080 Würzburg</span></div>
         <div class="contact-row"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a><button class="copy-btn" type="button" data-copy="0931 2789892 0" data-label="Telefonnummer" aria-label="Telefonnummer kopieren"><span class="ic ic-copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span class="ic ic-done"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button></div>
         <div class="contact-row"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a><button class="copy-btn" type="button" data-copy="kinderhort.grombuehl@t-online.de" data-label="E-Mail-Adresse" aria-label="E-Mail-Adresse kopieren"><span class="ic ic-copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span><span class="ic ic-done"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button></div>
       </address>
-      <a class="btn btn-primary" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Auf der Karte anzeigen</a>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="downloads/kinderhort-grombuehl.vcf" download><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 14.6c2.6.2 4.4 1.9 5 4.9"/></svg> Kontakt aufs Handy speichern</a>
+        <a class="btn btn-ghost" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Auf der Karte anzeigen</a>
+      </div>
+      <p class="vcf-note muted">Legt den Kinderhort mit allen Durchwahlen im Adressbuch an.</p>
     </aside>
   </div>
 </section>
@@ -2573,6 +2596,12 @@ window.KITA = {
    "s": "Downloads",
    "u": "#downloads:kalender",
    "k": "ics kalender handy termine schließtage"
+  },
+  {
+   "t": "Kontakt aufs Handy speichern",
+   "s": "Kontakt · Adressbuch",
+   "u": "#kontakt:anschrift",
+   "k": "adressbuch kontakt speichern vcard visitenkarte handy telefonbuch"
   },
   {
    "t": "Kontakt & Durchwahlen",
@@ -3080,6 +3109,20 @@ window.KITA = {
     t0 = null;
   });
 
+  /* ---------- Zuletzt angesehen (nur im eigenen Browser) ---------- */
+  function recentList() { try { return JSON.parse(store("zuletzt") || "[]"); } catch (e) { return []; } }
+  function remember(t, sub, u) {
+    if (!t || !u) return;
+    var l = recentList().filter(function (r) { return r.u !== u; });
+    l.unshift({ t: t, s: sub || "", u: u }); store("zuletzt", JSON.stringify(l.slice(0, 6)));
+  }
+  (function () {
+    var page = location.pathname.split("/").pop() || "index.html", h1 = $("main h1");
+    if (page === "404.html" || !h1) return;
+    var names = { "index.html": "Startseite", "aktuelles.html": "Aktuelles", "downloads.html": "Downloads", "kontakt.html": "Kontakt" };
+    remember(names[page] || h1.textContent.replace(/\s+/g, " ").trim(), "Seite", page);
+  })();
+
   /* ---------- Schnellsuche (Strg+K) ---------- */
   var searchBtns = $$(".js-search");
   if (K && K.suche && window.HTMLDialogElement) {
@@ -3121,9 +3164,12 @@ window.KITA = {
     var search = function (q) {
       var tokens = norm(q).split(" ").filter(Boolean);
       if (!tokens.length) {
-        /* ohne Eingabe: die am häufigsten gebrauchten Wege zuerst */
+        /* ohne Eingabe: zuerst die zuletzt angesehenen Seiten, dann die am häufigsten gebrauchten Wege */
+        var here = location.pathname.split("/").pop() || "index.html";
+        var zuletzt = recentList().filter(function (r) { return r.u !== here; }).slice(0, 3).map(function (r) { return { t: r.t, s: r.s, u: r.u, recent: true }; });
         var oft = ["Kind krankmelden", "Kontakt & Durchwahlen", "Aktuelle Termine", "Ferienplan & Schließtage", "Platz anfragen", "Downloads"];
-        return oft.map(function (t) { return index.filter(function (e) { return e.it.t === t && !/^Kinder/.test(e.it.s); })[0]; }).filter(Boolean).map(function (e) { return e.it; });
+        var basis = oft.map(function (t) { return index.filter(function (e) { return e.it.t === t && !/^Kinder/.test(e.it.s); })[0]; }).filter(Boolean).map(function (e) { return e.it; });
+        return zuletzt.concat(basis.filter(function (b) { return !zuletzt.some(function (z) { return z.u === b.u; }); })).slice(0, 8);
       }
       return index.map(function (e) {
         var score = 0;
@@ -3147,7 +3193,11 @@ window.KITA = {
       list.innerHTML = hits.map(function (h, i) {
         return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + h.u + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
       }).join("");
-      $$("a", list).forEach(function (a, i) { $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s; });
+      $$("a", list).forEach(function (a, i) {
+        $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s;
+        if (hits[i].recent) { var tg = document.createElement("span"); tg.className = "recent-tag"; tg.textContent = "Zuletzt"; $("span", a).prepend(tg); }
+        a.addEventListener("click", function () { remember(hits[i].t, hits[i].s, hits[i].u); });
+      });
     };
     var mark = function (n) {
       var as = $$("a", list);
@@ -4254,6 +4304,32 @@ window.KITA = {
     links.forEach(function (l) { l.addEventListener("click", open); });
   })();
 
+
+  /* ---------- Mitlaufende Abschnittstitel in langen Abschnitten ---------- */
+  (function () {
+    var made = [];
+    $$("main .section").forEach(function (sec) {
+      var h = $(".section-head h2", sec), box = $(".container", sec);
+      if (!h || !box || sec.offsetHeight < innerHeight * 1.6) return;
+      var st = document.createElement("div"); st.className = "sticky-title"; st.setAttribute("aria-hidden", "true");
+      var sp = document.createElement("span"); sp.textContent = h.textContent.replace(/\s+/g, " ").trim(); st.appendChild(sp);
+      box.insertBefore(st, box.firstChild); st._h = h; made.push(st);
+    });
+    if (!made.length) return;
+    var sub = $(".subnav"), hdr = $(".site-header");
+    function top() {
+      var hidden = hdr && hdr.classList.contains("hide"), t;
+      if (sub) t = sub.getBoundingClientRect().bottom + 6; else t = hidden ? 8 : (hdr ? hdr.getBoundingClientRect().bottom + 6 : 8);
+      made.forEach(function (st) {
+        st.style.setProperty("--st-top", Math.max(8, Math.round(t)) + "px");
+        /* sichtbar, sobald die eigentliche Überschrift oben verschwunden ist */
+        st.classList.toggle("on", st._h.getBoundingClientRect().bottom < t);
+      });
+    }
+    var tick = false;
+    addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; top(); }); } }, { passive: true });
+    addEventListener("resize", top); top();
+  })();
   /* ---------- Schnelle Wiederbesuche ---------- */
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* ohne geht es auch */ }); });

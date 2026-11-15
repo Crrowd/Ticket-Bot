@@ -1130,14 +1130,18 @@ kon += f'''<section class="section">
         <li><span>Mail</span><a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></li>
       </ul></div>
     </div>
-    <aside class="address-card reveal">
+    <aside class="address-card reveal" id="anschrift">
       <h2>Anschrift</h2>
       <address>
         <div class="contact-row">{icon("pin")}<span>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</span></div>
         <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a>{copy_btn("0931 2789892 0", "Telefonnummer")}</div>
         <div class="contact-row">{icon("mail")}<a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a>{copy_btn(MAIL, "E-Mail-Adresse")}</div>
       </address>
-      <a class="btn btn-primary" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="downloads/kinderhort-grombuehl.vcf" download>{icon("users", 20)} Kontakt aufs Handy speichern</a>
+        <a class="btn btn-ghost" href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("pin", 20)} Auf der Karte anzeigen</a>
+      </div>
+      <p class="vcf-note muted">Legt den Kinderhort mit allen Durchwahlen im Adressbuch an.</p>
     </aside>
   </div>
 </section>'''
@@ -1240,6 +1244,18 @@ for _pg, _name in [("kinderkrippe.html", "Kinderkrippe"), ("kindergarten.html", 
     for _q, _a in re.findall(r'<details class="reveal"><summary>(.*?)</summary><div><p>(.*?)</p></div></details>', _h, flags=re.S):
         FAQ_ALLE.append({"q": re.sub(r"<[^>]+>", "", _q), "a": re.sub(r"<[^>]+>", "", _a), "u": _pg + "#fragen", "b": _name})
 
+# ---------- Kontakt fürs Adressbuch (.vcf) ----------
+VCF_NUMMERN = [("Zentrale", "+4993127898920")]
+for _lab, _num in re.findall(r'<li><span>([^<]+)</span><a href="tel:([^"]+)">', open(os.path.join(W, "kontakt.html"), encoding="utf-8").read()):
+    if (_lab, _num) not in VCF_NUMMERN and _num != "+4993127898920": VCF_NUMMERN.append((_lab, _num))
+_v = ["BEGIN:VCARD", "VERSION:3.0", "N:;;;;", "FN:Kinderhort Grombühl", f"ORG:{ORG}", f"EMAIL;TYPE=WORK:{MAIL}",
+      "ADR;TYPE=WORK:;;Lindleinstraße 20;Würzburg;;97080;Deutschland", f"URL:{SITE}", "X-ABShowAs:COMPANY"]
+for _i, (_lab, _num) in enumerate(VCF_NUMMERN, 1):
+    _v += [f"item{_i}.TEL:{_num}", f"item{_i}.X-ABLabel:{_lab}"]
+_v.append("END:VCARD")
+with open(os.path.join(W, "downloads/kinderhort-grombuehl.vcf"), "w", encoding="utf-8", newline="") as f:
+    f.write("\r\n".join(_v) + "\r\n")
+
 # ---------- Web-App-Manifest („Als App auf den Startbildschirm“) ----------
 with open(os.path.join(W, "manifest.webmanifest"), "w", encoding="utf-8") as f:
     json.dump({"name": ORG, "short_name": "Kinderhort", "description": "Termine, Schließtage, Krankmeldung und Kontakt des Kinderhorts Grombühl.",
@@ -1280,6 +1296,7 @@ SUCHE += [
     ("Medikamentenvereinbarung", "Download · PDF", "downloads/Medikamentenvereinbarung.pdf", "medikamente formular arznei"),
     ("Ferienplan als PDF", "Download · PDF", "downloads/Ferienplan_2026_27.pdf", "ferien schließtage aushang"),
     ("Kalenderdateien", "Downloads", "downloads.html#kalender", "ics kalender handy termine schließtage"),
+    ("Kontakt aufs Handy speichern", "Kontakt · Adressbuch", "kontakt.html#anschrift", "adressbuch kontakt speichern vcard visitenkarte handy telefonbuch"),
     ("Kontakt & Durchwahlen", "Telefon, E-Mail, Anschrift", "kontakt.html", "telefon telefonnummer anrufen email mail adresse anschrift anfahrt lindleinstraße sternengruppe sonnengruppe bienengruppe spatzengruppe bärengruppe"),
     ("Kind krankmelden", "Vorbereitete E-Mail", "kontakt.html#schnell", "krank krankmeldung abwesend fehlt entschuldigen"),
     ("Platz anfragen", "Vorbereitete E-Mail", "kontakt.html#schnell", "anmeldung anmelden platz kitaplatz bewerbung aufnahme"),

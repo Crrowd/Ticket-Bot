@@ -254,3 +254,9 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 ## E-Mail beim Umzug (Wunsch)
 Geplant: info@, krippe@, kindergarten@kinderhort-grombuehl.de über das Webhosting-Paket (Hort über info@). Noch nicht in die Seite eingebaut – erst wenn die Postfächer stehen.
+
+## Nachtrag 63–75 – Entscheidung (15.11.2026)
+**Eingebaut:** 65 Mitlaufende Abschnittstitel (nur Abschnitte länger als 1,6 Bildschirme), 68 „Zuletzt angesehen“ in der Suche (nur im eigenen Browser), 71 Kontakt aufs Handy speichern (`downloads/kinderhort-grombuehl.vcf`, automatisch aus den Durchwahlen erzeugt).
+**Merken:** 63, 64, 66, 67, 69, 70, 72, 73, 74 · **Nein:** 75
+
+**Menü (Wunsch):** Beim geöffneten Menü auf Handy/Tablet verschwindet die Leiste mit dem Namen, es bleibt nur das Kreuz zum Schließen.

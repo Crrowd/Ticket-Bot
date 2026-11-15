@@ -357,6 +357,12 @@ window.KITA = {
    "k": "ics kalender handy termine schließtage"
   },
   {
+   "t": "Kontakt aufs Handy speichern",
+   "s": "Kontakt · Adressbuch",
+   "u": "kontakt.html#anschrift",
+   "k": "adressbuch kontakt speichern vcard visitenkarte handy telefonbuch"
+  },
+  {
    "t": "Kontakt & Durchwahlen",
    "s": "Telefon, E-Mail, Anschrift",
    "u": "kontakt.html",

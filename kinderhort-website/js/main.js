@@ -350,6 +350,20 @@
     t0 = null;
   });
 
+  /* ---------- Zuletzt angesehen (nur im eigenen Browser) ---------- */
+  function recentList() { try { return JSON.parse(store("zuletzt") || "[]"); } catch (e) { return []; } }
+  function remember(t, sub, u) {
+    if (!t || !u) return;
+    var l = recentList().filter(function (r) { return r.u !== u; });
+    l.unshift({ t: t, s: sub || "", u: u }); store("zuletzt", JSON.stringify(l.slice(0, 6)));
+  }
+  (function () {
+    var page = location.pathname.split("/").pop() || "index.html", h1 = $("main h1");
+    if (page === "404.html" || !h1) return;
+    var names = { "index.html": "Startseite", "aktuelles.html": "Aktuelles", "downloads.html": "Downloads", "kontakt.html": "Kontakt" };
+    remember(names[page] || h1.textContent.replace(/\s+/g, " ").trim(), "Seite", page);
+  })();
+
   /* ---------- Schnellsuche (Strg+K) ---------- */
   var searchBtns = $$(".js-search");
   if (K && K.suche && window.HTMLDialogElement) {
@@ -391,9 +405,12 @@
     var search = function (q) {
       var tokens = norm(q).split(" ").filter(Boolean);
       if (!tokens.length) {
-        /* ohne Eingabe: die am häufigsten gebrauchten Wege zuerst */
+        /* ohne Eingabe: zuerst die zuletzt angesehenen Seiten, dann die am häufigsten gebrauchten Wege */
+        var here = location.pathname.split("/").pop() || "index.html";
+        var zuletzt = recentList().filter(function (r) { return r.u !== here; }).slice(0, 3).map(function (r) { return { t: r.t, s: r.s, u: r.u, recent: true }; });
         var oft = ["Kind krankmelden", "Kontakt & Durchwahlen", "Aktuelle Termine", "Ferienplan & Schließtage", "Platz anfragen", "Downloads"];
-        return oft.map(function (t) { return index.filter(function (e) { return e.it.t === t && !/^Kinder/.test(e.it.s); })[0]; }).filter(Boolean).map(function (e) { return e.it; });
+        var basis = oft.map(function (t) { return index.filter(function (e) { return e.it.t === t && !/^Kinder/.test(e.it.s); })[0]; }).filter(Boolean).map(function (e) { return e.it; });
+        return zuletzt.concat(basis.filter(function (b) { return !zuletzt.some(function (z) { return z.u === b.u; }); })).slice(0, 8);
       }
       return index.map(function (e) {
         var score = 0;
@@ -417,7 +434,11 @@
       list.innerHTML = hits.map(function (h, i) {
         return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + h.u + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
       }).join("");
-      $$("a", list).forEach(function (a, i) { $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s; });
+      $$("a", list).forEach(function (a, i) {
+        $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s;
+        if (hits[i].recent) { var tg = document.createElement("span"); tg.className = "recent-tag"; tg.textContent = "Zuletzt"; $("span", a).prepend(tg); }
+        a.addEventListener("click", function () { remember(hits[i].t, hits[i].s, hits[i].u); });
+      });
     };
     var mark = function (n) {
       var as = $$("a", list);
@@ -1524,6 +1545,32 @@
     links.forEach(function (l) { l.addEventListener("click", open); });
   })();
 
+
+  /* ---------- Mitlaufende Abschnittstitel in langen Abschnitten ---------- */
+  (function () {
+    var made = [];
+    $$("main .section").forEach(function (sec) {
+      var h = $(".section-head h2", sec), box = $(".container", sec);
+      if (!h || !box || sec.offsetHeight < innerHeight * 1.6) return;
+      var st = document.createElement("div"); st.className = "sticky-title"; st.setAttribute("aria-hidden", "true");
+      var sp = document.createElement("span"); sp.textContent = h.textContent.replace(/\s+/g, " ").trim(); st.appendChild(sp);
+      box.insertBefore(st, box.firstChild); st._h = h; made.push(st);
+    });
+    if (!made.length) return;
+    var sub = $(".subnav"), hdr = $(".site-header");
+    function top() {
+      var hidden = hdr && hdr.classList.contains("hide"), t;
+      if (sub) t = sub.getBoundingClientRect().bottom + 6; else t = hidden ? 8 : (hdr ? hdr.getBoundingClientRect().bottom + 6 : 8);
+      made.forEach(function (st) {
+        st.style.setProperty("--st-top", Math.max(8, Math.round(t)) + "px");
+        /* sichtbar, sobald die eigentliche Überschrift oben verschwunden ist */
+        st.classList.toggle("on", st._h.getBoundingClientRect().bottom < t);
+      });
+    }
+    var tick = false;
+    addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; top(); }); } }, { passive: true });
+    addEventListener("resize", top); top();
+  })();
   /* ---------- Schnelle Wiederbesuche ---------- */
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () { /* ohne geht es auch */ }); });

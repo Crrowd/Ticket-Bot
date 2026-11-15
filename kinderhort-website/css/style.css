@@ -211,7 +211,11 @@ strong, b { font-weight: 700; }
 
 @media (max-width: 1180px) {
   .header-inner { padding-left: 12px; }
-  .nav-open .header-inner::before { background: var(--paper); }
+  /* Offenes Menü: keine Leiste mehr, nur das Kreuz zum Schließen */
+  .nav-open .header-inner::before { opacity: 0; }
+  .header-inner > .brand, .header-inner > .search-btn, .header-inner > .open-wrap { transition: opacity var(--t-exit) var(--ease-out), visibility 0s; }
+  .nav-open .header-inner > .brand, .nav-open .header-inner > .search-btn, .nav-open .header-inner > .open-wrap { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--t-exit) var(--ease-out), visibility 0s var(--t-exit); }
+  .nav-open .nav-toggle { background: var(--paper); box-shadow: var(--shadow); }
   .nav-toggle { display: inline-flex; }
   .main-nav {
     position: fixed; inset: 0; z-index: -2; margin: 0; background: var(--bg); overflow-y: auto; pointer-events: auto;
@@ -1454,3 +1458,18 @@ body.nav-loading .nav-loader { opacity: 1; translate: -50% 0; }
 @media print { .open-wrap, .season-fx, .nav-loader, .focus-ring, .view-switch, .gal-chips { display: none !important; } }
 
 .no-js .view-switch { display: none; }
+
+/* 65 Mitlaufende Abschnittstitel (nur in langen Abschnitten) */
+.sticky-title { position: sticky; top: calc(var(--st-top, 82px) + env(safe-area-inset-top, 0px)); z-index: 55; height: 44px; margin-bottom: -44px; pointer-events: none; transition: top .25s var(--ease-out); }
+.sticky-title span { display: inline-flex; align-items: center; height: 40px; max-width: 100%; padding: 0 16px; border-radius: 999px; background: rgba(243, 248, 247, .82); backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); box-shadow: var(--shadow); color: var(--ink); font: 700 .95rem var(--font-head); letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; translate: 0 -6px; transition: opacity var(--t-exit) var(--ease-out), translate var(--t-exit) var(--ease-out); }
+.sticky-title.on span { opacity: 1; translate: 0 0; transition-duration: var(--t-enter); }
+@media print { .sticky-title { display: none; } }
+
+/* 68 Zuletzt angesehen */
+.search-list .recent-tag { display: inline-block; margin-right: 8px; padding: 1px 7px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-size: .7rem; font-weight: 700; letter-spacing: .02em; vertical-align: 1px; }
+.search-list a[aria-selected="true"] .recent-tag { background: rgba(30, 59, 68, .14); }
+
+/* 71 Kontakt speichern */
+.address-card .btn-row { margin-top: 4px; }
+.vcf-note { font-size: .86rem; margin: 10px 0 0; }

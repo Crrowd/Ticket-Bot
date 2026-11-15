@@ -1,0 +1,22 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;;;;
+FN:Kinderhort Grombühl
+ORG:Kath. Kinder- und Jugendhort Grombühl e. V.
+EMAIL;TYPE=WORK:kinderhort.grombuehl@t-online.de
+ADR;TYPE=WORK:;;Lindleinstraße 20;Würzburg;;97080;Deutschland
+URL:https://kinderhort-grombuehl.de/
+X-ABShowAs:COMPANY
+item1.TEL:+4993127898920
+item1.X-ABLabel:Zentrale
+item2.TEL:+49931278989215
+item2.X-ABLabel:Sternengruppe
+item3.TEL:+49931278989214
+item3.X-ABLabel:Sonnengruppe
+item4.TEL:+49931278989213
+item4.X-ABLabel:Bienengruppe
+item5.TEL:+49931278989212
+item5.X-ABLabel:Spatzengruppe
+item6.TEL:+49931278989211
+item6.X-ABLabel:Bärengruppe
+END:VCARD
