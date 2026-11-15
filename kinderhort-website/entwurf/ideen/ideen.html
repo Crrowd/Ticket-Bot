@@ -1,0 +1,683 @@
+<title>Hort-Webseite Ideenkatalog</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: Karten-Raster wie auf der Webseite – oben die Live-Bühne auf dunklem Türkis, darunter Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+
+/* Filter */
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; transition: color .15s; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+
+/* Karten */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: opacity .2s var(--ease-out), scale .2s var(--ease-out); }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 12px; right: 16px; text-align: center; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .filter button:active, .seg button:active, .chip:active, .icon:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.btn:disabled { opacity: .45; cursor: default; }
+.icon { width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: var(--on); display: grid; place-items: center; cursor: pointer; transition: background .15s, scale .12s var(--ease-out); }
+.icon:hover { background: rgba(255,255,255,.26); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+
+/* 1 Öffnungsuhr */
+.clock { display: grid; gap: 14px; justify-items: center; width: 100%; max-width: 320px; }
+.clock svg { width: 190px; height: 190px; }
+.clock .track { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 12; }
+.clock .bar { fill: none; stroke: var(--rose); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset .45s var(--ease-io), stroke .3s; }
+.clock .bar.closed { stroke: rgba(255,255,255,.3); }
+.clock text { fill: var(--on); font-family: var(--font); text-anchor: middle; }
+.clock .big { font-size: 26px; font-weight: 800; }
+.clock .small { font-size: 11px; fill: var(--on-soft); }
+
+/* 2 Termin merken */
+.events { width: 100%; max-width: 420px; display: grid; gap: 8px; padding-bottom: 66px; }
+.ev { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; background: rgba(255,255,255,.08); border-radius: 14px; padding: 8px 8px 8px 8px; }
+.date { background: var(--rose); color: var(--ink); border-radius: 10px; text-align: center; padding: 6px 2px; line-height: 1.05; }
+.date b { display: block; font-size: 1.2rem; font-weight: 800; }
+.date span { font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.ev strong { font-size: .93rem; display: block; line-height: 1.3; }
+.save { position: relative; display: grid; place-items: center; width: 98px; height: 38px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: var(--on); font-weight: 700; font-size: .85rem; cursor: pointer; transition: background .2s, color .2s, scale .12s var(--ease-out); }
+.save:active { scale: .97; }
+.save > span { grid-area: 1 / 1; transition: opacity .2s var(--ease-out), filter .2s var(--ease-out), scale .2s var(--ease-out); }
+.save .b { opacity: 0; filter: blur(4px); scale: .6; }
+.save.on { background: var(--ok); color: var(--deep); }
+.save.on .a { opacity: 0; filter: blur(4px); scale: .6; }
+.save.on .b { opacity: 1; filter: none; scale: 1; }
+.minibar { position: absolute; left: 0; right: 0; bottom: 0; height: 58px; background: var(--deep); display: grid; grid-template-columns: repeat(4, 1fr); place-items: center; font-size: .66rem; font-weight: 600; color: var(--on-soft); }
+.minibar div { display: grid; justify-items: center; gap: 2px; position: relative; }
+.minibar svg { color: var(--rose); }
+.badge { position: absolute; top: -6px; right: -10px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--ok); color: var(--deep); font-size: .7rem; font-weight: 800; display: grid; place-items: center; scale: 0; transition: scale .25s var(--ease-out); }
+.badge.show { scale: 1; }
+.badge.pulse::after { content: ""; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid var(--ok); animation: ring .6s var(--ease-out); }
+@keyframes ring { from { opacity: .9; scale: 1; } to { opacity: 0; scale: 2; } }
+.flyer { position: fixed; z-index: 50; pointer-events: none; }
+
+/* 3 Kita-Jahr */
+.year { width: 100%; display: grid; gap: 14px; }
+.yearbar { position: relative; height: 54px; border-radius: 12px; background: rgba(255,255,255,.1); touch-action: none; cursor: grab; }
+.yearbar:active { cursor: grabbing; }
+.closure { position: absolute; top: 0; bottom: 0; background: var(--rose); opacity: .9; border-radius: 4px; }
+.months { display: grid; grid-template-columns: repeat(12, 1fr); font-size: .66rem; color: var(--on-soft); text-align: center; }
+.pin { position: absolute; top: -8px; bottom: -8px; width: 3px; margin-left: -1.5px; background: var(--on); border-radius: 2px; pointer-events: none; }
+.pin::after { content: ""; position: absolute; top: -6px; left: -6px; width: 15px; height: 15px; border-radius: 50%; background: var(--on); box-shadow: 0 0 0 4px rgba(255,255,255,.2); }
+.today { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ok); }
+.yearinfo { min-height: 52px; font-size: .95rem; }
+.yearinfo b { display: block; font-size: 1.05rem; }
+
+/* 4 Tagesablauf live */
+.day { width: 100%; max-width: 440px; display: grid; gap: 12px; }
+.slots { position: relative; display: grid; gap: 4px; }
+.slot { position: relative; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 10px; padding: 7px 12px; border-radius: 10px; font-size: .88rem; z-index: 1; color: var(--on-soft); transition: color .3s; }
+.slot time { font-weight: 700; }
+.slot.now { color: var(--ink); }
+.slot .fill { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--ink); border-radius: 2px; width: 0; transition: width .4s var(--ease-io); }
+.dayknob { position: absolute; left: 0; right: 0; z-index: 0; background: var(--rose); border-radius: 10px; transition: translate .4s var(--ease-io), height .4s var(--ease-io); }
+
+/* 5 Krankmeldung */
+.wizard { width: 100%; max-width: 400px; display: grid; gap: 14px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.steps i { height: 5px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
+.steps i::after { content: ""; position: absolute; inset: 0; background: var(--rose); transform-origin: left; scale: 0 1; transition: scale .35s var(--ease-io); }
+.steps i.done::after { scale: 1 1; }
+.panes { position: relative; min-height: 150px; overflow: hidden; }
+.pane { position: absolute; inset: 0; display: grid; align-content: start; gap: 10px; transition: translate .38s var(--ease-io), opacity .3s var(--ease-out); }
+.pane.left { translate: -40px 0; opacity: 0; pointer-events: none; }
+.pane.right { translate: 40px 0; opacity: 0; pointer-events: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.wizard-nav { display: flex; justify-content: space-between; gap: 8px; }
+.check { width: 64px; height: 64px; }
+.check circle { fill: none; stroke: var(--ok); stroke-width: 4; stroke-dasharray: 189; stroke-dashoffset: 189; }
+.check path { fill: none; stroke: var(--ok); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 40; }
+.pane.show-done .check circle { animation: draw .5s var(--ease-out) forwards; }
+.pane.show-done .check path { animation: draw .35s var(--ease-out) .35s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* 6 Speiseplan-Stapel */
+.stack { position: relative; width: 240px; height: 210px; }
+.meal { position: absolute; inset: 0; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; display: grid; align-content: space-between; box-shadow: 0 16px 30px -16px rgba(0,0,0,.6); touch-action: none; user-select: none; transition: translate .35s var(--ease-out), rotate .35s var(--ease-out), scale .3s var(--ease-out), opacity .3s; }
+.meal .d { font-size: .75rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.meal b { font-size: 1.15rem; line-height: 1.3; }
+.meal small { color: var(--ink-soft); }
+.meal.top { cursor: grab; }
+.stack-nav { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+
+/* 7 Grundriss */
+.plan { width: 100%; display: grid; gap: 10px; }
+.plan svg { width: 100%; height: auto; display: block; }
+.room-r { fill: rgba(255,255,255,.1); stroke: rgba(255,255,255,.35); stroke-width: 1.5; cursor: pointer; transition: fill .2s; }
+.room-r:hover, .room-r:focus-visible { fill: var(--rose); outline: none; }
+.plan text { fill: var(--on); font: 600 11px var(--font); pointer-events: none; }
+.roominfo { position: absolute; inset: 14px; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 22px; display: grid; align-content: start; gap: 10px; clip-path: circle(0 at var(--cx, 50%) var(--cy, 50%)); visibility: hidden; transition: clip-path .32s var(--ease-io), visibility 0s .32s; }
+.roominfo.open { clip-path: circle(150% at var(--cx, 50%) var(--cy, 50%)); visibility: visible; transition: clip-path .45s var(--ease-out), visibility 0s; }
+.roominfo .close { position: absolute; top: 10px; right: 10px; background: var(--bg-alt); color: var(--ink); }
+
+/* 8 FAQ-Filter */
+.faq { width: 100%; max-width: 460px; display: grid; gap: 10px; align-self: start; }
+.faq input { width: 100%; border: 0; border-radius: 12px; padding: 12px 14px; font: 500 1rem var(--font); background: var(--paper); color: var(--ink); }
+.faq ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.faq li { background: rgba(255,255,255,.1); border-radius: 10px; padding: 9px 12px; font-size: .9rem; }
+.faq mark { background: var(--rose); color: var(--ink); border-radius: 3px; padding: 0 2px; }
+.faq .empty { color: var(--on-soft); font-size: .9rem; }
+
+/* 9 Lesefortschritt */
+.reader { position: relative; width: 100%; max-width: 460px; height: 250px; background: var(--paper); color: var(--ink); border-radius: 16px; overflow: hidden; }
+.reader .scroll { height: 100%; overflow-y: auto; padding: 22px 22px 60px; overscroll-behavior: contain; }
+.reader p { margin-bottom: 1em; font-size: .93rem; line-height: 1.7; max-width: 60ch; }
+.progress { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--rose); transform-origin: left; scale: 0 1; z-index: 2; }
+.totop { position: absolute; right: 12px; bottom: 12px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--ink); color: var(--on); display: grid; place-items: center; cursor: pointer; opacity: 0; scale: .95; translate: 0 8px; pointer-events: none; transition: opacity .2s var(--ease-out), translate .2s var(--ease-out), scale .2s var(--ease-out); }
+.totop.show { opacity: 1; scale: 1; translate: 0 0; pointer-events: auto; transition-duration: .25s; }
+.totop svg.ring { position: absolute; inset: 0; rotate: -90deg; }
+.totop .ring circle { fill: none; stroke: var(--rose); stroke-width: 3; stroke-dasharray: 132; }
+
+/* 10 Schriftgröße + 11 Sprache */
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+.textdemo { width: 100%; max-width: 440px; display: grid; gap: 16px; justify-items: start; }
+.sample { background: var(--paper); color: var(--ink); border-radius: 14px; padding: 18px; width: 100%; transition: font-size .25s var(--ease-out); font-size: 1rem; }
+.lang p { transition: opacity .2s var(--ease-out), filter .2s var(--ease-out), translate .2s var(--ease-out); }
+.lang.swap p { opacity: 0; filter: blur(6px); translate: 0 4px; }
+.lang p:nth-child(2) { transition-delay: 30ms; } .lang p:nth-child(3) { transition-delay: 60ms; }
+
+/* 12 Laden nach Regeln */
+.load { width: 100%; max-width: 420px; display: grid; gap: 14px; }
+.loadbox { background: var(--paper); color: var(--ink); border-radius: 14px; padding: 16px; min-height: 150px; display: grid; align-content: start; gap: 10px; }
+.sk { height: 14px; border-radius: 7px; background: linear-gradient(100deg, #dde8e6 30%, #eef4f3 50%, #dde8e6 70%) 0 0 / 300% 100%; animation: shimmer 1.2s linear infinite; }
+@keyframes shimmer { to { background-position: -150% 0; } }
+.pbar { height: 8px; border-radius: 4px; background: #dde8e6; overflow: hidden; }
+.pbar i { display: block; height: 100%; background: var(--surface); width: 0; transition: width .2s linear; }
+.loaded li { opacity: 0; translate: 0 6px; animation: rowin .25s var(--ease-out) forwards; }
+.loaded li:nth-child(2) { animation-delay: 30ms; } .loaded li:nth-child(3) { animation-delay: 60ms; }
+@keyframes rowin { to { opacity: 1; translate: 0 0; } }
+.loadbox ul { margin: 0; padding-left: 1.1em; }
+
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  .check circle, .check path { stroke-dashoffset: 0; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Ideenkatalog</span>
+    <h1>12 Ideen für Bewegung und Funktionen</h1>
+    <p>Jede Karte ist ein lebendes Beispiel im Stil der Webseite. Einfach ausprobieren: klicken, ziehen, tippen. Alle Inhalte stammen von der Webseite; wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
+  </header>
+
+  <div class="filter" role="group" aria-label="Ideen filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="anim" aria-pressed="false">Animation</button>
+    <button type="button" data-f="funk" aria-pressed="false">Funktion</button>
+  </div>
+
+  <div class="grid">
+
+    <!-- 1 -->
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="clock">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="track" cx="100" cy="100" r="80"/><circle class="bar" id="clockBar" cx="100" cy="100" r="80" transform="rotate(-90 100 100)"/>
+          <text class="big" x="100" y="98" id="clockBig">–</text><text class="small" x="100" y="120" id="clockSmall">–</text></svg>
+        <label class="label" for="clockTime">Uhrzeit verschieben: <b id="clockLabel">14:30</b></label>
+        <input class="range" id="clockTime" type="range" min="360" max="1200" step="5" value="870">
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Öffnungsuhr</h2><p>Der Ring zeigt, wie viel vom Kita-Tag schon vorbei ist, in der Mitte steht die Restzeit. Eltern sehen auf einen Blick, ob sie es noch rechtzeitig schaffen.</p></div>
+    </article>
+
+    <!-- 2 -->
+    <article class="card" data-k="anim funk">
+      <div class="stage">
+        <div class="events" id="events"></div>
+        <div class="minibar" aria-hidden="true">
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Anrufen</div>
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Krankmelden</div>
+          <div id="calTarget"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Termine<span class="badge" id="calBadge">0</span></div>
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>Suche</div>
+        </div>
+      </div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2>Termine merken</h2><p>„Merken“ lässt das Datum im Bogen in die Termin-Leiste fliegen, dort zählt ein Zähler mit. Die gemerkten Termine lassen sich danach gesammelt in den Handy-Kalender übernehmen.</p></div>
+    </article>
+
+    <!-- 3 -->
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="year">
+        <div class="yearbar" id="yearbar" role="slider" tabindex="0" aria-label="Datum im Kita-Jahr wählen" aria-valuemin="0" aria-valuemax="364"><span class="pin" id="yearPin"></span></div>
+        <div class="months" aria-hidden="true"><span>Sep</span><span>Okt</span><span>Nov</span><span>Dez</span><span>Jan</span><span>Feb</span><span>Mär</span><span>Apr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+        <div class="yearinfo" id="yearInfo" aria-live="polite"></div>
+      </div><span class="hint">Ziehen oder Pfeiltasten · grüne Linie = heute</span></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
+        <h2>Kita-Jahr auf einen Blick</h2><p>Alle 30 Schließtage 2026/2027 als Zeitstrahl. Der Zeiger folgt dem Finger und gibt an den Enden mit Widerstand nach. Er zeigt für jeden Tag, ob offen ist, und wie lange es bis zur nächsten Schließzeit dauert.</p></div>
+    </article>
+
+    <!-- 4 -->
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="day">
+        <div class="slots" id="slots"><span class="dayknob" id="dayKnob" aria-hidden="true"></span></div>
+        <label class="label" for="dayTime">Uhrzeit: <b id="dayLabel">10:20</b></label>
+        <input class="range" id="dayTime" type="range" min="405" max="1050" step="5" value="620">
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Tagesablauf in Echtzeit</h2><p>Der Marker steht auf dem, was gerade passiert, ein Balken zeigt den Fortschritt. Eltern wissen, ob die Kinder gerade essen, schlafen oder abholbereit sind. Beispiel Kindergarten.</p></div>
+    </article>
+
+    <!-- 5 -->
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="wizard" id="wizard">
+        <div class="steps" aria-hidden="true"><i class="done"></i><i></i><i></i></div>
+        <div class="panes">
+          <div class="pane"><b>Welche Gruppe?</b><div class="chips" data-q="g"><button type="button" class="chip">Sonnengruppe</button><button type="button" class="chip">Sternengruppe</button><button type="button" class="chip">Bärengruppe</button><button type="button" class="chip">Bienengruppe</button><button type="button" class="chip">Spatzengruppe</button><button type="button" class="chip">Hort</button></div></div>
+          <div class="pane right"><b>Wie lange?</b><div class="chips" data-q="z"><button type="button" class="chip">nur heute</button><button type="button" class="chip">heute und morgen</button><button type="button" class="chip">bis Ende der Woche</button></div></div>
+          <div class="pane right"><b>Alles richtig?</b><p id="wizSum"></p></div>
+          <div class="pane right" id="wizDone"><svg class="check" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><path d="M19 33l9 9 17-19"/></svg><b>Gute Besserung!</b><p class="label">Beispiel – es wurde nichts verschickt.</p></div>
+        </div>
+        <div class="wizard-nav"><button type="button" class="btn ghost" id="wizBack" disabled>Zurück</button><button type="button" class="btn" id="wizNext" disabled>Weiter</button></div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span><span class="tag">braucht Versandweg</span></div>
+        <h2>Krankmeldung in drei Tipps</h2><p>Statt einer leeren E-Mail führt ein kurzer Ablauf durch Gruppe und Zeitraum. Die Seiten gleiten in Leserichtung, am Ende zeichnet sich ein Häkchen. Für echten Versand braucht der Hort ein Formular-Postfach.</p></div>
+    </article>
+
+    <!-- 6 -->
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div>
+        <div class="stack" id="stack" aria-live="polite"></div>
+        <div class="stack-nav"><button type="button" class="icon" id="mealBack" aria-label="Vorheriger Tag"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="icon" id="mealNext" aria-label="Nächster Tag"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+      </div><span class="hint">Oberste Karte zur Seite wischen</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">braucht Speiseplan</span></div>
+        <h2>Speiseplan als Kartenstapel</h2><p>Jeder Wochentag ist eine Karte, heute liegt oben. Wischen zeigt den nächsten Tag, die Karte folgt dem Finger. Die Gerichte sind Beispiele.</p></div>
+    </article>
+
+    <!-- 7 -->
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="plan">
+        <svg viewBox="0 0 400 230" role="group" aria-label="Grundriss Kinderhort, Räume anklickbar" id="planSvg"></svg>
+      </div>
+      <div class="roominfo" id="roomInfo" role="dialog" aria-label="Raum"><button type="button" class="icon close" id="roomClose" aria-label="Schließen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><h2 id="roomTitle"></h2><p id="roomText"></p></div>
+      <span class="hint">Raum antippen · Grundriss schematisch</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">braucht echten Grundriss</span></div>
+        <h2>Rundgang über den Grundriss</h2><p>Ein Plan des Hauses, jeder Raum ist antippbar. Die Beschreibung öffnet sich kreisförmig genau dort, wo getippt wurde, und schließt sich dorthin zurück.</p></div>
+    </article>
+
+    <!-- 8 -->
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="faq">
+        <label class="label" for="faqInput">Frage suchen</label>
+        <input id="faqInput" type="search" placeholder="z. B. Brotzeit, Ferien, Windeln" autocomplete="off">
+        <ul id="faqList"></ul>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Fragen durchsuchen</h2><p>Ein Suchfeld über den häufigen Fragen. Passende Fragen bleiben stehen und rücken weich zusammen, der Suchbegriff wird markiert.</p></div>
+    </article>
+
+    <!-- 9 -->
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="reader">
+        <span class="progress" id="readProg"></span>
+        <div class="scroll" id="readScroll">
+          <p><b>Liebe Eltern!</b></p>
+          <p>Nach dem BayKiBiG (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von Inhouseschulungen für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p>
+          <p>Unser Personal arbeitet mit großem Engagement. Dadurch fallen im Laufe eines Kindergarten- und Hortjahres Überstunden an (z. B. St. Martin, Ferienfreizeit, Lebensmittelsammlung, Elternabende, Weihnachtsmarkt, Feste und Feiern mit Eltern und Kindern …). Diese Überstunden gleichen unsere Mitarbeiterinnen und Mitarbeiter durch Freizeit aus.</p>
+          <p>Während der „Schulferienzeiten“, in denen unsere Einrichtung geöffnet hat (Herbst, Fasching, Ostern, Pfingsten, August), wird immer ein Teil der Erzieherinnen und Erzieher die Betreuung Ihres Kindes übernehmen und gleichzeitig werden einige Erzieherinnen und Erzieher ihre geleisteten Überstunden frei nehmen können.</p>
+          <p>Im Auftrag des Vorsitzenden<br>Petra Lachnit, Einrichtungsleiterin</p>
+        </div>
+        <button type="button" class="totop" id="toTop" aria-label="Nach oben"><svg class="ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="21" id="topRing"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l6-6 6 6"/></svg></button>
+      </div><span class="hint">Im Text scrollen</span></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Lesefortschritt und „Nach oben“</h2><p>Bei langen Seiten wie Elternbrief, Impressum oder Datenschutz zeigt ein Balken, wie weit man ist. Ab einem Drittel erscheint ein Knopf nach oben, dessen Ring den Fortschritt mitzählt.</p></div>
+    </article>
+
+    <!-- 10 -->
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="textdemo">
+        <div class="seg" role="group" aria-label="Schriftgröße" id="sizeSeg"><span class="knob" aria-hidden="true"></span><button type="button" data-s="0.92" aria-pressed="false">A−</button><button type="button" data-s="1" aria-pressed="true">A</button><button type="button" data-s="1.2" aria-pressed="false">A+</button><button type="button" data-s="1.4" aria-pressed="false">A++</button></div>
+        <div class="sample" id="sizeSample"><b>Kinderhort</b><br>Während der Schulzeit von 6:45 bis 8:00 Uhr und vom jeweiligen Unterrichtsende bis 18:00 Uhr.</div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Barrierefreiheit</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Schrift größer stellen</h2><p>Ein Schalter für größere Schrift, etwa für Großeltern, die abholen. Die Wahl bleibt im Browser gespeichert und gilt auf allen Seiten.</p></div>
+    </article>
+
+    <!-- 11 -->
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="textdemo">
+        <div class="seg" role="group" aria-label="Sprache" id="langSeg"><span class="knob" aria-hidden="true"></span><button type="button" data-l="de" aria-pressed="true">Deutsch</button><button type="button" data-l="en" aria-pressed="false">English</button><button type="button" data-l="tr" aria-pressed="false">Türkçe</button></div>
+        <div class="sample lang" id="langText"></div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">braucht Übersetzung</span></div>
+        <h2>Wichtigstes in mehreren Sprachen</h2><p>Öffnungszeiten, Anmeldung und Kontakt auch für Familien, die wenig Deutsch sprechen. Beim Wechsel blendet der Text mit kurzer Unschärfe über, Zeile für Zeile. Englisch und Türkisch sind Beispiele und müssten geprüft werden.</p></div>
+    </article>
+
+    <!-- 12 -->
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="load">
+        <div class="seg" role="group" aria-label="Ladezeit simulieren"><button type="button" class="chip" data-t="500">0,5 s</button><button type="button" class="chip" data-t="3500">3,5 s</button><button type="button" class="chip" data-t="12000">12 s</button></div>
+        <div class="loadbox" id="loadBox"><p class="label" style="color:var(--ink-soft)">Ladezeit wählen, um Unterlagen zu laden.</p></div>
+      </div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Regelwerk</span><span class="tag">Aufwand: klein</span></div>
+        <h2>Laden nach Dauer</h2><p>Unter 1 Sekunde: nichts zeigen. Bis 10 Sekunden: ein Gerüst der Inhalte. Länger: Fortschritt und Restzeit. So würde zum Beispiel ein großer Speiseplan oder eine Fotogalerie nachladen.</p></div>
+    </article>
+
+  </div>
+
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite – sag einfach, welche Nummern eingebaut werden sollen.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var IO = "cubic-bezier(.65,0,.35,1)", OUT = "cubic-bezier(.23,1,.32,1)";
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function hm(m) { return Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0"); }
+  function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+
+  /* Segment-Schalter mit gleitendem Marker (dehnt sich unterwegs) */
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, animate) {
+      if (!knob) return;
+      if (!animate) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px";
+      knob.style.translate = b.offsetLeft + "px 0";
+      if (!animate) { void knob.offsetWidth; knob.style.transition = ""; }
+      else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+        place(b, true); onPick(b);
+      });
+    });
+    var cur = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0];
+    requestAnimationFrame(function () { place(cur, false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+    return function (b) { b.click(); };
+  }
+
+  /* Filter */
+  segment($(".filter"), function (b) {
+    var f = b.dataset.f;
+    $$(".card").forEach(function (c) { c.classList.toggle("out", f !== "alle" && c.dataset.k.indexOf(f) < 0); });
+  });
+
+  /* 1 Öffnungsuhr */
+  (function () {
+    var bar = $("#clockBar"), big = $("#clockBig"), small = $("#clockSmall"), r = $("#clockTime"), lab = $("#clockLabel");
+    var C = 2 * Math.PI * 80, O = 405, S = 1080;
+    bar.style.strokeDasharray = C;
+    function upd() {
+      var m = +r.value; lab.textContent = hm(m);
+      var p = Math.min(1, Math.max(0, (m - O) / (S - O)));
+      bar.style.strokeDashoffset = C * p;
+      bar.classList.toggle("closed", m < O || m >= S);
+      if (m < O) { big.textContent = hm(O); small.textContent = "öffnet um"; }
+      else if (m >= S) { big.textContent = "zu"; small.textContent = "morgen wieder ab 6:45"; }
+      else { var left = S - m; big.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0") + " h"; small.textContent = m >= 990 ? "Hort noch offen" : "noch geöffnet"; }
+    }
+    r.addEventListener("input", upd); upd();
+  })();
+
+  /* 2 Termine merken – Datum fliegt im Bogen zur Leiste */
+  (function () {
+    var data = [["18", "Nov", "Buß- und Bettag"], ["04", "Dez", "Weihnachtsmarkt mit Christbaumverkauf"], ["07", "Dez", "Der Nikolaus besucht uns"]];
+    var box = $("#events"), badge = $("#calBadge"), target = $("#calTarget"), n = 0;
+    data.forEach(function (d) {
+      var row = document.createElement("div"); row.className = "ev";
+      row.innerHTML = '<div class="date"><b>' + d[0] + '</b><span>' + d[1] + '</span></div><strong></strong><button type="button" class="save" aria-pressed="false"><span class="a">Merken</span><span class="b">Gemerkt ✓</span></button>';
+      $("strong", row).textContent = d[2]; box.appendChild(row);
+      var btn = $(".save", row), date = $(".date", row);
+      btn.addEventListener("click", function () {
+        var on = !btn.classList.contains("on");
+        btn.classList.toggle("on", on); btn.setAttribute("aria-pressed", on);
+        if (on && !reduced) {
+          var a = date.getBoundingClientRect(), t = target.getBoundingClientRect();
+          var f = date.cloneNode(true); f.classList.add("flyer");
+          f.style.cssText = "left:" + a.left + "px;top:" + a.top + "px;width:" + a.width + "px;height:" + a.height + "px";
+          document.body.appendChild(f);
+          var dx = t.left + t.width / 2 - (a.left + a.width / 2), dy = t.top + t.height / 2 - (a.top + a.height / 2);
+          f.animate([
+            { transform: "translate(0,0) scale(1)", opacity: 1 },
+            { transform: "translate(" + dx * 0.55 + "px," + (dy * 0.25 - 70) + "px) scale(.75)", opacity: 1, offset: .5 },
+            { transform: "translate(" + dx + "px," + dy + "px) scale(.25)", opacity: .2 }
+          ], { duration: 560, easing: IO }).onfinish = function () { f.remove(); bump(1); };
+        } else bump(on ? 1 : -1);
+      });
+    });
+    function bump(d) {
+      n = Math.max(0, n + d); badge.textContent = n; badge.classList.toggle("show", n > 0);
+      if (d > 0) { badge.classList.remove("pulse"); void badge.offsetWidth; badge.classList.add("pulse"); }
+    }
+  })();
+
+  /* 3 Kita-Jahr */
+  (function () {
+    var start = new Date(2026, 8, 1), DAY = 864e5, total = 365;
+    var cl = [["Herbstferien", "2026-11-02", "2026-11-03"], ["Weihnachten", "2026-12-24", "2027-01-08"], ["Fasching", "2027-02-08", "2027-02-09"], ["Ostern", "2027-03-25", "2027-03-30"], ["Pfingsten", "2027-05-18", "2027-05-18"], ["Pfingsten", "2027-05-28", "2027-05-28"], ["Sommerferien", "2027-08-09", "2027-08-27"]];
+    function d(s) { var p = s.split("-"); return new Date(+p[0], p[1] - 1, +p[2]); }
+    /* Kalendertage zählen, nicht Millisekunden – sonst verrutscht die Zeitumstellung einen Tag */
+    function idx(dt) { return Math.round((Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()) - Date.UTC(2026, 8, 1)) / DAY); }
+    var bar = $("#yearbar"), pin = $("#yearPin"), info = $("#yearInfo");
+    cl.forEach(function (c) { var s = idx(d(c[1])), e = idx(d(c[2])) + 1, el = document.createElement("span"); el.className = "closure"; el.style.left = (s / total * 100) + "%"; el.style.width = Math.max(.6, (e - s) / total * 100) + "%"; bar.appendChild(el); });
+    var now = new Date(); now.setHours(0, 0, 0, 0); var ti = idx(now);
+    if (ti >= 0 && ti < total) { var t = document.createElement("span"); t.className = "today"; t.style.left = (ti / total * 100) + "%"; bar.appendChild(t); }
+    var cur = Math.min(total - 1, Math.max(0, ti));
+    var TAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+    function show(i, x) {
+      cur = i; pin.style.left = (x !== undefined ? x : i / total * 100 + "%");
+      var dt = new Date(2026, 8, 1 + i); bar.setAttribute("aria-valuenow", i);
+      var label = TAGE[dt.getDay()] + ", " + dt.toLocaleDateString("de-DE"), hit = null, next = null;
+      cl.forEach(function (c) { var s = idx(d(c[1])), e = idx(d(c[2])); if (i >= s && i <= e) hit = c; if (!next && s > i) next = [c, s - i]; });
+      var we = dt.getDay() === 0 || dt.getDay() === 6;
+      bar.setAttribute("aria-valuetext", label);
+      info.innerHTML = "";
+      var b = document.createElement("b"); b.textContent = label + (hit ? " – geschlossen (" + hit[0] + ")" : we ? " – Wochenende" : " – geöffnet"); info.appendChild(b);
+      var s = document.createElement("span"); s.textContent = next ? "Nächste Schließzeit: " + next[0][0] + " in " + next[1] + (next[1] === 1 ? " Tag" : " Tagen") : "Danach: neuer Ferienplan"; info.appendChild(s);
+    }
+    var drag = false;
+    function at(e) {
+      var r = bar.getBoundingClientRect(), x = e.clientX - r.left;
+      var inside = Math.min(r.width, Math.max(0, x)), over = x - inside;
+      var i = Math.min(total - 1, Math.round(inside / r.width * (total - 1)));
+      show(i, (inside + rubber(over, 24)) + "px");
+    }
+    bar.addEventListener("pointerdown", function (e) { drag = true; bar.setPointerCapture(e.pointerId); pin.style.transition = "none"; at(e); });
+    bar.addEventListener("pointermove", function (e) { if (drag) at(e); });
+    function end() { if (!drag) return; drag = false; pin.style.transition = "left .3s " + OUT; show(cur); }
+    bar.addEventListener("pointerup", end); bar.addEventListener("pointercancel", end);
+    bar.addEventListener("keydown", function (e) {
+      var k = { ArrowRight: 1, ArrowLeft: -1, PageUp: 7, PageDown: -7 }[e.key]; if (!k) return; e.preventDefault();
+      pin.style.transition = "left .2s " + OUT; show(Math.min(total - 1, Math.max(0, cur + k)));
+    });
+    show(cur);
+  })();
+
+  /* 4 Tagesablauf live */
+  (function () {
+    var plan = [[405, 480, "Frühbetreuung"], [480, 540, "Ankommen, Freispiel, Frühstück"], [600, 660, "Angebote: Turnen, Englisch, Spaziergang"], [660, 690, "Morgenkreis"], [690, 750, "Freispiel im Garten"], [750, 780, "Warmes Mittagessen"], [780, 810, "Entspannung, Geschichten"], [810, 930, "Freispiel"], [930, 960, "Brotzeit"], [960, 990, "Abholzeit"]];
+    var box = $("#slots"), knob = $("#dayKnob"), r = $("#dayTime"), lab = $("#dayLabel"), rows = [];
+    plan.forEach(function (p) { var el = document.createElement("div"); el.className = "slot"; el.innerHTML = "<time>" + hm(p[0]) + "</time><span></span><i class='fill'></i>"; $("span", el).textContent = p[2]; box.appendChild(el); rows.push(el); });
+    var first = true;
+    function upd() {
+      var m = +r.value; lab.textContent = hm(m);
+      var i = -1; plan.forEach(function (p, n) { if (m >= p[0] && m < p[1]) i = n; });
+      if (i < 0) plan.forEach(function (p, n) { if (m >= p[1]) i = n; });
+      rows.forEach(function (el, n) { el.classList.toggle("now", n === i); $(".fill", el).style.width = n === i ? Math.min(100, (m - plan[n][0]) / (plan[n][1] - plan[n][0]) * 100) + "%" : "0"; });
+      var el = rows[Math.max(0, i)];
+      if (first) knob.style.transition = "none";
+      knob.style.translate = "0 " + el.offsetTop + "px"; knob.style.height = el.offsetHeight + "px";
+      if (first) { void knob.offsetWidth; knob.style.transition = ""; first = false; }
+    }
+    r.addEventListener("input", upd); requestAnimationFrame(upd);
+  })();
+
+  /* 5 Krankmeldung */
+  (function () {
+    var w = $("#wizard"), panes = $$(".pane", w), bars = $$(".steps i", w), back = $("#wizBack"), next = $("#wizNext"), step = 0, pick = {};
+    $$(".chips", w).forEach(function (g) {
+      $$(".chip", g).forEach(function (c) {
+        c.setAttribute("aria-pressed", "false");
+        c.addEventListener("click", function () { $$(".chip", g).forEach(function (x) { x.setAttribute("aria-pressed", x === c); }); pick[g.dataset.q] = c.textContent; next.disabled = false; });
+      });
+    });
+    function go(n) {
+      panes.forEach(function (p, i) { p.classList.toggle("left", i < n); p.classList.toggle("right", i > n); p.classList.toggle("show-done", i === 3 && n === 3); p.setAttribute("aria-hidden", i !== n); });
+      bars.forEach(function (b, i) { b.classList.toggle("done", i <= Math.min(n, 2)); });
+      step = n;
+      back.disabled = n === 0 || n === 3;
+      next.textContent = n === 2 ? "Absenden (Beispiel)" : n === 3 ? "Neue Meldung" : "Weiter";
+      next.disabled = (n === 0 && !pick.g) || (n === 1 && !pick.z);
+      if (n === 2) $("#wizSum").textContent = (pick.g || "") + ", " + (pick.z || "") + ".";
+    }
+    next.addEventListener("click", function () {
+      if (step === 3) { pick = {}; $$(".chip", w).forEach(function (c) { c.setAttribute("aria-pressed", "false"); }); go(0); return; }
+      go(step + 1);
+    });
+    back.addEventListener("click", function () { go(step - 1); });
+    go(0);
+  })();
+
+  /* 6 Speiseplan-Stapel */
+  (function () {
+    var meals = [["Montag", "Gemüsesuppe mit Vollkornbrot", "vegetarisch"], ["Dienstag", "Nudeln mit Tomatensoße", "vegetarisch"], ["Mittwoch", "Kartoffeln mit Kräuterquark", "dazu Salat"], ["Donnerstag", "Hähnchen mit Reis und Gemüse", "dazu Obst"], ["Freitag", "Fischstäbchen mit Kartoffelbrei", "dazu Pudding"]];
+    var st = $("#stack"), i = 0, cards = [];
+    meals.forEach(function (m) { var c = document.createElement("div"); c.className = "meal"; c.innerHTML = '<span class="d"></span><b></b><small></small>'; $(".d", c).textContent = m[0] + " · Beispiel"; $("b", c).textContent = m[1]; $("small", c).textContent = m[2]; st.appendChild(c); cards.push(c); });
+    function layout() {
+      cards.forEach(function (c, n) {
+        var k = n - i; c.classList.toggle("top", k === 0); c.setAttribute("aria-hidden", k !== 0);
+        c.style.zIndex = 10 - Math.abs(k);
+        if (k < 0) { c.style.translate = "-130% 0"; c.style.rotate = "-12deg"; c.style.opacity = 0; c.style.scale = 1; }
+        else { c.style.translate = "0 " + Math.min(k, 2) * 10 + "px"; c.style.rotate = "0deg"; c.style.scale = 1 - Math.min(k, 2) * 0.05; c.style.opacity = k > 2 ? 0 : 1; }
+      });
+    }
+    function go(d) { var n = Math.min(cards.length - 1, Math.max(0, i + d)); if (n === i) { nudge(d); return; } i = n; layout(); }
+    function nudge(d) { var c = cards[i]; if (reduced) return; c.animate([{ translate: "0 0" }, { translate: (d * -14) + "px 0" }, { translate: "0 0" }], { duration: 320, easing: OUT }); }
+    $("#mealNext").addEventListener("click", function () { go(1); });
+    $("#mealBack").addEventListener("click", function () { go(-1); });
+    var x0 = null;
+    st.addEventListener("pointerdown", function (e) { var c = cards[i]; if (!c.contains(e.target)) return; x0 = e.clientX; c.setPointerCapture(e.pointerId); c.style.transition = "none"; });
+    st.addEventListener("pointermove", function (e) {
+      if (x0 === null) return; var dx = e.clientX - x0, c = cards[i];
+      var edge = (dx < 0 && i === cards.length - 1) || (dx > 0 && i === 0);
+      var x = edge ? rubber(dx, 40) : dx;
+      c.style.translate = x + "px 0"; c.style.rotate = (x / 20) + "deg";
+    });
+    function end(e) {
+      if (x0 === null) return; var dx = e.clientX - x0, c = cards[i]; x0 = null; c.style.transition = "";
+      if (dx < -70 && i < cards.length - 1) go(1); else if (dx > 70 && i > 0) go(-1); else layout();
+    }
+    st.addEventListener("pointerup", end); st.addEventListener("pointercancel", end);
+    var today = new Date().getDay(); if (today >= 1 && today <= 5) i = today - 1;
+    layout();
+  })();
+
+  /* 7 Grundriss */
+  (function () {
+    var rooms = [
+      [10, 10, 150, 95, "Kreativraum", "Freizeitbereich der Hortkinder mit Puppenecke, Bauecke, Piratenausguck, Billardtisch und Kreativbereich."],
+      [165, 10, 110, 95, "Bistro", "Hier essen die Kinder nach der Schule gemeinsam ein frisch gekochtes Mittagessen."],
+      [280, 10, 110, 60, "Küche", "Zwei Köchinnen kochen täglich frisch mit regionalen Zutaten."],
+      [280, 75, 110, 70, "Weißer Raum", "Wasserbett, Lichtwasserfall und Wassersäulen: ein Raum für Ruhe und Traumreisen."],
+      [10, 110, 120, 110, "Hausaufgaben", "Nach Alter und Klassenstufe getrennt; die Erzieher korrigieren und prüfen auf Vollständigkeit."],
+      [135, 110, 140, 45, "Spielflur", "Spinde, Bibliothek für jedes Lesealter, Lesetreppe und Tischkicker."],
+      [135, 160, 140, 60, "Turnraum", "Zum Spielen, Turnen und Toben, bei Angeboten und in der Freizeit."],
+      [280, 150, 110, 70, "Werkraum", "Handwerkliche und gestalterische Aktionen finden regelmäßig hier statt."]
+    ];
+    var svg = $("#planSvg"), info = $("#roomInfo"), stage = info.parentNode, last = null, ns = "http://www.w3.org/2000/svg";
+    rooms.forEach(function (r) {
+      var g = document.createElementNS(ns, "g"), rect = document.createElementNS(ns, "rect"), t = document.createElementNS(ns, "text");
+      rect.setAttribute("x", r[0]); rect.setAttribute("y", r[1]); rect.setAttribute("width", r[2]); rect.setAttribute("height", r[3]); rect.setAttribute("rx", 8);
+      rect.setAttribute("class", "room-r"); rect.setAttribute("tabindex", "0"); rect.setAttribute("role", "button"); rect.setAttribute("aria-label", r[4]);
+      t.setAttribute("x", r[0] + r[2] / 2); t.setAttribute("y", r[1] + r[3] / 2 + 4); t.setAttribute("text-anchor", "middle"); t.textContent = r[4];
+      g.appendChild(rect); g.appendChild(t); svg.appendChild(g);
+      function open() {
+        var b = rect.getBoundingClientRect(), s = stage.getBoundingClientRect(), ib = { left: s.left + 14, top: s.top + 14 };
+        info.style.setProperty("--cx", (b.left + b.width / 2 - ib.left) + "px"); info.style.setProperty("--cy", (b.top + b.height / 2 - ib.top) + "px");
+        $("#roomTitle").textContent = r[4]; $("#roomText").textContent = r[5]; info.classList.add("open"); last = rect; $("#roomClose").focus();
+      }
+      rect.addEventListener("click", open); rect.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+    function close() { info.classList.remove("open"); if (last) last.focus(); }
+    $("#roomClose").addEventListener("click", close);
+    info.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+  })();
+
+  /* 8 FAQ-Filter mit weichem Zusammenrücken */
+  (function () {
+    var qs = ["Hat der Hort auch in den Schulferien geöffnet?", "Braucht mein Kind im Hort eine Brotzeit?", "Müssen wir Windeln für unser Kind mitbringen?", "Gibt es eine Eingewöhnungszeit?", "Ist die Zugehörigkeit zur katholischen Kirche notwendig?", "Kann ich mein Kind abholen, wann ich möchte?", "Muss mein Kind für den Kindergarten sauber sein?", "Sind die Schließtage in allen Abteilungen gleich?"];
+    var ul = $("#faqList"), inp = $("#faqInput"), items = qs.map(function (q) { var li = document.createElement("li"); li.dataset.q = q; li.textContent = q; ul.appendChild(li); return li; });
+    var empty = document.createElement("p"); empty.className = "empty"; empty.textContent = "Keine passende Frage – rufen Sie uns gern an."; empty.hidden = true; ul.after(empty);
+    function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    inp.addEventListener("input", function () {
+      var v = inp.value.trim().toLowerCase(), before = new Map();
+      items.forEach(function (li) { if (!li.hidden) before.set(li, li.getBoundingClientRect()); });
+      var shown = 0;
+      items.forEach(function (li) {
+        var q = li.dataset.q, at = v ? q.toLowerCase().indexOf(v) : 0, hit = !v || at >= 0;
+        li.hidden = !hit; if (hit) shown++;
+        li.innerHTML = v && at >= 0 ? esc(q.slice(0, at)) + "<mark>" + esc(q.slice(at, at + v.length)) + "</mark>" + esc(q.slice(at + v.length)) : esc(q);
+      });
+      empty.hidden = shown > 0;
+      if (reduced) return;
+      items.forEach(function (li) {
+        if (li.hidden) return; var a = before.get(li), b = li.getBoundingClientRect();
+        if (!a) li.animate([{ opacity: 0, transform: "scale(.95)" }, { opacity: 1, transform: "none" }], { duration: 250, easing: OUT });
+        else if (a.top !== b.top) li.animate([{ transform: "translateY(" + (a.top - b.top) + "px)" }, { transform: "none" }], { duration: 300, easing: IO });
+      });
+    });
+  })();
+
+  /* 9 Lesefortschritt */
+  (function () {
+    var sc = $("#readScroll"), prog = $("#readProg"), top = $("#toTop"), ring = $("#topRing"), C = 2 * Math.PI * 21;
+    ring.style.strokeDasharray = C;
+    function upd() { var p = sc.scrollTop / Math.max(1, sc.scrollHeight - sc.clientHeight); prog.style.scale = p + " 1"; ring.style.strokeDashoffset = C * (1 - p); top.classList.toggle("show", p > 0.33); }
+    sc.addEventListener("scroll", upd, { passive: true }); upd();
+    top.addEventListener("click", function () { sc.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); });
+  })();
+
+  /* 10 Schriftgröße */
+  (function () {
+    var sample = $("#sizeSample"), seg = $("#sizeSeg"), saved = store("schrift");
+    segment(seg, function (b) { sample.style.fontSize = b.dataset.s + "rem"; store("schrift", b.dataset.s); });
+    if (saved) { var b = $$("button", seg).filter(function (x) { return x.dataset.s === saved; })[0]; if (b) { $$("button", seg).forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); sample.style.fontSize = saved + "rem"; } }
+  })();
+
+  /* 11 Sprache */
+  (function () {
+    var T = {
+      de: ["Öffnungszeiten: Montag bis Freitag, 6:45 bis 18:00 Uhr.", "Krippe und Kindergarten bis 16:30 Uhr, Hort bis 18:00 Uhr.", "Fragen? Rufen Sie uns an: 0931 2789892 0."],
+      en: ["Opening hours: Monday to Friday, 6:45 am to 6:00 pm.", "Nursery and kindergarten until 4:30 pm, after-school care until 6:00 pm.", "Questions? Call us: 0931 2789892 0."],
+      tr: ["Çalışma saatleri: Pazartesi–Cuma, 6:45–18:00.", "Kreş ve anaokulu 16:30'a kadar, okul sonrası bakım 18:00'e kadar.", "Sorularınız mı var? Bizi arayın: 0931 2789892 0."]
+    };
+    var box = $("#langText"), cur = "de";
+    function fill(l) { box.innerHTML = ""; T[l].forEach(function (s) { var p = document.createElement("p"); p.textContent = s; p.style.margin = "0 0 .4em"; box.appendChild(p); }); box.lang = l; }
+    fill(cur);
+    segment($("#langSeg"), function (b) {
+      var l = b.dataset.l; if (l === cur) return; cur = l;
+      if (reduced) { fill(l); return; }
+      box.classList.add("swap");
+      setTimeout(function () { fill(l); void box.offsetWidth; box.classList.remove("swap"); }, 230);
+    });
+  })();
+
+  /* 12 Laden nach Dauer */
+  (function () {
+    var box = $("#loadBox"), timers = [];
+    function clear() { timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = []; }
+    function done() { box.innerHTML = '<b>Unterlagen</b><ul class="loaded"><li>Schließtage 2026/2027 · PDF</li><li>KinderhortABC · PDF</li><li>Medikamentenvereinbarung · PDF</li></ul>'; }
+    $$("[data-t]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        clear(); var t = +b.dataset.t, t0 = Date.now(); box.innerHTML = "";
+        if (t <= 1000) { timers.push(setTimeout(done, t)); return; }
+        if (t <= 10000) { timers.push(setTimeout(function () { box.innerHTML = '<div class="sk" style="width:40%"></div><div class="sk"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:70%"></div>'; }, 1000)); timers.push(setTimeout(done, t)); return; }
+        box.innerHTML = '<b>Fotogalerie wird geladen …</b><div class="pbar"><i></i></div><span class="label" style="color:var(--ink-soft)"></span>';
+        var i = $("i", box), s = $(".label", box);
+        var iv = setInterval(function () { var p = Math.min(1, (Date.now() - t0) / t); i.style.width = p * 100 + "%"; s.textContent = "noch etwa " + Math.ceil((t - (Date.now() - t0)) / 1000) + " Sekunden"; if (p >= 1) { clearInterval(iv); done(); } }, 200);
+        timers.push(iv);
+      });
+    });
+  })();
+})();
+</script>
