@@ -618,7 +618,7 @@ home = f'''
     <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
     <div class="reveal">
       <span class="kicker">Herzlich Willkommen</span>
-      <h2>Schön, dass Sie da sind!</h2>
+      <h2>Schön, dass Sie da sind</h2>
       <blockquote>
         <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
         <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
@@ -731,8 +731,8 @@ krippe += section("ueberblick", "Auf einen Blick", "Die Kinderkrippe", "", info_
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
 krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", "", '''<div class="groups"><span class="muted">Die Kinderkrippe umfasst zwei Gruppen:</span>
-<span class="group-chip"><span class="emoji" aria-hidden="true">☀️</span>Sonnengruppe</span>
-<span class="group-chip"><span class="emoji" aria-hidden="true">⭐</span>Sternengruppe</span></div>''' + rooms([
+<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span>Sonnengruppe</span>
+<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span>Sternengruppe</span></div>''' + rooms([
     ("Gruppenraum", "Unterteilt in verschiedene Bereiche: wie z. B. Bauecke, Puppenwohnung, Bücherecke und mit dem großen Tisch für die gemeinsamen Mahlzeiten. Die bodentiefen Fenster fluten die Räume mit viel Licht und bieten eine schöne Aussicht in den Garten. Das Spielen auf dem Boden ist durch die Fußbodenheizung besonders einladend.", "img/p2160110.jpg"),
     ("Nebenraum", "Der Nebenraum ist dem Gruppenraum direkt angegliedert. Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kl. Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit.", "img/nebenraum.jpg"),
     ("Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch Rollo, bzw. mit Vorhang angenehm abgedunkelt werden um eine gemütliche Schlafatmosphäre zu ermöglichen.", "img/schlafen.jpg"),
@@ -817,9 +817,9 @@ kiga += section("ueberblick", "Auf einen Blick", "Der Kindergarten", "", info_ca
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
 kiga += section("raeume", "Räumlichkeiten", "Große, helle Räume zum Spielen und Lernen", "", '''<div class="groups"><span class="muted">Es gibt drei Kindergartengruppen:</span>
-<span class="group-chip"><span class="emoji" aria-hidden="true">🐻</span>Bärengruppe</span>
-<span class="group-chip"><span class="emoji" aria-hidden="true">🐝</span>Bienengruppe</span>
-<span class="group-chip"><span class="emoji" aria-hidden="true">🐦</span>Spatzengruppe</span></div>''' + rooms([
+<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/></svg></span>Bärengruppe</span>
+<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/></svg></span>Bienengruppe</span>
+<span class="group-chip"><span class="group-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
     ("Gruppenraum", "In unseren großen, hellen Gruppenräumen befinden sich jeweils eine Leseecke, eine Bauecke, eine Puppen-, Rollenspielecke, ein Kreativtisch, ein Frühstücks- und Esstisch für das warme frisch zubereitete Mittagessen sowie Spieltische für Brettspiele und Puzzle. Zu jeder Gruppe gehört ein Nebenraum, dort finden altersspezifische Angebote in Kleingruppen statt. Außerdem hat jede Gruppe einen großen Außenspielbereich im Flur mit wechselnden Spielmaterialien.", "img/blick-vom-fenster-in-den-raum.jpg"),
     ("Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),

@@ -1682,7 +1682,7 @@
         h += '<div class="mo"><b>' + MN[m] + " " + y + '</b><div class="g">' + g + "</div></div>";
       }
       var total = K.schliesszeiten.reduce(function (a, z) { return a + z.tage; }, 0);
-      h += '</div><div class="leg"><span><i></i>Schließtag</span><span style="color:#B8574A;font-weight:800">12</span><span>= Feiertag</span><span>' + total + ' Schließtage im Kita-Jahr</span></div><p class="foot">Stand: ' + fmt(new Date()) + " · Alle Termine aktuell auf der Webseite unter „Aktuelles“</p>";
+      h += '</div><div class="leg"><span><i></i>Schließtag</span><span style="color:#B8574A;font-weight:600">12</span><span>= Feiertag</span><span>' + total + ' Schließtage im Kita-Jahr</span></div><p class="foot">Stand: ' + fmt(new Date()) + " · Alle Termine aktuell auf der Webseite unter „Aktuelles“</p>";
       var box = document.createElement("div"); box.className = "poster-print"; box.innerHTML = h; document.body.appendChild(box);
       document.body.classList.add("print-poster");
       var done = function () { document.body.classList.remove("print-poster"); box.parentNode && box.parentNode.removeChild(box); window.removeEventListener("afterprint", done); };

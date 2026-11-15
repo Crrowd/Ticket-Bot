@@ -289,3 +289,15 @@ Abschnitte: 12 Abschnitte stapeln sich · 13 Schräge Kanten · 14 Bild öffnet 
 Elemente: 16 Reiter mit mitgleitendem Inhalt · 17 Fenster wächst aus dem Knopf (schon eingebaut) · 18 Fragen klappen weich auf (schon eingebaut) · 19 Bilderwechsel mit Kamerafahrt
 
 Entscheidung offen.
+
+## Feinschliff nach „unslop“ (15.11.2026)
+Bestandsaufnahme mit dem Plugin-Leitfaden „unslop“ (Polier-Modus, Farben/Schrift/Aufbau bleiben). Umgesetzt:
+- Gruppensymbole: Emojis durch Liniensymbole ersetzt (Sonne, Stern, Bär, Biene, Spatz)
+- Etiketten in normaler Schreibweise statt GROSSBUCHSTABEN mit Sperrung (10 Stellen)
+- Schriftstärken 700/800 auf 600, Hierarchie über Größe
+- „Schön, dass Sie da sind“ ohne Ausrufezeichen (Leitsatz und Briefanrede bleiben)
+- Rundungen abgestuft: Knöpfe 12 px, Etiketten 8 px, Umschalter 12/8 px, kleine Marken 6 px
+- 165 Abstände ins 4-Pixel-Raster
+- Kopfleiste: Name am Computer zweizeilig, damit der Geöffnet-Punkt ihn nicht überdeckt
+Bewusst behalten (vom Hort gewählt): Wortwolke, Jahreszeiten, Tiefe beim Scrollen, Collage-Neigung, Tageslicht, Licht unter der Maus, Magnet-Knöpfe, Konfetti, pulsierender Geöffnet-Punkt.
+Vergleichsbilder: `entwurf/unslop/`
