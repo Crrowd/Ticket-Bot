@@ -246,3 +246,11 @@ Auswahl gespeichert im Katalog (Datenbank `auswahl`): 23× Ja, 20× Merken, 15×
 
 **Merken:** 4, 5, 7, 13, 14, 16, 17, 21, 23, 24, 25, 31, 36, 38, 48, 49, 50, 51, 61
 **Nein:** 2, 12, 22, 26, 28, 30, 35, 43, 44, 45, 46, 52, 53, 56, 57, 59
+
+## Ideenkatalog 3 – Nachtrag 63–75 (15.11.2026)
+63 Farbschimmer je Bereich · 64 Texte vorlesen lassen · 65 Mitlaufende Abschnittstitel · 66 „Jetzt gut erreichbar?“ · 67 Wimpel-Trenner · 68 „Zuletzt angesehen“ in der Suche · 69 Zwischen den Bereichen wischen · 70 Gelesen-Häkchen im Inhaltsverzeichnis · 71 Kontakt aufs Handy speichern · 72 Begrüßung nach Tageszeit · 73 „Morgen geschlossen“-Hinweis · 74 Notfallkarte fürs Portemonnaie · 75 Tipp-Welle in der Handy-Leiste
+
+Entscheidung offen (Auswahl direkt im Katalog).
+
+## E-Mail beim Umzug (Wunsch)
+Geplant: info@, krippe@, kindergarten@kinderhort-grombuehl.de über das Webhosting-Paket (Hort über info@). Noch nicht in die Seite eingebaut – erst wenn die Postfächer stehen.

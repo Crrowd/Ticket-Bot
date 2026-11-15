@@ -790,6 +790,136 @@ button { font: inherit; color: inherit; }
 .floaty { position: absolute; pointer-events: none; font-size: 1.2rem; animation: floatup .8s var(--ease-out) forwards; }
 @keyframes floatup { to { translate: 0 -40px; opacity: 0; } }
 
+/* 63 Farbschimmer je Bereich */
+.tint { position: relative; width: 100%; max-width: 440px; height: 240px; overflow-y: auto; border-radius: 16px; overscroll-behavior: contain; background: var(--tint-bg, var(--bg)); transition: background-color .6s var(--ease-io); color: var(--ink); }
+.tint section { height: 200px; padding: 18px; display: grid; align-content: center; gap: 6px; }
+.tint section b { font-size: 1.4rem; letter-spacing: -.03em; }
+.tint section span { font-size: .86rem; color: var(--ink-soft); }
+
+/* 64 Vorlesen */
+.readaloud { width: 100%; max-width: 440px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.readaloud p { font-size: .95rem; line-height: 1.65; }
+.readaloud .w.now { background: var(--rose); border-radius: 4px; box-shadow: 0 0 0 2px var(--rose); }
+.ra-btn { justify-self: start; display: inline-flex; align-items: center; gap: 8px; }
+.ra-btn .bars { display: inline-flex; gap: 2px; align-items: flex-end; height: 14px; }
+.ra-btn .bars i { width: 3px; height: 5px; background: currentColor; border-radius: 2px; }
+.ra-btn.on .bars i { animation: eq .8s ease-in-out infinite; } .ra-btn.on .bars i:nth-child(2) { animation-delay: .2s; } .ra-btn.on .bars i:nth-child(3) { animation-delay: .4s; }
+@keyframes eq { 50% { height: 14px; } }
+
+/* 65 Mitlaufende Abschnittstitel */
+.stickybox { position: relative; width: 100%; max-width: 420px; height: 250px; overflow-y: auto; border-radius: 16px; background: var(--paper); color: var(--ink); overscroll-behavior: contain; }
+.stickybox h4 { position: sticky; top: 0; margin: 0; padding: 10px 16px; background: rgba(243,248,247,.9); backdrop-filter: blur(6px); font-size: .95rem; border-bottom: 1px solid transparent; transition: border-color .2s, box-shadow .2s; z-index: 1; }
+.stickybox h4.stuck { border-bottom-color: rgba(30,59,68,.12); box-shadow: 0 6px 12px -10px rgba(0,0,0,.4); }
+.stickybox .t { padding: 8px 16px 18px; display: grid; gap: 8px; }
+.stickybox .t i { display: block; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.stickybox .t i:nth-child(3n) { width: 65%; }
+
+/* 66 Jetzt gut erreichbar? */
+.reach { width: 100%; max-width: 420px; display: grid; gap: 10px; }
+.reach-card { background: var(--paper); color: var(--ink); border-radius: 16px; padding: 6px 14px; }
+.reach-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; font-size: .9rem; }
+.reach-row + .reach-row { border-top: 1px solid rgba(30,59,68,.08); }
+.reach-row b { font-variant-numeric: tabular-nums; margin-left: auto; }
+.reach-tag { font-size: .72rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; white-space: nowrap; transition: background .3s, color .3s; }
+.reach-tag.good { background: #DDF3E6; color: #1F6B43; } .reach-tag.busy { background: var(--rose-soft); color: #7E504A; } .reach-tag.off { background: #E3E9EA; color: #5B6F73; }
+
+/* 67 Wimpel-Trenner */
+.divider-demo { width: 100%; max-width: 460px; border-radius: 16px; overflow: hidden; }
+.divider-demo .blk { height: 70px; background: var(--bg); }
+.divider-demo .blk.b2 { background: var(--paper); }
+.divider-demo svg { display: block; width: 100%; height: 44px; background: var(--paper); }
+.divider-demo .line { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.divider-demo .f { transform-box: fill-box; transform-origin: 50% 0; scale: 1 0; }
+.divider-demo.go .line { stroke-dashoffset: 0; transition: stroke-dashoffset .8s var(--ease-io); }
+.divider-demo.go .f { scale: 1 1; transition: scale .45s cubic-bezier(.34,1.56,.64,1); transition-delay: calc(.4s + var(--i) * 50ms); }
+
+/* 68 Zuletzt angesehen */
+.recent { width: 100%; max-width: 420px; background: var(--paper); color: var(--ink); border-radius: 18px; overflow: hidden; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); }
+.recent .in { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid rgba(30,59,68,.1); color: var(--ink-soft); font-size: .95rem; }
+.recent h4 { margin: 12px 16px 6px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.recent ul { list-style: none; margin: 0; padding: 0 8px 10px; display: grid; gap: 2px; }
+.recent li { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: .92rem; font-weight: 600; animation: rise .3s var(--ease-out) both; }
+.recent li:nth-child(2) { animation-delay: 40ms; } .recent li:nth-child(3) { animation-delay: 80ms; }
+.recent li:hover { background: var(--rose-soft); }
+.recent li small { margin-left: auto; color: var(--ink-soft); font-weight: 500; font-size: .76rem; }
+.recent li span.ic { width: 26px; height: 26px; border-radius: 8px; background: var(--bg-alt); display: grid; place-items: center; font-size: .8rem; }
+
+/* 69 Zwischen Bereichen wischen */
+.swipe { position: relative; width: 220px; height: 280px; border-radius: 26px; background: #0E1E23; padding: 8px; touch-action: pan-y; }
+.swipe-view { position: relative; width: 100%; height: 100%; border-radius: 20px; overflow: hidden; }
+.swipe-track { display: flex; height: 100%; transition: translate .45s var(--ease-out); }
+.swipe-track.drag { transition: none; }
+.swipe-page { flex: none; width: 100%; height: 100%; padding: 16px 14px; display: grid; align-content: start; gap: 8px; color: var(--ink); }
+.swipe-page h4 { margin: 0; font-size: 1.1rem; } .swipe-page i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.15); }
+.swipe-page .ph { height: 80px; border-radius: 12px; background: rgba(30,59,68,.12); }
+.swipe-dots { position: absolute; left: 0; right: 0; bottom: 14px; display: flex; justify-content: center; gap: 5px; }
+.swipe-dots b { width: 6px; height: 6px; border-radius: 3px; background: rgba(30,59,68,.25); transition: width .3s var(--ease-out), background .3s; }
+.swipe-dots b.on { width: 18px; background: var(--ink); }
+.swipe-hint { position: absolute; top: 50%; right: 6px; translate: 0 -50%; font-size: 1.2rem; color: var(--ink); opacity: .5; animation: nudge2 1.8s ease-in-out infinite; }
+@keyframes nudge2 { 50% { translate: -6px -50%; } }
+
+/* 70 Gelesen-Häkchen */
+.toc { width: 100%; max-width: 420px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; }
+.toc ul { list-style: none; margin: 0; padding: 10px; display: grid; gap: 2px; background: rgba(255,255,255,.1); border-radius: 14px; align-content: start; }
+.toc li { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; font-size: .8rem; font-weight: 600; color: var(--on-soft); transition: background .2s, color .2s; }
+.toc li.cur { background: rgba(255,255,255,.14); color: var(--on); }
+.toc li .ck { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); display: grid; place-items: center; flex: none; transition: background .3s, border-color .3s; }
+.toc li.done .ck { background: var(--ok); border-color: var(--ok); }
+.toc li .ck svg { width: 10px; height: 10px; fill: none; stroke: var(--deep); stroke-width: 3; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .3s .1s; }
+.toc li.done .ck svg { stroke-dashoffset: 0; }
+.toc .doc { height: 230px; overflow-y: auto; background: var(--paper); border-radius: 14px; padding: 12px; overscroll-behavior: contain; }
+.toc .doc section { padding-bottom: 60px; } .toc .doc h4 { margin: 0 0 8px; color: var(--ink); font-size: .9rem; }
+.toc .doc i { display: block; height: 8px; border-radius: 4px; background: rgba(30,59,68,.12); margin-bottom: 7px; }
+
+/* 71 Kontakt speichern */
+.vcard { width: 100%; max-width: 380px; background: var(--paper); color: var(--ink); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.vc-top { display: flex; gap: 12px; align-items: center; }
+.vc-top .av { width: 52px; height: 52px; border-radius: 50%; background: var(--ink); flex: none; display: grid; place-items: center; }
+.vc-top .av svg { width: 70%; }
+.vc-top b { display: block; font-size: .95rem; line-height: 1.3; } .vc-top small { color: var(--ink-soft); }
+.vc-list { display: grid; gap: 6px; font-size: .86rem; }
+.vc-list div { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid rgba(30,59,68,.08); }
+.vc-list div span { color: var(--ink-soft); }
+.vcard .btn { background: var(--surface); color: var(--on); justify-self: start; }
+
+/* 72 Begrüßung */
+.greet { width: 100%; max-width: 440px; background: var(--bg); color: var(--ink); border-radius: 18px; padding: 22px; display: grid; gap: 8px; }
+.greet .eyebrow2 { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--rose); padding: 5px 12px; border-radius: 999px; font: 800 .72rem var(--font); letter-spacing: .1em; text-transform: uppercase; }
+.greet .eyebrow2 .em { display: inline-block; transform-origin: 70% 80%; }
+.greet .eyebrow2.wave .em { animation: hand .5s ease-in-out 3; }
+.greet h3 { font-size: 1.7rem; letter-spacing: -.035em; line-height: 1.1; }
+.greet p { font-size: .9rem; color: var(--ink-soft); }
+
+/* 73 Morgen geschlossen */
+.tomorrow { width: 100%; max-width: 460px; display: grid; gap: 14px; justify-items: center; }
+.tm-page { position: relative; width: 100%; height: 150px; border-radius: 16px; background: var(--bg); overflow: hidden; }
+.tm-page .bar { margin: 10px; height: 38px; border-radius: 12px; background: rgba(243,248,247,.8); }
+.tm-page .ln { margin: 10px 18px; height: 10px; border-radius: 5px; background: rgba(30,59,68,.12); }
+.tm-banner { position: absolute; left: 10px; right: 10px; top: 56px; display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 12px; background: var(--ink); color: var(--on); font-size: .86rem; box-shadow: 0 12px 24px -12px rgba(0,0,0,.6); translate: 0 -14px; opacity: 0; transition: translate .4s cubic-bezier(.34,1.56,.64,1), opacity .25s; }
+.tm-banner.show { translate: 0 0; opacity: 1; }
+.tm-banner b { display: block; }
+.tm-banner .cal { width: 38px; flex: none; border-radius: 8px; background: var(--rose); color: var(--ink); text-align: center; font-weight: 800; font-size: .66rem; line-height: 1.1; padding: 4px 0; }
+.tm-banner .cal span { display: block; font-size: 1.1rem; }
+
+/* 74 Notfallkarte */
+.wallet { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.ecard { width: 260px; aspect-ratio: 85.6 / 54; border-radius: 12px; background: var(--paper); color: var(--ink); padding: 12px 14px; display: grid; align-content: start; gap: 5px; box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); position: relative; overflow: hidden; transform-style: preserve-3d; transition: rotate .7s var(--ease-io); }
+.ecard::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: repeating-linear-gradient(90deg, var(--rose) 0 12px, var(--surface) 12px 24px); }
+.ecard b { font-size: .78rem; margin-top: 4px; } .ecard small { font-size: .56rem; color: var(--ink-soft); letter-spacing: .08em; text-transform: uppercase; font-weight: 800; }
+.ecard .rows { display: grid; gap: 1px; font-size: .62rem; }
+.ecard .rows div { display: flex; justify-content: space-between; } .ecard .rows div span:last-child { font-weight: 800; font-variant-numeric: tabular-nums; }
+.ecard.tilt { animation: tilt 3s ease-in-out infinite; }
+@keyframes tilt { 50% { rotate: y 14deg; } }
+.wallet-side { display: grid; gap: 10px; max-width: 200px; } .wallet-side p { font-size: .86rem; color: var(--on-soft); }
+
+/* 75 Tipp-Welle */
+.tapbar { width: 280px; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--deep); border-radius: 18px; padding: 6px; }
+.tapbar button { position: relative; overflow: hidden; border: 0; background: none; color: var(--on); display: grid; justify-items: center; gap: 3px; padding: 9px 0; border-radius: 12px; font: 600 .66rem var(--font); cursor: pointer; }
+.tapbar button span.i { font-size: 1.15rem; transition: scale .2s var(--ease-out); }
+.tapbar button:active span.i { scale: .88; }
+.ripple { position: absolute; border-radius: 50%; background: rgba(212,181,176,.45); translate: -50% -50%; pointer-events: none; animation: ripple .55s var(--ease-out) forwards; }
+@keyframes ripple { from { width: 0; height: 0; opacity: 1; } to { width: 140px; height: 140px; opacity: 0; } }
+
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -824,7 +954,7 @@ button { font: inherit; color: inherit; }
 <div class="wrap">
   <header class="intro">
     <span class="kicker">Ideenkatalog 3</span>
-    <h1>62 neue Ideen zum Ausprobieren</h1>
+    <h1>75 neue Ideen zum Ausprobieren</h1>
     <p>Diesmal mehr Visualisierungen: Zeichnungen, Wege, Karten und kleine Werkzeuge für Eltern und Team. Jede Karte ist live. Wo etwas erfunden ist, steht „Beispiel“ dabei.</p>
   </header>
   <p class="sync-note">Unter jeder Idee kannst du <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> wählen und eine Anmerkung schreiben. Deine Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
@@ -1449,6 +1579,86 @@ button { font: inherit; color: inherit; }
       <div class="stage"><div class="react" id="react"><h3>Unser Weihnachtsmarkt war ein voller Erfolg!</h3><p>Danke an alle Familien fürs Mithelfen und Mitfeiern. (Beispiel)</p><div class="react-row"><button type="button" aria-pressed="false"><span class="em">❤️</span><span class="cnt">24</span></button><button type="button" aria-pressed="false"><span class="em">👏</span><span class="cnt">17</span></button><button type="button" aria-pressed="false"><span class="em">🎄</span><span class="cnt">9</span></button></div></div></div>
       <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: mittel</span></div>
         <h2><span class="num">62</span> Reaktionen auf Neuigkeiten</h2><p>Unter Neuigkeiten können Eltern mit einem Tipp ein Herz oder Applaus dalassen, das Symbol hüpft und schwebt kurz nach oben. Ein kleines Dankeschön ans Team, ganz ohne Kommentarspalte. <b>Beispiel:</b> Die Zahlen sind erfunden.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="tint" id="tint" tabindex="0" aria-label="Beispielseite zum Scrollen"><section data-c="#A8C5C0"><b>Startseite</b><span>nach unten scrollen</span></section><section data-c="#C7D9D3"><b>Kinderkrippe</b><span>ein Hauch Salbei</span></section><section data-c="#E9DCD9"><b>Kindergarten</b><span>ein Hauch Rosé</span></section><section data-c="#BCD3D3"><b>Kinderhort</b><span>ein Hauch Türkis</span></section></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">63</span> Farbschimmer je Bereich</h2><p>Der Seitenhintergrund tönt sich beim Scrollen ganz sanft um, je nachdem, in welchem Bereich man gerade liest. Alles bleibt in den bekannten Farben, nur ein Hauch heller oder wärmer – man spürt den Wechsel mehr, als man ihn sieht.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="readaloud"><p id="raText">Kinderkrippe, Kindergarten und Kinderhort haben die gleichen Schließtage. Damit Sie rechtzeitig Ihre Urlaubspläne schmieden können, finden Sie alle Ferienzeiten im Ferienplan.</p><button type="button" class="btn ra-btn" id="raBtn"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Vorlesen</span></button><p class="label" id="raHint" style="color:var(--ink-soft)"></p></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">64</span> Texte vorlesen lassen</h2><p>Ein Knopf an längeren Texten liest sie vor, das gerade gesprochene Wort ist markiert. Hilft Eltern, die nicht gut lesen können oder unterwegs nur zuhören möchten. Nutzt die Stimme, die schon im Gerät steckt – nichts wird an fremde Dienste geschickt.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="stickybox" id="stickybox" tabindex="0" aria-label="Beispielseite zum Scrollen"><h4>Zielgruppe &amp; Öffnungszeiten</h4><div class="t"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h4>Räumlichkeiten</h4><div class="t"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h4>Tagesablauf</h4><div class="t"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><p class="hint">In der Box scrollen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">65</span> Mitlaufende Abschnittstitel</h2><p>Bei langen Abschnitten bleibt die Überschrift oben stehen, bis der nächste Abschnitt sie sanft wegschiebt. Man weiß immer, wo man gerade ist – besonders am Handy bei den langen Tagesabläufen und Fragen.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="reach"><div class="reach-card"><div class="reach-row">Sonnengruppe<span class="reach-tag" data-g="krippe"></span><b>… 14</b></div><div class="reach-row">Spatzengruppe<span class="reach-tag" data-g="kiga"></span><b>… 12</b></div><div class="reach-row">Hort<span class="reach-tag" data-g="hort"></span><b>… 0</b></div></div>
+          <div class="seg" id="reachSeg" role="group" aria-label="Uhrzeit simulieren" style="justify-self:center"><span class="knob" aria-hidden="true"></span><button type="button" data-m="480" aria-pressed="false">8:00</button><button type="button" data-m="700" aria-pressed="false">11:40</button><button type="button" data-m="900" aria-pressed="true">15:00</button><button type="button" data-m="1110" aria-pressed="false">18:30</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">66</span> „Jetzt gut erreichbar?“</h2><p>Neben jeder Durchwahl steht, ob gerade ein guter Moment zum Anrufen ist: In der Bringzeit und beim Mittagessen sind die Gruppen beschäftigt, nachmittags klappt es meist gut. Spart Eltern und Team unnötige Anrufe. <b>Beispiel:</b> Die ruhigen Zeiten müsste das Team festlegen.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="divider-demo" id="divider"><div class="blk"></div><svg viewBox="0 0 460 44" preserveAspectRatio="none" aria-hidden="true"><path class="line" pathLength="1" d="M0 6 Q230 30 460 6"/><path class="f" style="--i:0" d="M18 9.0 l14 0 -7 16z" fill="#D4B5B0"/><path class="f" style="--i:1" d="M58 10.6 l14 0 -7 16z" fill="#2D6A6A"/><path class="f" style="--i:2" d="M98 12.2 l14 0 -7 16z" fill="#D4B5B0"/><path class="f" style="--i:3" d="M138 13.8 l14 0 -7 16z" fill="#2D6A6A"/><path class="f" style="--i:4" d="M178 15.4 l14 0 -7 16z" fill="#D4B5B0"/><path class="f" style="--i:5" d="M218 17.0 l14 0 -7 16z" fill="#2D6A6A"/><path class="f" style="--i:6" d="M258 15.4 l14 0 -7 16z" fill="#D4B5B0"/><path class="f" style="--i:7" d="M298 13.8 l14 0 -7 16z" fill="#2D6A6A"/><path class="f" style="--i:8" d="M338 12.2 l14 0 -7 16z" fill="#D4B5B0"/><path class="f" style="--i:9" d="M378 10.6 l14 0 -7 16z" fill="#2D6A6A"/><path class="f" style="--i:10" d="M418 9.0 l14 0 -7 16z" fill="#D4B5B0"/></svg><div class="blk b2"></div></div><button type="button" class="replay" data-replay="DV">↻ Nochmal</button></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">67</span> Wimpel-Trenner zwischen Abschnitten</h2><p>Zwischen großen Abschnitten spannt sich eine Wimpelkette: erst zeichnet sich die Schnur, dann klappen die Wimpel nacheinander herunter. Ein freundlicher Übergang statt einer harten Kante – sparsam, höchstens zwei-, dreimal pro Seite.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="recent"><div class="in">🔍 Suchen …</div><h4>Zuletzt angesehen</h4><ul><li><span class="ic">📅</span>Aktuelle Termine<small>Aktuelles</small></li><li><span class="ic">📄</span>Medikamentenvereinbarung<small>Download</small></li><li><span class="ic">🏠</span>Tagesablauf<small>Kindergarten</small></li></ul></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">68</span> „Zuletzt angesehen“ in der Suche</h2><p>Wer die Suche öffnet, sieht sofort die letzten drei Seiten, die er besucht hat – ganz ohne Tippen. Wird nur im eigenen Browser gemerkt. Praktisch für Eltern, die immer wieder dieselben zwei, drei Dinge brauchen.</p></div>
+    </article>
+
+    <article class="card" data-k="anim funk">
+      <div class="stage"><div class="swipe" id="swipe"><div class="swipe-view"><div class="swipe-track" id="swipeTrack"><div class="swipe-page" style="background:#C7D9D3"><h4>Kinderkrippe</h4><div class="ph"></div><i></i><i></i><i style="width:60%"></i></div><div class="swipe-page" style="background:#E9DCD9"><h4>Kindergarten</h4><div class="ph"></div><i></i><i></i><i style="width:60%"></i></div><div class="swipe-page" style="background:#BCD3D3"><h4>Kinderhort</h4><div class="ph"></div><i></i><i></i><i style="width:60%"></i></div></div><span class="swipe-hint" aria-hidden="true">‹</span><div class="swipe-dots"><b class="on"></b><b></b><b></b></div></div></div><p class="hint">Wischen oder ziehen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Funktion</span><span class="tag">Aufwand: mittel</span></div>
+        <h2><span class="num">69</span> Zwischen den Bereichen wischen</h2><p>Am Handy kommt man mit einem Wisch von der Krippe zum Kindergarten und weiter zum Hort, wie beim Blättern in einer App. Punkte zeigen, wo man ist. Nur oben im Bildbereich, damit es nicht beim normalen Scrollen stört.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="toc"><ul id="tocList"><li data-s="0"><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Überblick</li><li data-s="1"><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Räume</li><li data-s="2"><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Tagesablauf</li><li data-s="3"><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Fragen</li></ul>
+          <div class="doc" id="tocDoc" tabindex="0" aria-label="Beispielseite zum Scrollen"><section><h4>Überblick</h4><i></i><i></i><i></i><i></i></section><section><h4>Räume</h4><i></i><i></i><i></i><i></i></section><section><h4>Tagesablauf</h4><i></i><i></i><i></i><i></i></section><section><h4>Fragen</h4><i></i><i></i><i></i><i></i></section></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">70</span> Gelesen-Häkchen im Inhaltsverzeichnis</h2><p>Im Inhaltsverzeichnis einer Seite bekommt jeder Abschnitt ein grünes Häkchen, sobald man ihn durchgelesen hat. So sehen Eltern, was noch fehlt – etwa vor dem Aufnahmegespräch. Wird nur im eigenen Browser gemerkt.</p></div>
+    </article>
+
+    <article class="card" data-k="funk">
+      <div class="stage"><div class="vcard"><div class="vc-top"><span class="av"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg></span><span><b>Kath. Kinder- und Jugendhort Grombühl</b><small>Lindleinstraße 20, Würzburg</small></span></div><div class="vc-list"><div><span>Zentrale</span>0931 2789892 0</div><div><span>Sternengruppe</span>… 15</div><div><span>Spatzengruppe</span>… 12</div><div><span>E-Mail</span>info@ …</div></div><button type="button" class="btn" id="vcBtn">Ins Adressbuch übernehmen</button><p class="label" id="vcHint" style="color:var(--ink-soft)"></p></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">71</span> Kontakt aufs Handy speichern</h2><p>Ein Knopf legt den Kinderhort mit allen Durchwahlen, E-Mail-Adressen und der Anschrift als Kontakt im Handy an. Dann ruft man die Gruppe direkt aus dem Adressbuch an. Funktioniert auf iPhone und Android. Die Nummern hier sind die echten.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="greet"><span class="eyebrow2" id="grEye"><span class="em" aria-hidden="true">☀️</span><span id="grTxt"></span></span><h3>Kath. Kinder- und Jugendhort Grombühl</h3><p id="grSub"></p><div class="seg" id="grSeg" role="group" aria-label="Uhrzeit simulieren" style="justify-self:start;margin-top:6px;background:rgba(30,59,68,.08)"><span class="knob" aria-hidden="true"></span><button type="button" data-h="7" aria-pressed="true" style="color:var(--ink)">7 Uhr</button><button type="button" data-h="13" aria-pressed="false" style="color:var(--ink)">13 Uhr</button><button type="button" data-h="19" aria-pressed="false" style="color:var(--ink)">19 Uhr</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">72</span> Begrüßung nach Tageszeit</h2><p>Über der großen Überschrift steht je nach Uhrzeit „Guten Morgen“, „Schönen Nachmittag“ oder „Guten Abend“, dazu ein passender Satz. Eine kleine, persönliche Geste, die sofort Wärme gibt. Passt zum Licht nach Tageszeit, das schon eingebaut ist.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="tomorrow"><div class="tm-page"><div class="bar"></div><div class="ln"></div><div class="ln" style="width:60%"></div><div class="tm-banner" id="tmBanner" role="status"><span class="cal">DO<span>24</span></span><span><b>Morgen geschlossen – Weihnachten</b>Wir sind wieder da am Montag, 11.01.2027.</span></div></div><button type="button" class="btn ghost" id="tmBtn">Am Vortag ansehen</button></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">73</span> „Morgen geschlossen“-Hinweis</h2><p>Am Tag vor jedem Schließtag erscheint oben auf allen Seiten ein deutlicher Hinweis, wann wieder geöffnet ist. Damit niemand morgens vor verschlossener Tür steht. Kommt automatisch aus dem Ferienplan, das Team muss nichts tun.</p></div>
+    </article>
+
+    <article class="card" data-k="funk anim">
+      <div class="stage"><div class="wallet"><div class="ecard tilt"><small>Kinderhort Grombühl · Notfallkarte</small><b>Durchwahlen</b><div class="rows"><div><span>Zentrale</span><span>0931 2789892 0</span></div><div><span>Sternengruppe</span><span>… 15</span></div><div><span>Sonnengruppe</span><span>… 14</span></div><div><span>Bären / Spatzen / Bienen</span><span>… 11/12/13</span></div></div></div><div class="wallet-side"><p>Eine Karte im Scheckkartenformat zum Ausdrucken und Einstecken – mit allen Durchwahlen.</p><button type="button" class="btn" id="ecBtn">Karte drucken</button></div></div></div>
+      <div class="about"><div class="meta"><span class="tag">Funktion</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">74</span> Notfallkarte fürs Portemonnaie</h2><p>Ein Knopf auf der Kontaktseite druckt eine Karte im Scheckkartenformat mit allen Durchwahlen. Für Großeltern, Babysitter oder wenn der Handy-Akku leer ist. Kommt automatisch aus den Telefonnummern der Webseite.</p></div>
+    </article>
+
+    <article class="card" data-k="anim">
+      <div class="stage"><div class="tapbar" id="tapbar"><button type="button"><span class="i">📞</span>Anrufen</button><button type="button"><span class="i">✉️</span>Krankmelden</button><button type="button"><span class="i">📅</span>Termine</button><button type="button"><span class="i">🔍</span>Suche</button></div><p class="hint">Auf die Knöpfe tippen</p></div>
+      <div class="about"><div class="meta"><span class="tag anim">Animation</span><span class="tag">Aufwand: klein</span></div>
+        <h2><span class="num">75</span> Tipp-Welle in der Handy-Leiste</h2><p>Beim Antippen der unteren Leiste breitet sich vom Finger aus eine sanfte rosé Welle aus, das Symbol drückt sich kurz ein. Man spürt sofort, dass der Tipp angekommen ist, auch wenn die nächste Seite noch lädt.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“ in den Geräte-Einstellungen. Nichts davon ist schon auf der Webseite. Wähle unter jeder Idee Ja, Merken oder Nein – und sag mir dann einfach Bescheid.</p>
@@ -2228,6 +2438,92 @@ button { font: inherit; color: inherit; }
         f.style.left = (b.offsetLeft + 10) + "px"; f.style.top = (b.offsetTop - 6) + "px"; host.appendChild(f); setTimeout(function () { f.remove(); }, 900); }
     }); });
   })();
+
+
+  /* BE Farbschimmer */
+  (function () { var b = $("#tint"), secs = $$("section", b);
+    function upd() { var mid = b.scrollTop + b.clientHeight / 2, c = secs[0].dataset.c; secs.forEach(function (x) { if (x.offsetTop <= mid) c = x.dataset.c; }); b.style.backgroundColor = c; }
+    b.addEventListener("scroll", upd, { passive: true }); upd(); })();
+
+  /* BF Vorlesen */
+  (function () {
+    var p = $("#raText"), b = $("#raBtn"), hint = $("#raHint"), words = p.textContent.split(/(\s+)/), spans = [];
+    p.innerHTML = ""; words.forEach(function (w) { if (/^\s+$/.test(w)) p.appendChild(document.createTextNode(w)); else { var s = document.createElement("span"); s.className = "w"; s.textContent = w; p.appendChild(s); spans.push(s); } });
+    var starts = [], pos = 0; words.forEach(function (w) { if (!/^\s+$/.test(w)) starts.push(pos); pos += w.length; });
+    function stop() { b.classList.remove("on"); $(".lbl", b).textContent = "Vorlesen"; spans.forEach(function (s) { s.classList.remove("now"); }); }
+    b.addEventListener("click", function () {
+      if (!("speechSynthesis" in window)) { hint.textContent = "Dieses Gerät kann im Browser nicht vorlesen."; return; }
+      if (b.classList.contains("on")) { speechSynthesis.cancel(); stop(); return; }
+      var u = new SpeechSynthesisUtterance(p.textContent); u.lang = "de-DE"; u.rate = 1;
+      var v = speechSynthesis.getVoices().filter(function (x) { return /^de/i.test(x.lang); })[0]; if (v) u.voice = v;
+      u.onboundary = function (ev) { var i = 0; starts.forEach(function (s0, k) { if (s0 <= ev.charIndex) i = k; }); spans.forEach(function (s, k) { s.classList.toggle("now", k === i); }); };
+      u.onend = stop; u.onerror = stop;
+      b.classList.add("on"); $(".lbl", b).textContent = "Anhalten"; speechSynthesis.speak(u);
+      setTimeout(function () { if (!speechSynthesis.speaking && b.classList.contains("on")) { stop(); hint.textContent = "Keine deutsche Stimme gefunden – auf dem Handy klappt es meist."; } }, 1500);
+    });
+  })();
+
+  /* BG Mitlaufende Titel */
+  (function () { var b = $("#stickybox"), hs = $$("h4", b);
+    b.addEventListener("scroll", function () { hs.forEach(function (h) { h.classList.toggle("stuck", h.offsetTop - b.scrollTop <= 1 && b.scrollTop > 0 && h.getBoundingClientRect().top - b.getBoundingClientRect().top <= 1); }); }, { passive: true }); })();
+
+  /* BH Erreichbar */
+  (function () {
+    var busy = { krippe: [[405, 540, "Bringzeit"], [675, 780, "Mittagessen & Schlafen"]], kiga: [[405, 540, "Bringzeit"], [690, 780, "Mittagessen"]], hort: [[660, 840, "Schulschluss & Essen"]] };
+    var close = { krippe: 990, kiga: 990, hort: 1080 };
+    function set(m) { $$(".reach-tag").forEach(function (t) { var g = t.dataset.g, b = busy[g].filter(function (x) { return m >= x[0] && m < x[1]; })[0];
+      if (m >= close[g] || m < 405) { t.className = "reach-tag off"; t.textContent = "nicht besetzt"; }
+      else if (b) { t.className = "reach-tag busy"; t.textContent = b[2] + " – lieber später"; }
+      else { t.className = "reach-tag good"; t.textContent = "gut erreichbar"; } }); }
+    segment($("#reachSeg"), function (b) { set(+b.dataset.m); }); set(900);
+  })();
+
+  /* BI Wimpel-Trenner */
+  (function () { var d = $("#divider"); function play() { d.classList.remove("go"); void d.offsetWidth; requestAnimationFrame(function () { d.classList.add("go"); }); } replay.DV = play; onView(d, play); })();
+
+  /* BJ Wischen */
+  (function () {
+    var sw = $("#swipe"), tr = $("#swipeTrack"), dots = $$(".swipe-dots b", sw), i = 0, sx = null, dx = 0, w = 0;
+    function go(n) { i = Math.max(0, Math.min(2, n)); tr.style.translate = (-i * 100) + "% 0"; dots.forEach(function (d, k) { d.classList.toggle("on", k === i); }); $(".swipe-hint", sw).style.display = i === 2 ? "none" : ""; }
+    sw.addEventListener("pointerdown", function (e) { sx = e.clientX; dx = 0; w = tr.offsetWidth; tr.classList.add("drag"); sw.setPointerCapture(e.pointerId); });
+    sw.addEventListener("pointermove", function (e) { if (sx === null) return; dx = e.clientX - sx; var edge = (i === 0 && dx > 0) || (i === 2 && dx < 0); tr.style.translate = "calc(" + (-i * 100) + "% + " + (edge ? dx / 3 : dx) + "px) 0"; });
+    function up() { if (sx === null) return; sx = null; tr.classList.remove("drag"); go(Math.abs(dx) > w * .2 ? i + (dx < 0 ? 1 : -1) : i); }
+    sw.addEventListener("pointerup", up); sw.addEventListener("pointercancel", up);
+    sw.tabIndex = 0; sw.setAttribute("aria-label", "Bereiche, mit Pfeiltasten wechseln");
+    sw.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") go(i + 1); if (e.key === "ArrowLeft") go(i - 1); });
+  })();
+
+  /* BK Gelesen-Häkchen */
+  (function () { var doc = $("#tocDoc"), secs = $$("section", doc), lis = $$("#tocList li");
+    function upd() { var d = doc.getBoundingClientRect();
+      secs.forEach(function (s, k) { var r = s.getBoundingClientRect(); if (r.bottom - 50 <= d.bottom + 1) lis[k].classList.add("done");
+        lis[k].classList.toggle("cur", r.top <= d.top + 30 && r.bottom > d.top + 30); }); }
+    doc.addEventListener("scroll", upd, { passive: true });
+    lis.forEach(function (li, k) { li.addEventListener("click", function () { doc.scrollTo({ top: secs[k].offsetTop - doc.offsetTop, behavior: reduced ? "auto" : "smooth" }); }); });
+    upd(); })();
+
+  /* BL Kontakt speichern */
+  $("#vcBtn").addEventListener("click", function () {
+    var v = ["BEGIN:VCARD", "VERSION:3.0", "ORG:Kath. Kinder- und Jugendhort Grombühl e. V.", "FN:Kinderhort Grombühl", "TEL;TYPE=WORK,VOICE:+49 931 27898920", "TEL;TYPE=WORK:+49 931 278989215", "TEL;TYPE=WORK:+49 931 278989212", "ADR;TYPE=WORK:;;Lindleinstraße 20;Würzburg;;97080;Deutschland", "URL:https://kinderhort-grombuehl.de", "END:VCARD"].join("\r\n");
+    $("#vcHint").textContent = v ? "Auf der echten Seite öffnet sich jetzt „Kontakt hinzufügen“ – hier im Beispiel ist das gesperrt." : "";
+  });
+
+  /* BM Begrüßung */
+  (function () {
+    var G = { 7: ["☀️", "Guten Morgen", "Schön, dass Sie da sind – die Bringzeit läuft bis 9:00 Uhr."], 13: ["🌤️", "Schönen Nachmittag", "Ab 14:00 Uhr kann abgeholt werden, der Hort ist bis 18:00 Uhr da."], 19: ["🌙", "Guten Abend", "Morgen sind wir ab 6:45 Uhr wieder für Ihr Kind da."] };
+    function set(h) { var g = G[h], e = $("#grEye"); $(".em", e).textContent = g[0]; $("#grTxt").textContent = g[1]; $("#grSub").textContent = g[2]; if (!reduced) { e.classList.remove("wave"); void e.offsetWidth; e.classList.add("wave"); } }
+    segment($("#grSeg"), function (b) { set(+b.dataset.h); }); set(7);
+  })();
+
+  /* BN Morgen geschlossen */
+  (function () { var bn = $("#tmBanner"); function show() { bn.classList.remove("show"); setTimeout(function () { bn.classList.add("show"); }, reduced ? 0 : 200); }
+    $("#tmBtn").addEventListener("click", show); onView(bn, show); })();
+
+  /* BO Notfallkarte */
+  $("#ecBtn").addEventListener("click", function () { var c = $(".ecard"); c.classList.remove("tilt"); c.animate([{ rotate: "y 0deg" }, { rotate: "y 180deg" }, { rotate: "y 360deg" }], { duration: 900, easing: "cubic-bezier(.65,0,.35,1)" }).onfinish = function () { c.classList.add("tilt"); }; });
+
+  /* BP Tipp-Welle */
+  $$("#tapbar button").forEach(function (b) { b.addEventListener("pointerdown", function (e) { if (reduced) return; var r = b.getBoundingClientRect(), s = document.createElement("span"); s.className = "ripple"; s.style.left = (e.clientX - r.left) + "px"; s.style.top = (e.clientY - r.top) + "px"; b.appendChild(s); setTimeout(function () { s.remove(); }, 600); }); });
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
