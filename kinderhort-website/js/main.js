@@ -504,8 +504,9 @@
       if (hits.length) input.setAttribute("aria-activedescendant", "treffer-0"); else input.removeAttribute("aria-activedescendant");
       if (!hits.length) { list.innerHTML = meantLi + '<li><p class="search-empty">Nichts gefunden. Versuchen Sie einen anderen Begriff – oder rufen Sie uns an: 0931 2789892 0.</p></li>'; bindMeant(); return; }
       list.innerHTML = hits.map(function (h, i) {
-        return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + escH(h.u) + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
+        return '<li role="presentation"><a role="option" id="treffer-' + i + '" href="' + escH(h.u) + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
       }).join("");
+      $$("li", list).forEach(function (li, i) { li.style.setProperty("--n", i); });
       $$("a", list).forEach(function (a, i) {
         $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s;
         if (hits[i].recent) { var tg = document.createElement("span"); tg.className = "recent-tag"; tg.textContent = "Zuletzt"; $("span", a).prepend(tg); }
@@ -1344,7 +1345,7 @@
       cal.innerHTML = '<div class="mc-head"><button type="button" class="mc-prev" aria-label="Voriger Monat"' + (i0 <= minI ? " disabled" : "") + ">" + svg(ICON.left, 20) + "</button><b aria-live=\"polite\">" + MON[m] + " " + y +
         '</b><button type="button" class="mc-next" aria-label="Nächster Monat"' + (i0 >= maxI ? " disabled" : "") + ">" + svg(ICON.right, 20) + "</button></div>" +
         '<div class="mc-wd" aria-hidden="true"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div><div class="mc-grid">' + cells + "</div>" +
-        '<div class="mc-legend"><span><i style="background:var(--ink)"></i>Termin</span><span><i style="background:var(--rose-soft)"></i>geschlossen</span><span><i class="lg-fe"></i>Feiertag</span></div>' +
+        '<div class="mc-legend"><span><i class="lg-ev"></i>Termin</span><span><i class="lg-zu"></i>geschlossen</span><span><i class="lg-fe"></i>Feiertag</span></div>' +
         '<p class="mc-note" aria-live="polite">' + zu.map(function (z) { return "<b>" + escH(z.name) + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") +
         feM.map(function (f) { return '<span class="mc-fe">' + escH(f.name) + ": " + fmtLong(parse(f.datum)) + "</span>"; }).join("") + "</p>";
       $(".mc-prev", cal).addEventListener("click", function () { step(-1); });
@@ -1692,7 +1693,7 @@
   /* ---------- Wimpel-Ladeanzeige bei langsamem Seitenwechsel ---------- */
   (function () {
     var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen …");
-    l.innerHTML = '<span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>';
+    for (var li = 0; li < 5; li++) { var sp = document.createElement("span"); sp.style.setProperty("--i", li); l.appendChild(sp); }
     document.body.appendChild(l);
   })();
 
@@ -1848,7 +1849,7 @@
         h += '<div class="mo"><b>' + MN[m] + " " + y + '</b><div class="g">' + g + "</div></div>";
       }
       var total = K.schliesszeiten.reduce(function (a, z) { return a + z.tage; }, 0);
-      h += '</div><div class="leg"><span><i></i>Schließtag</span><span style="color:#B8574A;font-weight:600">12</span><span>= Feiertag</span><span>' + total + ' Schließtage im Kita-Jahr</span></div><p class="foot">Stand: ' + fmt(new Date()) + " · Alle Termine aktuell auf der Webseite unter „Aktuelles“</p>";
+      h += '</div><div class="leg"><span><i></i>Schließtag</span><span class="f-num">12</span><span>= Feiertag</span><span>' + total + ' Schließtage im Kita-Jahr</span></div><p class="foot">Stand: ' + fmt(new Date()) + " · Alle Termine aktuell auf der Webseite unter „Aktuelles“</p>";
       var box = document.createElement("div"); box.className = "poster-print"; box.innerHTML = h; document.body.appendChild(box);
       document.body.classList.add("print-poster");
       var done = function () { document.body.classList.remove("print-poster"); box.parentNode && box.parentNode.removeChild(box); window.removeEventListener("afterprint", done); };
@@ -2092,7 +2093,8 @@
       p.innerHTML = words.map(function (w) { return "<span class=\"w\">" + w.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }) + "</span>"; }).join(" ");
       var lines = [], top = null;
       $$(".w", p).forEach(function (s) { if (s.offsetTop !== top) { lines.push([]); top = s.offsetTop; } lines[lines.length - 1].push(s.textContent); });
-      p.innerHTML = lines.map(function (l, n) { return '<span class="ln"><span style="--n:' + n + '">' + l.join(" ").replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }) + "</span></span>"; }).join("");
+      p.innerHTML = lines.map(function (l) { return '<span class="ln"><span>' + l.join(" ").replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }) + "</span></span>"; }).join("");
+      $$(".ln > span", p).forEach(function (sp, n) { sp.style.setProperty("--n", n); });
       setTimeout(function () { p.innerHTML = html; }, 600 + lines.length * 60);
     }, "0px 0px -10% 0px");
   })();
@@ -2125,7 +2127,8 @@
     new MutationObserver(function () {
       if (busy) return; var now = txt.textContent; if (now === last || !last) { last = now; return; }
       last = now; busy = true;
-      txt.innerHTML = '<span class="roll-word">' + now.split("").map(function (c, i) { return '<span class="rc" style="--n:' + i + '">' + (c === " " ? "&nbsp;" : c) + "</span>"; }).join("") + "</span>";
+      txt.innerHTML = '<span class="roll-word">' + now.split("").map(function (c) { return '<span class="rc">' + (c === " " ? "&nbsp;" : escH(c)) + "</span>"; }).join("") + "</span>";
+      $$(".rc", txt).forEach(function (sp, n) { sp.style.setProperty("--n", n); });
       setTimeout(function () { txt.textContent = now; busy = false; }, 400 + now.length * 18);
     }).observe(txt, { childList: true, characterData: true, subtree: true });
   })();

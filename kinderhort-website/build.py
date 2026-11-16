@@ -119,12 +119,13 @@ def lqip(src):
             im = im.convert("RGB"); im.thumbnail((16, 16))
             buf = io.BytesIO(); im.save(buf, "WEBP", quality=35)
         _lqip[src] = base64.b64encode(buf.getvalue()).decode()
-    return f' style="background-image:url(data:image/webp;base64,{_lqip[src]})"'
+    return _lqip[src]
 
 def img(src, alt="", cls="", lazy=True, extra="", sizes="(max-width: 900px) 100vw, 50vw"):
     w, h = dims(src)
     cls = (cls + " ph").strip() if src.endswith(".jpg") else cls
-    extra += lqip(src)
+    if src.endswith(".jpg"):
+        lqip(src); cls = (cls + " lq-" + re.sub(r"[^a-z0-9]", "-", os.path.basename(src)[:-4].lower())).strip()
     c = f' class="{cls}"' if cls else ""
     l = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
     ss = webp(src)
@@ -300,7 +301,7 @@ FOOTER = f'''<footer class="site-footer">
       <div>
         <h2 class="foot-title">Anschrift</h2>
         <p>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</p>
-        <p><a class="foot-route js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("route", 18)} <span>Route öffnen</span></a></p>
+        <p><a class="foot-route js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer">{icon("route", 18)} <span>Route öffnen</span></a></p>
       </div>
       <div>
         <h2 class="foot-title">Kontakt</h2>
@@ -377,7 +378,7 @@ def _sha(t): return "'sha256-" + base64.b64encode(_hl.sha256(t.encode("utf-8")).
 INLINE_JS = '(function (c) { try { if (localStorage.getItem("hinweis-aus")) c += " no-hint"; if (localStorage.getItem("ruhig") === "1") c += " calm"; if (localStorage.getItem("besuch")) c += " revisit"; } catch (e) {} document.documentElement.className = c; })("js");'
 SPEC_RULES = """{"prerender":[{"where":{"selector_matches":"a[href$='.html'], a[href*='.html#']"},"eagerness":"moderate"}]}"""
 CSP = ("default-src 'self'; script-src 'self' " + _sha(INLINE_JS) + " " + _sha(SPEC_RULES) + "; "
-       "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; "
+       "style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; "
        "manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'")
 
 def page(fname, title, desc, active, body, theme="", head=""):
@@ -411,6 +412,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <meta name="apple-mobile-web-app-title" content="Kinderhort">
 <link rel="preload" href="fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/erzeugt.css">
 </head>
 <body{bcls}>
 {header(active)}
@@ -538,7 +540,7 @@ def faq(items):
 
 def kurz(items):
     """Kasten „Das Wichtigste in Kürze“ oben auf den Bereichsseiten (Symbole statt Emojis)."""
-    li = "".join(f'<li style="--i:{i}"><span class="kurz-ic">{icon(ic, 20)}</span><span><b>{b}</b> {t}</span></li>' for i, (ic, b, t) in enumerate(items))
+    li = "".join(f'<li><span class="kurz-ic">{icon(ic, 20)}</span><span><b>{b}</b> {t}</span></li>' for i, (ic, b, t) in enumerate(items))
     return f'''<section class="section kurz-sec">
   <div class="container"><div class="kurz reveal"><h2 class="kurz-t">Das Wichtigste in Kürze</h2><ul>{li}</ul></div></div>
 </section>'''
@@ -636,7 +638,7 @@ def rich(t):
     t = t.replace("<strong>", "**").replace("</strong>", "**")
     s = e(t)
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
-    s = _URL.sub(lambda m: f'<a href="{m.group(0)}" rel="noopener">{m.group(0).replace("/", "/<wbr>")}</a>', s)
+    s = _URL.sub(lambda m: f'<a href="{m.group(0)}" rel="noopener noreferrer">{m.group(0).replace("/", "/<wbr>")}</a>', s)
     s = _MAIL.sub(lambda m: m.group(0) if "href=" in s[max(0, m.start() - 60):m.start()] else f'<a href="mailto:{m.group(0)}">{m.group(0).replace("@", "<wbr>@")}</a>', s)
     return s
 
@@ -697,7 +699,7 @@ STIMMEN = "" if not STIMMEN_DATEN else ('<section class="section alt" id="stimme
 
 WORDS = [('spielen', 1.9, 50, 48), ('lachen', 1.4, 22, 24), ('forschen', 1.25, 79, 22), ('singen', 1.05, 14, 70), ('basteln', 1.3, 82, 72), ('Freunde', 1.6, 46, 82), ('toben', 1.0, 30, 50), ('lesen', 1.1, 70, 50), ('kochen', 0.95, 56, 16), ('Natur', 1.15, 8, 30), ('Hausaufgaben', 0.9, 88, 94), ('Feste', 1.05, 12, 94), ('Musik', 0.95, 93, 47), ('Englisch', 0.9, 36, 12), ('Ausflüge', 1.0, 64, 92), ('turnen', 0.95, 4, 52)]
 WORDCLOUD = ('<div class="word-cloud reveal" role="img" aria-label="Was Kinder bei uns erleben: ' + ", ".join(w for w, *_ in WORDS) + '">' + "".join(
-    f'<span style="left:{x}%;top:{y}%;font-size:{z}rem;--d:{i * -0.45:.2f}s">{w}</span>' for i, (w, z, x, y) in enumerate(WORDS)) + "</div>")
+    f'<span>{w}</span>' for i, (w, z, x, y) in enumerate(WORDS)) + "</div>")
 
 home = f'''
 <section class="hero">
@@ -1340,9 +1342,9 @@ kon += f'''<section class="section">
       </address>
       <div class="btn-row">
         <a class="btn btn-primary" href="downloads/kinderhort-grombuehl.vcf" download>{icon("users", 20)} Kontakt aufs Handy speichern</a>
-        <a class="btn btn-ghost js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("route", 20)} <span>Route planen</span></a>
+        <a class="btn btn-ghost js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer">{icon("route", 20)} <span>Route planen</span></a>
       </div>
-      <p class="route-alt muted">Route öffnen mit <a href="https://maps.apple.com/?daddr=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">Apple Karten</a> · <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">Google Maps</a> · <a href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">OpenStreetMap</a></p>
+      <p class="route-alt muted">Route öffnen mit <a href="https://maps.apple.com/?daddr=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer">Apple Karten</a> · <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://www.openstreetmap.org/search?query=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer">OpenStreetMap</a></p>
       <p class="vcf-note muted">Legt den Kinderhort mit allen Durchwahlen im Adressbuch an.</p>
     </aside>
   </div>
@@ -1574,7 +1576,7 @@ self.addEventListener("fetch", (e) => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== location.origin) return;
   const fresh = () => fetch(req).then((res) => {
-    if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+    if (res.ok && res.type === "basic" && !res.redirected) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
     return res;
   });
   if (req.mode === "navigate") {
@@ -1593,6 +1595,31 @@ with open(os.path.join(W, "sw.js"), "w", encoding="utf-8") as f:
 with open(os.path.join(W, "img/favicon.svg"), "w", encoding="utf-8") as f:
     f.write(BRAND_MARK.replace('class="brand-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', ''))
 print("ok")
+
+# ---------- css/erzeugt.css: Vorschaubilder, Wortwolke, Reihenfolgen (statt style-Attributen, CSP ohne 'unsafe-inline') ----------
+with open(os.path.join(W, "css/erzeugt.css"), "w", encoding="utf-8") as f:
+    f.write("/* Automatisch erzeugt von build.py – nicht von Hand ändern. */\n")
+    for src, b64 in sorted(_lqip.items()):
+        f.write(f'.lq-{re.sub(r"[^a-z0-9]", "-", os.path.basename(src)[:-4].lower())} {{ background-image: url(data:image/webp;base64,{b64}); }}\n')
+    for i in range(12):
+        f.write(f".kurz li:nth-child({i + 1}) {{ --i: {i}; }}\n")
+    for i, (w, z, x, y) in enumerate(WORDS):
+        f.write(f".word-cloud span:nth-child({i + 1}) {{ left: {x}%; top: {y}%; font-size: {z}rem; --d: {i * -0.45:.2f}s; }}\n")
+
+def _sicherheits_pruefung():
+    import glob
+    erlaubt = {_sha(INLINE_JS), _sha(SPEC_RULES)}
+    for f in sorted(glob.glob(os.path.join(W, "*.html"))):
+        n = os.path.basename(f)
+        if n.startswith(("vorschau", "google")): continue
+        t = open(f, encoding="utf-8").read()
+        if re.search(r'\sstyle="', t): _melde("Sicherheit", n, None, "eingebettete Gestaltung (style=…) – wird von der CSP blockiert")
+        if re.search(r'\son[a-z]+="', t): _melde("Sicherheit", n, None, "eingebetteter Ereignis-Code (on…=) – wird von der CSP blockiert")
+        for body in re.findall(r"<script(?![^>]*\b(?:src=|type=\"application/ld\+json\"))[^>]*>(.*?)</script>", t, flags=re.S):
+            if _sha(body) not in erlaubt: _melde("Sicherheit", n, None, "eingebettetes Skript ohne Freigabe in der CSP")
+        for href in re.findall(r'<a [^>]*target="_blank"[^>]*>', t):
+            if "noopener" not in href: _melde("Sicherheit", n, None, "Link mit target=_blank ohne rel=noopener")
+_sicherheits_pruefung()
 
 # ---------- Link-Prüfung: fehlen Dateien oder Sprungziele? ----------
 def _link_pruefung():

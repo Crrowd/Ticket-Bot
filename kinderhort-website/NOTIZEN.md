@@ -314,6 +314,11 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Sicherheit (16.11.2026)
+- **Erste Runde:** interne Dateien (Notizen, Pläne, Vorschau, Hilfsprogramme) per .htaccess gesperrt; Sicherheits-Header; Tabellentexte überall maskiert; gespeicherte Gruppe wird geprüft.
+- **Zweite Runde („noch sicherer“):** Die Schutzregel (CSP) erlaubt jetzt auch keine eingebettete Gestaltung mehr (`style-src 'self'` ohne `'unsafe-inline'`); Vorschaubilder, Wortwolke und Reihenfolgen stehen in `css/erzeugt.css` (wird von build.py erzeugt). Zusätzliche Header: Cross-Origin-Resource-Policy, X-Permitted-Cross-Domain-Policies, upgrade-insecure-requests, form-action. Externe Links mit `noopener noreferrer`. Der Offline-Speicher nimmt nur eigene, unveränderte Antworten auf. `/.well-known/security.txt` mit Kontakt für Sicherheitshinweise (läuft 16.11.2027 ab – dann Datum erneuern).
+- **Automatische Prüfung beim Bauen:** meldet unter „Daten-Prüfung“, wenn jemand eingebettete Gestaltung, eingebettete Skripte ohne Freigabe, `on…=`-Code oder unsichere neue Tabs einbaut.
+
 ## Wünsche aus Screenshots (16.11.2026)
 - Kopfleiste: „Geöffnet“-Anzeige und „Strg K“ entfernt (Öffnungsstatus bleibt im Auftakt der Startseite).
 - Kein Lichtstreifen mehr über Knöpfen; kein Konfetti beim Merken.

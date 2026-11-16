@@ -33,7 +33,7 @@ def read(p):
     return open(os.path.join(W, p), encoding="utf-8").read()
 
 # --- CSS mit eingebetteten Schriften ---
-css = read("css/style.css")
+css = read("css/style.css") + "\n" + read("css/erzeugt.css")
 css = re.sub(r'url\("\.\./fonts/([^"]+)"\)',
              lambda m: 'url("data:font/woff2;base64,' + base64.b64encode(open(os.path.join(W, "fonts", m.group(1)), "rb").read()).decode() + '")', css)
 css += """

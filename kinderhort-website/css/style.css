@@ -2103,3 +2103,8 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .ev-filter-empty { margin: 0 0 16px; }
 /* Krankmelden: zuletzt angerufene Gruppe */
 .krank .krank-last { justify-self: stretch; justify-content: center; }
+
+/* Ersatz für frühere style-Attribute (strenge CSP) */
+.mc-legend .lg-ev { background: var(--ink); }
+.mc-legend .lg-zu { background: var(--rose-soft); }
+.poster-print .f-num { color: #B8574A; font-weight: 600; }
