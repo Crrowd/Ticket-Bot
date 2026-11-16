@@ -236,9 +236,10 @@ strong, b { font-weight: 600; }
     position: fixed; inset: 0; z-index: -2; margin: 0; background: var(--bg); overflow-y: auto; pointer-events: auto;
     padding: calc(96px + env(safe-area-inset-top, 0px)) 16px 112px;
     /* Menü öffnet sich kreisförmig aus dem Menü-Knopf oben rechts */
-    clip-path: circle(0 at calc(100% - 47px) 43px); visibility: hidden; transition: clip-path .4s var(--ease-in-out), visibility 0s .4s;
+    /* Menü schiebt sich von rechts herein (Variante B), die Seite dahinter wird leicht abgedunkelt */
+    translate: 100% 0; visibility: hidden; transition: translate .28s cubic-bezier(.4,0,1,1), visibility 0s .28s;
   }
-  .nav-open .main-nav { clip-path: circle(150% at calc(100% - 47px) 43px); visibility: visible; transition: clip-path .5s var(--ease-out), visibility 0s; }
+  .nav-open .main-nav { translate: 0 0; visibility: visible; transition: translate .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
   .main-nav > ul { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; max-width: 1000px; margin: 0 auto; }
   .main-nav > ul > li:not(.nav-extra, :has(.nav-cta)) { border-bottom: 1px solid var(--rule); }
   .main-nav > ul > li:not(.nav-extra) > a, .drop-toggle { width: 100%; justify-content: flex-start; gap: 12px; min-height: 64px; padding: 16px 16px; border-radius: var(--r-sm); font: 600 clamp(1.3rem, 1rem + 1.4vw, 1.7rem)/1.2 var(--font-head); letter-spacing: -.02em; }
@@ -2122,3 +2123,9 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 /* Hinweis beim Bereichs-Filter blendet weich ein */
 .ev-filter-empty { transition: opacity .18s var(--ease-out), translate .18s var(--ease-out); }
 @starting-style { .ev-filter-empty:not([hidden]) { opacity: 0; translate: 0 4px; } }
+
+/* Abdunkeln der Seite hinter dem Handy-Menü */
+@media (max-width: 1180px) {
+  body::after { content: ""; position: fixed; inset: 0; z-index: 99; background: rgb(14 30 35 / .35); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .28s ease, visibility 0s .28s; }
+  body.nav-open::after { opacity: 1; visibility: visible; transition: opacity .42s ease-out, visibility 0s; }
+}
