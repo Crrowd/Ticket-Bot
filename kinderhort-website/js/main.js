@@ -140,25 +140,41 @@
     $$(".subnav ul").forEach(function (ul) { var a = $('a[aria-current="true"]', ul), k = $(".subnav-knob", ul); if (a && k) { k.style.transition = "none"; knobTo(ul, a); void k.offsetWidth; k.style.transition = ""; } });
   });
   var subLinks = $$(".subnav a");
-  if (subLinks.length && "IntersectionObserver" in window) {
+  if (subLinks.length) {
+    /* Ein Punkt wird erst aktiv, wenn seine Überschrift oben unter der Leiste angekommen ist */
     var pairs = [];
-    var spy = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var a = pairs.filter(function (p) { return p[0] === en.target; })[0][1], ul = a.closest("ul");
-        $$("a", ul).forEach(function (l) { l.removeAttribute("aria-current"); });
-        a.setAttribute("aria-current", "true");
-        knobTo(ul, a);
-        /* nur verschieben, wenn der aktive Eintrag nicht ganz zu sehen ist – dann mittig */
-        if (a.offsetLeft < ul.scrollLeft || a.offsetLeft + a.offsetWidth > ul.scrollLeft + ul.clientWidth)
-          ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: reduced ? "auto" : "smooth" });
-      });
-    }, { rootMargin: "-140px 0px -65% 0px" });
     subLinks.forEach(function (a) {
       var id = a.getAttribute("href").split("#").pop().split(":").pop();
       var sec = (a.closest(".spa-page") || document).querySelector('[id="' + id + '"]');
-      if (sec) { pairs.push([sec, a]); spy.observe(sec); }
+      if (sec) pairs.push({ sec: sec, a: a, mark: sec.querySelector("h1, h2, .eyebrow, .kicker") || sec });
     });
+    var aktiv = null, spyQ = false;
+    function setze(a) {
+      if (a === aktiv) return; aktiv = a; var ul = a.closest("ul");
+      $$("a", ul).forEach(function (l) { l.removeAttribute("aria-current"); });
+      a.setAttribute("aria-current", "true");
+      knobTo(ul, a);
+      /* nur verschieben, wenn der aktive Eintrag nicht ganz zu sehen ist – dann mittig */
+      if (a.offsetLeft < ul.scrollLeft || a.offsetLeft + a.offsetWidth > ul.scrollLeft + ul.clientWidth)
+        ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: reduced ? "auto" : "smooth" });
+    }
+    function spy() {
+      spyQ = false;
+      var sicht = pairs.filter(function (p) { return p.sec.getClientRects().length > 0; });
+      if (!sicht.length) return;
+      var nav = sicht[0].a.closest(".subnav"), unten = nav ? nav.getBoundingClientRect().bottom : 120;
+      var grenze = Math.max(unten, 0) + 32, wahl = null;
+      sicht.forEach(function (p) { if (p.mark.getBoundingClientRect().top <= grenze) wahl = p; });
+      /* ganz unten angekommen: der letzte sichtbare Abschnitt zählt, auch wenn er nicht bis oben reicht */
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) {
+        var last = sicht[sicht.length - 1]; if (last.mark.getBoundingClientRect().top < innerHeight) wahl = last;
+      }
+      if (wahl) setze(wahl.a);
+    }
+    function plane() { if (!spyQ) { spyQ = true; requestAnimationFrame(spy); } }
+    addEventListener("scroll", plane, { passive: true }); addEventListener("resize", plane);
+    document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".subnav a")) setTimeout(plane, 50); });
+    spy();
   }
 
   /* ---------- Kurzmeldungen ---------- */

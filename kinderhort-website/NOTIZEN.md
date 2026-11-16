@@ -310,6 +310,7 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Termine nach Bereich (44):** neue Spalte „Bereich“ in termine.csv; Knöpfe Alle · Krippe · Kindergarten · Hort auf „Aktuelles“ (Liste und Kalender); Termine fürs ganze Haus bleiben immer sichtbar.
 - **Abholvollmacht (48) und Abwesenheit (86):** E-Mail-Vorlagen auf „Kontakt“ und im Formular-Lotsen bei „Downloads“.
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
+- **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
 ## Wünsche aus Screenshots (16.11.2026)
 - Kopfleiste: „Geöffnet“-Anzeige und „Strg K“ entfernt (Öffnungsstatus bleibt im Auftakt der Startseite).
