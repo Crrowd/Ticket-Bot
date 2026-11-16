@@ -41,3 +41,8 @@ Leer lassen = Termin für das ganze Haus (immer sichtbar).
 Sonst: Krippe, Kindergarten oder Hort – mehrere mit Komma, z. B. „Krippe, Kindergarten“.
 Sobald ein Termin einen Bereich hat, erscheinen auf „Aktuelles“ die Knöpfe
 Alle · Krippe · Kindergarten · Hort, und der Termin bekommt ein kleines Etikett.
+
+HOCHLADEN AUF DEN WEBSPACE
+Nach python3 build.py liegt neben dem Ordner die Datei kinderhort-webseite.zip.
+Sie enthält nur die öffentlichen Dateien. Genau diesen Inhalt hochladen –
+nicht den ganzen Projektordner (dort liegen auch Notizen, Tabellen und Entwürfe).

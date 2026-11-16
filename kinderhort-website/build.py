@@ -1643,6 +1643,29 @@ def _link_pruefung():
                 _melde("Link", n, None, f"Sprungziel „#{anker}“ gibt es auf {ziel_seite} nicht")
 _link_pruefung()
 
+# ---------- Upload-Paket: nur öffentliche Dateien (keine Notizen, Tabellen, Entwürfe, Hilfsprogramme) ----------
+def _upload_paket():
+    import zipfile
+    ziel = os.path.join(os.path.dirname(W), "kinderhort-webseite.zip")
+    intern_ordner = {"entwurf", "daten", "plans", ".impeccable", "__pycache__", ".git"}
+    intern_endung = (".py", ".md", ".csv", ".json", ".zip", ".log", ".sh")
+    n = 0
+    with zipfile.ZipFile(ziel, "w", zipfile.ZIP_DEFLATED) as z:
+        for wurzel, ordner, dateien in os.walk(W):
+            rel = os.path.relpath(wurzel, W)
+            teile = [] if rel == "." else rel.split(os.sep)
+            if any(t in intern_ordner or (t.startswith(".") and t != ".well-known") for t in teile):
+                ordner[:] = []; continue
+            ordner[:] = [o for o in ordner if o not in intern_ordner and (not o.startswith(".") or o == ".well-known")]
+            for d in dateien:
+                if d.endswith(intern_endung) or d == "vorschau.html" or (d.startswith(".") and d != ".htaccess"):
+                    continue
+                pfad = os.path.join(wurzel, d)
+                z.write(pfad, os.path.join("kinderhort-website", os.path.relpath(pfad, W)))
+                n += 1
+    print(f"Upload-Paket: {n} Dateien in {os.path.basename(ziel)} (ohne Notizen, Tabellen, Entwürfe)")
+_upload_paket()
+
 # ---------- am Ende: erstmals.json sichern, Daten-Prüfung ausgeben ----------
 with open(_ERST_DATEI, "w", encoding="utf-8") as f:
     json.dump(ERSTMALS, f, ensure_ascii=False, indent=1, sort_keys=True)

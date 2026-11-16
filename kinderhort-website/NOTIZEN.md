@@ -11,6 +11,7 @@ Stand: 13.11.2026
 
 
 ## 1. Vor dem Livegang (Pflicht)
+- [ ] **Nur das Upload-Paket hochladen** (`kinderhort-webseite.zip`, entsteht bei `python3 build.py`), nicht den ganzen Projektordner.
 - [ ] **Sicherheit beim Umzug (.htaccess):** HTTPS-Weiterleitung und Strict-Transport-Security einschalten, sobald das SSL-Zertifikat läuft (Zeilen sind vorbereitet, nur # entfernen). Falls der Hoster „Options -Indexes“ nicht erlaubt (Fehler 500), diese Zeile auskommentieren. Nach dem Umzug einmal prüfen: https://securityheaders.com
 - [ ] PDFs vor dem Hochladen: Autor-Feld in den Dateieigenschaften prüfen (Medikamentenvereinbarung enthält einen Personennamen).
 - [x] Datenschutzerklärung anlegen – Vorlage steht; **offen: Hoster, Datenschutzbeauftragte/r, Aufsicht, Datum ergänzen und prüfen lassen**
@@ -324,6 +325,12 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 ## Obere Leiste (16.11.2026)
 - Verhalten wie bisher (verschwindet beim Herunterscrollen ganz, kommt beim Hochscrollen zurück), aber weicher: sanftere Kurve, 0,5 s statt 0,2 s, blendet am Ende leise aus; die Sprungleiste rückt im selben Takt nach. Reagiert etwas gelassener (erst nach 32 px nach unten, 16 px nach oben). Verworfene Varianten: entwurf/leiste/.
+
+## Sicherheits-Check nach der 20-Punkte-Liste (16.11.2026)
+- Geprüft: keine Schlüssel/Passwörter in der ganzen Git-Geschichte, keine .env-Dateien, keine fremden Pakete oder Skripte, keine Cookies, kein Debug-Code, keine Formulare, die etwas senden; XSS-Schutz, Sicherheits-Header und gesperrte interne Dateien sind da.
+- Nicht zutreffend (statische Seite): Anmeldung, Benutzerrechte, Admin-Bereich, Datenbank/SQL, Rate-Limit, Kostenbremse, Datei-Uploads, CSRF, CORS.
+- Neu: **Upload-Paket** `kinderhort-webseite.zip` (neben dem Ordner) wird bei jedem `python3 build.py` neu erzeugt und enthält nur öffentliche Dateien – genau diesen Inhalt auf den Webspace laden. Das alte Paket enthielt noch Notizen und eine ungeschützte .htaccess.
+- HTTPS-Weiterleitung in .htaccess vorbereitet (mit Schutz gegen Endlosschleife), nach dem Umzug einschalten.
 
 ## Sicherheit (16.11.2026)
 - **Erste Runde:** interne Dateien (Notizen, Pläne, Vorschau, Hilfsprogramme) per .htaccess gesperrt; Sicherheits-Header; Tabellentexte überall maskiert; gespeicherte Gruppe wird geprüft.
