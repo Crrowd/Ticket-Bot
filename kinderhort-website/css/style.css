@@ -1141,7 +1141,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 /* Licht folgt der Maus auf dunklen Karten */
 @media (hover: hover) and (pointer: fine) {
   :is(.info-card, .room, .area-card, .quick-card, .dl-group, .phone-card, .note-card, .stat, .pill-list > div, .tl-body, .event, .address-card, .status-card, .faq summary) {
-    background-image: radial-gradient(340px circle at var(--mx, -999px) var(--my, -999px), rgb(var(--white-rgb) / .09), transparent 62%);
+    background-image: radial-gradient(300px circle at var(--mx, -999px) var(--my, -999px), rgb(var(--white-rgb) / .035), transparent 62%);
   }
 }
 
@@ -1744,7 +1744,6 @@ html[data-vt="hoch"]::view-transition-new(root) { animation: vt-up-in .42s var(-
 /* Übergang 35 – Strich wandert im Menü mit */
 .nav-line { position: absolute; left: 0; bottom: 4px; height: 2px; width: 1px; transform-origin: 0 50%; background: var(--rose-deep); opacity: 0; pointer-events: none; transition: translate 200ms var(--ease-in-out), scale 200ms var(--ease-in-out), opacity 200ms var(--ease-out); }
 @media (max-width: 1180px) { .nav-line { display: none; } }
-.main-nav > ul { position: relative; }
 
 /* Übergang 42 – Bereichsmenü: einblenden und 6 px heben, schneller schließen, kein Federn */
 :root { --t-drop: .2s; --t-drop-exit: .14s; }
@@ -1877,7 +1876,6 @@ button, .btn, [role="tab"], .nav-toggle, .open-pill { -webkit-user-select: none;
 
 /* Hover-Bewegung nur mit echter Maus (Touch löst falsches Hover aus) */
 @media (hover: hover) and (pointer: fine) {
-  .hero-collage figure:hover { rotate: 0deg; scale: 1.03; z-index: 2; }
   .area-card:hover { translate: 0 -6px; box-shadow: var(--shadow-lg); }
   .area-card:hover .thumb img { scale: 1.06; }
   .room:hover img { scale: 1.03; }
@@ -2031,3 +2029,10 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .status-a { margin: 8px 0 0; font-size: .92rem; }
 .status-a:empty { display: none; }
 @media (hover: hover) and (pointer: fine) { .status-q button:hover { background: rgb(var(--white-rgb) / .2); } }
+
+/* Wunsch 16.11.: kein Lichtstreifen über Knöpfen */
+.hero-actions .btn-primary::after, .nav-cta::after, .cta-band .btn-primary::after { content: none; animation: none; }
+/* Strich im Menü hängt an der Kopfleiste, nicht an der Liste */
+.header-inner > .nav-line { z-index: 2; }
+.mega { background: rgb(var(--paper-rgb) / .95); }
+@media (max-width: 1180px) { .main-nav .mega { background: none; } }

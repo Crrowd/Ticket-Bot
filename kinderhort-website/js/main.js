@@ -1230,7 +1230,6 @@
         { duration: 850 + Math.random() * 250, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = (function (el) { return function () { el.remove(); }; })(c);
     }
   }
-  $$(".event .save").forEach(function (b) { b.addEventListener("click", function () { if (b.classList.contains("on")) confetti(b); }); });
 
   /* ---------- Termin teilen ---------- */
   $$(".event .share").forEach(function (b) {
@@ -1954,11 +1953,12 @@
 
   /* Übergang 35 – Strich wandert im Menü mit */
   (function () {
-    var ul = $(".main-nav > ul"); if (!ul || !finePtr) return;
-    var line = document.createElement("span"); line.className = "nav-line"; line.setAttribute("aria-hidden", "true"); ul.appendChild(line);
+    var ul = $(".main-nav > ul"), hi = $(".header-inner"); if (!ul || !hi || !finePtr) return;
+    var line = document.createElement("span"); line.className = "nav-line"; line.setAttribute("aria-hidden", "true"); hi.appendChild(line);
     function to(el) {
       if (!el || innerWidth <= 1180) { line.style.opacity = 0; return; }
-      var r = el.getBoundingClientRect(), u = ul.getBoundingClientRect(), pad = 16;
+      var r = el.getBoundingClientRect(), u = hi.getBoundingClientRect(), pad = 16;
+      line.style.top = (r.bottom - u.top - 6) + "px"; line.style.bottom = "auto";
       line.style.scale = (r.width - pad * 2) + " 1"; line.style.translate = (r.left - u.left + pad) + "px 0"; line.style.opacity = 1;
     }
     $$(":scope > li > a:not(.nav-cta), :scope > li > .drop-toggle", ul).forEach(function (a) { a.addEventListener("mouseenter", function () { to(a); }); });

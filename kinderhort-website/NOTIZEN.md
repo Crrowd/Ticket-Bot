@@ -285,6 +285,13 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Wünsche aus Screenshots (16.11.2026)
+- Kopfleiste: „Geöffnet“-Anzeige und „Strg K“ entfernt (Öffnungsstatus bleibt im Auftakt der Startseite).
+- Kein Lichtstreifen mehr über Knöpfen; kein Konfetti beim Merken.
+- Fotos im Auftakt bewegen sich beim Überfahren nicht mehr.
+- Licht, das der Maus auf dunklen Karten folgt, viel schwächer (Deckkraft 3,5 % statt 9 %).
+- Bereichsmenü wieder so breit wie die Kopfleiste (war seit dem Menü-Strich auf 571 px geschrumpft) und deckender.
+
 ## Ideenkatalog 4 (16.11.2026)
 Seite: `entwurf/ideen/ideen-4.html` (gebaut mit `entwurf/ideen/mk_ideen4.py`, private Vorschau: https://claude.ai/artifact/S14G9MoJv8azSS2Sifxeoq), Auswahl in der Sammlung `ideen4` (ids `i4-01` … `i4-40`). 40 Ideen, jede mit dem Skill, aus dem sie stammt (ui-ux-pro-max, impeccable, mobile-native, gestures, dataviz, remove-animations, web-design-guidelines, choreograph, explainer, landing-page-design, humanizer, figma-designer, break-ui, nothing-design, apple-design). Nicht genutzt, weil für diese Seite unpassend: pinme (fremdes Hosting), write-swift/animate-expo (native Apps), sound-effects/motion-broll/object-separation (Video/Freistellen am eigenen Rechner), caveman.
 

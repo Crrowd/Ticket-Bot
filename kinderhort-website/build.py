@@ -261,17 +261,13 @@ def header(active):
       {BRAND_MARK}
       <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name">Grombühl e. V.</span></span>
     </a>
-    <div class="open-wrap" hidden>
-      <button class="open-pill" type="button" aria-expanded="false" aria-controls="oeffnung-pop"><span class="open-dot" aria-hidden="true"></span><span class="open-txt"></span></button>
-      <div class="open-pop" id="oeffnung-pop" role="dialog" aria-label="Öffnungszeiten heute" hidden></div>
-    </div>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
         {NAV_EXTRA}
       </ul>
     </nav>
-    <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span><kbd aria-hidden="true">Strg K</kbd></button>
+    <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span></button>
     <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="hauptmenue"><span></span><span class="nav-badge toggle-badge" aria-hidden="true"></span></button>
   </div>
 </header>'''
