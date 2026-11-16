@@ -38,7 +38,7 @@ def phone(v, name, text):
 PHONES = "".join([
     phone("heute", "Heute", "Leiste rutscht ganz nach oben weg"),
     phone("a", "A · Weich auflösen", "Gleitet ein Stück hoch, wird unscharf und blasser"),
-    phone("b", "B · Mini-Pille", "Name und Lupe verschwinden, Logo und Menü bleiben"),
+    phone("b", "B · Mini-Pille → Logo → weg", "Erst Logo und Menü, kurz darauf nur noch das Logo, dann blendet es aus"),
     phone("c", "C · Folgt dem Finger", "Wandert genau mit dem Scrollen, kleiner Griff bleibt"),
 ])
 
@@ -94,11 +94,22 @@ h1 {{ margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; text-
 .phone[data-v="a"] .bar {{ transition: translate .45s cubic-bezier(.23,1,.32,1), opacity .35s ease, filter .4s ease, scale .45s cubic-bezier(.23,1,.32,1); }}
 .phone[data-v="a"] .bar.hide {{ translate: 0 -38%; opacity: 0; filter: blur(8px); scale: .95; pointer-events: none; }}
 /* B: zur Mini-Pille */
-.phone[data-v="b"] .pill {{ transition: max-width .45s cubic-bezier(.23,1,.32,1), padding .45s cubic-bezier(.23,1,.32,1), min-height .45s cubic-bezier(.23,1,.32,1); }}
+.phone[data-v="b"] .pill {{ transition: border-radius .45s cubic-bezier(.23,1,.32,1), max-width .45s cubic-bezier(.23,1,.32,1), padding .45s cubic-bezier(.23,1,.32,1), min-height .45s cubic-bezier(.23,1,.32,1); }}
 .phone[data-v="b"] .name, .phone[data-v="b"] .lupe {{ transition: max-width .4s cubic-bezier(.23,1,.32,1), opacity .25s ease, width .4s cubic-bezier(.23,1,.32,1), margin .4s; max-width: 200px; }}
 .phone[data-v="b"] .bar.hide .pill {{ max-width: 112px; min-height: 50px; padding: 4px 4px 4px 8px; }}
 .phone[data-v="b"] .bar.hide .name {{ max-width: 0; opacity: 0; }}
 .phone[data-v="b"] .bar.hide .lupe {{ width: 0; opacity: 0; margin-right: -6px; }}
+/* Stufe 2: halbiert – nur noch das Logo */
+.phone[data-v="b"] .tools .btn:last-child {{ transition: width .4s cubic-bezier(.23,1,.32,1), opacity .2s ease, margin .4s cubic-bezier(.23,1,.32,1); }}
+.phone[data-v="b"] .bar.stufe2 .pill {{ max-width: 50px; min-height: 50px; padding: 6px; border-radius: 999px; }}
+.phone[data-v="b"] .bar.stufe2 .brand {{ gap: 0; }}
+.phone[data-v="b"] .brand {{ transition: gap .4s cubic-bezier(.23,1,.32,1); }}
+.phone[data-v="b"] .bar.stufe2 .tools .btn:last-child {{ width: 0; opacity: 0; margin-left: -6px; }}
+.phone[data-v="b"] .bar.stufe2 .tools {{ gap: 0; }}
+/* Stufe 3: auch das Logo blendet aus */
+.phone[data-v="b"] .bar {{ transition: opacity .35s ease, scale .4s cubic-bezier(.23,1,.32,1), translate .4s cubic-bezier(.23,1,.32,1); transform-origin: 100% 0; }}
+.phone[data-v="b"] .bar.stufe3 {{ opacity: 0; scale: .8; translate: 0 -6px; }}
+.phone[data-v="b"] .bar.stufe3 .pill {{ pointer-events: none; }}
 /* C: folgt dem Finger */
 .phone[data-v="c"] .bar {{ will-change: translate; }}
 .griff {{ position: absolute; left: 50%; bottom: -12px; width: 46px; height: 5px; border-radius: 3px; translate: -50% 0; background: rgba(30,59,68,.5); opacity: var(--g, 0); }}
@@ -155,7 +166,14 @@ section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8
 
   phones.forEach(function (ph) {{
     var v = ph.getAttribute("data-v"), sc = ph.querySelector(".screen"), bar = ph.querySelector(".bar"), griff = ph.querySelector(".griff");
-    var last = 0, travel = 0, off = 0;
+    var last = 0, travel = 0, off = 0, t2 = 0, t3 = 0;
+    function zeige() {{ clearTimeout(t2); clearTimeout(t3); bar.classList.remove("hide", "stufe2", "stufe3"); }}
+    function verstecke() {{
+      if (bar.classList.contains("hide")) return; bar.classList.add("hide");
+      if (v !== "b") return;
+      t2 = setTimeout(function () {{ bar.classList.add("stufe2"); }}, 700);
+      t3 = setTimeout(function () {{ bar.classList.add("stufe3"); }}, 1600);
+    }}
     sc.addEventListener("scroll", function () {{
       var y = sc.scrollTop, dy = y - last; last = y;
       if (v === "c") {{
@@ -165,10 +183,10 @@ section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8
         if (griff) griff.style.setProperty("--g", (off / h).toFixed(2));
         return;
       }}
-      if (y < 80) {{ bar.classList.remove("hide"); travel = 0; return; }}
+      if (y < 80) {{ zeige(); travel = 0; return; }}
       travel = (dy > 0) === (travel > 0) ? travel + dy : dy;
-      if (travel > 24) bar.classList.add("hide");
-      else if (travel < -12) bar.classList.remove("hide");
+      if (travel > 24) verstecke();
+      else if (travel < -12) zeige();
     }}, {{ passive: true }});
   }});
 
