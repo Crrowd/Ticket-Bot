@@ -1203,9 +1203,9 @@ def dl(href, title, kind):
     size, pages, thumb = pdf_meta(href)
     sub = f"{kind} · PDF, {round(size / 1024)} KB, {pages} {'Seite' if pages == 1 else 'Seiten'}"
     neu = f'<span class="new" data-neu="{NEU_SEIT[href]}" hidden>neu</span>' if href in NEU_SEIT else ""
-    peek = f'<span class="peek" aria-hidden="true"><img src="{thumb}" alt="" loading="lazy" width="120" height="170"></span>' if thumb else ""
-    return f'<li><a class="dl-link" href="{href}" download><span class="ficon">PDF</span><span>{title}{neu}<small>{sub}</small></span>{peek}</a></li>'
+    return f'<li><a class="dl-link" href="{href}" download><span class="ficon">PDF</span><span>{title}{neu}<small>{sub}</small></span></a></li>'
 plan_dl = dl("downloads/Ferienplan_2026_27.pdf", "Schließtage 2026/2027", "Ferienplan")
+medi_dl = dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular zum Ausfüllen")
 downl = page_hero("Downloads", "Hier finden Sie weitere Informationsblätter.", "img/p2160170.jpg", "Infoblätter &amp; Formulare", alt="Spielbereich")
 def lotse(q, text, links):
     return (f'<details class="lotse-item" name="lotse"><summary>{q}</summary><div><p>{text}</p><div class="lotse-links">' +
@@ -1219,11 +1219,11 @@ downl += section("lotse", "Schnell zum Ziel", "Was möchten Sie tun?", "Eine Fra
 ]) + "</div>", cls="tight")
 downl += section("dateien", "Downloads", "Informationsblätter zum Herunterladen", "", f'''
 <div class="downloads">
-  <div class="dl-group theme-krippe reveal"><h3>Kinderkrippe</h3><ul>{plan_dl}</ul></div>
-  <div class="dl-group theme-kiga reveal"><h3>Kindergarten</h3><ul>{plan_dl}</ul></div>
+  <div class="dl-group theme-krippe reveal"><h3>Kinderkrippe</h3><ul>{plan_dl}{medi_dl}</ul></div>
+  <div class="dl-group theme-kiga reveal"><h3>Kindergarten</h3><ul>{plan_dl}{medi_dl}</ul></div>
   <div class="dl-group theme-hort reveal"><h3>Kinderhort</h3><ul>{plan_dl}
     {dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z")}
-    {dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular zum Ausfüllen")}</ul></div>
+    {medi_dl}</ul></div>
 </div>''')
 def ics_dl(href, title, sub):
     return f'<li><a class="dl-link" href="{href}" download><span class="ficon">ICS</span><span>{title}<small>{sub}</small></span></a></li>'
