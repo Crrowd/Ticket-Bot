@@ -1,0 +1,265 @@
+"""Live-Vorschau: „Mein Tag“, „Diese Woche“, „Gruppe als Kontakt“, „QR-Aushang“ – mit den echten Daten der Seite."""
+import json, os, io
+import segno
+D = os.path.dirname(os.path.abspath(__file__)) + "/"
+W = os.path.abspath(D + "../../") + "/"
+raw = open(W + "js/daten.js", encoding="utf-8").read()
+K = json.loads(raw[raw.index("{"):raw.rstrip().rindex("}") + 1])
+DATEN = json.dumps({k: K[k] for k in ("schliesszeiten", "feiertage", "termine")}, ensure_ascii=False)
+
+q = segno.make("https://kinderhort-grombuehl.de/", error="m")
+b = io.BytesIO(); q.save(b, kind="svg", scale=1, border=2, dark="#1E3B44", light="#FFFFFF", xmldecl=False, svgns=True)
+QR = b.getvalue().decode().replace('<svg ', '<svg viewBox="0 0 33 33" role="img" aria-label="QR-Code zur Webseite" ', 1)
+QR = QR.replace('width="33" height="33" ', '')
+
+MARK = ('<svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1E3B44"/>'
+        '<path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/>'
+        '<path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/>'
+        '<path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg>')
+
+html = r'''<title>Merken-Ideen live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: vier Abschnitte untereinander, je Erklärung links und Beispiel rechts (am Handy untereinander) */
+:root {
+  --bg: #A8C5C0; --demo: rgba(243,248,247,.6); --paper: #F3F8F7; --ink: #1E3B44; --soft: #3E5A63; --card: #2D6A6A; --rose: #D4B5B0; --rose-soft: #F1E5E3; --rose-deep: #B8574A;
+  --on: #F3F8F7; --chip: rgba(30,59,68,.08); --line: rgba(30,59,68,.14); --head: #1E3B44;
+  --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif; --ease: cubic-bezier(.23,1,.32,1);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #12262D; --demo: #DCE8E5; --head: #E3EEEC; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #12262D; --demo: #DCE8E5; --head: #E3EEEC; color-scheme: dark; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+.wrap > * { min-width: 0; }
+.kopf h1 { margin: 0; font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.15; letter-spacing: -.02em; color: var(--head); text-wrap: balance; }
+.kopf p { margin: 6px 0 0; max-width: 46em; color: var(--head); opacity: .85; }
+.demo { background: var(--demo); border: 1px solid rgba(255,255,255,.5); border-radius: 22px; padding: 22px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 22px; align-items: start; }
+.demo > * { min-width: 0; }
+@media (max-width: 820px) { .demo { grid-template-columns: minmax(0, 1fr); } }
+.erkl h2 { margin: 0 0 6px; font-size: 1.3rem; display: flex; gap: 10px; align-items: center; }
+.erkl .nr { display: inline-grid; place-items: center; min-width: 30px; height: 30px; border-radius: 999px; background: var(--ink); color: var(--on); font-size: .9rem; }
+.erkl p { margin: 0 0 8px; color: var(--soft); }
+.erkl ul { margin: 0; padding-left: 1.1em; color: var(--soft); font-size: .95rem; display: grid; gap: 4px; }
+button { font-family: inherit; }
+button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px; }
+.chip { min-height: 40px; padding: 0 14px; border-radius: 10px; border: 0; background: rgba(243,248,247,.85); color: var(--ink); font-weight: 600; font-size: .9rem; cursor: pointer; transition: scale .16s var(--ease), background .15s; }
+.chip:active, .btn:active { scale: .97; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--on); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 0; background: var(--rose); color: var(--ink); font-weight: 600; font-size: .92rem; cursor: pointer; text-decoration: none; transition: scale .16s var(--ease); }
+.btn.dunkel { background: var(--ink); color: var(--on); } .btn.hell { background: var(--chip); }
+.ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* 1 Mein Tag */
+.mt { background: var(--card); color: var(--on); border-radius: 22px; padding: 18px; display: grid; gap: 12px; }
+.mt-kopf { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mt-kopf b { font-size: 1.1rem; } .mt-kopf small { display: block; opacity: .8; font-size: .82rem; font-weight: 500; }
+.mt-aendern { background: rgba(255,255,255,.12); color: var(--on); border: 0; border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: .84rem; cursor: pointer; }
+.mt-wahl { display: flex; flex-wrap: wrap; gap: 6px; }
+.mt-zeile { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px; border-radius: 14px; background: rgba(255,255,255,.08); }
+.mt-zeile .ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.12); }
+.mt-zeile b { display: block; } .mt-zeile span { font-size: .88rem; opacity: .88; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.mt .btn { justify-self: stretch; }
+.mt-leer { display: grid; gap: 10px; }
+.einblenden { animation: ein .3s var(--ease); }
+@keyframes ein { from { opacity: 0; translate: 0 6px; } }
+
+/* 2 Diese Woche */
+.wo { background: var(--paper); border-radius: 22px; padding: 16px; display: grid; gap: 12px; }
+.wo-kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.wo-kopf b { font-size: 1.05rem; }
+.rund { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--chip); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.rund:disabled { opacity: .35; cursor: default; }
+.wo-tage { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.tag { border-radius: 14px; background: #fff; padding: 10px 8px; min-height: 120px; display: grid; align-content: start; gap: 6px; border: 2px solid transparent; }
+.tag.heute { border-color: var(--ink); }
+.tag .d { font-weight: 700; font-size: .9rem; } .tag .d small { display: block; font-weight: 500; color: var(--soft); font-size: .76rem; }
+.ein { display: block; font-size: .76rem; line-height: 1.3; padding: 5px 7px; border-radius: 8px; background: #E6EFED; overflow-wrap: break-word; }
+.ein small { display: block; font-size: .7rem; font-weight: 600; opacity: .8; }
+.ein.zu { background: var(--rose-soft); color: #7E3B31; } .ein.fe { background: var(--rose-soft); color: #7E3B31; box-shadow: inset 0 0 0 1.5px var(--rose-deep); }
+.ein.term { background: var(--card); color: var(--on); }
+.tag.leer .frei { font-size: .78rem; color: var(--soft); }
+@media (max-width: 560px) {
+  .wo-tage { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .tag { min-height: 0; grid-template-columns: 64px minmax(0, 1fr); align-items: center; }
+  .tag .eintraege { display: grid; gap: 4px; }
+}
+
+/* 3 Kontakt */
+.kt { background: var(--paper); border-radius: 22px; padding: 10px; display: grid; }
+.kt-zeile { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid var(--line); }
+.kt-zeile:last-child { border-bottom: 0; }
+.kt-zeile div { display: grid; } .kt-zeile small { color: var(--soft); font-variant-numeric: tabular-nums; }
+.kt-zeile .btn { min-height: 38px; font-size: .84rem; padding: 0 12px; white-space: nowrap; }
+.blatt { position: fixed; inset: 0; z-index: 50; display: grid; place-items: end center; background: rgba(14,30,35,.45); padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
+.blatt-box { width: min(100%, 420px); background: var(--paper); color: var(--ink); border-radius: 26px; padding: 22px 18px 18px; display: grid; gap: 12px; justify-items: center; text-align: center; animation: hoch .35s cubic-bezier(.32,.72,0,1); }
+@keyframes hoch { from { translate: 0 40px; opacity: 0; } }
+.avatar { width: 72px; height: 72px; } .avatar .mark { width: 72px; height: 72px; }
+.blatt-box h3 { margin: 0; font-size: 1.25rem; }
+.vc { width: 100%; text-align: left; background: #fff; border-radius: 14px; padding: 4px 12px; }
+.vc div { display: grid; padding: 8px 0; border-bottom: 1px solid var(--line); } .vc div:last-child { border-bottom: 0; }
+.vc small { color: var(--soft); font-size: .76rem; }
+.blatt-box .hinweis { font-size: .82rem; color: var(--soft); }
+@media (prefers-reduced-motion: reduce) { .blatt-box, .einblenden { animation: none; } }
+
+/* 4 QR-Aushang */
+.a4 { box-sizing: border-box; width: min(100%, 360px); aspect-ratio: 210 / 297; background: #fff; color: #1E3B44; border-radius: 6px; box-shadow: 0 18px 40px -22px rgba(0,0,0,.55); padding: 7% 8%; display: grid; grid-template-rows: auto auto 1fr auto; gap: 4%; justify-self: center; font-size: clamp(8px, 2.4vw, 12px); }
+.a4-kopf { display: flex; align-items: center; gap: 4%; border-bottom: 2px solid #A8C5C0; padding-bottom: 4%; }
+.a4-kopf .mark { width: 14%; height: auto; flex: none; }
+.a4-kopf b { font-size: 1.25em; line-height: 1.2; }
+.a4 h3 { margin: 0; font-size: 2.1em; line-height: 1.1; letter-spacing: -.02em; }
+.a4-mitte { display: grid; grid-template-columns: 1fr 1fr; gap: 6%; align-items: center; }
+.a4-mitte svg { width: 100%; height: auto; display: block; }
+.a4-mitte ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .9em; font-size: 1.05em; font-weight: 600; }
+.a4-mitte li { display: flex; gap: .5em; align-items: center; }
+.a4-mitte li i { width: 1.9em; height: 1.9em; border-radius: .5em; background: #D4B5B0; display: grid; place-items: center; flex: none; font-style: normal; }
+.a4-mitte li i svg { width: 60%; }
+.a4-fuss { font-size: .9em; color: #3E5A63; display: grid; gap: .2em; }
+.a4-fuss b { color: #1E3B44; }
+.qr-ctl { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+.qr-hinweis { text-align: center; font-size: .82rem; color: var(--soft); margin: 6px 0 0; }
+</style>
+<main class="wrap" lang="de">
+  <header class="kopf"><h1>Vier „Merken“-Ideen zum Ausprobieren</h1>
+  <p>Alle Beispiele rechnen mit den echten Terminen, Schließtagen und Feiertagen der Seite und mit dem heutigen Datum. Tippen Sie sie einfach an.</p></header>
+
+  <section class="demo" aria-labelledby="t1">
+    <div class="erkl"><h2 id="t1"><span class="nr">1</span>„Mein Tag“ auf der Startseite</h2>
+      <p>Eltern wählen einmal ihre Gruppe. Danach sehen sie oben auf der Startseite alles für ihren Tag – ohne zu suchen.</p>
+      <ul><li>Ob heute offen ist und bis wann (Krippe und Kindergarten 16:30, Hort 18:00)</li><li>Die Durchwahl der eigenen Gruppe als großer Knopf</li><li>Der nächste Termin – passend zum Bereich</li><li>Die nächste Schließzeit</li></ul>
+      <p style="margin-top:10px">Die Gruppe wird nur im eigenen Browser gespeichert.</p></div>
+    <div id="meintag"></div>
+  </section>
+
+  <section class="demo" aria-labelledby="t2">
+    <div class="erkl"><h2 id="t2"><span class="nr">2</span>Diese Woche auf einen Blick</h2>
+      <p>Montag bis Freitag in einer Leiste: Termine, Schließtage und Feiertage der laufenden Woche. Der heutige Tag ist umrandet.</p>
+      <ul><li>Mit den Pfeilen in die nächsten Wochen blättern</li><li>Am Handy untereinander statt nebeneinander</li><li>Passt auf die Startseite oder auf „Aktuelles“</li></ul></div>
+    <div id="woche"></div>
+  </section>
+
+  <section class="demo" aria-labelledby="t3">
+    <div class="erkl"><h2 id="t3"><span class="nr">3</span>Die eigene Gruppe als Kontakt speichern</h2>
+      <p>Neben jeder Durchwahl ein Knopf „Als Kontakt“. Im Handy steht dann z. B. „Kita Grombühl – Bienengruppe“ mit der richtigen Nummer, der Adresse und dem Logo.</p>
+      <ul><li>Auf der echten Seite lädt der Knopf die Kontaktdatei; das Handy fragt dann „Kontakt hinzufügen?“</li><li>Hier in der Vorschau sehen Sie nur, wie der Kontakt aussehen würde.</li></ul></div>
+    <div class="kt" id="kontakte"></div>
+  </section>
+
+  <section class="demo" aria-labelledby="t4">
+    <div class="erkl"><h2 id="t4"><span class="nr">4</span>QR-Code-Aushang für die Pinnwand</h2>
+      <p>Ein fertiges Blatt zum Ausdrucken. Neue Eltern halten die Handykamera auf den Code und haben die Seite sofort – inklusive Krankmelden, Terminen und Durchwahlen.</p>
+      <ul><li>Wird beim Bauen der Seite automatisch mit erzeugt</li><li>Auf der echten Seite gibt es dafür einen Knopf „Aushang drucken“ bei den Downloads</li><li>Der Code führt zu kinderhort-grombuehl.de</li></ul></div>
+    <div>
+      <div class="a4" aria-label="Vorschau des Aushangs (DIN A4)">
+        <div class="a4-kopf">__MARK__<b>Kath. Kinder- und Jugendhort Grombühl</b></div>
+        <h3>Unsere Webseite immer dabei</h3>
+        <div class="a4-mitte">__QR__<ul>
+          <li><i><svg class="ic" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></i>Kind krankmelden</li>
+          <li><i><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i>Termine &amp; Schließtage</li>
+          <li><i><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/></svg></i>Durchwahlen der Gruppen</li></ul></div>
+        <div class="a4-fuss"><b>Handykamera auf den Code halten – fertig.</b><span>kinderhort-grombuehl.de · Lindleinstraße 20 · 0931 2789892 0</span></div>
+      </div>
+      <p class="qr-hinweis">DIN A4 hochkant · auf der echten Seite direkt druckbar</p>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var K = __DATEN__;
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"], KURZ = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+  var MON = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  var GRUPPEN = [["Sternengruppe", "Kinderkrippe", "15", "krippe"], ["Sonnengruppe", "Kinderkrippe", "14", "krippe"], ["Bienengruppe", "Kindergarten", "13", "kiga"], ["Spatzengruppe", "Kindergarten", "12", "kiga"], ["Bärengruppe", "Kindergarten", "11", "kiga"], ["Hort", "Kinderhort", "0", "hort"]];
+  var SCHLUSS = { krippe: "16:30", kiga: "16:30", hort: "18:00" };
+  function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function fmt(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "."; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function feier(s) { for (var i = 0; i < K.feiertage.length; i++) if (K.feiertage[i].datum === s) return K.feiertage[i].name; return null; }
+  function zu(s) { for (var i = 0; i < K.schliesszeiten.length; i++) { var z = K.schliesszeiten[i]; if (s >= z.von && s <= z.bis) return z; } return null; }
+  function grund(d) { var s = iso(d), w = d.getDay(); if (w === 0 || w === 6) return "Wochenende"; var f = feier(s); if (f) return f; var z = zu(s); return z ? "Schließzeit " + z.name : null; }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var I = { tel: '<svg class="ic" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+    uhr: '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+    kal: '<svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+    zu: '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>',
+    l: '<svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>', r: '<svg class="ic" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>',
+    kontakt: '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 4-6 8-6s7.2 2 8 6"/></svg>' };
+
+  /* ---------- 1 Mein Tag ---------- */
+  var mt = document.getElementById("meintag");
+  function meintag(anim) {
+    var g = null, w = store("mt-gruppe"); GRUPPEN.forEach(function (x) { if (x[0] === w) g = x; });
+    if (!g) {
+      mt.innerHTML = '<div class="mt"><div class="mt-kopf"><div><b>Mein Tag</b><small>Für welche Gruppe möchten Sie Ihren Tag sehen?</small></div></div><div class="mt-wahl">' +
+        GRUPPEN.map(function (x) { return '<button class="chip" type="button" data-g="' + x[0] + '">' + x[0].replace("gruppe", "") + "</button>"; }).join("") + "</div></div>";
+      mt.querySelectorAll("[data-g]").forEach(function (b) { b.addEventListener("click", function () { store("mt-gruppe", b.getAttribute("data-g")); meintag(true); }); });
+      return;
+    }
+    var jetzt = new Date(), h = jetzt.getHours() * 60 + jetzt.getMinutes(), heute = iso(jetzt), r = grund(jetzt), schluss = SCHLUSS[g[3]], sm = +schluss.split(":")[0] * 60 + +schluss.split(":")[1];
+    var status, farbe;
+    if (r) { status = "Heute geschlossen – " + r; farbe = "#D4B5B0"; }
+    else if (h < 405) { status = "Öffnet heute um 6:45 Uhr"; farbe = "#E8D9B5"; }
+    else if (h >= sm) { status = "Für heute geschlossen"; farbe = "#D4B5B0"; }
+    else { status = "Geöffnet bis " + schluss + " Uhr"; farbe = "#7FD6A4"; }
+    var naechst = ""; if (r || h >= sm) { var d = new Date(jetzt); for (var i = 0; i < 40; i++) { d.setDate(d.getDate() + 1); if (!grund(d)) { naechst = "Wieder da am " + TAGE[d.getDay()] + ", " + fmt(d) + " ab 6:45 Uhr"; break; } } }
+    var term = K.termine.filter(function (t) { return t.bis >= heute && (!t.bereich || !t.bereich.length || t.bereich.indexOf(g[3]) >= 0); })[0];
+    var sz = K.schliesszeiten.filter(function (z) { return z.bis >= heute; })[0];
+    mt.innerHTML = '<div class="mt' + (anim && !reduced ? " einblenden" : "") + '"><div class="mt-kopf"><div><b>Mein Tag · ' + esc(g[0]) + '</b><small>' + esc(g[1]) + '</small></div><button class="mt-aendern" type="button">Gruppe ändern</button></div>' +
+      '<div class="mt-zeile"><span class="ico">' + I.uhr + '</span><div><b><span class="dot" style="background:' + farbe + '"></span>' + esc(status) + "</b>" + (naechst ? "<span>" + esc(naechst) + "</span>" : "<span>Bringzeit bis 9:00 Uhr</span>") + "</div></div>" +
+      '<a class="btn" href="#" data-x>' + I.tel + " " + esc(g[0] === "Hort" ? "Hort" : g[0]) + " anrufen · … " + g[2] + "</a>" +
+      (term ? '<div class="mt-zeile"><span class="ico">' + I.kal + "</span><div><b>Nächster Termin: " + esc(term.titel) + "</b><span>" + TAGE[parse(term.von).getDay()] + ", " + fmt(parse(term.von)) + parse(term.von).getFullYear() + "</span></div></div>" : "") +
+      (sz ? '<div class="mt-zeile"><span class="ico">' + I.zu + "</span><div><b>Nächste Schließzeit: " + esc(sz.name) + "</b><span>" + (sz.von === sz.bis ? fmt(parse(sz.von)) + parse(sz.von).getFullYear() : fmt(parse(sz.von)) + " – " + fmt(parse(sz.bis)) + parse(sz.bis).getFullYear()) + " · " + sz.tage + (sz.tage === 1 ? " Schließtag" : " Schließtage") + "</span></div></div>" : "") +
+      "</div>";
+    mt.querySelector(".mt-aendern").addEventListener("click", function () { try { localStorage.removeItem("mt-gruppe"); } catch (e) {} meintag(true); });
+  }
+  meintag(false);
+
+  /* ---------- 2 Diese Woche ---------- */
+  var wo = document.getElementById("woche"), versatz = 0;
+  function montag(d) { var m = new Date(d.getFullYear(), d.getMonth(), d.getDate()); m.setDate(m.getDate() - ((m.getDay() + 6) % 7)); return m; }
+  function woche(richtung) {
+    var heute = new Date(), m = montag(heute); m.setDate(m.getDate() + versatz * 7);
+    var fr = new Date(m); fr.setDate(m.getDate() + 4);
+    var titel = versatz === 0 ? "Diese Woche" : versatz === 1 ? "Nächste Woche" : "Woche ab " + fmt(m);
+    var tage = "";
+    for (var i = 0; i < 5; i++) {
+      var d = new Date(m); d.setDate(m.getDate() + i); var s = iso(d), e = "";
+      var f = feier(s); if (f) e += '<span class="ein fe">' + esc(f) + "</span>";
+      var z = zu(s); if (z && !f) e += '<span class="ein zu"><small>geschlossen</small>' + esc(z.name) + "</span>";
+      K.termine.forEach(function (t) { if (s >= t.von && s <= t.bis) e += '<span class="ein term">' + esc(t.titel) + "</span>"; });
+      tage += '<div class="tag' + (s === iso(heute) ? " heute" : "") + (e ? "" : " leer") + '"><span class="d">' + KURZ[d.getDay()] + " " + d.getDate() + ".<small>" + MON[d.getMonth()] + "</small></span><div class=\"eintraege\">" + (e || '<span class="frei">geöffnet</span>') + "</div></div>";
+    }
+    wo.innerHTML = '<div class="wo"><div class="wo-kopf"><button class="rund" type="button" aria-label="Vorige Woche"' + (versatz <= 0 ? " disabled" : "") + ">" + I.l + "</button><b>" + titel + " · " + fmt(m) + " – " + fmt(fr) + '</b><button class="rund" type="button" aria-label="Nächste Woche"' + (versatz >= 30 ? " disabled" : "") + ">" + I.r + '</button></div><div class="wo-tage">' + tage + "</div></div>";
+    var b = wo.querySelectorAll(".rund");
+    b[0].addEventListener("click", function () { versatz--; woche(-1); wo.querySelector(".rund").focus(); });
+    b[1].addEventListener("click", function () { versatz++; woche(1); wo.querySelectorAll(".rund")[1].focus(); });
+    if (richtung && !reduced) wo.querySelector(".wo-tage").animate([{ opacity: 0, translate: (richtung * 18) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 240, easing: "cubic-bezier(.23,1,.32,1)" });
+  }
+  woche(0);
+
+  /* ---------- 3 Kontakt ---------- */
+  var kt = document.getElementById("kontakte");
+  kt.innerHTML = GRUPPEN.map(function (x) { return '<div class="kt-zeile"><div><b>' + esc(x[0] === "Hort" ? "Kinderhort" : x[0]) + "</b><small>" + esc(x[1]) + " · 0931 2789892 " + x[2] + '</small></div><button class="btn hell" type="button" data-k="' + x[0] + '">' + I.kontakt + " Als Kontakt</button></div>"; }).join("");
+  kt.querySelectorAll("[data-k]").forEach(function (b) { b.addEventListener("click", function () {
+    var x = GRUPPEN.filter(function (g) { return g[0] === b.getAttribute("data-k"); })[0], name = x[0] === "Hort" ? "Kinderhort" : x[0];
+    var bl = document.createElement("div"); bl.className = "blatt"; bl.setAttribute("role", "dialog"); bl.setAttribute("aria-modal", "true"); bl.setAttribute("aria-label", "Kontakt-Vorschau");
+    bl.innerHTML = '<div class="blatt-box"><div class="avatar">__MARK__</div><h3>Kita Grombühl – ' + esc(name) + '</h3>' +
+      '<div class="vc"><div><small>Mobil / Arbeit</small><b>0931 2789892 ' + x[2] + '</b></div><div><small>E-Mail</small><b>kinderhort.grombuehl@t-online.de</b></div><div><small>Adresse</small><b>Lindleinstraße 20, 97080 Würzburg</b></div><div><small>Notiz</small><b>' + esc(x[1]) + ' · Kath. Kinder- und Jugendhort Grombühl</b></div></div>' +
+      '<p class="hinweis">So erscheint der Kontakt im Adressbuch. Auf der echten Seite lädt der Knopf die Kontaktdatei herunter.</p><button class="btn dunkel" type="button">Schließen</button></div>';
+    document.body.appendChild(bl); var zu = bl.querySelector(".btn"); zu.focus();
+    function weg() { bl.remove(); b.focus(); }
+    zu.addEventListener("click", weg); bl.addEventListener("click", function (e) { if (e.target === bl) weg(); });
+    bl.addEventListener("keydown", function (e) { if (e.key === "Escape") weg(); });
+  }); });
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-x]")) e.preventDefault(); });
+})();
+</script>
+'''
+html = html.replace("__DATEN__", DATEN).replace("__QR__", QR).replace("__MARK__", MARK)
+open(D + "merken-live.html", "w", encoding="utf-8").write(html)
+print("ok", len(html) // 1024, "KB")
