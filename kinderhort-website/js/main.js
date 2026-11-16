@@ -2315,21 +2315,87 @@
 
 
 
+
+  /* ---------- Weiches Auf- und Zuklappen (Krankmelden, Formular-Lotse, Elternbriefe, Fragen) ----------
+     Läuft per Skript, damit es auch in Safari geht. Ohne Skript oder mit „Bewegung reduzieren“ klappen die Kästen wie gewohnt sofort. */
+  function sanft(d, o) {
+    var s = $("summary", d); if (!s || d.dataset.sanft) return; d.dataset.sanft = "1";
+    var inner = Array.prototype.filter.call(d.children, function (c) { return c.tagName !== "SUMMARY"; }), lauf = null, zu = false;
+    var g = d.getAttribute("name"); if (g) { d.removeAttribute("name"); d.dataset.gruppe = g; }
+    function fade(keys, opt) { inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); c.animate(keys, opt); }); }
+    function fahre(bis, fertig) {
+      var von = d.getBoundingClientRect().height;
+      if (lauf) { lauf.onfinish = null; lauf.cancel(); }
+      d.style.overflow = "hidden";
+      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
+      lauf.onfinish = function () { lauf = null; d.style.overflow = ""; if (fertig) fertig(); };
+    }
+    d.sanftAuf = function () {
+      var von = d.getBoundingClientRect().height; zu = false;
+      if (lauf) { lauf.onfinish = null; lauf.cancel(); }
+      d.open = true; var bis = d.getBoundingClientRect().height;
+      d.style.height = von + "px"; void d.offsetHeight; d.style.height = "";
+      fade([{ opacity: 0 }, { opacity: 1 }], { duration: o.ms * .75, delay: o.ms * (o.spaet || .15), easing: "ease-out", fill: "backwards" });
+      d.style.overflow = "hidden";
+      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
+      lauf.onfinish = function () { lauf = null; d.style.overflow = ""; };
+    };
+    d.sanftZu = function () {
+      zu = true;
+      fade([{ opacity: 1 }, { opacity: 0 }], { duration: o.ms * (o.ausblenden || .5), easing: "ease-in", fill: "forwards" });
+      fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
+        zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
+      });
+    };
+    s.addEventListener("click", function (e) {
+      if (reduced) return;
+      e.preventDefault();
+      if (d.open && !zu) { d.sanftZu(); return; }
+      if (d.dataset.gruppe) $$('details[data-gruppe="' + d.dataset.gruppe + '"]').forEach(function (x) { if (x !== d && x.open && x.sanftZu) x.sanftZu(); });
+      d.sanftAuf();
+    });
+  }
+  var EIO = "cubic-bezier(.77,0,.175,1)";
+  $$(".krank").forEach(function (d) { sanft(d, { ms: 250, ease: EIO }); });
+  /* Lotse: ruhiger – etwas länger, weichere Kurve, Inhalt geht zuerst und kommt zuletzt */
+  $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 480, ease: "cubic-bezier(.45,0,.25,1)", spaet: .3, ausblenden: .4 }); });
+  $$(".brief").forEach(function (d) { sanft(d, { ms: 350, ease: EIO }); });
+  $$(".faq details").forEach(function (d) { sanft(d, { ms: 380, ease: EIO }); });
+
   /* ---------- Termine nach Bereich: Termine fürs ganze Haus bleiben immer sichtbar ---------- */
   var BEREICH = "alle";
   (function () {
     var box = $(".ev-filter"); if (!box) return;
     var list = $("#termine .event-list"), leer = $("#termine .ev-filter-empty");
+    var busy = false;
     $$("button", box).forEach(function (b) { b.addEventListener("click", function () {
+      if (busy || b.getAttribute("aria-pressed") === "true") return;
       BEREICH = b.getAttribute("data-b");
       $$("button", box).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-      var n = 0;
-      $$(".event", list).forEach(function (ev) {
-        var bs = (ev.getAttribute("data-bereich") || "").split(" ").filter(Boolean), aus = BEREICH !== "alle" && bs.length && bs.indexOf(BEREICH) < 0;
-        ev.classList.toggle("bf-out", !!aus); if (!aus && !ev.hidden && bs.length) n++;
-      });
-      if (leer) leer.hidden = BEREICH === "alle" || n > 0;
-      document.dispatchEvent(new CustomEvent("bereich"));
+      var evs = $$(".event", list), n = 0;
+      function raus(ev) { var bs = (ev.getAttribute("data-bereich") || "").split(" ").filter(Boolean); return BEREICH !== "alle" && bs.length && bs.indexOf(BEREICH) < 0; }
+      function sichtbar(ev) { return !ev.hidden && !ev.classList.contains("bf-out") && ev.getClientRects().length; }
+      function anwenden() {
+        evs.forEach(function (ev) { var aus = raus(ev); ev.classList.toggle("bf-out", !!aus); if (!aus && !ev.hidden && (ev.getAttribute("data-bereich") || "")) n++; });
+        if (leer) leer.hidden = BEREICH === "alle" || n > 0;
+        document.dispatchEvent(new CustomEvent("bereich"));
+      }
+      if (reduced || !list.animate || list.hidden) { anwenden(); return; }
+      /* gehende blenden aus, übrige gleiten an ihren neuen Platz, kommende blenden ein */
+      busy = true;
+      var vorher = new Map(); evs.forEach(function (ev) { if (sichtbar(ev)) vorher.set(ev, ev.getBoundingClientRect()); });
+      var gehen = evs.filter(function (ev) { return sichtbar(ev) && raus(ev); });
+      gehen.forEach(function (ev) { ev.animate([{ opacity: 1, scale: 1 }, { opacity: 0, scale: .97 }], { duration: 150, easing: "ease-out", fill: "forwards" }); });
+      setTimeout(function () {
+        gehen.forEach(function (ev) { ev.getAnimations().forEach(function (a) { a.cancel(); }); });
+        anwenden();
+        evs.forEach(function (ev) {
+          if (!sichtbar(ev)) return; var a = vorher.get(ev), r = ev.getBoundingClientRect();
+          if (a) { if (Math.abs(a.top - r.top) > 1) ev.animate([{ translate: "0 " + (a.top - r.top) + "px" }, { translate: "0 0" }], { duration: 300, easing: EASE_OUT }); }
+          else ev.animate([{ opacity: 0, scale: .97 }, { opacity: 1, scale: 1 }], { duration: 220, delay: 80, easing: EASE_OUT, fill: "backwards" });
+        });
+        busy = false;
+      }, gehen.length ? 150 : 0);
     }); });
   })();
 

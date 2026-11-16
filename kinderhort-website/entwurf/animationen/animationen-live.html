@@ -104,10 +104,10 @@ summary:focus-visible, button:focus-visible { outline: 3px solid var(--rose-deep
 
   <!-- 2 Lotse -->
   <section class="demo" aria-labelledby="t2">
-    <div class="demo-kopf"><span class="nr">2</span><h2 id="t2">Formular-Lotse bei Downloads</h2><p>Es ist immer nur ein Punkt offen. Heute springt die Seite beim Wechsel. Nachher klappt der alte Punkt im gleichen Takt zu, wie der neue aufgeht.</p></div>
+    <div class="demo-kopf"><span class="nr">2</span><h2 id="t2">Formular-Lotse bei Downloads</h2><p>Es ist immer nur ein Punkt offen. Heute springt die Seite beim Wechsel. Nachher klappt der alte Punkt ruhig zu, während der neue aufgeht – der Inhalt geht zuerst und kommt zuletzt.</p></div>
     <div class="paar">
       <div class="seite"><span class="etikett">Vorher</span><div class="lotse" data-lotse="a"></div></div>
-      <div class="seite nach"><span class="etikett">Nachher</span><div class="lotse" data-lotse="b" data-weich="300"></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div class="lotse" data-lotse="b" data-weich="480" data-ruhig></div></div>
     </div>
   </section>
 
@@ -219,13 +219,15 @@ summary:focus-visible, button:focus-visible { outline: 3px solid var(--rose-deep
     function auf() {
       d.open = true; var h = c.scrollHeight;
       if (lauf) lauf.cancel();
-      lauf = c.animate([{ height: "0px", opacity: 0 }, { height: h + "px", opacity: 1 }], { duration: reduced ? 1 : ms, easing: EIO });
+      var ruhig = d.closest("[data-ruhig]");
+      lauf = c.animate(ruhig ? [{ height: "0px", opacity: 0 }, { opacity: 0, offset: .3 }, { height: h + "px", opacity: 1 }] : [{ height: "0px", opacity: 0 }, { height: h + "px", opacity: 1 }], { duration: reduced ? 1 : ms, easing: ruhig ? "cubic-bezier(.45,0,.25,1)" : EIO });
       lauf.onfinish = function () { lauf = null; };
     }
     function zu() {
       var h = c.offsetHeight;
       if (lauf) lauf.cancel();
-      lauf = c.animate([{ height: h + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: reduced ? 1 : ms, easing: EIO });
+      var ruhig = d.closest("[data-ruhig]");
+      lauf = c.animate(ruhig ? [{ height: h + "px", opacity: 1 }, { opacity: 0, offset: .4 }, { height: "0px", opacity: 0 }] : [{ height: h + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: reduced ? 1 : ms, easing: ruhig ? "cubic-bezier(.45,0,.25,1)" : EIO });
       lauf.onfinish = function () { d.open = false; lauf = null; };
     }
     d.weichZu = zu;

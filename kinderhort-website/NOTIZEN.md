@@ -314,6 +314,12 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Feinschliff Bewegung (16.11.2026)
+- Krankmelden, Formular-Lotse, Elternbriefe und häufige Fragen klappen weich auf und zu – per Skript, damit es auch in Safari/iPhone läuft (vorher nur Chrome). Lotse besonders ruhig (0,48 s, Inhalt geht zuerst, kommt zuletzt; immer nur ein Punkt offen).
+- Termine nach Bereich: gehende Termine blenden aus, die übrigen gleiten an ihren Platz.
+- „… anrufen“-Knopf blendet weich ein; Bereichs-Knöpfe geben beim Drücken nach.
+- Mit „Bewegung reduzieren“ klappt alles sofort. Live-Vergleich: entwurf/animationen/.
+
 ## Obere Leiste (16.11.2026)
 - Verhalten wie bisher (verschwindet beim Herunterscrollen ganz, kommt beim Hochscrollen zurück), aber weicher: sanftere Kurve, 0,5 s statt 0,2 s, blendet am Ende leise aus; die Sprungleiste rückt im selben Takt nach. Reagiert etwas gelassener (erst nach 32 px nach unten, 16 px nach oben). Verworfene Varianten: entwurf/leiste/.
 
