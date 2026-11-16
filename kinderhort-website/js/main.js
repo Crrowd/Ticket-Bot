@@ -62,8 +62,8 @@
     if (y < 120 || busy()) { header.classList.remove("hide"); travel = 0; return; }
     /* erst nach ein paar Pixeln in dieselbe Richtung reagieren – kein Flackern bei kleinen Bewegungen */
     travel = (travel > 0) === (dy > 0) ? travel + dy : dy;
-    if (travel > 24) header.classList.add("hide");
-    else if (travel < -12) header.classList.remove("hide");
+    if (travel > 32) header.classList.add("hide");
+    else if (travel < -16) header.classList.remove("hide");
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();

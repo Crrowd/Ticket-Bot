@@ -314,6 +314,9 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Obere Leiste (16.11.2026)
+- Verhalten wie bisher (verschwindet beim Herunterscrollen ganz, kommt beim Hochscrollen zurück), aber weicher: sanftere Kurve, 0,5 s statt 0,2 s, blendet am Ende leise aus; die Sprungleiste rückt im selben Takt nach. Reagiert etwas gelassener (erst nach 32 px nach unten, 16 px nach oben). Verworfene Varianten: entwurf/leiste/.
+
 ## Sicherheit (16.11.2026)
 - **Erste Runde:** interne Dateien (Notizen, Pläne, Vorschau, Hilfsprogramme) per .htaccess gesperrt; Sicherheits-Header; Tabellentexte überall maskiert; gespeicherte Gruppe wird geprüft.
 - **Zweite Runde („noch sicherer“):** Die Schutzregel (CSP) erlaubt jetzt auch keine eingebettete Gestaltung mehr (`style-src 'self'` ohne `'unsafe-inline'`); Vorschaubilder, Wortwolke und Reihenfolgen stehen in `css/erzeugt.css` (wird von build.py erzeugt). Zusätzliche Header: Cross-Origin-Resource-Policy, X-Permitted-Cross-Domain-Policies, upgrade-insecure-requests, form-action. Externe Links mit `noopener noreferrer`. Der Offline-Speicher nimmt nur eigene, unveränderte Antworten auf. `/.well-known/security.txt` mit Kontakt für Sicherheitshinweise (läuft 16.11.2027 ab – dann Datum erneuern).

@@ -1034,11 +1034,12 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 @media (max-width: 560px) { .room.wide { grid-template-columns: minmax(0, 1fr); } .room.wide img { min-height: 0; } }
 
 /* ---------- Leiste nur beim Hochscrollen ---------- */
-.site-header { transition: translate var(--t-exit) var(--ease-out); }
-.site-header.hide { translate: 0 calc(-100% - 8px); }
-.site-header:not(.hide) { transition-duration: var(--t-enter); }
-/* Ohne Leiste rücken die Sprungmarken nach oben */
-body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0px)); transition-duration: var(--t-exit); }
+/* weich: sanft anlaufen, ruhig auslaufen, am Ende leise ausblenden */
+.site-header { transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; will-change: translate; }
+.site-header.hide { translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s cubic-bezier(.45,0,.2,1), opacity .3s ease .15s; }
+/* Ohne Leiste rücken die Sprungmarken nach oben – im selben Takt */
+.subnav { transition: top .5s cubic-bezier(.22,1,.36,1); }
+body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0px)); transition: top .5s cubic-bezier(.45,0,.2,1); }
 
 /* ---------- Handy-Tastatur ---------- */
 /* Suche sitzt direkt über der Tastatur und passt in den verbleibenden Platz */
@@ -3523,8 +3524,8 @@ window.KITA = {
     if (y < 120 || busy()) { header.classList.remove("hide"); travel = 0; return; }
     /* erst nach ein paar Pixeln in dieselbe Richtung reagieren – kein Flackern bei kleinen Bewegungen */
     travel = (travel > 0) === (dy > 0) ? travel + dy : dy;
-    if (travel > 24) header.classList.add("hide");
-    else if (travel < -12) header.classList.remove("hide");
+    if (travel > 32) header.classList.add("hide");
+    else if (travel < -16) header.classList.remove("hide");
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();

@@ -36,10 +36,8 @@ def phone(v, name, text):
 </figure>'''
 
 PHONES = "".join([
-    phone("heute", "Heute", "Leiste rutscht ganz nach oben weg"),
-    phone("g", "G · Zur Mitte zusammenziehen", "Inhalt blendet aus, dann zieht sich die Leiste zur Mitte zusammen und ist weg"),
-    phone("h", "H · Nach oben wegklappen", "Klappt wie eine Klappe nach oben weg und verschwindet"),
-    phone("i", "I · Nacheinander", "Menü, Lupe, Name und Logo gehen nacheinander, zuletzt die Leiste selbst"),
+    phone("heute", "Vorher", "Leiste rutscht schnell nach oben weg"),
+    phone("neu", "Neu · weicher", "Gleitet sanft nach oben, blendet am Ende leise aus und kommt weich zurück"),
 ])
 
 html = f'''<title>Leiste beim Scrollen</title>
@@ -68,7 +66,7 @@ h1 {{ margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; text-
 .wrap > * {{ min-width: 0; }}
 .tabs button {{ font: 600 .9rem var(--font); min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: none; color: var(--fg); cursor: pointer; white-space: nowrap; }}
 .tabs button[aria-pressed="true"] {{ background: var(--fg); color: var(--bg); }}
-.phones {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }}
+.phones {{ display: grid; grid-template-columns: repeat(2, minmax(0, 380px)); justify-content: center; gap: 40px; }}
 .phone {{ margin: 0; display: grid; gap: 10px; justify-items: center; min-width: 0; }}
 .phone figcaption {{ display: grid; text-align: center; gap: 2px; min-height: 4.6em; align-content: start; }}
 .phone figcaption span {{ color: var(--soft); font-size: .88rem; }}
@@ -90,28 +88,9 @@ h1 {{ margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; text-
 /* Heute */
 .phone[data-v="heute"] .bar {{ transition: translate .25s cubic-bezier(.23,1,.32,1); }}
 .phone[data-v="heute"] .bar.hide {{ translate: 0 calc(-100% - 8px); transition-duration: .2s; }}
-/* G: zur Mitte zusammenziehen */
-.phone[data-v="g"] .pill {{ clip-path: inset(0 0 0 0 round 18px); transition: clip-path .45s cubic-bezier(.65,0,.35,1), opacity .2s ease .35s; }}
-.phone[data-v="g"] .pill > * {{ transition: opacity .25s ease .2s; }}
-.phone[data-v="g"] .bar.hide .pill {{ clip-path: inset(0 50% 0 50% round 18px); opacity: 0; transition: clip-path .45s cubic-bezier(.65,0,.35,1) .12s, opacity .2s ease .45s; pointer-events: none; }}
-.phone[data-v="g"] .bar.hide .pill > * {{ opacity: 0; transition-delay: 0s; transition-duration: .15s; }}
-/* H: nach oben wegklappen */
-.phone[data-v="h"] .bar {{ perspective: 700px; }}
-.phone[data-v="h"] .pill {{ transform-origin: 50% 0; transition: transform .5s cubic-bezier(.23,1,.32,1), opacity .35s ease; }}
-.phone[data-v="h"] .bar.hide .pill {{ transform: rotateX(-88deg); opacity: 0; pointer-events: none; transition-duration: .42s, .3s; transition-timing-function: cubic-bezier(.55,0,.75,.3), ease; }}
-/* I: nacheinander */
-.phone[data-v="i"] .pill > *, .phone[data-v="i"] .tools > *, .phone[data-v="i"] .brand > * {{ transition: opacity .2s ease, translate .25s cubic-bezier(.23,1,.32,1); }}
-.phone[data-v="i"] .pill {{ transition: opacity .25s ease, scale .3s cubic-bezier(.23,1,.32,1); }}
-.phone[data-v="i"] .bar:not(.hide) .pill {{ transition-delay: 0s; }}
-.phone[data-v="i"] .bar:not(.hide) .mark {{ transition-delay: .08s; }}
-.phone[data-v="i"] .bar:not(.hide) .name {{ transition-delay: .14s; }}
-.phone[data-v="i"] .bar:not(.hide) .lupe {{ transition-delay: .2s; }}
-.phone[data-v="i"] .bar:not(.hide) .tools .btn:last-child {{ transition-delay: .26s; }}
-.phone[data-v="i"] .bar.hide .tools .btn:last-child {{ opacity: 0; translate: 0 -8px; transition-delay: 0s; }}
-.phone[data-v="i"] .bar.hide .lupe {{ opacity: 0; translate: 0 -8px; transition-delay: .07s; }}
-.phone[data-v="i"] .bar.hide .name {{ opacity: 0; translate: 0 -8px; transition-delay: .14s; }}
-.phone[data-v="i"] .bar.hide .mark {{ opacity: 0; translate: 0 -8px; transition-delay: .21s; }}
-.phone[data-v="i"] .bar.hide .pill {{ opacity: 0; scale: .94; transition-delay: .3s; pointer-events: none; }}
+/* Neu: weicher */
+.phone[data-v="neu"] .bar {{ transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }}
+.phone[data-v="neu"] .bar.hide {{ translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s cubic-bezier(.45,0,.2,1), opacity .3s ease .15s; }}
 
 @media (prefers-reduced-motion: reduce) {{ .bar, .pill, .name, .lupe {{ transition-duration: .01s !important; }} }}
 
@@ -135,7 +114,7 @@ section img {{ width: 100%; height: 150px; object-fit: cover; border-radius: 12p
 section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8px 10px; }}
 .end {{ text-align: center; color: rgba(30,59,68,.6); font-size: .8rem; padding: 12px 0 4px; }}
 
-@media (max-width: 1100px) {{ .phones {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+
 @media (max-width: 720px) {{
   .tabs {{ display: flex; flex-wrap: wrap; }}
   .phones {{ grid-template-columns: minmax(0, 1fr); }}
@@ -153,7 +132,7 @@ section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8
     <button type="button" id="hoch">Alle nach oben</button>
   </div>
   <div class="tabs" role="group" aria-label="Variante wählen">
-    <button type="button" data-z="heute" aria-pressed="true">Heute</button><button type="button" data-z="g" aria-pressed="false">G · Zur Mitte</button><button type="button" data-z="h" aria-pressed="false">H · Wegklappen</button><button type="button" data-z="i" aria-pressed="false">I · Nacheinander</button>
+    <button type="button" data-z="heute" aria-pressed="true">Vorher</button><button type="button" data-z="neu" aria-pressed="false">Neu · weicher</button>
   </div>
   <div class="phones">{PHONES}</div>
 </main>
@@ -178,8 +157,8 @@ section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8
         verstecke(); clearTimeout(ruhe); ruhe = setTimeout(zeige, 800); return;
       }}
       travel = (dy > 0) === (travel > 0) ? travel + dy : dy;
-      if (travel > 24) verstecke();
-      else if (travel < -12) zeige();
+      if (travel > 32) verstecke();
+      else if (travel < -16) zeige();
     }}, {{ passive: true }});
   }});
 
