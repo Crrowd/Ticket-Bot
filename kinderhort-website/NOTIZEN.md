@@ -11,6 +11,7 @@ Stand: 13.11.2026
 
 
 ## 1. Vor dem Livegang (Pflicht)
+- [ ] **Impressum vom Träger bestätigen lassen:** (1) Vertretung des Vereins – steht nur Helmut Burmester im Vereinsregister, oder vertreten mehrere Vorstandsmitglieder gemeinsam? Dann alle nennen. (2) Aufsichtsbehörde ergänzen (Kita braucht eine Betriebserlaubnis; vermutlich Stadt Würzburg, Fachbereich Jugend und Familie – bitte genaue Bezeichnung nennen).
 - [ ] **Nur das Upload-Paket hochladen** (`kinderhort-webseite.zip`, entsteht bei `python3 build.py`), nicht den ganzen Projektordner.
 - [ ] **Sicherheit beim Umzug (.htaccess):** HTTPS-Weiterleitung und Strict-Transport-Security einschalten, sobald das SSL-Zertifikat läuft (Zeilen sind vorbereitet, nur # entfernen). Falls der Hoster „Options -Indexes“ nicht erlaubt (Fehler 500), diese Zeile auskommentieren. Nach dem Umzug einmal prüfen: https://securityheaders.com
 - [ ] PDFs vor dem Hochladen: Autor-Feld in den Dateieigenschaften prüfen (Medikamentenvereinbarung enthält einen Personennamen).

@@ -1354,14 +1354,14 @@ page("kontakt.html", "Kontakt", "Kontakt zum Kath. Kinder- und Jugendhort Gromb�
 # =====================================================================
 # IMPRESSUM
 # =====================================================================
-imp = simple_hero("Impressum", "Angaben gemäß § 5 DDG", "Rechtliches")
+imp = simple_hero("Impressum", "Wer hinter dieser Webseite steht", "Rechtliches")
 imp += f'''<section class="section"><div class="container"><div class="prose">
 <h2>Angaben gemäß § 5 DDG</h2>
 <p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg</p>
-<p>Vereinsregister: VR 187<br>Registergericht: Amtsgericht Würzburg Registergericht</p>
+<p>Vereinsregister: VR 187<br>Registergericht: Amtsgericht Würzburg</p>
 <p><strong>Vertreten durch:</strong><br>Helmut Burmester</p>
 <h2>Kontakt</h2>
-<p>Telefon: <a href="tel:+4993127898920">0931&nbsp;27898920</a><br>E-Mail: <a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></p>
+<p>Telefon: <a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a><br>E-Mail: <a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a></p>
 <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
 <p>Petra Lachnit<br>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg</p>
 <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
@@ -1385,7 +1385,7 @@ dsg = simple_hero("Datenschutz", "Informationen zum Umgang mit Ihren Daten auf d
 dsg += f'''<section class="section"><div class="container"><div class="prose">
 <p class="todo-hinweis"><strong>Hinweis für den Träger:</strong> Diese Datenschutzerklärung ist weitgehend ausgefüllt. Offen sind nur noch die markierten Stellen (Hoster, Datum). Bitte den Text vor der Veröffentlichung prüfen lassen, z. B. durch die/den Datenschutzbeauftragte/n des Trägers.</p>
 <h2>1. Verantwortliche Stelle</h2>
-<p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg<br>Telefon: 0931 27898920<br>E-Mail: <a href="mailto:{MAIL}">{MAIL}</a><br>Vertreten durch: Helmut Burmester</p>
+<p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg<br>Telefon: 0931 2789892 0<br>E-Mail: <a href="mailto:{MAIL}">{MAIL}</a><br>Vertreten durch: Helmut Burmester</p>
 <h2>2. Datenschutzbeauftragte/r</h2>
 <p>Katrin Hofmann<br>{ORG}, z. Hd. der Datenschutzbeauftragten<br>Lindleinstr. 20, 97080 Würzburg<br>E-Mail: <a href="mailto:{MAIL}?subject=Datenschutz">{MAIL}</a> (Betreff „Datenschutz“)</p>
 <p>Als katholische Einrichtung unterliegen wir dem Gesetz über den Kirchlichen Datenschutz (KDG) in der für das Bistum Würzburg geltenden Fassung.</p>
