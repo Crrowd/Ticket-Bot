@@ -4719,7 +4719,7 @@ window.KITA = {
         '</b><button type="button" class="mc-next" aria-label="Nächster Monat"' + (i0 >= maxI ? " disabled" : "") + ">" + svg(ICON.right, 20) + "</button></div>" +
         '<div class="mc-wd" aria-hidden="true"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div><div class="mc-grid">' + cells + "</div>" +
         '<div class="mc-legend"><span><i style="background:var(--ink)"></i>Termin</span><span><i style="background:var(--rose-soft)"></i>geschlossen</span><span><i class="lg-fe"></i>Feiertag</span></div>' +
-        '<p class="mc-note" aria-live="polite">' + zu.map(function (z) { return "<b>" + z.name + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") +
+        '<p class="mc-note" aria-live="polite">' + zu.map(function (z) { return "<b>" + escH(z.name) + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") +
         feM.map(function (f) { return '<span class="mc-fe">' + escH(f.name) + ": " + fmtLong(parse(f.datum)) + "</span>"; }).join("") + "</p>";
       $(".mc-prev", cal).addEventListener("click", function () { step(-1); });
       $(".mc-next", cal).addEventListener("click", function () { step(1); });
@@ -4966,7 +4966,7 @@ window.KITA = {
       var rows = [["Kinderkrippe", o, kk], ["Kindergarten", o, kk], ["Kinderhort", o, h]].map(function (r) {
         return '<div class="row' + (!reason && m >= r[2] ? " done" : "") + '"><span>' + r[0] + "</span><b>" + hm(r[1]) + " – " + hm(r[2]) + " Uhr</b></div>"; }).join("");
       var st = status();
-      pop.innerHTML = "<strong>" + st.today + "</strong>" + rows + '<p class="next">' + (reason || m >= h ? st.sub : st.next) + "</p>";
+      pop.innerHTML = "<strong>" + escH(st.today) + "</strong>" + rows + '<p class="next">' + escH(reason || m >= h ? st.sub : st.next) + "</p>";
     }
     function setOpen(on) {
       pop.hidden = !on; pill.setAttribute("aria-expanded", on);
@@ -5709,6 +5709,7 @@ window.KITA = {
     var bloecke = $$(".krank"); if (!bloecke.length) return;
     function zeige() {
       var g = null; try { g = JSON.parse(store("krank-gruppe") || "null"); } catch (e) {}
+      if (!g || typeof g.name !== "string" || !/^tel:\+?\d{6,16}$/.test(g.href || "")) g = null;
       bloecke.forEach(function (k) {
         var alt = $(".krank-last", k); if (alt) alt.parentNode.removeChild(alt);
         if (!g || !$('.krank-area a[href="' + g.href + '"]', k)) return;

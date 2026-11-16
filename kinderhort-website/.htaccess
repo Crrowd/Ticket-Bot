@@ -24,9 +24,32 @@ RewriteRule ^wp-content/uploads/.*/Ferienplan_2026_27\.pdf$   /downloads/Ferienp
 RewriteRule ^wp-content/uploads/.*/HortABC\.pdf$              /downloads/HortABC.pdf [R=301,L]
 RewriteRule ^wp-content/uploads/.*/Medikamentenvereinbarung\.pdf$ /downloads/Medikamentenvereinbarung.pdf [R=301,L]
 
-# Interne Arbeitsordner nicht ausliefern
-RewriteRule ^(entwurf|daten)(/|$) - [F,L]
-RewriteRule ^(build|build_vorschau)\.py$ - [F,L]
+# Interne Arbeitsordner und -dateien nicht ausliefern
+RewriteRule ^(entwurf|daten|plans|\.impeccable)(/|$) - [F,L]
+RewriteCond %{REQUEST_URI} !^/robots\.txt$
+RewriteRule \.(py|md|json|txt|csv|log|sh)$ - [F,L]
+RewriteRule ^vorschau\.html$ - [F,L]
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+# Verzeichnislisten abschalten (falls der Hoster das hier erlaubt; sonst Zeile mit # auskommentieren)
+Options -Indexes
+
+# Nur HTTPS: nach dem Umzug einschalten, sobald das SSL-Zertifikat aktiv ist (die beiden #-Zeichen entfernen)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Sicherheits-Header
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Content-Security-Policy "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  # Strict-Transport-Security erst aktivieren, wenn HTTPS sicher läuft:
+  # Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+  Header unset X-Powered-By
+</IfModule>
 
 # Kalenderdateien korrekt ausliefern, Caching
 AddType text/calendar .ics

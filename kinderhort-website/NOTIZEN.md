@@ -11,6 +11,8 @@ Stand: 13.11.2026
 
 
 ## 1. Vor dem Livegang (Pflicht)
+- [ ] **Sicherheit beim Umzug (.htaccess):** HTTPS-Weiterleitung und Strict-Transport-Security einschalten, sobald das SSL-Zertifikat läuft (Zeilen sind vorbereitet, nur # entfernen). Falls der Hoster „Options -Indexes“ nicht erlaubt (Fehler 500), diese Zeile auskommentieren. Nach dem Umzug einmal prüfen: https://securityheaders.com
+- [ ] PDFs vor dem Hochladen: Autor-Feld in den Dateieigenschaften prüfen (Medikamentenvereinbarung enthält einen Personennamen).
 - [x] Datenschutzerklärung anlegen – Vorlage steht; **offen: Hoster, Datenschutzbeauftragte/r, Aufsicht, Datum ergänzen und prüfen lassen**
 - [x] Impressum: TMG-Verweise auf DDG (Digitale-Dienste-Gesetz, seit Mai 2024) umstellen
 - [x] Weiterleitungen alter URLs (`/kinderkrippe/`, `/kindergarten/`, `/kinderhort/`, `/aktuelles/`, `/downloads/`, `/kontakt/`, `/impressum/`, `?page_id=…`) auf die neuen Seiten
