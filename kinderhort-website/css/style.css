@@ -1286,7 +1286,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .quote { grid-area: 1 / 1; margin: 0; opacity: 0; translate: 0 10px; transition: opacity .5s var(--ease-out), translate .5s var(--ease-out); pointer-events: none; }
 .quote.on { opacity: 1; translate: 0 0; pointer-events: auto; }
 .quote blockquote { margin: 0; } .quote p { font: 600 1.3rem/1.5 var(--font-head); }
-.quote p::before { content: "„"; display: block; height: .5em; color: var(--rose-deep); font-size: 3.4rem; line-height: .6; }
+.quote p::before { content: "„"; display: block; height: .55em; color: var(--rose-deep); font-size: 3.4rem; line-height: 1; translate: 0 -.5em; }
 .quote figcaption { margin-top: 12px; color: var(--fg-soft); font-size: .92rem; }
 .q-dots { grid-area: 2 / 1; display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
 .q-dots button { position: relative; width: 32px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
@@ -1883,3 +1883,82 @@ button, .btn, [role="tab"], .nav-toggle, .open-pill { -webkit-user-select: none;
   .room:hover img { scale: 1.03; }
   .tour-item button:hover img { scale: 1.05; }
 }
+
+/* ---------- Stresstest (16.11.) ---------- */
+/* Datum steht oben neben dem Titel, auch bei langen Terminen */
+.event .date { align-self: start; }
+/* Links in Texten aus den Tabellen brechen sauber um */
+.event p a, .brief a { overflow-wrap: anywhere; }
+.more-events { margin-top: 16px; }
+
+/* ---------- Kind krankmelden: Gruppe anrufen oder E-Mail ---------- */
+.krank { border-radius: var(--r); background: var(--paper); color: var(--ink); box-shadow: var(--shadow); }
+.krank summary { display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; cursor: pointer; list-style: none; border-radius: inherit; }
+.krank summary::-webkit-details-marker { display: none; }
+.krank summary::after { content: ""; margin-left: auto; width: 20px; height: 20px; flex: none; background: currentColor; opacity: .55; transition: rotate .2s var(--ease-out);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat; }
+.krank[open] summary::after { rotate: 180deg; }
+.krank-ic { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 12px; background: var(--rose); color: var(--ink); }
+.krank-t { display: grid; min-width: 0; }
+.krank-t b { font-weight: 600; font-size: 1.0625rem; }
+.krank-t small { color: var(--ink-soft); font-size: .92rem; }
+.krank-body { padding: 4px 16px 16px; display: grid; gap: 12px; }
+.krank-hint { margin: 0; font-size: .92rem; color: var(--ink-soft); }
+.krank-groups { display: grid; gap: 12px; }
+.krank-area p { margin: 0 0 6px; font-size: .84rem; font-weight: 600; color: var(--ink-soft); }
+.krank-area { display: flex; flex-wrap: wrap; gap: 6px; }
+.krank-area p { flex-basis: 100%; }
+.krank-area a { display: inline-flex; align-items: baseline; gap: 6px; min-height: 44px; align-items: center; padding: 8px 12px; border-radius: 10px; background: rgb(var(--ink-rgb) / .07); color: var(--ink); font-weight: 600; font-size: .92rem; text-decoration: none; transition: background .14s var(--ease-out); }
+.krank-area a small { font-weight: 500; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+@media (hover: hover) and (pointer: fine) { .krank-area a:hover { background: var(--rose-soft); } .krank summary:hover .krank-ic { background: var(--rose-deep); } }
+.krank .btn { justify-self: start; }
+.krank.in-hero { margin-top: 16px; max-width: 520px; }
+.krank.in-menu { box-shadow: none; background: rgb(var(--ink-rgb) / .06); }
+@media print { .krank { display: none !important; } }
+
+/* ---------- Anmeldung auf den Bereichsseiten ---------- */
+.anm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
+@media (max-width: 760px) { .anm-grid { grid-template-columns: minmax(0, 1fr); } }
+.anm-card { display: grid; align-content: start; gap: 12px; padding: 28px; border-radius: var(--r); background: var(--paper); color: var(--ink); box-shadow: var(--shadow); }
+.anm-card h3 { margin: 0; }
+.anm-card p { margin: 0; color: var(--ink-soft); }
+.anm-card .btn { justify-self: start; margin-top: 4px; }
+.anm-n { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: var(--rose); font-weight: 600; font-variant-numeric: tabular-nums; }
+.anm-tel { margin-top: 20px; color: var(--fg-soft); }
+.anm-tel a { font-weight: 600; color: var(--fg); }
+/* aktiver Menüpunkt im Handy-Menü: Fläche statt Farbstreifen */
+@media (max-width: 1180px) {
+  .main-nav > ul > li > a[aria-current="page"], .drop-toggle.current { box-shadow: none; background: var(--rose-soft); border-radius: var(--r-sm); }
+}
+
+/* ---------- Kürzere Seiten (16.11.) ---------- */
+.js .feature-groups:not(.all) li.fx { display: none; }
+.fx-more { margin-top: 20px; }
+.feature-groups.all li.fx { animation: rm-fade .3s var(--ease-out) both; }
+@keyframes rm-fade { from { opacity: 0; } }
+/* Ferienplan am Handy als Karten statt breiter Tabelle */
+@media (max-width: 700px) {
+  .table-wrap:has(table.plan) { overflow: visible; box-shadow: none; background: none; -webkit-mask-image: none; mask-image: none; }
+  table.plan { min-width: 0; display: block; }
+  table.plan caption { display: block; padding: 0 0 12px; text-align: left; }
+  table.plan thead { display: none; }
+  table.plan tbody, table.plan tfoot { display: grid; gap: 12px; }
+  table.plan tfoot { margin-top: 12px; }
+  table.plan tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; padding: 16px; border-radius: var(--r); box-shadow: var(--shadow); }
+  table.plan tr > * { padding: 0; border: 0; text-align: left; }
+  table.plan tbody th { grid-column: 1 / -1; font-size: 1.0625rem; margin-bottom: 4px; }
+  table.plan td[data-l]::before { content: attr(data-l); display: block; font-size: .84rem; font-weight: 500; opacity: .8; }
+  table.plan td.num { text-align: left; }
+  table.plan tfoot td:first-child { grid-column: 1; align-self: center; }
+}
+@media (max-width: 700px) {
+  table.plan tbody tr { background: var(--surface); color: var(--on-surface); }
+  table.plan tbody tr.now { background: var(--rose-soft); color: var(--ink); }
+  table.plan tbody tr.next { background: var(--next-tint); color: var(--ink); }
+  table.plan tr > * { background: none !important; }
+  table.plan tbody tr.now td small, table.plan tbody tr.next td small { color: var(--ink-soft); }
+  table.plan tfoot tr { background: var(--rose); color: var(--ink); }
+  table.plan caption { color: var(--ink) !important; font-weight: 600; }
+}
+.section.green .stats { margin-bottom: 32px; }

@@ -11,6 +11,8 @@ feiertage.csv     – Gesetzliche Feiertage in Bayern (für die Anzeige "Heute g
 elternbriefe.csv  – Elternbriefe auf der Seite "Aktuelles". Neueste Zeile ganz oben.
                     Spalten: Stand (z. B. "November 2026"); Titel; Text; Gruß.
                     Absätze im Text und Zeilen im Gruß mit || trennen.
+                    Fett mit zwei Sternchen: **Petra Lachnit**. Internet-Adressen (https://…) und
+                    E-Mail-Adressen werden automatisch anklickbar – auch in termine.csv.
 elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von, z. B. "Mutter, Kindergarten").
                     Nur echte Zitate mit Einverständnis der Eltern, ohne Namen.
                     Solange die Datei leer ist, erscheint der Abschnitt nicht.

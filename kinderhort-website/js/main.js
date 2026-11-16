@@ -567,6 +567,17 @@
     });
     var empty = ul.parentNode.querySelector(".events-empty");
     if (empty && !left) empty.hidden = false;
+    /* keine kommenden Termine: auch kein „Alle in den Kalender“ */
+    if (!left) $$(".js-ics-all", ul.closest("section") || document).forEach(function (a) { a.hidden = true; });
+    /* lange Liste: erst 12 zeigen, Rest auf Wunsch */
+    var shown = $$(".event[data-ende]", ul).filter(function (ev) { return !ev.hidden; });
+    if (!ul.hasAttribute("data-max") && shown.length > 12) {
+      var rest = shown.slice(12); rest.forEach(function (ev) { ev.hidden = true; ev.classList.add("more-later"); });
+      var more = document.createElement("button"); more.type = "button"; more.className = "btn btn-ghost more-events";
+      more.textContent = "Alle " + shown.length + " Termine anzeigen";
+      ul.after(more);
+      more.addEventListener("click", function () { rest.forEach(function (ev) { ev.hidden = false; ev.classList.remove("reveal"); }); more.remove(); rest[0].querySelector("button, a") && rest[0].querySelector("button, a").focus(); });
+    }
   });
 
   /* ---------- Heute geöffnet / nächste Schließzeit ---------- */
@@ -1523,7 +1534,7 @@
     document.addEventListener("focusin", function (e) {
       var el = e.target;
       if (!el.matches(":focus-visible") || el.closest("dialog, .lightbox, .story-view") || el === document.body) { off(); return; }
-      var first = !ring.classList.contains("on"); cur = el; place(first || reduced); ring.classList.add("on"); root.classList.add("fring");
+      var first = !ring.classList.contains("on"); cur = el.closest(".faq-search, .dial-field, .ask-form, .search-head") || el; place(first || reduced); ring.classList.add("on"); root.classList.add("fring");
     });
     function off() { cur = null; ring.classList.remove("on"); root.classList.remove("fring"); }
     document.addEventListener("focusout", function (e) { if (!e.relatedTarget) off(); });
@@ -1845,6 +1856,12 @@
 
   /* Idee 101 – Welle bewegt sich kurz, wenn der Fußbereich erscheint (höchstens 5 s) */
   if (!reduced) seen($$(".foot-wave"), function (w) { w.classList.add("go"); }, "0px");
+
+  /* „Das zeichnet uns aus“: weitere Punkte auf Wunsch */
+  $$(".fx-more").forEach(function (b) {
+    var g = b.previousElementSibling; b.hidden = false;
+    b.addEventListener("click", function () { g.classList.add("all"); b.remove(); var f = $(".fx", g); if (f) f.setAttribute("tabindex", "-1"), f.focus({ preventScroll: true }); });
+  });
 
   /* Idee 107 – Schwung unter der Unterschrift */
   seen($$(".sig-swash"), function (el) { el.classList.add("go"); });

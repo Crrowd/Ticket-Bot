@@ -18,10 +18,14 @@ def read_csv(name):
 def d(s):
     return dt.datetime.strptime(s.strip(), "%d.%m.%Y").date()
 
-SCHLIESSTAGE = read_csv("schliesstage.csv")
+SCHLIESSTAGE = sorted(read_csv("schliesstage.csv"), key=lambda r: d(r["erster Schließtag"]))
 TERMINE = read_csv("termine.csv")
 FEIERTAGE = read_csv("feiertage.csv")
-PLAN_JAHR = f"{d(SCHLIESSTAGE[0]['erster Schließtag']).year}/{d(SCHLIESSTAGE[-1]['letzter Schließtag']).year}"
+def kita_jahr(t):
+    """Kita-Jahr (September bis August), in dem ein Datum liegt."""
+    return t.year if t.month >= 9 else t.year - 1
+_KJ = kita_jahr(d(SCHLIESSTAGE[0]["erster Schließtag"]) if SCHLIESSTAGE else dt.date.today())
+PLAN_JAHR = f"{_KJ}/{_KJ + 1}"
 
 def mailto(subject, body):
     return f"mailto:{MAIL}?subject={quote(subject)}&body={quote(body)}"
@@ -163,9 +167,26 @@ def mega(active):
         for k, h, t, sub, im in BEREICHE)
     return f'<div class="mega"><div class="mega-cols">{cols}</div><div class="mega-visual" aria-hidden="true">{visual}</div></div>'
 
+# Kind krankmelden: Gruppe direkt anrufen oder E-Mail mit Vorlage (funktioniert auch ohne Skript)
+GRUPPEN_TEL = [("Kinderkrippe", [("Sternengruppe", "15"), ("Sonnengruppe", "14")]),
+               ("Kindergarten", [("Bienengruppe", "13"), ("Spatzengruppe", "12"), ("Bärengruppe", "11")]),
+               ("Kinderhort", [("Hort über die Zentrale", "0")])]
+def krank_block(cls=""):
+    groups = "".join(
+        f'<div class="krank-area"><p>{area}</p>' + "".join(
+            f'<a href="tel:+499312789892{n}">{name}<small>…&nbsp;{n}</small></a>'
+            for name, n in rows) + '</div>'
+        for area, rows in GRUPPEN_TEL)
+    return (f'<details class="krank {cls}"><summary><span class="krank-ic">{icon("phone", 20)}</span>'
+            '<span class="krank-t"><b>Kind krankmelden</b><small>Gruppe anrufen oder E-Mail mit Vorlage</small></span></summary>'
+            '<div class="krank-body"><p class="krank-hint">Bitte geben Sie möglichst früh am Morgen Bescheid.</p>'
+            f'<div class="krank-groups">{groups}</div>'
+            f'<a class="btn btn-primary" href="{KRANK_MAIL}">{icon("mail", 20)} E-Mail mit Vorlage schreiben</a></div></details>')
+
 NAV_EXTRA = ('<li class="nav-extra">'
     f'<figure class="nav-photo">{img("img/p2160110.jpg", "", sizes="360px")}</figure>'
     '<p class="nav-extra-title">Wir sind für Sie da</p>'
+    + krank_block("in-menu") +
     f'<a class="nav-quick" href="tel:+4993127898920">{icon("phone", 20)}<span>0931&nbsp;2789892&nbsp;0<small>Anrufen, Mo–Fr ab 6:45 Uhr</small></span></a>'
     f'<a class="nav-quick" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 20)}<span>E-Mail schreiben<small>kinderhort.grombuehl@t-online.de</small></span></a>'
     f'<p class="nav-addr">{icon("pin", 18)}<span>Lindleinstraße 20, 97080 Würzburg</span></p>'
@@ -438,9 +459,12 @@ def features(items, groups=None):
     if not groups:
         return '<ul class="features">' + "".join(f'<li class="reveal">{x}</li>' for x in items) + "</ul>"
     assert sorted(n for _, idx in groups for n in idx) == list(range(len(items))), "Jeder Punkt muss genau einer Gruppe zugeordnet sein"
-    return '<div class="feature-groups">' + "".join(
-        f'<div class="feature-group reveal"><h3>{t}</h3><ul class="features">' + "".join(f"<li>{items[n]}</li>" for n in idx) + "</ul></div>"
+    more = sum(max(0, len(idx) - 2) for _, idx in groups)
+    return ('<div class="feature-groups">' + "".join(
+        f'<div class="feature-group reveal"><h3>{t}</h3><ul class="features">' + "".join(
+            f'<li{" class=\"fx\"" if k >= 2 else ""}>{items[n]}</li>' for k, n in enumerate(idx)) + "</ul></div>"
         for t, idx in groups) + "</div>"
+        + (f'<button class="btn btn-ghost fx-more" type="button" hidden>Alle {len(items)} Punkte anzeigen</button>' if more else ""))
 
 def faq(items):
     out = []
@@ -480,7 +504,7 @@ def plan_table():
     for name, open_until, first, fn, last, ln, reopen, n in PLAN:
         f = first + (f"<small>({fn})</small>" if fn else "")
         l = last + (f"<small>({ln})</small>" if ln else "")
-        rows.append(f"<tr data-von=\"{d(first).isoformat()}\" data-bis=\"{d(last).isoformat()}\"><th scope=\"row\">{name}</th><td>{open_until}</td><td>{f}</td><td>{l}</td><td>{reopen}</td><td class=\"num\">{n:02d}</td></tr>")
+        rows.append(f"<tr data-von=\"{d(first).isoformat()}\" data-bis=\"{d(last).isoformat()}\"><th scope=\"row\">{name}</th><td data-l=\"Geöffnet bis\">{open_until}</td><td data-l=\"Erster Schließtag\">{f}</td><td data-l=\"Letzter Schließtag\">{l}</td><td data-l=\"Wieder offen\">{reopen}</td><td class=\"num\" data-l=\"Schließtage\">{n:02d}</td></tr>")
     total = sum(p[-1] for p in PLAN)
     return f'''<div class="table-wrap reveal" tabindex="0" role="region" aria-label="Ferienplan – Tabelle, seitlich scrollbar">
 <table class="plan">
@@ -499,10 +523,34 @@ def plan_table():
   <button class="btn btn-ghost js-poster" type="button">{icon("poster", 20)} Jahresposter drucken</button>
 </div>'''
 
-def ferienplan_section(cls="alt"):
+def ferienplan_section(cls="alt", kurz=False):
+    if not PLAN:
+        return section("ferienplan", "Ferienplan", "Schließtage", "Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.", "", cls=cls)
+    if kurz:
+        return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
+                       "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
+                       '<div class="yearline reveal" data-yearline></div>'
+                       f'<div class="btn-row no-print"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
+                       f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>', cls=cls)
     return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                    '<div class="yearline reveal" data-yearline></div>' + plan_table(), cls=cls)
+
+def anmeldung_section(bereich):
+    """Nächster Schritt für neue Eltern: Platz anfragen oder Kennenlernen vereinbaren."""
+    platz = mailto(f"Platzanfrage {bereich}", "Liebes Team,\n\nwir interessieren uns für einen Platz in Ihrer Einrichtung.\n\n"
+                   f"Gewünschter Bereich: {bereich}\nName des Kindes: \nGeburtsdatum: \nGewünschter Beginn: \nGewünschte Betreuungszeiten: \n"
+                   "Name der Eltern: \nTelefon: \n\nViele Grüße\n")
+    kennen = mailto(f"Kennenlernen {bereich}", "Liebes Team,\n\nwir würden gern Ihre Einrichtung kennenlernen.\n\n"
+                    f"Bereich: {bereich}\nPassende Tage / Uhrzeiten: \nName: \nTelefon: \n\nViele Grüße\n")
+    cards = (f'<div class="anm-card reveal"><span class="anm-n">1</span><h3>Platz anfragen</h3>'
+             f'<p>Schreiben Sie uns, ab wann Sie einen Platz in der {bereich} suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir dafür brauchen.</p>'
+             f'<a class="btn btn-primary" href="{platz}">{icon("mail", 20)} Platz anfragen</a></div>'
+             f'<div class="anm-card reveal"><span class="anm-n">2</span><h3>Kennenlernen vereinbaren</h3>'
+             '<p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p>'
+             f'<a class="btn btn-ghost" href="{kennen}">{icon("calendar", 20)} Kennenlernen vereinbaren</a></div>')
+    return section("anmeldung", "Anmeldung", "So bekommen Sie einen Platz", "",
+                   f'<div class="anm-grid">{cards}</div><p class="anm-tel">Lieber telefonisch? <a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></p>')
 
 def abc_section(name, link_text):
     return f'''<section class="section tight">
@@ -520,6 +568,17 @@ WEISSER_RAUM = ("Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hie
                 "unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. "
                 "Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen.")
 
+_URL = re.compile(r'https?://[^\s<]+[^\s<.,;:!?)\]“"]')
+_MAIL = re.compile(r'[\w.+-]+@[\w-]+(?:\.[\w-]+)+')
+def rich(t):
+    """Text aus den Tabellen sicher ausgeben: maskieren, **fett**, Adressen und Links anklickbar."""
+    t = t.replace("<strong>", "**").replace("</strong>", "**")
+    s = e(t)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = _URL.sub(lambda m: f'<a href="{m.group(0)}" rel="noopener">{m.group(0).replace("/", "/<wbr>")}</a>', s)
+    s = _MAIL.sub(lambda m: m.group(0) if "href=" in s[max(0, m.start() - 60):m.start()] else f'<a href="mailto:{m.group(0)}">{m.group(0).replace("@", "<wbr>@")}</a>', s)
+    return s
+
 MONATE = ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sep", "Okt", "Nov", "Dez"]
 def ev(r):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
@@ -528,7 +587,7 @@ def ev(r):
     key = f'{a.isoformat()}|{r["Titel"]}'
     return (f'<li class="event reveal" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
             f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
-            f'<p><strong>{e(r["Titel"])}</strong>{e(r["Beschreibung"])}</p>'
+            f'<p><strong>{e(r["Titel"])}</strong>{rich(r["Beschreibung"])}</p>'
             f'<div class="ev-acts"><button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
             f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button>'
             f'<button class="share" type="button" aria-label="{e(r["Titel"])} teilen">{icon("share", 18)}</button></div></li>')
@@ -568,6 +627,7 @@ home = f'''
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
       {STATUS_CARD}
+      {krank_block("in-hero")}
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/p2170270.jpg", "Heller Gruppenraum im Kindergarten", lazy=False)}</figure>
@@ -609,13 +669,11 @@ home = f'''
   <div class="container">
     <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Mehr als Betreuung</h2>
       <p>Lange Öffnungszeiten, eine hauseigene Küche und viel Raum zum Spielen, Lernen und Entspannen – mitten in der Stadt.</p></div>
-    <div class="stats">
+    <div class="stats three">
       <div class="stat reveal"><b>6:45</b><span>Uhr öffnen wir – der Hort betreut bis 18:00 Uhr, auch in den Ferien</span></div>
       <div class="stat reveal"><b>max. 30</b><span>Schließtage im Jahr – gleich in allen Abteilungen</span></div>
       <div class="stat reveal"><b>2</b><span>Köchinnen kochen täglich frisch mit regionalen Zutaten</span></div>
-      <div class="stat reveal"><b>11 M.–16 J.</b><span>breites Altersspektrum in einem Haus</span></div>
     </div>
-    {WORDCLOUD}
     <div class="teasers">
       <a class="teaser reveal" href="#" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}">{img("img/p2160031.jpg", "Weißer Raum")}<div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
       <a class="teaser reveal" href="#" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht.">{img("img/p2160054.jpg", "Hauseigene Küche")}<div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
@@ -665,7 +723,7 @@ home = f'''
         </ul>
         <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
         <div class="btn-row"><a class="btn btn-primary" href="aktuelles.html">Alle Termine {icon("arrow", 20)}</a>
-          <a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
+          <a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
         <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
       </div>
       <div class="note-card reveal">
@@ -677,7 +735,7 @@ home = f'''
   </div>
 </section>
 
-{ferienplan_section()}
+{ferienplan_section(kurz=True)}
 {STIMMEN}
 <section class="section tight">
   <div class="container">
@@ -727,7 +785,7 @@ krippe_tour = [
 ]
 krippe = page_hero("Kinderkrippe", "Herzlich Willkommen beim Kath. Kinder- und Jugendhort Grombühl – geborgen ankommen, spielen, entdecken.",
                    "img/p2160110.jpg", "Sonnen- &amp; Sternengruppe",
-                   [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
+                   [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
                    alt="Gruppenraum der Kinderkrippe")
 krippe += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
@@ -787,7 +845,8 @@ krippe += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zur Kinde
     ("Gibt es eine Eingewöhnungszeit?", "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen."),
 ]), cls="alt")
 krippe += abc_section("KrippenABC", "Zum Downloadbereich")
-krippe += ferienplan_section()
+krippe += anmeldung_section("Kinderkrippe")
+krippe += ferienplan_section(kurz=True)
 page("kinderkrippe.html", "Kinderkrippe", "Kinderkrippe im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Sonnen- und Sternengruppe für Kinder ab 11 Monaten – mit virtuellem Rundgang, Tagesablauf und FAQ.", "kinderkrippe.html", krippe, "theme-krippe")
 
 # =====================================================================
@@ -813,7 +872,7 @@ kiga_tour = [
 ]
 kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in großen, hellen Räumen und einem riesigen Garten mitten in der Stadt.",
                  "img/blick-vom-fenster-in-den-raum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
-                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
+                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
                  alt="Gruppenraum im Kindergarten")
 kiga += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
@@ -882,7 +941,8 @@ kiga += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zum Kinderg
     ("Sind die Schließtage in allen Abteilungen des Kinder- und Jugendhorts Grombühl gleich?", "Ja, wir haben in allen Abteilungen des Hauses an maximal 30 gleichen Tagen geschlossen."),
 ]), cls="alt")
 kiga += abc_section("KindergartenABC", "Zum Downloadbereich")
-kiga += ferienplan_section()
+kiga += anmeldung_section("Kindergarten")
+kiga += ferienplan_section(kurz=True)
 page("kindergarten.html", "Kindergarten", "Kindergarten im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Bären-, Bienen- und Spatzengruppe für Kinder von 3 Jahren bis zur Einschulung.", "kindergarten.html", kiga, "theme-kiga")
 
 # =====================================================================
@@ -916,7 +976,7 @@ hort_tour = [
 ]
 hort = page_hero("Kinderhort", "Nach der Schule ankommen, Hausaufgaben mit Unterstützung erledigen und Freizeit selbst gestalten – von 6:45 bis 18:00 Uhr.",
                  "img/kreatviraum-5-1.jpg", "Für alle Schulformen",
-                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("ferienplan", "Ferienplan")],
+                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
                  alt="Kreativraum im Kinderhort")
 hort += kurz([
     ("clock", "6:45 – 18:00 Uhr", "geöffnet, auch in den Schulferien"),
@@ -996,14 +1056,15 @@ hort += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zum Kinderh
     ("Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?", "Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung."),
 ]))
 hort += abc_section("KinderhortABC", "KinderhortABC herunterladen")
-hort += ferienplan_section()
+hort += anmeldung_section("Kinderhort")
+hort += ferienplan_section(kurz=True)
 page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Betreuung für Schulkinder aller Schulformen von 6:45 bis 18:00 Uhr – mit Hausaufgabenbetreuung, Ferienprogramm und Freitagsausflügen.", "kinderhort.html", hort, "theme-hort")
 
 # =====================================================================
 # AKTUELLES
 # =====================================================================
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
-                [("termine", "Termine"), ("elternbrief", "Liebe Eltern"), ("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
+                [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
 <div class="notes-grid">
   <div>
@@ -1014,7 +1075,7 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
     {"".join(ev(r) for r in TERMINE)}
   </ul>
   <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
-  <div class="btn-row"><a class="btn btn-ghost" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
+  <div class="btn-row"><a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
   <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
   </div>
   <div class="note-card reveal">
@@ -1027,11 +1088,11 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
 </div>''')
 BRIEFE = read_csv("elternbriefe.csv")
 def brief(i, r):
-    paras = "".join(f"<p>{e(p.strip())}</p>" for p in r["Text"].split("||") if p.strip())
-    gruss = f'<p class="sign-off">{"<br>".join(e(x) for x in r["Gruß"].split("||"))}</p>' if r.get("Gruß") else ""
+    paras = "".join(f"<p>{rich(p.strip())}</p>" for p in r["Text"].split("||") if p.strip())
+    gruss = f'<p class="sign-off">{"<br>".join(rich(x) for x in r["Gruß"].split("||"))}</p>' if r.get("Gruß") else ""
     return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
             f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
-akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
+if BRIEFE: akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
 <div class="briefe">
   <div class="faq-search brief-search reveal"{" hidden" if len(BRIEFE) < 2 else ""}><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label>{icon("search", 20)}<input type="search" id="brief-suche" name="brief" placeholder="Elternbriefe durchsuchen, z. B. Fasching …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
   {"".join(brief(i, r) for i, r in enumerate(BRIEFE))}
@@ -1307,6 +1368,7 @@ def _bereich(page, name, extra):
             ("tagesablauf", "Tagesablauf", "ablauf bringzeit abholzeit abholen mittagsschlaf hausaufgaben"),
             ("auszeichnung", "Das zeichnet uns aus", "vorteile besonderheiten konzept fachkraft"),
             ("fragen", "Häufige Fragen", "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"),
+            ("anmeldung", "Platz anfragen & Kennenlernen", "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"),
             ("ferienplan", "Ferienplan & Schließtage", "ferien schließtage urlaub geschlossen")]
     out = [(name, "Bereich", page, extra)]
     out += [(t, name, f"{page}#{a}", k) for a, t, k in secs]
@@ -1341,7 +1403,7 @@ SUCHE += [
 kita = {
     "schliesszeiten": [{"name": r["Anlass"], "von": d(r["erster Schließtag"]).isoformat(), "bis": d(r["letzter Schließtag"]).isoformat(), "tage": int(r["Schließtage"])} for r in SCHLIESSTAGE],
     "feiertage": [{"datum": d(r["Datum"]).isoformat(), "name": r["Feiertag"]} for r in FEIERTAGE],
-    "planEnde": d(SCHLIESSTAGE[-1]["wieder geöffnet"]).isoformat(),
+    "planEnde": (d(SCHLIESSTAGE[-1]["wieder geöffnet"]) if SCHLIESSTAGE else dt.date(_KJ + 1, 8, 31)).isoformat(),
     "oeffnung": "06:45", "schluss": "18:00",
     "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"]} for r in TERMINE],
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],

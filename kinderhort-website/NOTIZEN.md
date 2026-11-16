@@ -285,6 +285,25 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Stresstest, Critique, Handy (16.11.2026)
+**break-ui** (Grenzfall-Daten in Kopien der Seite: Worst Case, leer, eins, viele) – behoben:
+- Gruß im Elternbrief: **fett** mit `**…**` (alte `<strong>`-Schreibweise wird weiter verstanden). War seit der Sicherheitskorrektur als Text sichtbar.
+- Leere `schliesstage.csv` bricht den Bau nicht mehr ab („Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.“); Zeilen werden nach Datum sortiert, das Kita-Jahr läuft September–August.
+- Keine Elternbriefe → Abschnitt und Sprungmarke entfallen; keine kommenden Termine → kein „Alle in den Kalender“.
+- Internet- und E-Mail-Adressen in Terminen und Elternbriefen sind anklickbar; ab 12 Terminen „Alle N Termine anzeigen“.
+- Datum steht oben neben langen Terminen; Anführungszeichen der Elternstimmen über dem Text.
+- Ferienplan: zweites „Pfingsten“ (28.05.2027) heißt jetzt „Brückentag nach Fronleichnam“.
+- Fokusrahmen umrandet bei Suchfeldern das sichtbare Feld.
+
+**impeccable critique** (27/40) – umgesetzt nach Wahl:
+- **Kind krankmelden** auf der Startseite (unter „Jetzt geöffnet“) und im Handy-Menü: aufklappbar, jede Gruppe direkt anrufen oder E-Mail mit Vorlage. Hinweis „Bitte geben Sie möglichst früh am Morgen Bescheid.“ – **vom Hort prüfen lassen, ob es eine feste Uhrzeit gibt.**
+- **Anmeldung** auf jeder Bereichsseite („So bekommen Sie einen Platz“): Platz anfragen (Vorlage mit Bereich) und Kennenlernen vereinbaren, eigene Sprungmarke. Warteliste/Fristen/Kosten kommen dazu, sobald der Hort sie nennt.
+- **Kürzer:** Startseite und Bereichsseiten zeigen nur noch den Zeitstrahl mit nächster Schließzeit + „Ganzen Ferienplan ansehen“; der volle Plan steht auf „Aktuelles“ und ist am Handy als Karten statt breiter Tabelle. Wortwolke entfernt, drei statt vier Kennzahlen. „Das zeichnet uns aus“: zwei Punkte je Gruppe, Rest über „Alle N Punkte anzeigen“.
+- Aktiver Punkt im Handy-Menü: Fläche statt rosé Streifen.
+- Noch offen aus der Critique: undatierte Karte „Sankt Martin“ auf Aktuelles, Kennzahl „75 % Übertritt … 2021“.
+
+**mobile-native:** keine graue Tipp-Fläche (eigene Rückmeldung beim Drücken), Hover-Bewegung auf Touch abgefangen, keine Textauswahl auf Knöpfen, Kalender-Wischen, `color-scheme: light`. Eingabefelder ≥ 16 px (kein iPhone-Zoom). Am echten Handy prüfen: Tipp-Rückmeldung, Wischen im Kalender, Statusleiste der installierten App.
+
 ## Animationen nach Emil Kowalski (16.11.2026)
 Audit mit `improve-animations`, zehn Pläne in `plans/` (alle DONE), umgesetzt von einem eigenen Agenten, danach geprüft:
 - Fokusrahmen springt bei Tab sofort (keine Bewegung bei Tastatur-Aktionen).

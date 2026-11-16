@@ -32,7 +32,7 @@ window.KITA = {
    "tage": 1
   },
   {
-   "name": "Pfingsten",
+   "name": "Brückentag nach Fronleichnam",
    "von": "2027-05-28",
    "bis": "2027-05-28",
    "tage": 1
@@ -177,6 +177,12 @@ window.KITA = {
    "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
   },
   {
+   "t": "Platz anfragen & Kennenlernen",
+   "s": "Kinderkrippe",
+   "u": "kinderkrippe.html#anmeldung",
+   "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
+  },
+  {
    "t": "Ferienplan & Schließtage",
    "s": "Kinderkrippe",
    "u": "kinderkrippe.html#ferienplan",
@@ -225,6 +231,12 @@ window.KITA = {
    "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
   },
   {
+   "t": "Platz anfragen & Kennenlernen",
+   "s": "Kindergarten",
+   "u": "kindergarten.html#anmeldung",
+   "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
+  },
+  {
    "t": "Ferienplan & Schließtage",
    "s": "Kindergarten",
    "u": "kindergarten.html#ferienplan",
@@ -271,6 +283,12 @@ window.KITA = {
    "s": "Kinderhort",
    "u": "kinderhort.html#fragen",
    "k": "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"
+  },
+  {
+   "t": "Platz anfragen & Kennenlernen",
+   "s": "Kinderhort",
+   "u": "kinderhort.html#anmeldung",
+   "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
   },
   {
    "t": "Ferienplan & Schließtage",
