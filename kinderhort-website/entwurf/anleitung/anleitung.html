@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Webseite pflegen – Anleitung für das Team</title>
+<style>
+@font-face { font-family: "Plus Jakarta Sans"; src: url(../../fonts/plus-jakarta-sans-latin-wght-normal.woff2) format("woff2"); font-weight: 200 800; }
+@page { size: A4; margin: 16mm 16mm 18mm; }
+:root { --ink: #1E3B44; --soft: #3E5A63; --sage: #A8C5C0; --paper: #F3F8F7; --rose: #D4B5B0; --rose-soft: #F1E5E3; --teal: #2D6A6A; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 10.5pt/1.55 "Plus Jakarta Sans", system-ui, sans-serif; color: var(--ink); }
+h1 { font-size: 24pt; line-height: 1.1; margin: 0 0 4mm; letter-spacing: -.02em; }
+h2 { font-size: 15pt; margin: 0 0 3mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; }
+h2 .n { display: inline-grid; place-items: center; width: 9mm; height: 9mm; border-radius: 50%; background: var(--ink); color: #fff; font-size: 11pt; flex: none; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; break-after: avoid; }
+p { margin: 0 0 2.5mm; }
+.titel { background: var(--sage); border-radius: 6mm; padding: 12mm 12mm 10mm; margin-bottom: 8mm; }
+.titel p { font-size: 12pt; max-width: 140mm; }
+.kicker { display: inline-block; background: var(--rose); border-radius: 99px; padding: 1mm 4mm; font-weight: 700; font-size: 9pt; margin-bottom: 4mm; }
+section { margin-bottom: 8mm; }
+.neu-seite { break-before: page; }
+.uebersicht { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+.uebersicht th, .uebersicht td { text-align: left; padding: 2mm 3mm; border-bottom: .3mm solid #d5e2df; vertical-align: top; }
+.uebersicht th { background: var(--paper); }
+code, .datei { font-family: ui-monospace, "DejaVu Sans Mono", monospace; font-size: 9pt; background: var(--paper); border-radius: 1.2mm; padding: .3mm 1.2mm; }
+.tabelle { width: 100%; border-collapse: collapse; font: 8.5pt/1.35 ui-monospace, "DejaVu Sans Mono", monospace; margin: 2mm 0 3mm; }
+.tabelle th { background: #e2ecea; font-weight: 700; }
+.tabelle th, .tabelle td { border: .3mm solid #c3d4d1; padding: 1.5mm 2mm; text-align: left; vertical-align: top; }
+.tabelle td.neu { background: #fff5d6; }
+.tabelle caption { caption-side: top; text-align: left; font: 600 8.5pt "Plus Jakarta Sans", sans-serif; color: var(--soft); padding-bottom: 1mm; }
+.foto { display: block; max-width: 100%; border-radius: 3mm; border: .3mm solid #d5e2df; margin: 2mm 0 1mm; }
+.foto.halb { max-width: 74mm; }
+.unter { font-size: 8.5pt; color: var(--soft); margin-bottom: 4mm; }
+.tipp, .achtung { border-radius: 3mm; padding: 3mm 4mm; margin: 3mm 0; break-inside: avoid; }
+.tipp { background: var(--paper); border-left: 1.5mm solid var(--teal); }
+.achtung { background: var(--rose-soft); border-left: 1.5mm solid #B8574A; }
+.tipp b, .achtung b { display: block; margin-bottom: 1mm; }
+.terminal { background: #142A31; color: #E3EEEC; border-radius: 3mm; padding: 3mm 4mm; font: 8.5pt/1.5 ui-monospace, "DejaVu Sans Mono", monospace; white-space: pre-wrap; margin: 2mm 0 3mm; break-inside: avoid; }
+.terminal .ok { color: #8FE0B0; } .terminal .fehl { color: #F2A196; } .terminal .ein { color: #D4B5B0; }
+ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bottom: 1.5mm; }
+.zwei { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; align-items: start; }
+.fuss { font-size: 8.5pt; color: var(--soft); border-top: .3mm solid #d5e2df; padding-top: 3mm; margin-top: 8mm; }
+.mini-hinweis { background: var(--teal); color: #F3F8F7; border-radius: 4mm; padding: 4mm 5mm; max-width: 105mm; margin: 2mm 0 1mm; }
+.mini-hinweis small { display: block; opacity: .8; font-size: 8.5pt; } .mini-hinweis b { display: block; font-size: 11pt; }
+</style>
+</head>
+<body>
+
+<div class="titel">
+  <span class="kicker">Anleitung für das Team</span>
+  <h1>So pflegen Sie die Webseite</h1>
+  <p>Termine, Schließtage, Elternbriefe und Hinweise tragen Sie in einfache Tabellen ein. Ein kurzer Befehl baut daraus die fertige Webseite, die Sie dann hochladen. Diese Anleitung zeigt jeden Schritt.</p>
+</div>
+
+<section>
+  <h2><span class="n">1</span>Was steht wo?</h2>
+  <p>Alle Tabellen liegen im Ordner <span class="datei">kinderhort-website/daten/</span>.</p>
+  <table class="uebersicht">
+    <tr><th>Datei</th><th>Was steht darin?</th><th>Wo erscheint es?</th></tr>
+    <tr><td><span class="datei">termine.csv</span></td><td>Termine und Veranstaltungen</td><td>„Aktuelles“, Startseite, Kalenderdatei</td></tr>
+    <tr><td><span class="datei">schliesstage.csv</span></td><td>Ferien und Schließtage des Kita-Jahres</td><td>Tabelle „Schließtage“, Anzeige „Jetzt geöffnet“, Kalenderdatei</td></tr>
+    <tr><td><span class="datei">elternbriefe.csv</span></td><td>Elternbriefe (neuester oben)</td><td>„Aktuelles“ → „Liebe Eltern“</td></tr>
+    <tr><td><span class="datei">hinweise.csv</span></td><td>Kurze Hinweise mit Datum (z. B. Sankt Martin)</td><td>„Aktuelles“, verschwinden am Tag danach von selbst</td></tr>
+    <tr><td><span class="datei">feiertage.csv</span></td><td>Gesetzliche Feiertage in Bayern</td><td>Anzeige „heute geöffnet/geschlossen“, Kalender</td></tr>
+    <tr><td><span class="datei">elternstimmen.csv</span></td><td>Zitate von Eltern (nur mit Einverständnis, ohne Namen)</td><td>Startseite (erscheint erst, wenn etwas drinsteht)</td></tr>
+  </table>
+  <div class="tipp"><b>Mit welchem Programm?</b>Mit Excel oder LibreOffice öffnen. Beim Speichern immer <b style="display:inline">„CSV UTF-8 (durch Trennzeichen getrennt)“</b> wählen – in LibreOffice „Text CSV“, Zeichensatz UTF-8, Feldtrenner Semikolon. Sonst gehen Umlaute wie „ä“ oder „ß“ verloren.</div>
+  <div class="achtung"><b>Datum immer so schreiben: TT.MM.JJJJ</b>Also <code>04.12.2026</code> – nicht „4.12.26“ und nicht „4. Dezember“. Excel ändert Datumsangaben manchmal von selbst; die Prüfung beim Bauen (Schritt 6) meldet das sofort.</div>
+</section>
+
+<section class="neu-seite">
+  <h2><span class="n">2</span>Einen Termin eintragen</h2>
+  <p>Öffnen Sie <span class="datei">termine.csv</span> und fügen Sie eine neue Zeile hinzu. Die Reihenfolge der Zeilen ist egal – die Webseite sortiert nach Datum. Vergangene Termine verschwinden automatisch; Sie müssen sie nicht löschen.</p>
+  <table class="tabelle">
+    <caption>termine.csv – die gelb markierte Zeile ist neu</caption>
+    <tr><th>von</th><th>bis</th><th>Titel</th><th>Beschreibung</th><th>Bereich</th></tr>
+    <tr><td>04.12.2026</td><td>04.12.2026</td><td>Weihnachtsmarkt mit Christbaumverkauf</td><td>Freitag, 04.12.2026, ab 16:30 Uhr.</td><td></td></tr>
+    <tr><td>07.12.2026</td><td>07.12.2026</td><td>Der Nikolaus besucht uns</td><td>Am 07.12.2026.</td><td></td></tr>
+    <tr><td class="neu">12.01.2027</td><td class="neu">12.01.2027</td><td class="neu">Elternabend Kindergarten</td><td class="neu">Um 19:30 Uhr im Turnraum.</td><td class="neu">Kindergarten</td></tr>
+    <tr><td>06.09.2027</td><td>10.09.2027</td><td>Österreich-Ferienfreizeit</td><td>Die Ferienfreizeit der Hortkinder findet vom 06.09. bis 10.09.2027 statt.</td><td>Hort</td></tr>
+  </table>
+  <ul>
+    <li><b>von / bis:</b> Bei eintägigen Terminen zweimal dasselbe Datum.</li>
+    <li><b>Beschreibung:</b> Mit <code>**zwei Sternchen**</code> wird ein Wort fett. Internet- und E-Mail-Adressen werden von selbst anklickbar.</li>
+    <li><b>Bereich:</b> leer = für das ganze Haus. Sonst <code>Krippe</code>, <code>Kindergarten</code> oder <code>Hort</code> (mehrere mit Komma). Dann gibt es auf „Aktuelles“ die Knöpfe zum Filtern.</li>
+  </ul>
+  <img class="foto halb" src="f-termine.png" alt="">
+  <p class="unter">So sieht die Terminliste auf der Webseite aus. Eltern können Termine merken, teilen und in ihren Kalender übernehmen.</p>
+  <div class="tipp"><b>Tag der offenen Tür</b>Enthält der Titel „Tag der offenen Tür“, „Infoabend“, „Schnuppertag“ oder „Kennenlernen“, erscheint auf der Startseite sechs Wochen vorher ein auffälliges Band – ohne weiteres Zutun.</div>
+</section>
+
+<section class="neu-seite">
+  <h2><span class="n">3</span>Schließtage für ein neues Kita-Jahr</h2>
+  <p>In <span class="datei">schliesstage.csv</span> steht pro Schließzeit eine Zeile. Für das neue Kita-Jahr die alten Zeilen durch die neuen ersetzen.</p>
+  <table class="tabelle">
+    <caption>schliesstage.csv</caption>
+    <tr><th>Anlass</th><th>geöffnet bis</th><th>erster Schließtag</th><th>Hinweis erster Tag</th><th>letzter Schließtag</th><th>Hinweis letzter Tag</th><th>wieder geöffnet</th><th>Schließtage</th></tr>
+    <tr><td>Herbstferien</td><td>30.10.2026</td><td>02.11.2026</td><td></td><td>03.11.2026</td><td></td><td>04.11.2026</td><td>2</td></tr>
+    <tr><td>Fasching</td><td>05.02.2027</td><td>08.02.2027</td><td>Rosenmontag</td><td>09.02.2027</td><td>Faschingsdienstag</td><td>10.02.2027</td><td>2</td></tr>
+  </table>
+  <ul>
+    <li><b>Schließtage</b> = Anzahl der Arbeitstage, die geschlossen ist (ohne Wochenenden und Feiertage).</li>
+    <li>Die <b>Hinweis</b>-Spalten sind freiwillig, z. B. „Rosenmontag“.</li>
+    <li>Die Webseite erkennt das Kita-Jahr selbst und zeigt überall die richtige Jahreszahl.</li>
+  </ul>
+  <img class="foto" src="f-schliesstage.png" alt="">
+  <p class="unter">Die Tabelle „Schließtage“ auf der Seite „Aktuelles“.</p>
+  <div class="zwei">
+    <div><img class="foto" src="f-status.png" alt=""><p class="unter">Daraus berechnet die Startseite auch „Jetzt geöffnet / geschlossen“ und die nächste Schließzeit.</p></div>
+    <div class="tipp"><b>Neues Kita-Jahr – auch das PDF tauschen</b>Den Ferienplan als PDF legen Sie in den Ordner <span class="datei">downloads/</span>. Hat er einen neuen Dateinamen, bitte kurz Bescheid geben, damit die Links angepasst werden.<br><br><b>Feiertage</b> stehen in <span class="datei">feiertage.csv</span> (Spalten: Datum; Feiertag) – einmal im Jahr für das nächste Jahr ergänzen.</div>
+  </div>
+</section>
+
+<section class="neu-seite">
+  <h2><span class="n">4</span>Einen Elternbrief veröffentlichen</h2>
+  <p>In <span class="datei">elternbriefe.csv</span> kommt der <b>neueste Brief ganz nach oben</b> (direkt unter die Kopfzeile).</p>
+  <table class="tabelle">
+    <caption>elternbriefe.csv</caption>
+    <tr><th>Stand</th><th>Titel</th><th>Text</th><th>Gruß</th></tr>
+    <tr><td class="neu">Januar 2027</td><td class="neu">Fasching im Hort</td><td class="neu">Liebe Eltern, am Rosenmontag … ||Bitte geben Sie Ihrem Kind **kein Konfetti** mit. ||Weitere Infos: https://…</td><td class="neu">Herzliche Grüße||**Petra Lachnit**||Einrichtungsleiterin</td></tr>
+    <tr><td>Kita-Jahr 2026/27</td><td>Schließtage, Fortbildungen und Überstunden</td><td>Nach dem BayKiBiG …</td><td>Im Auftrag des Vorsitzenden||**Petra Lachnit**||Einrichtungsleiterin</td></tr>
+  </table>
+  <ul>
+    <li><code>||</code> (zwei senkrechte Striche) beginnt einen neuen Absatz bzw. eine neue Zeile im Gruß.</li>
+    <li><code>**…**</code> macht Text fett.</li>
+    <li>Ein neuer Brief bekommt auf der Webseite einige Tage lang den Hinweis „neu“.</li>
+  </ul>
+  <img class="foto" src="f-brief.png" alt="">
+  <p class="unter">Eltern können jeden Brief aufklappen, durchsuchen, teilen und einzeln drucken.</p>
+</section>
+
+<section class="neu-seite">
+  <h2><span class="n">5</span>Einen kurzen Hinweis geben</h2>
+  <p>Für kurze, zeitlich begrenzte Hinweise gibt es <span class="datei">hinweise.csv</span>. Am Tag nach dem Datum verschwindet der Hinweis von selbst.</p>
+  <table class="tabelle">
+    <caption>hinweise.csv</caption>
+    <tr><th>Datum</th><th>Titel</th><th>Text</th></tr>
+    <tr><td class="neu">11.11.2026</td><td class="neu">Sankt Martin</td><td class="neu">Der Sankt-Martins-Umzug findet auch in diesem Jahr wieder in den einzelnen Gruppen statt.</td></tr>
+  </table>
+  <div class="mini-hinweis"><small>Mi, 11.11.2026</small><b>Sankt Martin</b>Der Sankt-Martins-Umzug findet auch in diesem Jahr wieder in den einzelnen Gruppen statt.</div>
+  <p class="unter">So ungefähr erscheint der Hinweis auf „Aktuelles“.</p>
+</section>
+
+<section>
+  <h2><span class="n">6</span>Die Webseite bauen</h2>
+  <p>Nach jeder Änderung an den Tabellen wird die Webseite einmal neu gebaut. Das dauert wenige Sekunden.</p>
+  <h3>Einmalig vorbereiten (nur beim ersten Mal)</h3>
+  <ol class="schritte">
+    <li>Python installieren: <code>python.org</code> → „Downloads“. Unter Windows beim Installieren <b>„Add Python to PATH“</b> anhaken.</li>
+    <li>Ein Fenster für Befehle öffnen (Windows: „Eingabeaufforderung“, Mac: „Terminal“) und einmal eingeben:<div class="terminal"><span class="ein">pip install pillow</span></div></li>
+  </ol>
+  <h3>Bei jeder Änderung</h3>
+  <ol class="schritte">
+    <li>Im Befehlsfenster in den Ordner <span class="datei">kinderhort-website</span> wechseln (z. B. <code>cd Desktop\kinderhort-website</code>).</li>
+    <li>Eingeben (Windows: <code>py build.py</code>, Mac: <code>python3 build.py</code>):</li>
+  </ol>
+  <div class="terminal"><span class="ein">python3 build.py</span>
+ok
+Upload-Paket: 196 Dateien in kinderhort-webseite.zip (ohne Notizen, Tabellen, Entwürfe)
+<span class="ok">Daten-Prüfung: alles in Ordnung.</span></div>
+  <p>Steht am Ende <b>„alles in Ordnung“</b>, ist alles gut. Sonst nennt die Prüfung Datei, Zeile und Fehler, zum Beispiel:</p>
+  <div class="terminal"><span class="fehl">Daten-Prüfung:
+  ✗ termine.csv Zeile 5: Datum „4.12.26“ in Spalte „von“ ist nicht lesbar (Format TT.MM.JJJJ)</span></div>
+  <p>Die fehlerhafte Zeile wird dann einfach weggelassen, der Rest der Seite funktioniert. Zeile korrigieren, speichern, noch einmal bauen.</p>
+</section>
+
+<section class="neu-seite">
+  <h2><span class="n">7</span>Hochladen</h2>
+  <p>Nach dem Bauen liegt <b>neben</b> dem Ordner die Datei <span class="datei">kinderhort-webseite.zip</span>. Sie enthält nur das, was öffentlich sein darf.</p>
+  <ol class="schritte">
+    <li><span class="datei">kinderhort-webseite.zip</span> entpacken.</li>
+    <li>Mit dem Programm des Hosters (oder z. B. FileZilla) den <b>Inhalt</b> des entpackten Ordners <span class="datei">kinderhort-website</span> auf den Webspace laden und vorhandene Dateien überschreiben.</li>
+    <li>Die Webseite im Browser öffnen und kurz nachsehen. Neue Termine sind sofort da – Eltern müssen nichts neu laden.</li>
+  </ol>
+  <div class="achtung"><b>Bitte nie den ganzen Projektordner hochladen</b>Dort liegen auch interne Notizen, die Tabellen und Entwürfe. Das Upload-Paket lässt all das bewusst weg.</div>
+  <div class="tipp"><b>Die Datei .htaccess mit hochladen</b>Sie beginnt mit einem Punkt und ist darum in manchen Programmen versteckt. Sie enthält wichtige Schutz-Einstellungen. In FileZilla: Menü „Server“ → „Anzeige versteckter Dateien erzwingen“.</div>
+</section>
+
+<section>
+  <h2><span class="n">8</span>Wenn etwas nicht klappt</h2>
+  <table class="uebersicht">
+    <tr><th>Problem</th><th>Lösung</th></tr>
+    <tr><td>Umlaute erscheinen als „Ã¤“ o. Ä.</td><td>Die Tabelle wurde nicht als UTF-8 gespeichert. Noch einmal als „CSV UTF-8“ speichern.</td></tr>
+    <tr><td>Alles steht in einer einzigen Spalte</td><td>Trennzeichen war Komma statt Semikolon. In LibreOffice beim Öffnen „Semikolon“ wählen.</td></tr>
+    <tr><td>„python“ wird nicht gefunden</td><td>Python ist nicht installiert oder „Add Python to PATH“ fehlte. Neu installieren. Unter Windows <code>py build.py</code> versuchen.</td></tr>
+    <tr><td>„No module named PIL“</td><td>Einmal <code>pip install pillow</code> eingeben (Schritt 6).</td></tr>
+    <tr><td>Ein Termin fehlt auf der Seite</td><td>Liegt das Datum in der Vergangenheit? Meldet die Daten-Prüfung einen Fehler in dieser Zeile?</td></tr>
+    <tr><td>Die Datei <span class="datei">erstmals.json</span></td><td>Bitte nicht von Hand ändern – sie merkt sich, seit wann ein Termin auf der Seite steht.</td></tr>
+  </table>
+  <p class="fuss">Kath. Kinder- und Jugendhort Grombühl e. V. · Anleitung zur Webseite · Stand November 2026<br>Die Kurzfassung steht auch in der Datei <span class="datei">daten/LIESMICH.txt</span>.</p>
+</section>
+
+</body>
+</html>
