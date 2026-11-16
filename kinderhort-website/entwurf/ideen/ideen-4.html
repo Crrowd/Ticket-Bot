@@ -384,6 +384,48 @@ button { font: inherit; color: inherit; }
 .bz2 div { display: grid; grid-template-columns: 120px 1fr 34px; gap: 8px; align-items: center; }
 .bz2 i { display: block; height: 10px; border-radius: 4px; background: #2D6A6A; }
 .bz2 span { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Runde 5 */
+.lst { width: 290px; display: grid; gap: 6px; }
+.lst .tile { display: flex; gap: 10px; align-items: center; }
+.lst .tile i { width: 16px; height: 16px; border-radius: 5px; border: 2px solid #2D6A6A; flex: none; }
+.weg { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; overflow: hidden; font-size: .78rem; }
+.weg .map { height: 110px; background: repeating-linear-gradient(0deg, transparent 0 22px, rgba(30,59,68,.08) 22px 24px), repeating-linear-gradient(90deg, transparent 0 30px, rgba(30,59,68,.08) 30px 32px), #E6EFED; position: relative; }
+.weg .map i { position: absolute; left: 52%; top: 38%; width: 18px; height: 18px; border-radius: 50% 50% 50% 0; rotate: -45deg; background: #B8574A; }
+.weg .t { padding: 10px 12px; display: grid; gap: 4px; }
+.frist { width: 290px; display: grid; gap: 8px; }
+.frist .tile { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
+.frist em { font-style: normal; font-weight: 700; font-size: .74rem; padding: 3px 8px; border-radius: 6px; background: #F6D9D3; color: #7E3B31; }
+.otd { width: 100%; max-width: 420px; background: #D4B5B0; color: #1E3B44; border-radius: 16px; padding: 16px 18px; display: grid; gap: 4px; }
+.otd b { font-size: 1.15rem; } .otd span { font-size: .8rem; }
+.rech { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 10px; font-size: .78rem; }
+.rech input { width: 100%; accent-color: #2D6A6A; }
+.rech .res { font-size: 1.05rem; font-weight: 700; }
+.ag { width: 100%; max-width: 420px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; color: #1E3B44; font-size: .7rem; }
+.ag div { background: #F3F8F7; border-radius: 10px; padding: 8px 6px; display: grid; gap: 4px; text-align: center; }
+.ag b { font-size: .76rem; }
+.zit { width: 100%; max-width: 380px; color: #F3FAF8; text-align: center; display: grid; gap: 8px; }
+.zit q { font-size: 1.25rem; font-weight: 700; line-height: 1.3; quotes: "„" "“"; }
+.zit span { font-size: .78rem; opacity: .8; }
+.kz { width: 100%; max-width: 380px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.kz div { background: #F3F8F7; border-radius: 14px; aspect-ratio: 1; display: grid; place-items: center; }
+.kz svg { width: 60%; height: 60%; }
+.sync { width: 300px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; color: #F3FAF8; font-size: .74rem; text-align: center; }
+.sync div { background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 10px 8px; display: grid; gap: 4px; }
+.brief5 { width: 250px; background: #fff; color: #1E3B44; border-radius: 6px; padding: 14px; font-size: .68rem; display: grid; gap: 6px; box-shadow: 0 10px 22px rgba(0,0,0,.3); aspect-ratio: 1 / 1.3; align-content: start; }
+.brief5 .kopf { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #A8C5C0; padding-bottom: 6px; }
+.brief5 .kopf b { font-size: .78rem; }
+.brief5 i { display: block; height: 6px; border-radius: 3px; background: #E6EFED; }
+.links { width: 300px; background: #fff; color: #1E3B44; border-radius: 12px; padding: 12px 14px; font: .72rem/1.6 ui-monospace, Menlo, monospace; box-shadow: 0 10px 22px rgba(0,0,0,.3); }
+.links .ok { color: #2F7A55; } .links .warn { color: #A5502F; font-weight: 700; }
+.schule { width: 290px; display: grid; gap: 6px; }
+.schule .tile { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.kurz { width: 300px; display: grid; gap: 6px; }
+.kurz .tile p { margin: 4px 0 0; }
+.kurz .ja { display: inline-block; font-weight: 800; padding: 1px 7px; border-radius: 6px; background: #DDEFE5; color: #2F7A55; margin-right: 4px; }
+.log { width: 300px; display: grid; gap: 6px; color: #F3FAF8; font-size: .74rem; }
+.log div { background: rgba(243,248,247,.1); border-radius: 10px; padding: 8px 10px; display: grid; gap: 2px; }
+.log span { opacity: .75; }
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -421,7 +463,7 @@ button { font: inherit; color: inherit; }
     <h1>Neue Ideen aus allen Skills</h1>
     <p>Jede Idee stammt aus einem der installierten Skills – das kleine Etikett zeigt, aus welchem. Die Beispiele lassen sich anfassen: tippen, ziehen, schieben. Darunter wie gewohnt <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> und eine Anmerkung.</p>
   </header>
-  <button class="jump" id="jumpNew" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>Zu den neuen Ideen (57–71)</button>
+  <button class="jump" id="jumpNew" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>Zu den neuen Ideen (72–85)</button>
   <p class="sync-note">Ihre Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
 
   <div class="filter" role="group" aria-label="Ideen filtern">
@@ -773,94 +815,178 @@ button { font: inherit; color: inherit; }
         <h2><span class="num">56</span> Unsere Geschichte als Zeitleiste</h2><p>Eine kleine Zeitleiste: Gründung, Umbau, neue Krippe, Auszeichnungen. Zeigt, dass hier seit Jahrzehnten Kinder groß werden. Die Jahreszahlen kommen vom Hort.</p><p class="where">Hier mit Platzhaltern.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch" id="neu-start">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="wet"><div class="chips" id="wtc"><button aria-pressed="true" data-w="r">Regen</button><button aria-pressed="false" data-w="s">Sonne</button><button aria-pressed="false" data-w="k">Kalt</button></div><div class="tile" id="wtt"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 15a4 4 0 1 1 1-7.9A5 5 0 0 1 18 9a3 3 0 0 1 0 6z"/><path d="M9 18l-1 2M13 18l-1 2M17 18l-1 2"/></svg><span>Heute bitte <b style="display:inline">Matschhose und Gummistiefel</b> mitgeben.</span></div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
         <h2><span class="num">57</span> Wetter-Hinweis: Matschhose oder Sonnenhut</h2><p>Auf der Startseite erscheint bei Regen „Heute bitte Matschhose und Gummistiefel“, bei Hitze „Sonnenhut und Sonnencreme“. Ein Satz, nur wenn er nötig ist.</p><p class="where">Braucht einen kostenlosen Wetterdienst ohne Cookies (z. B. Open-Meteo); bis dahin nur als Idee.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="bes"><div class="chips" id="bsc"><button aria-pressed="true" data-o="1">10:00</button><button aria-pressed="false" data-o="0">18:30</button></div><div class="call" id="bst">Bienengruppe anrufen</div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">mobile-native</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">mobile-native</span></div>
         <h2><span class="num">58</span> Anrufen nur, wenn jemand da ist</h2><p>Außerhalb der Öffnungszeiten wird der Anruf-Knopf zu „Gerade nicht besetzt – E-Mail schreiben“. Niemand lässt es um 18 Uhr ins Leere klingeln.</p><p class="where">Nutzt die Öffnungszeiten, die „Jetzt geöffnet“ schon kennt.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="wk"><div><b>Mo 16.</b></div><div class="today"><b>Di 17.</b><span>Basteln</span></div><div><b>Mi 18.</b></div><div><b>Do 19.</b><span>Eltern&shy;abend</span></div><div><b>Fr 20.</b><span class="zu">ge<span class="zu">Schließ&shy;tag</span>shy;schlos<span class="zu">Schließ&shy;tag</span>shy;sen</span></div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
         <h2><span class="num">59</span> Diese Woche auf einen Blick</h2><p>Eine Leiste mit Montag bis Freitag: Termine, Schließtage und Feiertage der laufenden Woche. Der heutige Tag ist umrandet.</p><p class="where">Für den Sonntagabend-Blick: Was kommt diese Woche?</p></div>
     </article>
 
-    <article class="card frisch" data-k="neu frisch">
+    <article class="card" data-k="neu">
       <div class="stage"><div class="demo"><div class="eg"><div><b>Tag 1–3</b>Sie bleiben dabei, eine Stunde am Vormittag.</div><div><b>Tag 4</b>Erster kurzer Abschied, 15 Minuten.</div><div><b>Woche 2</b>Längere Zeiten, erstes Mittagessen.</div><div><b>Woche 3–4</b>Ihr Kind bleibt bis zur gebuchten Zeit.</div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable onboard</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable onboard</span></div>
         <h2><span class="num">60</span> Eingewöhnung Schritt für Schritt</h2><p>Für Krippe und Kindergarten: was in den ersten Tagen und Wochen passiert – wann Eltern dabei sind, wann der erste kurze Abschied kommt. Nimmt viel Unsicherheit vor dem Start.</p><p class="where">Die Inhalte (z. B. nach dem Berliner Modell) liefert der Hort.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="yb"><div><i><em style="height:0%"></em></i>Sep</div><div><i><em style="height:10%"></em></i>Okt</div><div><i><em style="height:5%"></em></i>Nov</div><div><i><em style="height:35%"></em></i>Dez</div><div><i><em style="height:10%"></em></i>Jan</div><div><i><em style="height:0%"></em></i>Feb</div><div><i><em style="height:8%"></em></i>Mär</div><div><i><em style="height:25%"></em></i>Apr</div><div><i><em style="height:15%"></em></i>Mai</div><div><i><em style="height:5%"></em></i>Jun</div><div><i><em style="height:0%"></em></i>Jul</div><div><i><em style="height:90%"></em></i>Aug</div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">dataviz</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">dataviz</span></div>
         <h2><span class="num">61</span> Das Kita-Jahr als Band</h2><p>Zwölf kleine Säulen von September bis August: Wie viele Tage im Monat geschlossen ist. Sieht man auf einen Blick, wann Urlaub ohne Betreuung geplant werden muss.</p><p class="where">Rechnet direkt aus schliesstage.csv.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="frm"><b>Medikamentenvereinbarung</b><label>Name des Kindes<span class="f">…</span></label><label>Medikament<span class="f">…</span></label><label>Wann und wie viel<span class="f">…</span></label></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable adapt</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable adapt</span></div>
         <h2><span class="num">62</span> Formulare direkt am Handy ausfüllen</h2><p>Die Medikamentenvereinbarung und ähnliche Formulare gibt es nicht nur als PDF zum Ausdrucken, sondern als kurzes Formular. Am Ende entsteht eine fertige E-Mail – oder ein sauberes PDF zum Unterschreiben.</p><p class="where">Ohne Server: alles bleibt im Browser, bis man selbst auf „Senden“ tippt.</p></div>
     </article>
 
-    <article class="card frisch" data-k="gestalt frisch">
+    <article class="card" data-k="gestalt">
       <div class="stage"><div class="demo"><div class="wj"><svg viewBox="0 0 420 80" aria-hidden="true"><path d="M10 18 Q210 48 410 18" fill="none" stroke="#F3F8F7" stroke-width="1.5"/><path class="w" d="M20 30l18 34 18-34z"/><path class="w" d="M65 27l18 34 18-34z"/><path class="w" d="M110 24l18 34 18-34z"/><path class="w" d="M155 21l18 34 18-34z"/><path class="w" d="M200 18l18 34 18-34z"/><path class="w" d="M245 21l18 34 18-34z"/><path class="w" d="M290 24l18 34 18-34z"/><path class="w" d="M335 27l18 34 18-34z"/><path class="w" d="M380 30l18 34 18-34z"/></svg><div class="chips" id="wjc"><button aria-pressed="false" data-s="fr">Frühling</button><button aria-pressed="false" data-s="so">Sommer</button><button aria-pressed="true" data-s="he">Herbst</button><button aria-pressed="false" data-s="wi">Winter</button></div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable delight</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable delight</span></div>
         <h2><span class="num">63</span> Die Wimpelkette im Jahreslauf</h2><p>Die Wimpelkette (das Leitbild der Seite) wechselt leise mit der Jahreszeit die Farben: frisch im Frühling, warm im Herbst, gedeckt im Winter. Immer in der festen Farbfamilie.</p><p class="where">Nur Farbtöne, keine neuen Figuren oder Bewegungen.</p></div>
     </article>
 
-    <article class="card frisch" data-k="team frisch">
+    <article class="card" data-k="team">
       <div class="stage"><div class="demo"><div class="vt"><b>Änderungen seit gestern</b><span class="ok">+ Elternabend Hort · 19.11.</span><span class="ok">+ Konzeptionstag · 20.11.</span><span class="warn">! Zeile 14: „31.11.“ gibt es nicht</span></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable harden</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span></div>
         <h2><span class="num">64</span> Vorschau, bevor etwas online geht</h2><p>Nach dem Ändern einer Tabelle zeigt eine kleine Seite, was sich ändert: neue Termine, gelöschte Schließtage, Fehler wie ein falsches Datum. Erst danach wird hochgeladen.</p><p class="where">Baut auf der Daten-Prüfung auf, die beim Bauen schon läuft.</p></div>
     </article>
 
-    <article class="card frisch" data-k="team frisch">
+    <article class="card" data-k="team">
       <div class="stage"><div class="demo"><div class="ph6"><div><img src="img/lesecke-800.webp" alt="">Lesecke</div><div><div class="muster">Werkraum</div>Foto fehlt</div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">break-ui</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">break-ui</span></div>
         <h2><span class="num">65</span> Fehlt ein Foto, bleibt es ruhig</h2><p>Wenn ein Bild fehlt oder nicht lädt, erscheint statt eines kaputten Rahmens ein ruhiges Muster in Salbei mit dem Namen des Raums.</p><p class="where">Gefunden beim Stresstest mit leeren Daten.</p></div>
     </article>
 
-    <article class="card frisch" data-k="gestalt frisch">
+    <article class="card" data-k="gestalt">
       <div class="stage"><div class="demo"><div class="dk"><div class="hell"><b>Termine</b><span>Nikolaus · 07.12.</span><span>Weihnachtsmarkt</span></div><div class="dunkel"><b>Termine</b><span>Nikolaus · 07.12.</span><span>Weihnachtsmarkt</span></div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span></div>
         <h2><span class="num">66</span> Dunkle Ansicht am Abend</h2><p>Wer am Handy die dunkle Darstellung eingeschaltet hat, bekommt die Seite in tiefem Petrol statt hellem Papier – angenehm beim Blick abends im Bett.</p><p class="where">Folgt automatisch der Handy-Einstellung; die Farben bleiben aus der Familie.</p></div>
     </article>
 
-    <article class="card frisch" data-k="team frisch">
+    <article class="card" data-k="team">
       <div class="stage"><div class="demo"><div class="qr"><svg viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><rect x="0" y="0" width="1" height="1" fill="#1E3B44"/><rect x="1" y="0" width="1" height="1" fill="#1E3B44"/><rect x="2" y="0" width="1" height="1" fill="#1E3B44"/><rect x="3" y="0" width="1" height="1" fill="#1E3B44"/><rect x="4" y="0" width="1" height="1" fill="#1E3B44"/><rect x="5" y="0" width="1" height="1" fill="#1E3B44"/><rect x="6" y="0" width="1" height="1" fill="#1E3B44"/><rect x="8" y="0" width="1" height="1" fill="#1E3B44"/><rect x="10" y="0" width="1" height="1" fill="#1E3B44"/><rect x="12" y="0" width="1" height="1" fill="#1E3B44"/><rect x="14" y="0" width="1" height="1" fill="#1E3B44"/><rect x="15" y="0" width="1" height="1" fill="#1E3B44"/><rect x="16" y="0" width="1" height="1" fill="#1E3B44"/><rect x="17" y="0" width="1" height="1" fill="#1E3B44"/><rect x="18" y="0" width="1" height="1" fill="#1E3B44"/><rect x="19" y="0" width="1" height="1" fill="#1E3B44"/><rect x="20" y="0" width="1" height="1" fill="#1E3B44"/><rect x="0" y="1" width="1" height="1" fill="#1E3B44"/><rect x="6" y="1" width="1" height="1" fill="#1E3B44"/><rect x="9" y="1" width="1" height="1" fill="#1E3B44"/><rect x="11" y="1" width="1" height="1" fill="#1E3B44"/><rect x="14" y="1" width="1" height="1" fill="#1E3B44"/><rect x="20" y="1" width="1" height="1" fill="#1E3B44"/><rect x="0" y="2" width="1" height="1" fill="#1E3B44"/><rect x="2" y="2" width="1" height="1" fill="#1E3B44"/><rect x="3" y="2" width="1" height="1" fill="#1E3B44"/><rect x="4" y="2" width="1" height="1" fill="#1E3B44"/><rect x="6" y="2" width="1" height="1" fill="#1E3B44"/><rect x="8" y="2" width="1" height="1" fill="#1E3B44"/><rect x="10" y="2" width="1" height="1" fill="#1E3B44"/><rect x="12" y="2" width="1" height="1" fill="#1E3B44"/><rect x="14" y="2" width="1" height="1" fill="#1E3B44"/><rect x="16" y="2" width="1" height="1" fill="#1E3B44"/><rect x="17" y="2" width="1" height="1" fill="#1E3B44"/><rect x="18" y="2" width="1" height="1" fill="#1E3B44"/><rect x="20" y="2" width="1" height="1" fill="#1E3B44"/><rect x="0" y="3" width="1" height="1" fill="#1E3B44"/><rect x="2" y="3" width="1" height="1" fill="#1E3B44"/><rect x="3" y="3" width="1" height="1" fill="#1E3B44"/><rect x="4" y="3" width="1" height="1" fill="#1E3B44"/><rect x="6" y="3" width="1" height="1" fill="#1E3B44"/><rect x="9" y="3" width="1" height="1" fill="#1E3B44"/><rect x="11" y="3" width="1" height="1" fill="#1E3B44"/><rect x="14" y="3" width="1" height="1" fill="#1E3B44"/><rect x="16" y="3" width="1" height="1" fill="#1E3B44"/><rect x="17" y="3" width="1" height="1" fill="#1E3B44"/><rect x="18" y="3" width="1" height="1" fill="#1E3B44"/><rect x="20" y="3" width="1" height="1" fill="#1E3B44"/><rect x="0" y="4" width="1" height="1" fill="#1E3B44"/><rect x="2" y="4" width="1" height="1" fill="#1E3B44"/><rect x="3" y="4" width="1" height="1" fill="#1E3B44"/><rect x="4" y="4" width="1" height="1" fill="#1E3B44"/><rect x="6" y="4" width="1" height="1" fill="#1E3B44"/><rect x="8" y="4" width="1" height="1" fill="#1E3B44"/><rect x="10" y="4" width="1" height="1" fill="#1E3B44"/><rect x="12" y="4" width="1" height="1" fill="#1E3B44"/><rect x="14" y="4" width="1" height="1" fill="#1E3B44"/><rect x="16" y="4" width="1" height="1" fill="#1E3B44"/><rect x="17" y="4" width="1" height="1" fill="#1E3B44"/><rect x="18" y="4" width="1" height="1" fill="#1E3B44"/><rect x="20" y="4" width="1" height="1" fill="#1E3B44"/><rect x="0" y="5" width="1" height="1" fill="#1E3B44"/><rect x="6" y="5" width="1" height="1" fill="#1E3B44"/><rect x="9" y="5" width="1" height="1" fill="#1E3B44"/><rect x="11" y="5" width="1" height="1" fill="#1E3B44"/><rect x="14" y="5" width="1" height="1" fill="#1E3B44"/><rect x="20" y="5" width="1" height="1" fill="#1E3B44"/><rect x="0" y="6" width="1" height="1" fill="#1E3B44"/><rect x="1" y="6" width="1" height="1" fill="#1E3B44"/><rect x="2" y="6" width="1" height="1" fill="#1E3B44"/><rect x="3" y="6" width="1" height="1" fill="#1E3B44"/><rect x="4" y="6" width="1" height="1" fill="#1E3B44"/><rect x="5" y="6" width="1" height="1" fill="#1E3B44"/><rect x="6" y="6" width="1" height="1" fill="#1E3B44"/><rect x="8" y="6" width="1" height="1" fill="#1E3B44"/><rect x="10" y="6" width="1" height="1" fill="#1E3B44"/><rect x="12" y="6" width="1" height="1" fill="#1E3B44"/><rect x="14" y="6" width="1" height="1" fill="#1E3B44"/><rect x="15" y="6" width="1" height="1" fill="#1E3B44"/><rect x="16" y="6" width="1" height="1" fill="#1E3B44"/><rect x="17" y="6" width="1" height="1" fill="#1E3B44"/><rect x="18" y="6" width="1" height="1" fill="#1E3B44"/><rect x="19" y="6" width="1" height="1" fill="#1E3B44"/><rect x="20" y="6" width="1" height="1" fill="#1E3B44"/><rect x="0" y="8" width="1" height="1" fill="#1E3B44"/><rect x="2" y="8" width="1" height="1" fill="#1E3B44"/><rect x="4" y="8" width="1" height="1" fill="#1E3B44"/><rect x="6" y="8" width="1" height="1" fill="#1E3B44"/><rect x="1" y="9" width="1" height="1" fill="#1E3B44"/><rect x="3" y="9" width="1" height="1" fill="#1E3B44"/><rect x="5" y="9" width="1" height="1" fill="#1E3B44"/><rect x="9" y="9" width="1" height="1" fill="#1E3B44"/><rect x="12" y="9" width="1" height="1" fill="#1E3B44"/><rect x="15" y="9" width="1" height="1" fill="#1E3B44"/><rect x="18" y="9" width="1" height="1" fill="#1E3B44"/><rect x="0" y="10" width="1" height="1" fill="#1E3B44"/><rect x="2" y="10" width="1" height="1" fill="#1E3B44"/><rect x="4" y="10" width="1" height="1" fill="#1E3B44"/><rect x="6" y="10" width="1" height="1" fill="#1E3B44"/><rect x="10" y="10" width="1" height="1" fill="#1E3B44"/><rect x="13" y="10" width="1" height="1" fill="#1E3B44"/><rect x="16" y="10" width="1" height="1" fill="#1E3B44"/><rect x="19" y="10" width="1" height="1" fill="#1E3B44"/><rect x="1" y="11" width="1" height="1" fill="#1E3B44"/><rect x="3" y="11" width="1" height="1" fill="#1E3B44"/><rect x="5" y="11" width="1" height="1" fill="#1E3B44"/><rect x="0" y="12" width="1" height="1" fill="#1E3B44"/><rect x="2" y="12" width="1" height="1" fill="#1E3B44"/><rect x="4" y="12" width="1" height="1" fill="#1E3B44"/><rect x="6" y="12" width="1" height="1" fill="#1E3B44"/><rect x="9" y="12" width="1" height="1" fill="#1E3B44"/><rect x="12" y="12" width="1" height="1" fill="#1E3B44"/><rect x="15" y="12" width="1" height="1" fill="#1E3B44"/><rect x="18" y="12" width="1" height="1" fill="#1E3B44"/><rect x="10" y="13" width="1" height="1" fill="#1E3B44"/><rect x="13" y="13" width="1" height="1" fill="#1E3B44"/><rect x="16" y="13" width="1" height="1" fill="#1E3B44"/><rect x="19" y="13" width="1" height="1" fill="#1E3B44"/><rect x="0" y="14" width="1" height="1" fill="#1E3B44"/><rect x="1" y="14" width="1" height="1" fill="#1E3B44"/><rect x="2" y="14" width="1" height="1" fill="#1E3B44"/><rect x="3" y="14" width="1" height="1" fill="#1E3B44"/><rect x="4" y="14" width="1" height="1" fill="#1E3B44"/><rect x="5" y="14" width="1" height="1" fill="#1E3B44"/><rect x="6" y="14" width="1" height="1" fill="#1E3B44"/><rect x="0" y="15" width="1" height="1" fill="#1E3B44"/><rect x="6" y="15" width="1" height="1" fill="#1E3B44"/><rect x="9" y="15" width="1" height="1" fill="#1E3B44"/><rect x="12" y="15" width="1" height="1" fill="#1E3B44"/><rect x="15" y="15" width="1" height="1" fill="#1E3B44"/><rect x="18" y="15" width="1" height="1" fill="#1E3B44"/><rect x="0" y="16" width="1" height="1" fill="#1E3B44"/><rect x="2" y="16" width="1" height="1" fill="#1E3B44"/><rect x="3" y="16" width="1" height="1" fill="#1E3B44"/><rect x="4" y="16" width="1" height="1" fill="#1E3B44"/><rect x="6" y="16" width="1" height="1" fill="#1E3B44"/><rect x="10" y="16" width="1" height="1" fill="#1E3B44"/><rect x="13" y="16" width="1" height="1" fill="#1E3B44"/><rect x="16" y="16" width="1" height="1" fill="#1E3B44"/><rect x="19" y="16" width="1" height="1" fill="#1E3B44"/><rect x="0" y="17" width="1" height="1" fill="#1E3B44"/><rect x="2" y="17" width="1" height="1" fill="#1E3B44"/><rect x="3" y="17" width="1" height="1" fill="#1E3B44"/><rect x="4" y="17" width="1" height="1" fill="#1E3B44"/><rect x="6" y="17" width="1" height="1" fill="#1E3B44"/><rect x="0" y="18" width="1" height="1" fill="#1E3B44"/><rect x="2" y="18" width="1" height="1" fill="#1E3B44"/><rect x="3" y="18" width="1" height="1" fill="#1E3B44"/><rect x="4" y="18" width="1" height="1" fill="#1E3B44"/><rect x="6" y="18" width="1" height="1" fill="#1E3B44"/><rect x="9" y="18" width="1" height="1" fill="#1E3B44"/><rect x="12" y="18" width="1" height="1" fill="#1E3B44"/><rect x="15" y="18" width="1" height="1" fill="#1E3B44"/><rect x="18" y="18" width="1" height="1" fill="#1E3B44"/><rect x="0" y="19" width="1" height="1" fill="#1E3B44"/><rect x="6" y="19" width="1" height="1" fill="#1E3B44"/><rect x="10" y="19" width="1" height="1" fill="#1E3B44"/><rect x="13" y="19" width="1" height="1" fill="#1E3B44"/><rect x="16" y="19" width="1" height="1" fill="#1E3B44"/><rect x="19" y="19" width="1" height="1" fill="#1E3B44"/><rect x="0" y="20" width="1" height="1" fill="#1E3B44"/><rect x="1" y="20" width="1" height="1" fill="#1E3B44"/><rect x="2" y="20" width="1" height="1" fill="#1E3B44"/><rect x="3" y="20" width="1" height="1" fill="#1E3B44"/><rect x="4" y="20" width="1" height="1" fill="#1E3B44"/><rect x="5" y="20" width="1" height="1" fill="#1E3B44"/><rect x="6" y="20" width="1" height="1" fill="#1E3B44"/></svg><b>Hort Grombühl am Handy</b><span>Krankmelden · Termine · Durchwahlen</span></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable harden</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span></div>
         <h2><span class="num">67</span> QR-Code-Aushang am Eingang</h2><p>Ein fertiger Aushang für die Pinnwand: QR-Code zur Seite und die drei wichtigsten Wege – Krankmelden, Termine, Durchwahlen. Neue Eltern haben die Seite sofort auf dem Handy.</p><p class="where">Wird beim Bauen der Seite gleich mit erzeugt.</p></div>
     </article>
 
-    <article class="card frisch" data-k="neu frisch">
+    <article class="card" data-k="neu">
       <div class="stage"><div class="demo"><div class="sg"><details open><summary>Mein Kind weint beim Abschied</summary><p>Das ist am Anfang ganz normal. Ein kurzer, klarer Abschied hilft – und Sie dürfen gern anrufen und nachfragen.</p></details><details><summary>Was, wenn es nicht schläft?</summary><p>…</p></details></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
         <h2><span class="num">68</span> Häufige Sorgen, ehrlich beantwortet</h2><p>Neben den Sachfragen auch die Sorgen: „Mein Kind weint beim Abschied“, „Was, wenn es nicht schläft?“, „Darf ich anrufen und nachfragen?“. Kurze, warme Antworten vom Team.</p><p class="where">Texte vom Team; die Seite stellt nur den Platz bereit.</p></div>
     </article>
 
-    <article class="card frisch" data-k="alltag frisch">
+    <article class="card" data-k="alltag">
       <div class="stage"><div class="demo"><div class="gw"><div class="tile"><b style="display:inline">Spatzengruppe</b><span class="small">Krippe</span></div><div class="tile"><b style="display:inline">Hort</b><span class="small">Schulkind</span></div><div class="tile" style="text-align:center;opacity:.8">+ Weitere Gruppe</div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
         <h2><span class="num">69</span> Geschwisterkinder: mehrere Gruppen merken</h2><p>Wer ein Kind in der Krippe und eines im Hort hat, kann beide Gruppen speichern. Krankmelden und Durchwahl fragen dann kurz: „Für wen?“</p><p class="where">Erweitert „Meine Gruppe“; bleibt im eigenen Browser.</p></div>
     </article>
 
-    <article class="card frisch" data-k="team frisch">
+    <article class="card" data-k="team">
       <div class="stage"><div class="demo"><div class="bf"><b>Barrierefreiheit</b><span>Die Seite ist mit Tastatur bedienbar, Kontraste sind geprüft, Bilder haben Beschreibungen.</span><span>Noch nicht barrierefrei: einige PDF-Formulare.</span><span>Hinweise an: info@…</span></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span></div>
         <h2><span class="num">70</span> Erklärung zur Barrierefreiheit</h2><p>Eine kurze Seite: was die Webseite für Barrierefreiheit tut (Tastatur, Kontrast, Vorlesen), was noch fehlt, und an wen man sich wenden kann. Für viele Träger wird so eine Erklärung erwartet.</p><p class="where">Den Text entwerfe ich; ob er nötig ist, klärt der Träger.</p></div>
     </article>
 
-    <article class="card frisch" data-k="team frisch">
+    <article class="card" data-k="team">
       <div class="stage"><div class="demo"><div class="bz2"><b>Letzte 30 Tage</b><div>Termine<i style="width:100%"></i><span>412</span></div><div>Krankmelden<i style="width:72%"></i><span>297</span></div><div>Ferienplan<i style="width:55%"></i><span>226</span></div><div>Kontakt<i style="width:40%"></i><span>165</span></div><div>Anmeldung<i style="width:18%"></i><span>74</span></div></div></div></div>
-      <div class="about"><div class="meta"><span class="skill">dataviz</span><span class="badge-neu">Neu</span></div>
+      <div class="about"><div class="meta"><span class="skill">dataviz</span></div>
         <h2><span class="num">71</span> Was wird gelesen? – ohne Cookies</h2><p>Eine einfache Zählung, welche Seiten oft aufgerufen werden: Termine, Krankmelden, Ferienplan. So weiß das Team, was Eltern wirklich brauchen. Ohne Cookies, ohne Werbedienste.</p><p class="where">Braucht einen datenschutzfreundlichen Zähler beim Hosting; erst nach dem Umzug.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch" id="neu-start">
+      <div class="stage"><div class="demo"><div class="lst"><div class="chips"><button aria-pressed="true">Krippe</button><button aria-pressed="false">Kindergarten</button><button aria-pressed="false">Hort</button></div><div class="tile"><i></i>Wechselkleidung (2 Sets)</div><div class="tile"><i></i>Windeln und Feuchttücher</div><div class="tile"><i></i>Hausschuhe mit Namen</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">72</span> Was braucht mein Kind jeden Tag?</h2><p>Je Bereich eine kurze Liste: Wechselkleidung, Hausschuhe, Trinkflasche, im Hort das Hausaufgabenheft. Zum Abhaken am Morgen, gespeichert nur im eigenen Browser.</p><p class="where">Anders als die Packliste für den ersten Tag: für jeden Tag.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch">
+      <div class="stage"><div class="demo"><div class="weg"><div class="map"><i></i></div><div class="t"><b>Lindleinstraße 20, Würzburg</b><span>Haltestelle in der Nähe · Kurzzeitparken vor dem Haus</span><span class="chip" style="justify-self:start;padding:6px 10px;border-radius:9px;background:#1E3B44;color:#F3F8F7;font-weight:700">Route öffnen</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">mobile-native</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">73</span> Weg zu uns mit einem Tipp</h2><p>Unter der Adresse: „Route öffnen“ startet die Karten-App am Handy. Dazu die nächste Haltestelle und wo man kurz halten kann.</p><p class="where">Keine eingebettete Karte, also keine fremden Cookies.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch">
+      <div class="stage"><div class="demo"><div class="frist"><div class="tile"><span><b>Ferienbetreuung Weihnachten</b>anmelden bis 25.11.</span><em>noch 9 Tage</em></div><div class="tile"><span><b>Fotograf</b>zusagen bis 28.11.</span><em>noch 12 Tage</em></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">74</span> Fristen mit Erinnerung</h2><p>Was angemeldet werden muss – Ferienbetreuung, Ausflug, Fotograf – steht mit Frist da: „noch 9 Tage“. Mit einem Tipp kommt die Frist in den eigenen Kalender.</p><p class="where">Eine Spalte „Frist“ in der Termin-Tabelle reicht.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="neu frisch">
+      <div class="stage"><div class="demo"><div class="otd"><span>Tag der offenen Tür</span><b>Samstag, 14. März · 10–13 Uhr</b><span>Räume ansehen, Fragen stellen, das Team kennenlernen.</span></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">landing-page-design</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">75</span> Tag der offenen Tür groß ankündigen</h2><p>Steht ein Tag der offenen Tür oder ein Info-Abend an, erscheint auf der Startseite ein auffälliges Band mit Datum und „Im Kalender speichern“. Danach verschwindet es wieder.</p><p class="where">Wird aus der Termin-Tabelle gesteuert.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="neu frisch">
+      <div class="stage"><div class="demo"><div class="rech"><b>Beitrag ungefähr</b><label>Buchungszeit: <b id="rh">6</b> Stunden<input type="range" id="rr" min="4" max="9" value="6"></label><div class="res" id="rres">ca. 215 € im Monat</div><span class="small">Beispielwerte</span></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">76</span> Kosten verständlich erklärt</h2><p>Ein kleiner Rechner: Bereich und Buchungszeit wählen, schon steht da, was es ungefähr im Monat kostet – inklusive Essen. Spart viele Anrufe vor der Anmeldung.</p><p class="where">Nur, wenn der Hort die Beiträge veröffentlichen möchte; die Zahlen hier sind erfunden.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch">
+      <div class="stage"><div class="demo"><div class="ag"><div><b>Mo</b>Fußball</div><div><b>Di</b>Werken</div><div><b>Mi</b>Kochen</div><div><b>Do</b>Lesen</div><div><b>Fr</b>Garten</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">dataviz</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">77</span> Die Hort-Woche: AGs und Angebote</h2><p>Für den Hort ein Wochenplan: Montag Fußball, Dienstag Werken, Mittwoch Kochen … So wissen Kinder und Eltern, was ansteht – und was mitgebracht werden muss.</p><p class="where">Pflegt das Hort-Team in einer kleinen Tabelle.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="gestalt frisch">
+      <div class="stage"><div class="demo"><div class="zit"><q>Im Hort sind die Hausaufgaben leichter, weil alle gleichzeitig schwitzen.</q><span>– Kind, 8 Jahre</span></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable bolder</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">78</span> Kindermund auf der Startseite</h2><p>Ab und zu ein kurzer, echter Satz eines Kindes, groß gesetzt: „Im Hort sind die Hausaufgaben leichter, weil alle gleichzeitig schwitzen.“ Wechselt bei jedem Besuch.</p><p class="where">Nur mit Erlaubnis der Eltern, ohne Namen – nur mit Alter.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="gestalt frisch">
+      <div class="stage"><div class="demo"><div class="kz"><div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 20c-14 0-24 10-24 22 0 10 6 16 12 20l-2 18h28l-2-18c6-4 12-10 12-20 0-12-10-22-24-22z" fill="none" stroke="#2D6A6A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 42h1M58 42h1M43 52q7 6 14 0" stroke="#2D6A6A" stroke-width="4" stroke-linecap="round" fill="none"/></svg></div><div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 78l14-40 14 26 12-18 22 32z" fill="none" stroke="#B8574A" stroke-width="4" stroke-linejoin="round"/><circle cx="72" cy="26" r="9" fill="none" stroke="#C9926F" stroke-width="4"/></svg></div><div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 70h56M30 70V40l20-16 20 16v30M44 70V54h12v16" fill="none" stroke="#1E3B44" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">unslop</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">79</span> Kinderzeichnungen statt Symbolen</h2><p>An einigen Stellen ersetzen echte Zeichnungen der Kinder die gleichförmigen Symbole – ein gemaltes Haus, eine Sonne, ein Gesicht. Macht die Seite unverwechselbar.</p><p class="where">Die Kinder malen, ich wandle die Bilder in saubere Linien um.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="team frisch">
+      <div class="stage"><div class="demo"><div class="sync"><div><b>Outlook</b>Kalender des Teams</div><span>→</span><div><b>Webseite</b>Termine</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">80</span> Termine aus dem eigenen Kalender</h2><p>Das Team pflegt Termine weiter im gewohnten Kalender (z. B. Outlook). Die Seite übernimmt sie beim nächsten Aktualisieren automatisch – keine Tabelle mehr nötig.</p><p class="where">Geht, wenn der Kalender einen Abo-Link anbietet; klären wir nach dem Hosting.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="team frisch">
+      <div class="stage"><div class="demo"><div class="brief5"><div class="kopf"><b>Hort Grombühl</b><span>Elternbrief</span></div><b>Liebe Eltern,</b><i></i><i></i><i style="width:80%"></i><i></i><i style="width:60%"></i></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">figma-designer</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">81</span> Elternbrief-Vorlage im Haus-Stil</h2><p>Eine Vorlage für Word: Kopf mit Logo, Farben und Schrift der Webseite. Gedruckte Briefe und die Seite sehen aus wie aus einem Guss.</p><p class="where">Lege ich als .docx bei.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="team frisch">
+      <div class="stage"><div class="demo"><div class="links"><span class="ok">· ferienplan-2026-27.pdf</span><br><span class="ok">· hortabc.pdf</span><br><span class="warn">! medikamente.pdf – Datei fehlt</span></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">break-ui</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">82</span> Kaputte Links finden</h2><p>Beim Bauen der Seite wird geprüft, ob alle Links und PDFs noch erreichbar sind. Fehlt ein Formular oder ist eine Adresse falsch, steht es in der Daten-Prüfung.</p><p class="where">Ergänzt die Daten-Prüfung, die es schon gibt.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch">
+      <div class="stage"><div class="demo"><div class="schule"><div class="tile"><b style="display:inline">Grundschule A</b><span class="small">laufen gemeinsam</span></div><div class="tile"><b style="display:inline">Grundschule B</b><span class="small">eigener Weg</span></div><div class="tile">Schule früher aus? Bitte kurz im Hort Bescheid geben.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">83</span> Von der Schule in den Hort</h2><p>Für Hort-Eltern: aus welchen Schulen die Kinder kommen, ob sie abgeholt werden oder allein laufen, und was gilt, wenn die Schule früher aus ist.</p><p class="where">Inhalte vom Hort-Team.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="alltag frisch">
+      <div class="stage"><div class="demo"><div class="kurz"><div class="tile"><b>Braucht mein Kind Hausschuhe?</b><p><span class="ja">Ja.</span>Bitte mit Namen, sie bleiben im Fach.</p></div><div class="tile"><b>Gibt es Mittagessen?</b><p><span class="ja">Ja.</span>Frisch gekocht, täglich.</p></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">humanizer</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">84</span> Antworten fangen mit Ja oder Nein an</h2><p>Bei den häufigen Fragen steht die kurze Antwort zuerst und fett: „Ja.“ oder „Nein, aber …“. Die Erklärung folgt danach. Wer es eilig hat, liest nur das erste Wort.</p><p class="where">Ich überarbeite die vorhandenen Antworten; der Inhalt bleibt gleich.</p></div>
+    </article>
+
+    <article class="card frisch" data-k="team frisch">
+      <div class="stage"><div class="demo"><div class="log"><div><b>Termin „Elternabend Hort“ ergänzt</b><span>Leitung · heute, 9:14</span></div><div><b>Schließtag 20.11. ergänzt</b><span>Büro · gestern</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span><span class="badge-neu">Neu</span></div>
+        <h2><span class="num">85</span> Wer hat was geändert?</h2><p>Pflegen mehrere Personen die Tabellen, zeigt ein kleines Protokoll, wer wann was geändert hat. Ein Fehler lässt sich mit einem Klick zurücknehmen.</p><p class="where">Das gibt es technisch schon (Git); es fehlt nur eine einfache Ansicht.</p></div>
     </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“. Nichts davon ist schon auf der Seite – sag einfach, welche Ideen eingebaut werden sollen.</p>
@@ -1028,6 +1154,9 @@ button { font: inherit; color: inherit; }
   $("#bsc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#bsc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var o = b.dataset.o === "1", c = $("#bst"); c.classList.toggle("zu", !o); c.textContent = o ? "Bienengruppe anrufen" : "Gerade nicht besetzt – E-Mail schreiben"; });
   /* 64 Wimpel Jahreslauf */
   (function () { var P = { fr: ["#A8C5C0", "#E7D9A8", "#D4B5B0"], so: ["#F3F8F7", "#D4B5B0", "#7FBFB0"], he: ["#D4B5B0", "#C9926F", "#2D6A6A"], wi: ["#F3F8F7", "#A8C5C0", "#8FA6AC"] }; function set(k) { $$(".wj path.w").forEach(function (w, i) { w.setAttribute("fill", P[k][i % 3]); }); } set("he"); $("#wjc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#wjc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); set(b.dataset.s); }); })();
+
+  /* Kostenrechner */
+  (function () { var r = $("#rr"); if (!r) return; r.addEventListener("input", function () { $("#rh").textContent = r.value; $("#rres").textContent = "ca. " + (125 + r.value * 15) + " € im Monat"; }); })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
