@@ -285,6 +285,15 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## impeccable: polish · harden · document · typeset (16.11.2026)
+Audit vorher 14/20. Umgesetzt:
+- **polish:** keine Feder-Kurven mehr (Download-Haken, App-Symbol); Etikett am Handy 0.8rem ohne Sperrung; farbige Streifen an runden Karten entfernt (Downloads, Anschrift, Kurzinfo, Hinweis, Räume ohne Bild); Auswahlfarbe, Cursor, Scrollleiste, Unterstreichung im Palettenton.
+- **harden:** „Bewegung reduzieren“ nimmt nur Bewegung im Raum weg, Farb- und Deckkraft-Rückmeldung bleibt; lange Wörter in Überschriften trennen sauber; Bereichskopf am Handy stärker abgedunkelt (Untertitel war auf hellen Fotostellen schwer lesbar).
+- **document:** `DESIGN.md` (Leitbild „Die Wimpelkette“, Wirkung „ruhig und verlässlich“) und `.impeccable/design.json`. Feste Farben als Tokens: `--ink-rgb`, `--deep-rgb`, `--paper-rgb`, `--night-rgb`, `--white-rgb`, Zustandsfarben `--state-*`, Wortwolke, Ferienplan-Tönungen.
+- **typeset:** Schriftgrößen auf eine Skala (0.75 · 0.84 · 0.92 · 1 · 1.0625 · 1.15 · 1.3 · 1.6 rem + Display/Ziffern), Rundungen auf eine Skala (3 · 6 · 8 · 10 · 12 · 14/22 · 16 · 20 · 28 · 999); Lesetexte höchstens 34em; Datei-Kürzel 0.75rem; Platzhalter-Kontrast ≥ 4.5:1.
+- **Entscheidung:** Die Rosé-Etiketten über Überschriften bleiben (impeccable würde sie entfernen).
+- Detektor danach: nur noch die bewusst so gestalteten Symbol-Kacheln der Info-Karten.
+
 ## Sicherheitsdurchsicht (16.11.2026)
 Ganze Seite geprüft (statische Seite ohne Server-Code, keine Formulare, keine fremden Skripte). Abgesichert:
 - Elternbrief-Texte und Grüße aus `elternbriefe.csv` werden jetzt als reiner Text ausgegeben (vorher wurde HTML übernommen). **Folge: In der Tabelle wirkt kein HTML mehr – Absätze weiter mit `||`.**

@@ -1,0 +1,163 @@
+{
+ "schemaVersion": 2,
+ "generatedAt": "2026-11-16T06:49:18.404028+00:00",
+ "title": "Design System: Kath. Kinder- und Jugendhort Grombühl",
+ "extensions": {
+  "colorMeta": {
+   "rose": {
+    "role": "primary",
+    "displayName": "Grau-Rosé",
+    "canonical": "oklch(79.86% 0.0366 28.7)",
+    "tonalRamp": [
+     "#F1E5E3",
+     "#D4B5B0",
+     "#C9A49E"
+    ]
+   },
+   "salbei": {
+    "role": "neutral",
+    "displayName": "Salbeitürkis",
+    "canonical": "oklch(80.04% 0.0321 184)",
+    "tonalRamp": [
+     "#B6D0CB",
+     "#A8C5C0"
+    ]
+   },
+   "tuerkis-dunkel": {
+    "role": "neutral",
+    "displayName": "Dunkles Türkis",
+    "canonical": "oklch(48.46% 0.0626 195.3)"
+   },
+   "papier": {
+    "role": "neutral",
+    "displayName": "Papier",
+    "canonical": "oklch(97.51% 0.0055 183)"
+   },
+   "petrol": {
+    "role": "neutral",
+    "displayName": "Petrol",
+    "canonical": "oklch(33.37% 0.0383 220.1)",
+    "tonalRamp": [
+     "#2C4A52",
+     "#1E3B44",
+     "#142A31"
+    ]
+   }
+  },
+  "shadows": [
+   {
+    "name": "aufliegen",
+    "value": "0 1px 2px rgb(20 42 49 / .08), 0 12px 28px -14px rgb(20 42 49 / .35)",
+    "purpose": "Karten"
+   },
+   {
+    "name": "abheben",
+    "value": "0 2px 4px rgb(20 42 49 / .08), 0 28px 56px -24px rgb(20 42 49 / .5)",
+    "purpose": "Fenster, Menü, Kontaktkarte"
+   }
+  ],
+  "motion": [
+   {
+    "name": "io",
+    "value": "cubic-bezier(.22, 1, .36, 1)",
+    "purpose": "Einzige Kurve für Auftritte und Rückmeldung"
+   },
+   {
+    "name": "fast",
+    "value": ".15s",
+    "purpose": "Hover, Drücken"
+   },
+   {
+    "name": "drop",
+    "value": ".2s / .14s",
+    "purpose": "Aufklappmenü öffnen / schließen"
+   },
+   {
+    "name": "enter",
+    "value": ".25s–.5s",
+    "purpose": "Auftritte"
+   }
+  ],
+  "breakpoints": [
+   {
+    "name": "phone",
+    "value": "≤700px"
+   },
+   {
+    "name": "tablet",
+    "value": "701px"
+   },
+   {
+    "name": "nav-desktop",
+    "value": "1181px"
+   }
+  ]
+ },
+ "components": [
+  {
+   "name": "Hauptknopf",
+   "kind": "button",
+   "refersTo": "button-primary",
+   "description": "Wichtigste Handlung eines Abschnitts.",
+   "html": "<button class=\"ds-btn\">Unsere Bereiche →</button>",
+   "css": ".ds-btn{background:#D4B5B0;color:#1E3B44;padding:12px 24px;border:0;border-radius:12px;font:600 1rem 'Plus Jakarta Sans',system-ui,sans-serif;transition:background .14s cubic-bezier(.22,1,.36,1),scale .12s}.ds-btn:hover{background:#C9A49E}.ds-btn:active{scale:.97}"
+  },
+  {
+   "name": "Etikett",
+   "kind": "chip",
+   "refersTo": "kicker",
+   "description": "Kurze Einordnung über einer Überschrift.",
+   "html": "<span class=\"ds-kicker\">Krippe · Kindergarten · Hort</span>",
+   "css": ".ds-kicker{display:inline-block;background:#D4B5B0;color:#1E3B44;padding:4px 12px;border-radius:8px;font:600 .84rem/1.5 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.01em}"
+  },
+  {
+   "name": "Dunkle Karte",
+   "kind": "card",
+   "refersTo": "card-dark",
+   "description": "Termine, Downloads, Kennzahlen.",
+   "html": "<div class=\"ds-card\"><h3>Weihnachtsmarkt</h3><p>Freitag, 04.12.2026, ab 16:30 Uhr.</p></div>",
+   "css": ".ds-card{background:#2D6A6A;color:#F3FAF8;border-radius:20px;padding:28px;box-shadow:0 1px 2px rgb(20 42 49/.08),0 12px 28px -14px rgb(20 42 49/.35);font-family:'Plus Jakarta Sans',system-ui,sans-serif}.ds-card h3{margin:0 0 8px;font-weight:600}"
+  }
+ ],
+ "narrative": {
+  "northStar": "Die Wimpelkette",
+  "overview": "Gemeinschaftlich und festlich im Alltag: Salbei-Wand, dunkle Karten als Möbel, Papier für Lesetexte, Rosé als Wimpel. Ruhig und verlässlich, Bewegung nur als Rückmeldung.",
+  "keyCharacteristics": [
+   "Ein Akzent: Rosé",
+   "Eine Schrift: Plus Jakarta Sans",
+   "Wimpel und Handzeichnung als Motive",
+   "Eine Bewegungskurve, kein Federn"
+  ],
+  "rules": [
+   {
+    "name": "The One Wimpel Rule",
+    "body": "Rosé nur für Handlung und Markierung.",
+    "section": "colors"
+   },
+   {
+    "name": "The Alpha Rule",
+    "body": "Linien aus der Textfarbe mit Deckkraft.",
+    "section": "colors"
+   },
+   {
+    "name": "The Kein-Versal Rule",
+    "body": "Keine Großbuchstaben-Etiketten, kein gesperrter Text.",
+    "section": "typography"
+   },
+   {
+    "name": "The Ruhig-und-verlässlich Rule",
+    "body": "Schatten zeigen Ebenen; Karten heben sich höchstens 4–6 px.",
+    "section": "elevation"
+   }
+  ],
+  "dos": [
+   "Do Lesetexte auf 62–68ch begrenzen",
+   "Do bei reduzierter Bewegung Farb- und Deckkraft-Rückmeldung behalten"
+  ],
+  "donts": [
+   "Don't federn",
+   "Don't farbige Streifen an runde Karten",
+   "Don't fremde Server einbinden"
+  ]
+ }
+}
