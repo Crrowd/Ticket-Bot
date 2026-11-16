@@ -459,12 +459,34 @@
         return { it: e.it, score: score };
       }).filter(Boolean).sort(function (a, b) { return b.score - a.score; }).slice(0, 8).map(function (r) { return r.it; });
     };
+    /* „Meinten Sie …?“: Wörter, die so nirgends vorkommen, gegen den Wortschatz der Suche prüfen */
+    var abst = function (a, b) {
+      var prev = [], cur, i, j; for (j = 0; j <= b.length; j++) prev[j] = j;
+      for (i = 1; i <= a.length; i++) { cur = [i]; for (j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1) - (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1] ? 1 : 0)); prev = cur; }
+      return prev[b.length];
+    };
+    var wortschatz = {};
+    K.suche.forEach(function (it) { (it.t + " " + it.k).split(/[\s,&·–-]+/).forEach(function (w) { var n = norm(w).trim(); if (n.length >= 4 && n.indexOf(" ") < 0 && !wortschatz[n]) wortschatz[n] = w.replace(/[^\wäöüÄÖÜß-]/g, ""); }); });
+    var korr = function (q) {
+      var ws = norm(q).split(" ").filter(Boolean), out = [], neu = false;
+      ws.forEach(function (w) {
+        if (w.length < 4 || index.some(function (e) { return e.all.indexOf(w) >= 0; })) { out.push(w); return; }
+        var best = null, bd = w.length >= 8 ? 3 : 2;
+        Object.keys(wortschatz).forEach(function (k) { var d = Math.min(abst(w, k), k.length > w.length ? abst(w, k.slice(0, w.length)) + .5 : 99); if (d < bd || (d === bd && best && k.length < best.length)) { bd = d; best = k; } });
+        if (best && bd <= (w.length >= 8 ? 2.5 : 1.5)) { var vw = wortschatz[best]; out.push(vw.charAt(0).toUpperCase() + vw.slice(1)); neu = true; } else out.push(w);
+      });
+      return neu ? out.join(" ") : null;
+    };
+    var meant = null;
+    var bindMeant = function () { var b = $(".sr-meant button", list); if (b) b.addEventListener("click", function () { input.value = b.textContent; render(); input.focus(); }); };
     var render = function () {
       hits = search(input.value);
+      meant = input.value.trim() ? korr(input.value) : null;
+      var meantLi = meant ? '<li role="presentation" class="sr-meant"><p>Meinten Sie: <button type="button">' + escH(meant) + "</button>?</p></li>" : "";
       sel = 0;
       input.setAttribute("aria-expanded", hits.length ? "true" : "false");
       if (hits.length) input.setAttribute("aria-activedescendant", "treffer-0"); else input.removeAttribute("aria-activedescendant");
-      if (!hits.length) { list.innerHTML = '<li><p class="search-empty">Nichts gefunden. Versuchen Sie einen anderen Begriff – oder rufen Sie uns an: 0931 2789892 0.</p></li>'; return; }
+      if (!hits.length) { list.innerHTML = meantLi + '<li><p class="search-empty">Nichts gefunden. Versuchen Sie einen anderen Begriff – oder rufen Sie uns an: 0931 2789892 0.</p></li>'; bindMeant(); return; }
       list.innerHTML = hits.map(function (h, i) {
         return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + escH(h.u) + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
       }).join("");
@@ -473,6 +495,7 @@
         if (hits[i].recent) { var tg = document.createElement("span"); tg.className = "recent-tag"; tg.textContent = "Zuletzt"; $("span", a).prepend(tg); }
         a.addEventListener("click", function () { remember(hits[i].t, hits[i].s, hits[i].u); });
       });
+      if (meantLi) { list.insertAdjacentHTML("afterbegin", meantLi); bindMeant(); }
     };
     var mark = function (n) {
       var as = $$("a", list);
@@ -507,7 +530,7 @@
     input.addEventListener("keydown", function (e) {
       if (e.key === "ArrowDown") { e.preventDefault(); mark(sel + 1); }
       if (e.key === "ArrowUp") { e.preventDefault(); mark(sel - 1); }
-      if (e.key === "Enter") { var a = $$("a", list)[sel]; if (a) { e.preventDefault(); a.click(); } }
+      if (e.key === "Enter") { var a = $$("a", list)[sel]; if (a) { e.preventDefault(); a.click(); } else if (meant) { e.preventDefault(); input.value = meant; render(); } }
     });
     searchBtns.forEach(function (b) { b.addEventListener("click", openSearch); });
     document.addEventListener("keydown", function (e) {
@@ -1287,23 +1310,26 @@
     var now = new Date(), y = now.getFullYear(), m = now.getMonth(), end = parse(K.planEnde), maxI = end.getFullYear() * 12 + end.getMonth(), minI = y * 12 + m;
     K.termine.forEach(function (t) { var d = parse(t.bis); maxI = Math.max(maxI, d.getFullYear() * 12 + d.getMonth()); });
     function evOn(s) { return K.termine.filter(function (t) { return s >= t.von && s <= t.bis; }); }
+    function feierName(s) { for (var i = 0; i < K.feiertage.length; i++) if (K.feiertage[i].datum === s) return K.feiertage[i].name; return null; }
     function render(dir) {
       var first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), cells = "";
       for (var i = 0; i < off; i++) cells += "<span></span>";
       for (var d = 1; d <= n; d++) {
-        var dt = new Date(y, m, d), s = iso(dt), wd = dt.getDay(), why = closedReason(dt), evs = evOn(s), cls = [];
-        if (wd === 0 || wd === 6) cls.push("we"); else if (why) cls.push("zu");
+        var dt = new Date(y, m, d), s = iso(dt), wd = dt.getDay(), why = closedReason(dt), evs = evOn(s), cls = [], fe = feierName(s);
+        if (wd === 0 || wd === 6) cls.push("we"); if (fe) cls.push("fe"); else if (why && wd !== 0 && wd !== 6) cls.push("zu");
         if (s === heute) cls.push("today");
-        var label = d + ". " + MON[m] + (why && wd !== 0 && wd !== 6 ? ", geschlossen (" + why + ")" : "") + (evs.length ? ", " + evs.map(function (e) { return e.titel; }).join(", ") : "");
+        var label = d + ". " + MON[m] + (fe ? ", Feiertag: " + fe : why && wd !== 0 && wd !== 6 ? ", geschlossen (" + why + ")" : "") + (evs.length ? ", " + evs.map(function (e) { return e.titel; }).join(", ") : "");
         if (evs.length) cells += '<button type="button" class="ev ' + cls.join(" ") + '" data-d="' + s + '" aria-pressed="false" aria-label="' + escH(label) + '">' + d + "</button>";
-        else cells += '<span class="' + cls.join(" ") + '" aria-label="' + escH(label) + '">' + d + "</span>";
+        else cells += '<span class="' + cls.join(" ") + '" aria-label="' + escH(label) + '"' + (fe ? ' title="' + escH(fe) + '"' : "") + ">" + d + "</span>";
       }
+      var mPre = y + "-" + String(m + 1).padStart(2, "0"), feM = K.feiertage.filter(function (f) { return f.datum.slice(0, 7) === mPre; });
       var i0 = y * 12 + m, zu = K.schliesszeiten.filter(function (z) { var a = z.von.slice(0, 7), b = z.bis.slice(0, 7), c = y + "-" + String(m + 1).padStart(2, "0"); return a <= c && b >= c; });
       cal.innerHTML = '<div class="mc-head"><button type="button" class="mc-prev" aria-label="Voriger Monat"' + (i0 <= minI ? " disabled" : "") + ">" + svg(ICON.left, 20) + "</button><b aria-live=\"polite\">" + MON[m] + " " + y +
         '</b><button type="button" class="mc-next" aria-label="Nächster Monat"' + (i0 >= maxI ? " disabled" : "") + ">" + svg(ICON.right, 20) + "</button></div>" +
         '<div class="mc-wd" aria-hidden="true"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div><div class="mc-grid">' + cells + "</div>" +
-        '<div class="mc-legend"><span><i style="background:var(--ink)"></i>Termin</span><span><i style="background:var(--rose-soft);box-shadow:inset 0 0 0 1px var(--rose-deep)"></i>geschlossen</span></div>' +
-        '<p class="mc-note" aria-live="polite">' + (zu.length ? zu.map(function (z) { return "<b>" + z.name + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") : "") + "</p>";
+        '<div class="mc-legend"><span><i style="background:var(--ink)"></i>Termin</span><span><i style="background:var(--rose-soft)"></i>geschlossen</span><span><i class="lg-fe"></i>Feiertag</span></div>' +
+        '<p class="mc-note" aria-live="polite">' + zu.map(function (z) { return "<b>" + z.name + ": " + fmt(parse(z.von)) + (z.von === z.bis ? "" : " – " + fmt(parse(z.bis))) + "</b>"; }).join("") +
+        feM.map(function (f) { return '<span class="mc-fe">' + escH(f.name) + ": " + fmtLong(parse(f.datum)) + "</span>"; }).join("") + "</p>";
       $(".mc-prev", cal).addEventListener("click", function () { step(-1); });
       $(".mc-next", cal).addEventListener("click", function () { step(1); });
       $$(".ev", cal).forEach(function (b) { b.addEventListener("click", function () {
@@ -1313,8 +1339,23 @@
       if (dir && !reduced) $(".mc-grid", cal).animate([{ opacity: 0, translate: (dir * 24) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 260, easing: "cubic-bezier(.23,1,.32,1)" });
     }
     function step(dd) { var i = y * 12 + m + dd; if (i < minI || i > maxI) return; y = Math.floor(i / 12); m = i % 12; render(dd); var f = $(dd > 0 ? ".mc-next" : ".mc-prev", cal); if (f && !f.disabled) f.focus(); else $(dd > 0 ? ".mc-prev" : ".mc-next", cal).focus(); }
-    var sx = null; cal.addEventListener("pointerdown", function (e) { sx = e.clientX; });
-    cal.addEventListener("pointerup", function (e) { if (sx === null) return; var dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
+    /* Wischen: das Monatsraster folgt dem Finger, loslassen blättert oder federt zurück */
+    var sx = null, sy = 0, drag = false;
+    cal.addEventListener("pointerdown", function (e) { if (e.target.closest(".mc-head")) return; sx = e.clientX; sy = e.clientY; drag = false; });
+    cal.addEventListener("pointermove", function (e) {
+      if (sx === null) return; var dx = e.clientX - sx, g = $(".mc-grid", cal);
+      if (!drag && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) { drag = true; try { cal.setPointerCapture(e.pointerId); } catch (x) {} }
+      if (drag && g && !reduced) { var i = y * 12 + m + (dx < 0 ? 1 : -1), edge = i < minI || i > maxI; g.style.translate = (edge ? dx * .25 : dx * .9) + "px 0"; g.style.opacity = 1 - Math.min(.5, Math.abs(dx) / 400); }
+    });
+    function endDrag(e) {
+      if (sx === null) return; var dx = e.clientX - sx, g = $(".mc-grid", cal); sx = null;
+      if (!drag) return; drag = false;
+      var go = Math.abs(dx) > 50 && !(e.type === "pointercancel");
+      var i = y * 12 + m + (dx < 0 ? 1 : -1);
+      if (go && i >= minI && i <= maxI) { if (g) { g.style.translate = ""; g.style.opacity = ""; } step(dx < 0 ? 1 : -1); return; }
+      if (g) { if (!reduced && g.animate) g.animate([{ translate: g.style.translate || "0 0", opacity: g.style.opacity || 1 }, { translate: "0 0", opacity: 1 }], { duration: 260, easing: EASE_OUT }); g.style.translate = ""; g.style.opacity = ""; }
+    }
+    cal.addEventListener("pointerup", endDrag); cal.addEventListener("pointercancel", endDrag);
     function show(v, anim) {
       var showCal = v === "cal", out = showCal ? list : cal, inn = showCal ? cal : list;
       if (showCal) render(0);
@@ -2251,6 +2292,95 @@
       });
     });
   });
+
+
+  /* ---------- Wimpelkette im Jahreslauf: leise Farben je Jahreszeit (nur Farbtöne) ---------- */
+  (function () {
+    var flags = $$(".bunting .flag"); if (!flags.length) return;
+    var mo = new Date().getMonth(), P = mo >= 2 && mo <= 4 ? ["#A8C5C0", "#E8D9B5", "#D4B5B0", "#F3F8F7"]
+      : mo >= 5 && mo <= 7 ? ["#D4B5B0", "#F3F8F7", "#8CC2B5", "#E8D9B5"]
+      : mo >= 8 && mo <= 10 ? ["#D4B5B0", "#C9926F", "#A8C5C0", "#E3C6B8"]
+      : ["#F3F8F7", "#A8C5C0", "#D4B5B0", "#B9CDD0"];
+    document.documentElement.dataset.jahreszeit = ["winter", "winter", "fruehling", "fruehling", "fruehling", "sommer", "sommer", "sommer", "herbst", "herbst", "herbst", "winter"][mo];
+    flags.forEach(function (f, i) { f.setAttribute("fill", P[i % P.length]); });
+  })();
+
+  /* ---------- Fehlt ein Foto, bleibt es ruhig: Muster in Salbei mit dem Namen ---------- */
+  (function () {
+    function fail(img) {
+      if (img.dataset.fehlt) return; img.dataset.fehlt = "1";
+      var box = img.parentNode && img.parentNode.tagName === "PICTURE" ? img.parentNode.parentNode : img.parentNode; if (!box) return;
+      var name = img.getAttribute("alt") || (box.querySelector("figcaption") ? "" : "Foto folgt");
+      img.classList.add("img-fehlt"); box.classList.add("img-ersatz");
+      if (name) box.setAttribute("data-ersatz", name);
+    }
+    $$("img").forEach(function (img) {
+      if (img.closest(".brand, .toast") || img.getAttribute("aria-hidden") === "true") return;
+      if (img.complete && img.getAttribute("src") && img.naturalWidth === 0) fail(img);
+      img.addEventListener("error", function () { fail(img); });
+    });
+  })();
+
+  /* ---------- Am Computer: Telefonnummer kopieren statt wählen ---------- */
+  (function () {
+    if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    function nummer(a) { var t = a.textContent.replace(/\s+/g, " ").trim(); return /\d{4}/.test(t) && /^[\d\s+/()-]+$/.test(t) ? t : a.getAttribute("href").replace(/^tel:/, "").replace(/^\+49/, "0"); }
+    $$('a[href^="tel:"]').forEach(function (a) { a.classList.add("tel-copy"); if (!a.title) a.title = "Klicken zum Kopieren: " + nummer(a); });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="tel:"]'); if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault();
+      var n = nummer(a), ok = function () { toast("Nummer kopiert: " + n); }, no = function () { toast("Nummer: " + n); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(n.replace(/\s/g, " ")).then(ok, no); else no();
+    });
+  })();
+
+  /* ---------- Elternbrief teilen und drucken ---------- */
+  $$(".js-brief-share").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var br = b.closest(".brief"), t = $(".brief-t", br).textContent, url = location.href.split("#")[0] + "#" + br.id;
+      if (navigator.share) { navigator.share({ title: t, text: "Elternbrief: " + t, url: url }).catch(function () {}); return; }
+      var ok = function () { toast("Link zum Elternbrief kopiert"); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { toast(url); }); else toast(url);
+    });
+  });
+  $$(".js-brief-print").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var br = b.closest(".brief"), box = document.createElement("div");
+      box.className = "brief-print";
+      box.innerHTML = '<p class="bp-org">Kath. Kinder- und Jugendhort Grombühl · Lindleinstraße 20 · 97080 Würzburg</p><h1></h1><p class="bp-stand"></p>' + $("div", br).innerHTML;
+      $("h1", box).textContent = $(".brief-t", br).textContent; $(".bp-stand", box).textContent = $("summary small", br) ? $("summary small", br).textContent : "";
+      $$(".brief-acts, mark", box).forEach(function (x) { if (x.tagName === "MARK") x.outerHTML = x.innerHTML; else x.parentNode.removeChild(x); });
+      document.body.appendChild(box); document.body.classList.add("print-brief");
+      var done = function () { document.body.classList.remove("print-brief"); if (box.parentNode) box.parentNode.removeChild(box); removeEventListener("afterprint", done); };
+      addEventListener("afterprint", done);
+      window.print();
+    });
+  });
+  /* Link auf einen Brief öffnet ihn */
+  (function () { var h = location.hash.slice(1); if (!/^brief-/.test(h)) return; var br = document.getElementById(h); if (br && br.tagName === "DETAILS") br.open = true; })();
+
+  /* ---------- Tag der offenen Tür / Info-Abend: Band auf der Startseite, sechs Wochen vorher ---------- */
+  (function () {
+    var hero = $(".hero"); if (!hero || !K || !K.termine) return;
+    var heuteD = new Date(), bis = new Date(heuteD.getFullYear(), heuteD.getMonth(), heuteD.getDate() + 42), h = iso(heuteD), b = iso(bis);
+    var t = K.termine.filter(function (x) { return /offene[nrs]?\s+t(ü|ue)r|info(rmations)?[\s-]?abend|schnupper|kennenlern/i.test(x.titel) && x.bis >= h && x.von <= b; })[0];
+    if (!t) return;
+    var a = parse(t.von), z = parse(t.bis), datum = t.von === t.bis ? fmtLong(a) : fmt(a) + " – " + fmt(z);
+    var sec = document.createElement("section"); sec.className = "open-day"; sec.setAttribute("aria-label", t.titel);
+    sec.innerHTML = '<div class="container open-day-inner"><div><span class="eyebrow"></span><h2></h2><p class="od-text"></p></div><div class="btn-row"><button class="btn btn-primary od-ics" type="button">' + svg(ICON.calendar, 20) + ' Im Kalender speichern</button><a class="btn btn-ghost" href="aktuelles.html#termine">Alle Termine</a></div></div>';
+    $(".eyebrow", sec).textContent = t.titel; $("h2", sec).textContent = datum; $(".od-text", sec).textContent = (t.text || "").replace(/\*\*/g, "");
+    hero.parentNode.insertBefore(sec, hero.nextSibling);
+    $(".od-ics", sec).addEventListener("click", function () {
+      var d1 = t.von.replace(/-/g, ""), e2 = parse(t.bis); e2.setDate(e2.getDate() + 1);
+      var stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+      var txt = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Kinderhort Grombuehl//DE", "BEGIN:VEVENT", "UID:offene-tuer-" + d1 + "@kinderhort-grombuehl.de", "DTSTAMP:" + stamp,
+        "DTSTART;VALUE=DATE:" + d1, "DTEND;VALUE=DATE:" + iso(e2).replace(/-/g, ""), "SUMMARY:" + icsEsc(t.titel), "DESCRIPTION:" + icsEsc((t.text || "").replace(/\*\*/g, "")),
+        "LOCATION:" + icsEsc("Lindleinstraße 20, 97080 Würzburg"), "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+      var url = URL.createObjectURL(new Blob([txt], { type: "text/calendar" })), l = document.createElement("a");
+      l.href = url; l.download = "tag-der-offenen-tuer.ics"; document.body.appendChild(l); l.click(); l.parentNode.removeChild(l);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000); toast("Kalenderdatei erstellt");
+    });
+  })();
 
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();

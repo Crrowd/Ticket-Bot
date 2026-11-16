@@ -2046,3 +2046,42 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .ask-vor:not(:empty) { padding-top: 12px; }
 .ask-vor button { min-height: 40px; padding: 6px 12px; border: 1.5px solid var(--rule); border-radius: 10px; background: #fff; color: var(--ink); font: 500 .84rem var(--font-body); text-align: left; cursor: pointer; animation: rm-fade .2s var(--ease-out) both; }
 .msg .also { margin: 10px 0 4px; font-size: .84rem; color: var(--fg-soft); }
+
+/* ===== Ja-Ideen Katalog 4, Runde 2 ===== */
+/* Feiertage im Monatskalender */
+.mc-grid .fe { background: var(--rose-soft); color: var(--ink); box-shadow: inset 0 0 0 2px var(--rose-deep); }
+.mc-grid .fe.we { background: none; color: var(--state-closed); }
+.mc-legend .lg-fe { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--rose-deep); }
+.mc-note .mc-fe { display: block; font-weight: 500; }
+.month-cal .mc-grid { will-change: auto; }
+/* „Meinten Sie …?“ */
+.sr-meant p { margin: 0; padding: 20px 24px 0; font-size: 1rem; }
+.sr-meant button { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: inherit; text-decoration: underline; text-decoration-color: var(--rose); text-underline-offset: 4px; cursor: pointer; }
+.sr-meant button:hover { text-decoration-color: currentColor; }
+/* Elternbrief teilen und drucken */
+.brief-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.brief-print { display: none; }
+@media print {
+  body.print-brief > *:not(.brief-print) { display: none !important; }
+  body.print-brief .brief-print { display: block !important; color: #1E3B44; font-family: var(--font-body); font-size: 11pt; line-height: 1.55; }
+  .brief-print h1 { font: 700 18pt var(--font-head); margin: 4pt 0 2pt; }
+  .brief-print .bp-org { font-size: 9pt; border-bottom: 1.5pt solid #A8C5C0; padding-bottom: 6pt; margin: 0 0 14pt; }
+  .brief-print .bp-stand { font-size: 9.5pt; margin: 0 0 12pt; color: #3d5a62; }
+}
+/* Route im Fußbereich */
+.foot-route { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+/* Fehlt ein Foto: ruhiges Muster */
+.img-ersatz { position: relative; background: repeating-linear-gradient(135deg, var(--sage, #A8C5C0) 0 14px, #b5cfca 14px 28px); }
+.img-ersatz > img.img-fehlt, .img-ersatz > picture > img.img-fehlt { visibility: hidden; }
+.img-ersatz[data-ersatz]::after { content: attr(data-ersatz); position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; text-align: center; color: #1E3B44; font-weight: 600; font-size: .95rem; pointer-events: none; }
+/* Nummer kopieren am Computer */
+@media (hover: hover) and (pointer: fine) { a.tel-copy { cursor: copy; } }
+/* Tag der offenen Tür */
+.open-day { background: var(--rose); color: var(--ink); }
+.open-day-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding-block: 28px; }
+.open-day h2 { margin: 4px 0; font-size: 1.6rem; }
+.open-day .od-text { margin: 0; max-width: 34em; }
+.open-day .eyebrow { font-weight: 700; }
+.open-day .btn-primary { background: var(--ink); color: var(--paper); }
+.open-day .btn-primary:hover { background: rgb(var(--ink-rgb) / .88); }
+.open-day .btn-ghost { border-color: rgb(var(--ink-rgb) / .45); }

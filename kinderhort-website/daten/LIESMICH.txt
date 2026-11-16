@@ -24,3 +24,14 @@ Danach im Ordner kinderhort-website einmal ausführen:   python3 build.py
 
 Nach dem Bauen prüft „Daten-Prüfung“ die Tabellen und nennt Zeile und Fehler, z. B. ein unlesbares Datum.
 Die Datei erstmals.json bitte nicht von Hand ändern – sie merkt sich, seit wann ein Termin auf der Seite steht.
+
+TAG DER OFFENEN TÜR / INFO-ABEND
+Steht in termine.csv ein Termin, dessen Titel „Tag der offenen Tür“, „Info-Abend“,
+„Infoabend“, „Schnuppertag“ oder „Kennenlernen“ enthält, erscheint auf der Startseite
+sechs Wochen vorher ein auffälliges Band mit Datum und „Im Kalender speichern“.
+Nach dem Termin verschwindet es von selbst.
+
+LINK-PRÜFUNG
+Beim Bauen wird geprüft, ob alle Dateien (PDFs, Bilder) und Sprungziele, auf die die
+Seiten verweisen, wirklich vorhanden sind. Fehler stehen unter „Daten-Prüfung“.
+Links zu fremden Webseiten werden dabei nicht geprüft.

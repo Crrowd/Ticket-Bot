@@ -142,6 +142,7 @@ def icon(name, size=24):
         "home": '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
         "book": '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7"/>',
         "route": '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/>',
+        "print": '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
         "poster": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h2M12 8h4M8 12h2M12 12h4M8 16h2M12 16h4"/>',
     }[name]
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -286,6 +287,7 @@ FOOTER = f'''<footer class="site-footer">
       <div>
         <h2 class="foot-title">Anschrift</h2>
         <p>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</p>
+        <p><a class="foot-route js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener">{icon("route", 18)} <span>Route öffnen</span></a></p>
       </div>
       <div>
         <h2 class="foot-title">Kontakt</h2>
@@ -1158,8 +1160,11 @@ BRIEFE = read_csv("elternbriefe.csv")
 def brief(i, r):
     paras = "".join(f"<p>{rich(p.strip())}</p>" for p in r["Text"].split("||") if p.strip())
     gruss = f'<p class="sign-off">{"<br>".join(rich(x) for x in r["Gruß"].split("||"))}</p>' if r.get("Gruß") else ""
-    return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-neu="{erstmals("b|" + r["Titel"])}" data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
-            f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
+    bid = "brief-" + re.sub(r"[^a-z0-9]+", "-", r["Titel"].lower().replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")).strip("-")
+    acts = (f'<div class="brief-acts no-print"><button class="btn btn-ghost js-brief-share" type="button">{icon("share", 20)} Teilen</button>'
+            f'<button class="btn btn-ghost js-brief-print" type="button">{icon("print", 20)} Drucken</button></div>')
+    return (f'<details class="brief reveal" id="{bid}"{" open" if i == 0 else ""} data-neu="{erstmals("b|" + r["Titel"])}" data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
+            f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}{acts}</div></details>')
 if BRIEFE: akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
 <div class="briefe">
   <div class="faq-search brief-search reveal"{" hidden" if len(BRIEFE) < 2 else ""}><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label>{icon("search", 20)}<input type="search" id="brief-suche" name="brief" placeholder="Elternbriefe durchsuchen, z. B. Fasching …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
@@ -1475,7 +1480,7 @@ kita = {
     "feiertage": [{"datum": d(r["Datum"]).isoformat(), "name": r["Feiertag"]} for r in FEIERTAGE],
     "planEnde": (d(SCHLIESSTAGE[-1]["wieder geöffnet"]) if SCHLIESSTAGE else dt.date(_KJ + 1, 8, 31)).isoformat(),
     "oeffnung": "06:45", "schluss": "18:00",
-    "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"]} for r in TERMINE],
+    "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"], "text": r["Beschreibung"]} for r in TERMINE],
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
     "glossar": GLOSSAR,
     "faq": FAQ_ALLE,
@@ -1545,6 +1550,28 @@ with open(os.path.join(W, "sw.js"), "w", encoding="utf-8") as f:
 with open(os.path.join(W, "img/favicon.svg"), "w", encoding="utf-8") as f:
     f.write(BRAND_MARK.replace('class="brand-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', ''))
 print("ok")
+
+# ---------- Link-Prüfung: fehlen Dateien oder Sprungziele? ----------
+def _link_pruefung():
+    import glob, html as _h
+    from urllib.parse import unquote
+    seiten = {os.path.basename(f): open(f, encoding="utf-8").read() for f in glob.glob(os.path.join(W, "*.html"))}
+    ids = {n: set(re.findall(r'\sid="([^"]+)"', t)) for n, t in seiten.items()}
+    for n, t in sorted(seiten.items()):
+        if n.startswith(("vorschau", "google")): continue
+        t = re.sub(r"<script\b[^>]*>.*?</script>", "", t, flags=re.S)
+        for attr, ziel in re.findall(r'\s(href|src)="([^"]+)"', t):
+            ziel = _h.unescape(ziel)
+            if re.match(r"^([a-z][a-z0-9+.-]*:|//)", ziel): continue
+            pfad, _, anker = ziel.partition("#")
+            pfad = unquote(pfad.split("?")[0])
+            if pfad and not os.path.exists(os.path.join(W, pfad)):
+                _melde("Link", n, None, f"„{pfad}“ fehlt (Datei nicht gefunden)")
+                continue
+            ziel_seite = os.path.basename(pfad) if pfad else n
+            if anker and ziel_seite in ids and anker not in ids[ziel_seite]:
+                _melde("Link", n, None, f"Sprungziel „#{anker}“ gibt es auf {ziel_seite} nicht")
+_link_pruefung()
 
 # ---------- am Ende: erstmals.json sichern, Daten-Prüfung ausgeben ----------
 with open(_ERST_DATEI, "w", encoding="utf-8") as f:

@@ -2,6 +2,19 @@
 
 Stand: 13.11.2026
 
+## Ja-Ideen Katalog 4, zweite Runde (16.11.2026)
+- **46 Feiertage im Monatskalender:** Feiertage haben einen eigenen Rahmen, stehen in der Legende und mit Namen unter dem Kalender.
+- **47 Elternbrief teilen und drucken:** Jeder Brief hat „Teilen“ (Handy-Teilen oder Link kopieren, Link öffnet den Brief) und „Drucken“ (nur der Brief, mit Kopfzeile).
+- **54 „Meinten Sie …?“ in der Suche:** bei Tippfehlern ein Vorschlag (z. B. Feinplan → Ferienplan); Tipp oder Enter übernimmt ihn.
+- **63 Wimpelkette im Jahreslauf:** Die Wimpel im Fußbereich wechseln die Farben mit der Jahreszeit, nur Farbtöne aus der Familie.
+- **65 Fehlt ein Foto:** Statt eines kaputten Bildes erscheint ein ruhiges Salbei-Muster mit der Bildbeschreibung.
+- **73 Weg zu uns:** „Route öffnen“ jetzt auch im Fußbereich jeder Seite (Apple Karten auf Apple-Geräten, sonst Google Maps). Offen: nächste Haltestelle und Parken – Angaben vom Hort.
+- **75 Tag der offenen Tür:** Band auf der Startseite sechs Wochen vor einem passenden Termin (siehe daten/LIESMICH.txt).
+- **82 Kaputte Links finden:** Link-Prüfung beim Bauen (Dateien und Sprungziele).
+- **95 Nummer kopieren am Computer:** Am Computer kopiert ein Klick auf eine Telefonnummer die Nummer; am Handy wird wie gewohnt angerufen.
+- **96 Monatskalender zum Wischen:** Das Monatsraster folgt jetzt dem Finger und federt zurück, wenn man nicht weit genug wischt.
+- **79 Kinderzeichnungen:** erst als Entwurf (`entwurf/zeichnungen/kinderzeichnungen.html`, private Vorschau https://claude.ai/artifact/XTvjDPfxfeqSaNMbVq6HE6) – Einbau nach Rückmeldung.
+
 ## Design-Stand
 - Webseite nutzt **Entwurf 9** (Salbeitürkis, Grau-Rosé, dunkles Türkis) – fest eingebaut.
 - Varianten (CSS in `entwurf/designs/`, Screenshots in `entwurf/`):
