@@ -572,14 +572,14 @@ def plan_table():
 
 def ferienplan_section(cls="alt", kurz=False):
     if not PLAN:
-        return section("ferienplan", "Ferienplan", "Schließtage", "Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.", "", cls=cls)
+        return section("ferienplan", "Schließtage", "Schließtage", "Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.", "", cls=cls)
     if kurz:
-        return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
+        return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
                        "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                        '<div class="yearline reveal" data-yearline></div>'
                        f'<div class="btn-row no-print"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
                        f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>', cls=cls)
-    return section("ferienplan", "Ferienplan", f"Schließtage {PLAN_JAHR}",
+    return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                    '<div class="yearline reveal" data-yearline></div>' + plan_table(), cls=cls)
 
@@ -856,7 +856,7 @@ krippe_tour = [
 ]
 krippe = page_hero("Kinderkrippe", "Herzlich Willkommen beim Kath. Kinder- und Jugendhort Grombühl – geborgen ankommen, spielen, entdecken.",
                    "img/p2160110.jpg", "Sonnen- &amp; Sternengruppe",
-                   [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
+                   [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
                    alt="Gruppenraum der Kinderkrippe")
 krippe += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
@@ -943,7 +943,7 @@ kiga_tour = [
 ]
 kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in großen, hellen Räumen und einem riesigen Garten mitten in der Stadt.",
                  "img/blick-vom-fenster-in-den-raum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
-                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
+                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
                  alt="Gruppenraum im Kindergarten")
 kiga += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
@@ -1047,7 +1047,7 @@ hort_tour = [
 ]
 hort = page_hero("Kinderhort", "Nach der Schule ankommen, Hausaufgaben mit Unterstützung erledigen und Freizeit selbst gestalten – von 6:45 bis 18:00 Uhr.",
                  "img/kreatviraum-5-1.jpg", "Für alle Schulformen",
-                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Ferienplan")],
+                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
                  alt="Kreativraum im Kinderhort")
 hort += kurz([
     ("clock", "6:45 – 18:00 Uhr", "geöffnet, auch in den Schulferien"),
@@ -1135,7 +1135,7 @@ page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhor
 # AKTUELLES
 # =====================================================================
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
-                [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Ferienplan")], alt="Bauecke im Kinderhort")
+                [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Schließtage")], alt="Bauecke im Kinderhort")
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
 <div class="view-switch no-print" role="group" aria-label="Ansicht der Termine"><span class="vs-knob" aria-hidden="true"></span>
     <button type="button" data-view="list" aria-pressed="true">{icon("list", 18)} Liste</button><button type="button" data-view="cal" aria-pressed="false">{icon("grid", 18)} Kalender</button></div>
@@ -1152,7 +1152,7 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
   <div class="note-card reveal">
     {hinweise_html()}
     <h3 class="hint-end">Schließtage</h3>
-    <p>Die nächsten Schließtage und alle Ferienzeiten für 2026/2027 finden Sie im <a href="#ferienplan">Ferienplan</a> unten.</p>
+    <p>Die nächsten Schließtage und alle Ferienzeiten für 2026/2027 finden Sie unten bei den <a href="#ferienplan">Schließtagen</a>.</p>
     <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
   </div>
 </div>''')
