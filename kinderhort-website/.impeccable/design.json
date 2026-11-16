@@ -1,6 +1,6 @@
 {
  "schemaVersion": 2,
- "generatedAt": "2026-11-16T06:49:18.404028+00:00",
+ "generatedAt": "2026-11-16T06:57:58.692459+00:00",
  "title": "Design System: Kath. Kinder- und Jugendhort Grombühl",
  "extensions": {
   "colorMeta": {
@@ -91,7 +91,78 @@
     "name": "nav-desktop",
     "value": "1181px"
    }
-  ]
+  ],
+  "typographyMeta": {
+   "numeral-xxl": {
+    "displayName": "Ziffer XXL",
+    "purpose": "Anführungszeichen in Zitaten (3.4rem)."
+   },
+   "numeral-xl": {
+    "displayName": "Ziffer XL",
+    "purpose": "Kennzahlen (2.3rem)."
+   },
+   "numeral": {
+    "displayName": "Ziffer",
+    "purpose": "Zählwerke, Abzeichen-Zahl (1.9rem)."
+   },
+   "lead-hero": {
+    "displayName": "Auftakt-Einleitung",
+    "purpose": "Leitsatz und Einleitung der Startseite."
+   },
+   "display": {
+    "displayName": "Display",
+    "purpose": "Seitentitel."
+   },
+   "headline": {
+    "displayName": "Überschrift",
+    "purpose": "Abschnitte."
+   },
+   "headline-s": {
+    "displayName": "Überschrift S",
+    "purpose": "Kennzahlen in Karten, Datumsfelder (1.6rem)."
+   },
+   "title": {
+    "displayName": "Titel",
+    "purpose": "Karten, Fragen, Räume (1.3rem)."
+   },
+   "lead": {
+    "displayName": "Einleitung",
+    "purpose": "Untertitel in Seitenköpfen (1.15rem)."
+   },
+   "body": {
+    "displayName": "Fließtext",
+    "purpose": "Lesetext, höchstens 34em breit (1.0625rem)."
+   },
+   "body-s": {
+    "displayName": "Text S",
+    "purpose": "Karten- und Listentexte (1rem)."
+   },
+   "small": {
+    "displayName": "Klein",
+    "purpose": "Meta-Angaben (0.92rem)."
+   },
+   "label": {
+    "displayName": "Etikett",
+    "purpose": "Etiketten, Leisten-Beschriftungen (0.84rem)."
+   },
+   "micro": {
+    "displayName": "Mikro",
+    "purpose": "Abzeichen, Datei-Kürzel; Untergrenze (0.75rem)."
+   }
+  },
+  "radiusMeta": {
+   "hair": "3px – Linien, Balken",
+   "xs": "6px – kleine Abzeichen",
+   "chip": "8px – Etiketten",
+   "control-s": "10px – kleine Bedienelemente",
+   "sm": "12px – Knöpfe, Felder",
+   "nested": "14px – verschachtelt (20 − 6)",
+   "card-s": "16px – kleine Karten",
+   "md": "20px – Karten",
+   "nested-l": "22px – verschachtelt (Termine)",
+   "lg": "28px – große Flächen",
+   "pill": "999px – Pillen, Abzeichen"
+  }
  },
  "components": [
   {
@@ -117,6 +188,14 @@
    "description": "Termine, Downloads, Kennzahlen.",
    "html": "<div class=\"ds-card\"><h3>Weihnachtsmarkt</h3><p>Freitag, 04.12.2026, ab 16:30 Uhr.</p></div>",
    "css": ".ds-card{background:#2D6A6A;color:#F3FAF8;border-radius:20px;padding:28px;box-shadow:0 1px 2px rgb(20 42 49/.08),0 12px 28px -14px rgb(20 42 49/.35);font-family:'Plus Jakarta Sans',system-ui,sans-serif}.ds-card h3{margin:0 0 8px;font-weight:600}"
+  },
+  {
+   "name": "Info-Karte",
+   "kind": "card",
+   "refersTo": "card-dark",
+   "description": "Bewusste Ausnahme: Symbol-Kachel über dem Titel für die schnelle Übersicht jeder Bereichsseite.",
+   "html": "<div class=\"ds-info\"><span class=\"ds-tile\">◷</span><h3>Öffnungszeiten</h3><p>6:45 – 18:00 Uhr</p></div>",
+   "css": ".ds-info{background:#2D6A6A;color:#F3FAF8;border-radius:20px;padding:28px;font-family:'Plus Jakarta Sans',system-ui,sans-serif}.ds-tile{display:grid;place-items:center;width:50px;height:50px;border-radius:12px;background:#D4B5B0;color:#1E3B44;margin-bottom:16px}.ds-info h3{margin:0 0 6px;font-weight:600}"
   }
  ],
  "narrative": {
@@ -152,7 +231,9 @@
   ],
   "dos": [
    "Do Lesetexte auf 62–68ch begrenzen",
-   "Do bei reduzierter Bewegung Farb- und Deckkraft-Rückmeldung behalten"
+   "Do bei reduzierter Bewegung Farb- und Deckkraft-Rückmeldung behalten",
+   "Do Schriftgrößen nur aus der Stufenleiter nehmen (0.75 · 0.84 · 0.92 · 1 · 1.0625 · 1.15 · 1.3 · 1.6 rem)",
+   "Do Rundungen nur aus der Skala nehmen"
   ],
   "donts": [
    "Don't federn",
