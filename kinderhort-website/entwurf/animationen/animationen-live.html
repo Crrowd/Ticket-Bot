@@ -1,0 +1,243 @@
+<title>Feinschliff Bewegung</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: sechs Karten untereinander, in jeder links „Vorher“, rechts „Nachher“ (am Handy übereinander) */
+:root {
+  --bg: #A8C5C0; --paper: #F3F8F7; --ink: #1E3B44; --soft: #3E5A63; --card: #2D6A6A; --rose: #D4B5B0; --rose-soft: #EADBD8; --rose-deep: #C9A49E;
+  --line: rgba(30,59,68,.14); --chip: rgba(30,59,68,.08); --on: #F3F8F7; --demo: rgba(243,248,247,.6);
+  --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --ease-out: cubic-bezier(.23,1,.32,1); --ease-in-out: cubic-bezier(.77,0,.175,1);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #12262D; --demo: #DCE8E5; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #12262D; --demo: #DCE8E5; color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font); }
+.wrap { max-width: 1060px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 24px; }
+.wrap > * { min-width: 0; }
+.kopf h1 { margin: 0; font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.15; letter-spacing: -.02em; text-wrap: balance; color: var(--ink); }
+.kopf p { margin: 6px 0 0; max-width: 44em; color: var(--ink); opacity: .8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kopf h1, :root:not([data-theme="light"]) .kopf p { color: #E3EEEC; } }
+:root[data-theme="dark"] .kopf h1, :root[data-theme="dark"] .kopf p { color: #E3EEEC; }
+
+.demo { background: var(--demo); border: 1px solid rgba(255,255,255,.5); border-radius: 22px; padding: 20px; display: grid; gap: 14px; }
+.demo-kopf { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.demo-kopf h2 { margin: 0; font-size: 1.2rem; }
+.demo-kopf .nr { display: inline-grid; place-items: center; min-width: 28px; height: 28px; border-radius: 999px; background: var(--ink); color: var(--on); font-size: .85rem; font-weight: 700; }
+.demo-kopf p { margin: 0; flex-basis: 100%; color: var(--soft); font-size: .92rem; }
+.paar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.seite { display: grid; gap: 8px; min-width: 0; }
+.etikett { font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--soft); }
+.seite.nach .etikett { color: var(--ink); }
+.seite.nach .etikett::after { content: " ✓"; }
+@media (max-width: 720px) { .paar { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Aufklapp-Kästen (wie auf der Seite) ---------- */
+details { border-radius: 18px; background: var(--paper); color: var(--ink); box-shadow: 0 10px 26px -18px rgba(30,59,68,.5); }
+summary { display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; cursor: pointer; list-style: none; border-radius: inherit; font-weight: 600; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: ""; margin-left: auto; width: 20px; height: 20px; flex: none; background: currentColor; opacity: .55; transition: rotate .25s var(--ease-out);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat; }
+details[open] summary::after { rotate: 180deg; }
+summary:focus-visible, button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px; }
+.ic { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 12px; background: var(--rose); }
+.ic svg { width: 20px; height: 20px; fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.t { display: grid; min-width: 0; } .t small { font-weight: 400; color: var(--soft); font-size: .88rem; }
+.inhalt { padding: 4px 16px 16px; display: grid; gap: 10px; }
+.inhalt p { margin: 0; color: var(--soft); font-size: .92rem; }
+.gruppen { display: flex; flex-wrap: wrap; gap: 6px; }
+.gruppen b { flex-basis: 100%; font-size: .8rem; color: var(--soft); }
+.gruppen a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border-radius: 10px; background: var(--chip); color: var(--ink); font-weight: 600; font-size: .88rem; text-decoration: none; }
+.gruppen a small { font-weight: 500; color: var(--soft); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 0; background: var(--rose); color: var(--ink); font: 600 .92rem var(--font); cursor: pointer; text-decoration: none; transition: scale .16s var(--ease-out), background .15s; }
+.btn:active { scale: .97; }
+.btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lotse { display: grid; gap: 10px; }
+.lotse summary { padding: 16px 18px; }
+.brief summary { padding: 16px 18px; justify-content: space-between; }
+.brief summary small { color: var(--soft); font-weight: 600; font-size: .8rem; }
+.brief .inhalt p { color: var(--ink); line-height: 1.6; }
+
+/* Nachher: weiches Auf- und Zuklappen (per Skript, damit es auch in Safari läuft) */
+.weich > .inhalt { overflow: hidden; }
+
+/* ---------- 4: Termine nach Bereich ---------- */
+.filter { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 4px; border-radius: 12px; background: var(--chip); justify-self: start; max-width: 100%; }
+.filter button { min-height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: var(--ink); font: 600 .88rem var(--font); cursor: pointer; transition: background .15s var(--ease-out), color .15s; }
+.filter button[aria-pressed="true"] { background: var(--ink); color: var(--on); }
+.filter.drueck button { transition: background .15s var(--ease-out), color .15s, scale .16s var(--ease-out); }
+.filter.drueck button:active { scale: .97; }
+.liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.liste li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px; border-radius: 16px; background: var(--card); color: var(--on); }
+.liste .d { display: grid; place-items: center; height: 52px; border-radius: 10px; background: var(--rose); color: var(--ink); font-weight: 700; line-height: 1.05; font-size: .95rem; text-align: center; }
+.liste .d small { display: block; font-size: .66rem; font-weight: 600; }
+.liste b { display: block; font-size: .95rem; } .liste span { font-size: .8rem; opacity: .85; }
+.liste .tag { display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 6px; background: rgba(255,255,255,.16); font-size: .7rem; font-weight: 600; }
+.liste li.weg { display: none; }
+
+/* ---------- 5: Knopf erscheint ---------- */
+.krank-mini { border-radius: 18px; background: var(--paper); padding: 14px; display: grid; gap: 10px; color: var(--ink); min-height: 168px; align-content: start; }
+.krank-mini .zeile { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+.krank-mini .zeile small { display: block; font-weight: 400; color: var(--soft); font-size: .86rem; }
+.zuletzt { justify-self: stretch; }
+.nach .zuletzt { transition: opacity .2s var(--ease-out), scale .2s var(--ease-out); }
+@starting-style { .nach .zuletzt { opacity: 0; scale: .97; } }
+.ausloeser { justify-self: start; background: transparent; border: 1px solid var(--line); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) { .nach .zuletzt { transition-duration: .01s; } }
+</style>
+<main class="wrap">
+  <header class="kopf">
+    <h1>Feinschliff Bewegung</h1>
+    <p>Sechs kleine Stellen, jeweils links wie heute, rechts mit Bewegung. Tippen Sie in beiden Spalten dasselbe an und vergleichen Sie.</p>
+  </header>
+
+  <!-- 1 Krankmelden -->
+  <section class="demo" aria-labelledby="t1">
+    <div class="demo-kopf"><span class="nr">1</span><h2 id="t1">Kind krankmelden aufklappen</h2><p>Heute springt der Kasten sofort auf. Nachher gleitet er in 0,25 Sekunden auf – bewusst kurz, weil man es morgens eilig hat.</p></div>
+    <div class="paar">
+      <div class="seite"><span class="etikett">Vorher</span><div data-krank></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div data-krank data-weich="250"></div></div>
+    </div>
+  </section>
+
+  <!-- 2 Lotse -->
+  <section class="demo" aria-labelledby="t2">
+    <div class="demo-kopf"><span class="nr">2</span><h2 id="t2">Formular-Lotse bei Downloads</h2><p>Es ist immer nur ein Punkt offen. Heute springt die Seite beim Wechsel. Nachher klappt der alte Punkt im gleichen Takt zu, wie der neue aufgeht.</p></div>
+    <div class="paar">
+      <div class="seite"><span class="etikett">Vorher</span><div class="lotse" data-lotse="a"></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div class="lotse" data-lotse="b" data-weich="300"></div></div>
+    </div>
+  </section>
+
+  <!-- 3 Elternbrief -->
+  <section class="demo" aria-labelledby="t3">
+    <div class="demo-kopf"><span class="nr">3</span><h2 id="t3">Elternbrief aufklappen</h2><p>Heute erscheint der lange Text schlagartig. Nachher gleitet der Brief in 0,35 Sekunden auf, der Text blendet dabei weich ein.</p></div>
+    <div class="paar">
+      <div class="seite"><span class="etikett">Vorher</span><div data-brief></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div data-brief data-weich="350"></div></div>
+    </div>
+  </section>
+
+  <!-- 4 + 6 Termine nach Bereich -->
+  <section class="demo" aria-labelledby="t4">
+    <div class="demo-kopf"><span class="nr">4</span><h2 id="t4">Termine nach Bereich filtern</h2><p>Heute verschwinden Termine sofort und die übrigen springen nach oben. Nachher blenden sie aus, die übrigen gleiten an ihren Platz. Rechts geben die Knöpfe beim Drücken außerdem leicht nach (Vorschlag 6).</p></div>
+    <div class="paar">
+      <div class="seite"><span class="etikett">Vorher</span><div data-termine></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div data-termine data-weich="1"></div></div>
+    </div>
+  </section>
+
+  <!-- 5 Knopf erscheint -->
+  <section class="demo" aria-labelledby="t5">
+    <div class="demo-kopf"><span class="nr">5</span><h2 id="t5">„Bienengruppe anrufen“ erscheint</h2><p>Nach dem ersten Anruf merkt sich die Seite die Gruppe und zeigt oben einen großen Knopf. Heute ploppt er auf, nachher blendet er weich ein. Tippen Sie auf „Anruf nachstellen“.</p></div>
+    <div class="paar">
+      <div class="seite"><span class="etikett">Vorher</span><div data-zuletzt></div></div>
+      <div class="seite nach"><span class="etikett">Nachher</span><div data-zuletzt></div></div>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var EIO = "cubic-bezier(.77,0,.175,1)", EOUT = "cubic-bezier(.23,1,.32,1)";
+  var PHONE = '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>';
+  var MAIL = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
+
+  /* --- Bausteine füllen --- */
+  document.querySelectorAll("[data-krank]").forEach(function (el) {
+    el.innerHTML = '<details><summary><span class="ic">' + PHONE + '</span><span class="t">Kind krankmelden<small>Gruppe anrufen oder E-Mail mit Vorlage</small></span></summary><div class="inhalt">' +
+      '<p>Bitte geben Sie möglichst früh am Morgen Bescheid.</p>' +
+      '<div class="gruppen"><b>Kinderkrippe</b><a href="#" data-x>Sternengruppe <small>… 15</small></a><a href="#" data-x>Sonnengruppe <small>… 14</small></a></div>' +
+      '<div class="gruppen"><b>Kindergarten</b><a href="#" data-x>Bienengruppe <small>… 13</small></a><a href="#" data-x>Spatzengruppe <small>… 12</small></a><a href="#" data-x>Bärengruppe <small>… 11</small></a></div>' +
+      '<a class="btn" href="#" data-x>' + MAIL + ' E-Mail mit Vorlage schreiben</a></div></details>';
+  });
+  var LOTSE = [["Mein Kind ist krank", "Bitte melden Sie Ihr Kind per E-Mail oder telefonisch direkt in der Gruppe ab.", "Krankmeldung per E-Mail"],
+    ["Mein Kind braucht Medikamente", "Medikamente können wir nur mit einer unterschriebenen Medikamentenvereinbarung geben.", "Medikamentenvereinbarung"],
+    ["Ich möchte wissen, wann geschlossen ist", "Alle Schließtage stehen im Ferienplan – auch als Kalenderdatei fürs Handy.", "Schließtage als PDF"],
+    ["Jemand anderes holt mein Kind ab", "Schicken Sie uns vorher eine kurze E-Mail. Die abholende Person bringt bitte einen Ausweis mit.", "Abholung ankündigen"]];
+  document.querySelectorAll("[data-lotse]").forEach(function (el) {
+    var n = "lotse-" + el.getAttribute("data-lotse");
+    el.innerHTML = LOTSE.map(function (l) { return '<details name="' + n + '"><summary>' + l[0] + '</summary><div class="inhalt"><p>' + l[1] + '</p><a class="btn" href="#" data-x>' + l[2] + "</a></div></details>"; }).join("");
+  });
+  document.querySelectorAll("[data-brief]").forEach(function (el) {
+    el.innerHTML = '<details class="brief"><summary><span>Schließtage, Fortbildungen und Überstunden</span><small>Kita-Jahr 2026/27</small></summary><div class="inhalt">' +
+      "<p>Nach dem BayKiBiG dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die als Inhouseschulungen für alle Mitarbeiterinnen und Mitarbeiter stattfinden, liegen in unserer Schließzeit.</p>" +
+      "<p>Unser Personal arbeitet mit großem Engagement. Im Laufe eines Jahres fallen dadurch Überstunden an, etwa durch St. Martin, Ferienfreizeit, Elternabende und den Weihnachtsmarkt. Diese gleichen wir durch Freizeit aus.</p>" +
+      "<p>In den Schulferien, in denen wir geöffnet haben, betreut ein Teil des Teams Ihr Kind, während andere ihre Überstunden frei nehmen.</p>" +
+      "<p><b>Im Auftrag des Vorsitzenden</b><br>Petra Lachnit, Einrichtungsleiterin</p></div></details>";
+  });
+  var TERMINE = [["18", "Nov", "Buß- und Bettag", "Für Hortkinder ein Ferientag", ""], ["04", "Dez", "Weihnachtsmarkt", "ab 16:30 Uhr", ""], ["07", "Dez", "Der Nikolaus besucht uns", "am Vormittag", ""],
+    ["12", "Jan", "Elternabend Kindergarten", "19:30 Uhr", "kiga"], ["20", "Jan", "Eingewöhnungs-Café", "für neue Krippeneltern", "krippe"], ["06", "Sep", "Österreich-Ferienfreizeit", "06.–10.09.", "hort"]];
+  var NAME = { krippe: "Krippe", kiga: "Kindergarten", hort: "Hort" };
+  document.querySelectorAll("[data-termine]").forEach(function (el) {
+    var weich = el.hasAttribute("data-weich");
+    el.innerHTML = '<div class="filter' + (weich ? " drueck" : "") + '" role="group" aria-label="Termine nach Bereich"><button type="button" data-b="alle" aria-pressed="true">Alle</button><button type="button" data-b="krippe" aria-pressed="false">Krippe</button><button type="button" data-b="kiga" aria-pressed="false">Kindergarten</button><button type="button" data-b="hort" aria-pressed="false">Hort</button></div>' +
+      '<ul class="liste">' + TERMINE.map(function (t) { return '<li data-b="' + t[4] + '"><span class="d">' + t[0] + "<small>" + t[1] + "</small></span><span><b>" + t[2] + (t[4] ? '<span class="tag">' + NAME[t[4]] + "</span>" : "") + "</b><span>" + t[3] + "</span></span></li>"; }).join("") + "</ul>";
+    el.style.display = "grid"; el.style.gap = "10px";
+    var list = el.querySelector(".liste"), items = Array.prototype.slice.call(list.children), busy = false;
+    el.querySelectorAll(".filter button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (busy || b.getAttribute("aria-pressed") === "true") return;
+        el.querySelectorAll(".filter button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+        var f = b.getAttribute("data-b"), passt = function (li) { var k = li.getAttribute("data-b"); return f === "alle" || !k || k === f; };
+        if (!weich || reduced) { items.forEach(function (li) { li.classList.toggle("weg", !passt(li)); }); return; }
+        /* Nachher: gehende blenden aus, übrige gleiten an ihren Platz (FLIP), kommende blenden ein */
+        busy = true;
+        var vorher = new Map(); items.forEach(function (li) { if (!li.classList.contains("weg")) vorher.set(li, li.getBoundingClientRect()); });
+        var gehen = items.filter(function (li) { return !li.classList.contains("weg") && !passt(li); });
+        gehen.forEach(function (li) { li.animate([{ opacity: 1, scale: 1 }, { opacity: 0, scale: .97 }], { duration: 150, easing: "ease-out", fill: "forwards" }); });
+        setTimeout(function () {
+          items.forEach(function (li) { li.getAnimations().forEach(function (a) { a.cancel(); }); li.classList.toggle("weg", !passt(li)); });
+          items.forEach(function (li) {
+            if (li.classList.contains("weg")) return; var a = vorher.get(li), n = li.getBoundingClientRect();
+            if (a) li.animate([{ translate: "0 " + (a.top - n.top) + "px" }, { translate: "0 0" }], { duration: 300, easing: EOUT });
+            else li.animate([{ opacity: 0, scale: .97 }, { opacity: 1, scale: 1 }], { duration: 220, delay: 80, easing: EOUT, fill: "backwards" });
+          });
+          busy = false;
+        }, gehen.length ? 150 : 0);
+      });
+    });
+  });
+  document.querySelectorAll("[data-zuletzt]").forEach(function (el) {
+    el.innerHTML = '<div class="krank-mini"><div class="zeile"><span class="ic">' + PHONE + '</span><span>Kind krankmelden<small class="sub">Gruppe anrufen oder E-Mail mit Vorlage</small></span></div><button class="btn ausloeser" type="button">Anruf bei der Bienengruppe nachstellen</button></div>';
+    var box = el.firstChild, b = box.querySelector(".ausloeser");
+    b.addEventListener("click", function () {
+      var alt = box.querySelector(".zuletzt");
+      if (alt) { alt.parentNode.removeChild(alt); box.querySelector(".sub").textContent = "Gruppe anrufen oder E-Mail mit Vorlage"; b.textContent = "Anruf bei der Bienengruppe nachstellen"; return; }
+      var a = document.createElement("a"); a.className = "btn zuletzt"; a.href = "#"; a.setAttribute("data-x", ""); a.innerHTML = PHONE + " Bienengruppe anrufen";
+      box.insertBefore(a, b); box.querySelector(".sub").textContent = "Zuletzt: Bienengruppe"; b.textContent = "Zurücksetzen";
+    });
+  });
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-x]")) e.preventDefault(); });
+
+  /* --- Nachher: weiches Auf- und Zuklappen für <details> (läuft in allen Browsern) --- */
+  function weich(d, ms) {
+    var s = d.querySelector("summary"), c = d.querySelector(".inhalt"), lauf = null;
+    d.classList.add("weich");
+    function auf() {
+      d.open = true; var h = c.scrollHeight;
+      if (lauf) lauf.cancel();
+      lauf = c.animate([{ height: "0px", opacity: 0 }, { height: h + "px", opacity: 1 }], { duration: reduced ? 1 : ms, easing: EIO });
+      lauf.onfinish = function () { lauf = null; };
+    }
+    function zu() {
+      var h = c.offsetHeight;
+      if (lauf) lauf.cancel();
+      lauf = c.animate([{ height: h + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: reduced ? 1 : ms, easing: EIO });
+      lauf.onfinish = function () { d.open = false; lauf = null; };
+    }
+    d.weichZu = zu;
+    s.addEventListener("click", function (e) {
+      e.preventDefault();
+      var name = d.getAttribute("name");
+      if (d.open && !lauf) { zu(); return; }
+      if (d.open && lauf) { zu(); return; }
+      if (name) document.querySelectorAll('details[name="' + name + '"]').forEach(function (o) { if (o !== d && o.open && o.weichZu) o.weichZu(); });
+      auf();
+    });
+  }
+  document.querySelectorAll("[data-weich] details").forEach(function (d) { weich(d, +d.closest("[data-weich]").getAttribute("data-weich")); });
+})();
+</script>
