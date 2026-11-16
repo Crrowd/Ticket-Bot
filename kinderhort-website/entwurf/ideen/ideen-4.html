@@ -186,6 +186,70 @@ button { font: inherit; color: inherit; }
 /* 24 Morgen offen? */
 .ask2 { width: 270px; display: grid; gap: 8px; }
 .bubble { background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 10px 12px; font-size: .82rem; min-height: 40px; }
+
+/* 25 Sprachen */
+.lang { width: 280px; display: grid; gap: 8px; }
+.lang .tile { min-height: 64px; }
+/* 26 Vorlesen */
+.read { width: 290px; display: grid; gap: 10px; }
+.read .tile mark { background: #F1E5E3; border-radius: 4px; }
+/* 27 Schrift */
+.fz { width: 290px; display: grid; gap: 10px; }
+.fz .tile { transition: font-size .2s; }
+/* 28 Speiseplan */
+.menu { width: 290px; display: grid; gap: 8px; }
+.menu .tile { min-height: 70px; }
+/* 29 Fundsachen */
+.lost { width: 100%; max-width: 380px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.lost div { background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 8px; font-size: .72rem; text-align: center; }
+.lost i { display: block; height: 54px; border-radius: 8px; margin-bottom: 6px; background: linear-gradient(135deg, #D4B5B0, #A8C5C0); }
+.lost div:nth-child(2) i { background: linear-gradient(135deg, #2D6A6A, #A8C5C0); } .lost div:nth-child(3) i { background: linear-gradient(135deg, #F3E9C9, #D4B5B0); }
+/* 30 Packliste */
+.pack { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 12px 14px; font-size: .82rem; display: grid; gap: 6px; }
+.pack label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.pack input { accent-color: #2D6A6A; width: 18px; height: 18px; }
+.pack .pb { height: 6px; border-radius: 3px; background: rgba(30,59,68,.12); overflow: hidden; }
+.pack .pb span { display: block; height: 100%; width: 0; background: #7FD6A4; transition: width .3s cubic-bezier(.23,1,.32,1); }
+/* 31 Erster Tag */
+.first { width: 290px; display: grid; gap: 8px; color: #F3F8F7; text-align: center; }
+.first b { font-size: 2rem; color: #D4B5B0; font-variant-numeric: tabular-nums; }
+/* 32 Abholzeit */
+.calc { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; font-size: .82rem; display: grid; gap: 8px; }
+.calc input { width: 100%; accent-color: #2D6A6A; }
+.calc .res { font-size: 1.1rem; font-weight: 700; }
+/* 33 Erinnerung */
+.remind { width: 290px; display: grid; gap: 10px; justify-items: center; }
+.notif { width: 100%; background: rgba(243,248,247,.95); color: #1E3B44; border-radius: 16px; padding: 10px 12px; font-size: .78rem; box-shadow: 0 10px 24px rgba(0,0,0,.3); opacity: 0; translate: 0 -10px; transition: opacity .3s cubic-bezier(.23,1,.32,1), translate .3s cubic-bezier(.23,1,.32,1); }
+.notif.on { opacity: 1; translate: 0 0; }
+.notif b { display: block; }
+/* 34 Kunstwerke */
+.art { width: 100%; max-width: 380px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.art div { background: #fff; padding: 6px 6px 18px; border-radius: 3px; box-shadow: 0 6px 14px rgba(0,0,0,.3); rotate: -2deg; }
+.art div:nth-child(2) { rotate: 2deg; } .art div:nth-child(3) { rotate: -1deg; }
+.art svg { width: 100%; aspect-ratio: 1; display: block; background: #FBF7EF; }
+/* 35 Rückmeldung Elternabend */
+.rsvp { width: 290px; display: grid; gap: 8px; }
+.mailprev { background: #fff; color: #1E3B44; border-radius: 12px; padding: 10px 12px; font: .74rem/1.5 ui-monospace, Menlo, monospace; min-height: 70px; }
+/* 36 Lesezeit */
+.rt { width: 290px; display: grid; gap: 6px; }
+.rt .tile small { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 6px; background: #E6EFED; font-size: .7rem; }
+/* 37 Vibration */
+.vib { display: grid; justify-items: center; gap: 10px; color: #F3F8F7; }
+.vib button { border: 0; border-radius: 14px; padding: 12px 22px; background: #D4B5B0; color: #1E3B44; font-weight: 700; cursor: pointer; }
+.vib button.pulse { animation: vib .3s linear; }
+@keyframes vib { 20%, 60% { translate: -2px 0; } 40%, 80% { translate: 2px 0; } }
+/* 38 Leichte Sprache */
+.easy { width: 300px; display: grid; gap: 8px; }
+/* 39 ABC-Karten */
+.abc { position: relative; width: 240px; height: 150px; }
+.abc .k { position: absolute; inset: 0; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px 16px; box-shadow: 0 10px 20px rgba(0,0,0,.25); font-size: .8rem; touch-action: pan-y; cursor: grab; user-select: none; }
+.abc .k b { display: block; font-size: 1.6rem; color: #2D6A6A; }
+.abc .k:nth-child(2) { rotate: 3deg; translate: 0 4px; } .abc .k:nth-child(3) { rotate: -3deg; translate: 0 8px; }
+/* 40 Kühlschrank-Zettel */
+.fridge { width: 200px; aspect-ratio: 210 / 297; background: #fff; color: #1E3B44; border-radius: 4px; padding: 10px; box-shadow: 0 10px 24px rgba(0,0,0,.35); font-size: .56rem; display: grid; gap: 4px; align-content: start; position: relative; }
+.fridge::before { content: ""; position: absolute; top: -8px; left: 50%; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #D4B5B0; box-shadow: 0 3px 6px rgba(0,0,0,.3); }
+.fridge h6 { margin: 6px 0 2px; font-size: .78rem; }
+.fridge div { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(30,59,68,.12); padding: 2px 0; }
 /* Auswahl je Idee */
 .vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
 .vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -380,6 +444,102 @@ button { font: inherit; color: inherit; }
       <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
         <h2><span class="num">24</span> „Ist morgen offen?“ – eine Frage, eine Antwort</h2><p>Unter „Jetzt geöffnet“ drei kleine Fragen zum Antippen: Morgen? Nächste Woche? In den Ferien? Die Antwort kommt sofort aus dem Ferienplan, in einem Satz.</p><p class="where">Nutzt die Daten, die die Seite schon hat.</p></div>
     </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="lang"><div class="chips" id="lg"><button aria-pressed="true" data-l="de">Deutsch</button><button aria-pressed="false" data-l="en">English</button><button aria-pressed="false" data-l="tr">Türkçe</button><button aria-pressed="false" data-l="ar">العربية</button><button aria-pressed="false" data-l="uk">Українська</button></div><div class="tile" id="lgt"><b>Kind krank?</b>Bitte rufen Sie in der Gruppe an.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span></div>
+        <h2><span class="num">25</span> Das Wichtigste auch in anderen Sprachen</h2><p>Krankmelden, Öffnungszeiten und Schließtage gibt es zusätzlich kurz auf Englisch, Türkisch, Arabisch und Ukrainisch – für Familien, die gerade Deutsch lernen. Arabisch läuft richtig von rechts nach links.</p><p class="where">harden: Seiten müssen auch mit anderen Sprachen funktionieren. Die Übersetzungen müssten geprüft werden.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="read"><div class="tile" id="rdt">Am Freitag ist unser Laternenfest. Wir treffen uns um 17 Uhr im Garten.</div><button class="chip" id="rdb" type="button">Vorlesen</button></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span></div>
+        <h2><span class="num">26</span> Texte vorlesen lassen</h2><p>Ein kleiner Lautsprecher-Knopf an Elternbriefen und Hinweisen: Der Browser liest den Text vor und markiert das gerade gelesene Wort. Ohne fremden Dienst, die Stimme kommt vom Gerät.</p><p class="where">Hilft beim Lesen auf dem Weg, bei Leseschwäche und für Familien, die Deutsch lernen.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="fz"><div class="chips" id="fzc"><button aria-pressed="true" data-z=".8rem">A</button><button aria-pressed="false" data-z="1rem">A+</button><button aria-pressed="false" data-z="1.2rem">A++</button></div><div class="tile" id="fzt"><b>Heute geöffnet</b>Krippe und Kindergarten bis 16:30 Uhr, Hort bis 18:00 Uhr.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable adapt</span></div>
+        <h2><span class="num">27</span> Schrift größer stellen</h2><p>Zwei kleine Knöpfe „A“ und „A+“ im Fußbereich: die ganze Seite wird größer, ohne dass etwas überläuft. Für Großeltern und alle, die ungern zoomen.</p><p class="where">adapt: Die Seite verträgt schon 200 % Zoom – das macht es nur leichter zu finden.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="menu"><div class="chips" id="mn"><button aria-pressed="false">Mo</button><button aria-pressed="true">Di</button><button aria-pressed="false">Mi</button><button aria-pressed="false">Do</button><button aria-pressed="false">Fr</button></div><div class="tile" id="mnt"><b>Gemüselasagne</b>Apfelkompott · <span class="small">enthält Gluten, Milch</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
+        <h2><span class="num">28</span> Was gibt es heute zu essen?</h2><p>Die eigene Küche ist ein Stolz des Hauses – der Wochen-Speiseplan gehört deshalb auf die Seite. Heute ist vorausgewählt, Allergene stehen klein darunter. Gepflegt wie die Termine in einer Tabelle.</p><p class="where">Braucht eine kleine Tabelle „speiseplan.csv“ von der Küche.</p></div>
+    </article>
+
+    <article class="card" data-k="team">
+      <div class="stage"><div class="demo"><div class="lost"><div><i></i>Blaue Mütze<br><span class="small">bis 30.11.</span></div><div><i></i>Brotdose<br><span class="small">bis 28.11.</span></div><div><i></i>Turnbeutel<br><span class="small">bis 04.12.</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable delight</span></div>
+        <h2><span class="num">29</span> Fundsachen-Ecke</h2><p>Mützen, Brotdosen, Turnbeutel: Das Team fotografiert Fundsachen, sie erscheinen mit „abholen bis …“ auf der Seite. Nach Ablauf verschwinden sie automatisch.</p><p class="where">Ein kleiner Dienst für Eltern, der viel Sucherei erspart.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="pack" id="pk"><b>Krippe: erster Tag</b><label><input type="checkbox"> Wechselkleidung</label><label><input type="checkbox"> Hausschuhe</label><label><input type="checkbox"> Windeln und Feuchttücher</label><label><input type="checkbox"> Kuscheltier</label><div class="pb"><span></span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable onboard</span></div>
+        <h2><span class="num">30</span> Packliste für den ersten Tag</h2><p>Für jeden Bereich eine Liste zum Abhaken: Wechselkleidung, Hausschuhe, Windeln, Trinkflasche … Der Fortschritt bleibt im eigenen Browser gespeichert. Nimmt neuen Eltern Unsicherheit.</p><p class="where">Die Inhalte der Liste kommen vom Hort.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="first"><span>Noch</span><b id="ftn">5</b><span id="ftt">Tage bis zum ersten Tag</span><input type="range" id="ftr" min="0" max="10" value="5" aria-label="Tage" style="accent-color:#D4B5B0"></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable delight</span></div>
+        <h2><span class="num">31</span> Countdown bis zum ersten Tag</h2><p>Neue Eltern tragen den ersten Tag ihres Kindes ein und sehen, wie viele Tage es noch sind – mit drei kleinen Tipps zur Eingewöhnung. Am Tag selbst gibt es einen herzlichen Gruß.</p><p class="where">Ein seltener, emotionaler Moment – hier darf es etwas mehr Freude sein.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="calc"><label>Bringzeit: <b id="cbz">7:30</b><input type="range" id="cbr" min="0" max="12" value="3"></label><label>Gebuchte Stunden: <b id="chz">6</b><input type="range" id="chr" min="4" max="10" value="6"></label><div class="res" id="cres">Abholen bis 13:30 Uhr</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
+        <h2><span class="num">32</span> Abholzeit-Rechner</h2><p>Bringzeit und gebuchte Stunden einstellen – die Seite sagt: „Abholen bis 14:15 Uhr“. Gerade im Hort mit Mindestbuchungszeit eine häufige Frage.</p><p class="where">Rechnet nur, was ohnehin gilt; Sonderfälle klärt weiter das Team.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="remind"><div class="notif" id="ntf"><b>Morgen: Laternenfest</b>17:00 Uhr, Garten · Kinderhort Grombühl</div><button class="chip" id="ntb" type="button">Merken mit Erinnerung</button></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">mobile-native</span></div>
+        <h2><span class="num">33</span> Erinnerung am Vortag</h2><p>Beim Merken eines Termins ein Häkchen „Am Vortag erinnern“: Die Kalenderdatei bekommt dann eine Erinnerung mit, und das Handy meldet sich am Abend vorher.</p><p class="where">Steckt in der Kalenderdatei (VALARM) – keine App, kein Konto.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="art"><div><svg viewBox="0 0 60 60"><circle cx="20" cy="18" r="9" fill="#F3C98B"/><path d="M6 50 Q30 30 54 50" stroke="#7FD6A4" stroke-width="5" fill="none"/></svg></div><div><svg viewBox="0 0 60 60"><rect x="16" y="24" width="28" height="24" fill="#D4B5B0"/><path d="M12 26 L30 10 L48 26" fill="#2D6A6A"/></svg></div><div><svg viewBox="0 0 60 60"><path d="M10 40 C 20 10, 40 10, 50 40" stroke="#5B8DEF" stroke-width="4" fill="none"/><circle cx="30" cy="44" r="6" fill="#F2A196"/></svg></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable delight</span></div>
+        <h2><span class="num">34</span> Kunstwerk der Woche</h2><p>Jede Woche drei Bilder der Kinder als kleine Ausstellung – eingescannt, ohne Namen, mit Einverständnis der Eltern. Macht die Seite lebendig und zeigt, was im Alltag entsteht.</p><p class="where">Echte Kinderbilder statt gezeichneter Platzhalter – hier nur angedeutet.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="rsvp"><div class="chips" id="rs"><button aria-pressed="false" data-r="ja">Ich komme</button><button aria-pressed="false" data-r="nein">Ich komme nicht</button></div><div class="mailprev" id="rsm">Betreff: …</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
+        <h2><span class="num">35</span> Zum Elternabend zu- oder absagen</h2><p>Unter Terminen mit Anmeldung zwei Knöpfe: „Ich komme“ und „Ich komme nicht“. Es öffnet sich eine fertige E-Mail mit Termin und Platz für den Namen – kein Formular, kein Server.</p><p class="where">Wie bei Krankmelden und Platz anfragen.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="rt"><div class="tile"><b>Schließtage und Fortbildungen<small>2 Min.</small></b></div><div class="tile"><b>Läuse<small>unter 1 Min.</small></b></div><div class="tile"><b>Ferienbetreuung im Hort<small>3 Min.</small></b></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">humanizer</span></div>
+        <h2><span class="num">36</span> Lesezeit an Elternbriefen</h2><p>Jeder Brief zeigt, wie lange er zu lesen ist: „1 Min.“ oder „4 Min.“. Eltern entscheiden, ob sie jetzt lesen oder später.</p><p class="where">Wird beim Bauen der Seite aus der Textlänge berechnet.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="vib"><button type="button" id="vb">Merken</button><span class="small">Am Handy spürbar, hier sichtbar</span></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">apple-design</span></div>
+        <h2><span class="num">37</span> Spürbares Merken</h2><p>Auf Android-Handys gibt es beim Merken eines Termins ein ganz kurzes Vibrieren – wie bei einer echten App. Wer „Bewegung reduzieren“ eingestellt hat, bekommt es nicht.</p><p class="where">Ein Tick von 10 Millisekunden, nur bei Bestätigungen.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="easy"><div class="chips" id="ez"><button aria-pressed="true">Normal</button><button aria-pressed="false">Leichte Sprache</button></div><div class="tile" id="ezt">Die Kinderkrippe betreut Kinder ab 11 Monaten bis zum August des Jahres, in dem sie 3 Jahre alt werden.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">humanizer</span></div>
+        <h2><span class="num">38</span> Leichte Sprache</h2><p>Die Seiten zu Krippe, Kindergarten und Hort gibt es zusätzlich in Leichter Sprache: kurze Sätze, ein Gedanke pro Zeile, schwierige Wörter erklärt. Ein Schalter oben wechselt hin und her.</p><p class="where">Leichte Sprache sollte von geübten Menschen geprüft werden.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="abc" id="ab"><div class="k"><b>W</b>Wechselkleidung – bitte immer ein Set im Fach.</div><div class="k"><b>B</b>Brotzeit – eine Trinkflasche mit Wasser genügt.</div><div class="k"><b>A</b>Abholen – bitte bis zur gebuchten Zeit.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">gestures</span></div>
+        <h2><span class="num">39</span> Eltern-ABC als Karten zum Wischen</h2><p>Das KrippenABC, KindergartenABC und HortABC als Kartenstapel: oben die Karte, mit dem Finger weggewischt kommt die nächste. Statt eines langen PDFs zum Durchblättern in der Wartezeit.</p><p class="where">Zusätzlich bleibt das PDF zum Herunterladen.</p></div>
+    </article>
+
+    <article class="card" data-k="team">
+      <div class="stage"><div class="demo"><div class="fridge"><h6>Kinderhort Grombühl</h6><div><span>Zentrale</span><b>2789892 0</b></div><div><span>Sternengruppe</span><b>… 15</b></div><div><span>Bienengruppe</span><b>… 13</b></div><div><span>Öffnungszeiten</span><b>6:45–18:00</b></div><h6>Schließtage</h6><div><span>Weihnachten</span><b>24.12.–08.01.</b></div><div><span>Ostern</span><b>25.–30.03.</b></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable harden</span></div>
+        <h2><span class="num">40</span> Kühlschrank-Zettel zum Ausdrucken</h2><p>Eine einzige Seite mit allem für die Pinnwand zu Hause: Durchwahlen aller Gruppen, Öffnungszeiten, Schließtage des Jahres. Ein Knopf „Für den Kühlschrank drucken“.</p><p class="where">Wie der Jahresposter, nur noch knapper.</p></div>
+    </article>
   </div>
   <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“. Nichts davon ist schon auf der Seite – sag einfach, welche Ideen eingebaut werden sollen.</p>
 </div>
@@ -489,6 +649,47 @@ button { font: inherit; color: inherit; }
   })();
   /* 24 Fragen */
   $("#aq").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#aq button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#aqa").textContent = b.dataset.a; });
+
+  /* 25 Sprachen */
+  (function () { var T = { de: ["Kind krank?", "Bitte rufen Sie in der Gruppe an."], en: ["Child is ill?", "Please call your child’s group."], tr: ["Çocuğunuz hasta mı?", "Lütfen grubu arayın."], ar: ["طفلك مريض؟", "يرجى الاتصال بالمجموعة."], uk: ["Дитина захворіла?", "Будь ласка, зателефонуйте до групи."] };
+    $("#lg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#lg button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var t = T[b.dataset.l], el = $("#lgt"); el.innerHTML = "<b></b>"; $("b", el).textContent = t[0]; el.appendChild(document.createTextNode(t[1])); el.dir = b.dataset.l === "ar" ? "rtl" : "ltr"; el.lang = b.dataset.l; }); })();
+  /* 26 Vorlesen */
+  (function () { var el = $("#rdt"), txt = el.textContent, b = $("#rdb");
+    b.addEventListener("click", function () {
+      if (!("speechSynthesis" in window)) { b.textContent = "Vorlesen hier nicht verfügbar"; return; }
+      speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(txt); u.lang = "de-DE";
+      u.onboundary = function (ev) { var i = ev.charIndex, j = txt.indexOf(" ", i); if (j < 0) j = txt.length; el.innerHTML = ""; el.append(txt.slice(0, i)); var m = document.createElement("mark"); m.textContent = txt.slice(i, j); el.append(m, txt.slice(j)); };
+      u.onend = function () { el.textContent = txt; }; speechSynthesis.speak(u); }); })();
+  /* 27 Schrift */
+  $("#fzc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#fzc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#fzt").style.fontSize = b.dataset.z; });
+  /* 28 Speiseplan */
+  (function () { var M = { Mo: ["Kartoffelsuppe mit Würstchen", "Obst · enthält Sellerie"], Di: ["Gemüselasagne", "Apfelkompott · enthält Gluten, Milch"], Mi: ["Fischstäbchen mit Kartoffelbrei", "Rohkost · enthält Fisch, Milch"], Do: ["Linsen-Dal mit Reis", "Joghurt · enthält Milch"], Fr: ["Pfannkuchen", "Apfelmus · enthält Ei, Gluten, Milch"] };
+    $("#mn").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#mn button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var m = M[b.textContent]; $("#mnt").innerHTML = "<b></b><span class=\"small\"></span>"; $("#mnt b").textContent = m[0]; $("#mnt span").textContent = m[1]; }); })();
+  /* 30 Packliste */
+  (function () { var bx = $$("#pk input"), bar = $("#pk .pb span"); function u() { bar.style.width = (bx.filter(function (x) { return x.checked; }).length / bx.length * 100) + "%"; } bx.forEach(function (x) { x.addEventListener("change", u); }); })();
+  /* 31 Erster Tag */
+  $("#ftr").addEventListener("input", function () { var n = +this.value; $("#ftn").textContent = n ? n : "Heute"; $("#ftt").textContent = n ? (n === 1 ? "Tag bis zum ersten Tag" : "Tage bis zum ersten Tag") : "ist der erste Tag – willkommen!"; });
+  /* 32 Abholzeit */
+  (function () { function f(m) { return Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0"); }
+    function u() { var b = 405 + 15 * +$("#cbr").value, h = +$("#chr").value, e = Math.min(1080, b + h * 60); $("#cbz").textContent = f(b); $("#chz").textContent = h; $("#cres").textContent = "Abholen bis " + f(e) + " Uhr"; }
+    $("#cbr").addEventListener("input", u); $("#chr").addEventListener("input", u); u(); })();
+  /* 33 Erinnerung */
+  $("#ntb").addEventListener("click", function () { var n = $("#ntf"); n.classList.remove("on"); void n.offsetWidth; setTimeout(function () { n.classList.add("on"); }, 400); });
+  /* 35 Zusage */
+  $("#rs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#rs button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#rsm").textContent = "Betreff: Elternabend 20.01. – " + (b.dataset.r === "ja" ? "Zusage" : "Absage") + "\nName: …\nGruppe: …"; $("#rsm").style.whiteSpace = "pre-line"; });
+  /* 37 Vibration */
+  $("#vb").addEventListener("click", function () { var b = this; if (navigator.vibrate && !reduced) navigator.vibrate(10); b.classList.remove("pulse"); void b.offsetWidth; b.classList.add("pulse"); b.textContent = b.textContent === "Merken" ? "Gemerkt" : "Merken"; });
+  /* 38 Leichte Sprache */
+  $("#ez").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#ez button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#ezt").innerHTML = b.textContent === "Normal" ? "Die Kinderkrippe betreut Kinder ab 11 Monaten bis zum August des Jahres, in dem sie 3 Jahre alt werden." : "Die Krippe ist für kleine Kinder.<br>Ihr Kind kann ab 11 Monaten kommen.<br>Es bleibt, bis es 3 Jahre alt ist."; });
+  /* 39 Karten wischen */
+  (function () { var st = $("#ab");
+    function top() { var ks = $$(".k", st); return ks[ks.length - 1]; }
+    st.addEventListener("pointerdown", function (e) { var k = top(); if (!k || !k.contains(e.target)) return; var x0 = e.clientX; k.setPointerCapture(e.pointerId); k.style.transition = "none";
+      function mv(ev) { var dx = ev.clientX - x0; k.style.translate = dx + "px 0"; k.style.rotate = (dx / 12) + "deg"; }
+      function up(ev) { k.removeEventListener("pointermove", mv); k.removeEventListener("pointerup", up); var dx = ev.clientX - x0; k.style.transition = "translate .3s cubic-bezier(.23,1,.32,1), rotate .3s, opacity .3s";
+        if (Math.abs(dx) > 70) { k.style.translate = (dx > 0 ? 300 : -300) + "px 0"; k.style.opacity = 0; setTimeout(function () { k.style.transition = "none"; k.style.translate = ""; k.style.rotate = ""; k.style.opacity = ""; st.prepend(k); }, 300); } else { k.style.translate = ""; k.style.rotate = ""; } }
+      k.addEventListener("pointermove", mv); k.addEventListener("pointerup", up); });
+    st.tabIndex = 0; st.setAttribute("aria-label", "Karten: Pfeiltaste rechts für die nächste"); st.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { var k = top(); st.prepend(k); } }); })();
 
   /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
   (function () {
