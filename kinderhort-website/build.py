@@ -1,4 +1,5 @@
 # Erzeugt die statischen HTML-Seiten der Kinderhort-Webseite.
+import base64
 import os, re, html, csv, json, datetime as dt
 from urllib.parse import quote
 from PIL import Image
@@ -288,6 +289,16 @@ def glossar(body):
             break
     return body
 
+# Inhalts-Sicherheitsregel: nur eigene Skripte, Bilder, Schriften; keine fremden Server.
+# Die Prüfsummen gehören zu den zwei eingebetteten Skripten in page() – ändert sich eines, rechnet build.py neu.
+import hashlib as _hl
+def _sha(t): return "'sha256-" + base64.b64encode(_hl.sha256(t.encode("utf-8")).digest()).decode() + "'"
+INLINE_JS = '(function (c) { try { if (localStorage.getItem("hinweis-aus")) c += " no-hint"; } catch (e) {} document.documentElement.className = c; })("js");'
+SPEC_RULES = """{"prerender":[{"where":{"selector_matches":"a[href$='.html'], a[href*='.html#']"},"eagerness":"moderate"}]}"""
+CSP = ("default-src 'self'; script-src 'self' " + _sha(INLINE_JS) + " " + _sha(SPEC_RULES) + "; "
+       "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; "
+       "manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'")
+
 def page(fname, title, desc, active, body, theme="", head=""):
     body = glossar(body)
     full_title = f"{title} – {ORG}" if title else f"{ORG} – Weil Qualität zählt!"
@@ -297,7 +308,8 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<script>(function (c) {{ try {{ if (localStorage.getItem("hinweis-aus")) c += " no-hint"; }} catch (e) {{}} document.documentElement.className = c; }})("js");</script>
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<script>{INLINE_JS}</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="theme-color" content="#A8C5C0">
@@ -324,7 +336,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 {body}
 </main>
 {FOOTER}
-<script type="speculationrules">{{"prerender":[{{"where":{{"selector_matches":"a[href$='.html'], a[href*='.html#']"}},"eagerness":"moderate"}}]}}</script>
+<script type="speculationrules">{SPEC_RULES}</script>
 <script src="js/daten.js" defer></script>
 <script src="js/main.js" defer></script>
 </body>
@@ -1014,8 +1026,8 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
 </div>''')
 BRIEFE = read_csv("elternbriefe.csv")
 def brief(i, r):
-    paras = "".join(f"<p>{p.strip()}</p>" for p in r["Text"].split("||") if p.strip())
-    gruss = f'<p class="sign-off">{r["Gruß"].replace("||", "<br>")}</p>' if r.get("Gruß") else ""
+    paras = "".join(f"<p>{e(p.strip())}</p>" for p in r["Text"].split("||") if p.strip())
+    gruss = f'<p class="sign-off">{"<br>".join(e(x) for x in r["Gruß"].split("||"))}</p>' if r.get("Gruß") else ""
     return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
             f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
 akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''

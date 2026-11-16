@@ -20,6 +20,10 @@
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
   function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
   var EASE_IO = "cubic-bezier(.65, 0, .35, 1)", EASE_OUT = "cubic-bezier(.23, 1, .32, 1)";
+  /* Text sicher in HTML einsetzen */
+  function escH(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  /* nur eigene Seiten als Link zulassen (z. B. „kontakt.html#frag“) */
+  function safeHref(u) { return /^(?:[a-z0-9-]+\.html)?(?:#[\w:-]*)?$/i.test(u || "") && u ? u : "index.html"; }
   function store(key, val) {
     try { if (val === undefined) return localStorage.getItem(key); if (val === null) localStorage.removeItem(key); else localStorage.setItem(key, val); } catch (e) { /* privates Fenster */ }
     return null;
@@ -378,7 +382,7 @@
   });
 
   /* ---------- Zuletzt angesehen (nur im eigenen Browser) ---------- */
-  function recentList() { try { return JSON.parse(store("zuletzt") || "[]"); } catch (e) { return []; } }
+  function recentList() { try { var l = JSON.parse(store("zuletzt") || "[]"); return Array.isArray(l) ? l.filter(function (r) { return r && typeof r.t === "string" && typeof r.u === "string" && safeHref(r.u) === r.u; }) : []; } catch (e) { return []; } }
   function remember(t, sub, u) {
     if (!t || !u) return;
     var l = recentList().filter(function (r) { return r.u !== u; });
@@ -386,7 +390,7 @@
   }
   (function () {
     var page = location.pathname.split("/").pop() || "index.html", h1 = $("main h1");
-    if (page === "404.html" || !h1) return;
+    if (page === "404.html" || !h1 || $('meta[name="robots"][content*="noindex"]') || safeHref(page) !== page) return;
     var names = { "index.html": "Startseite", "aktuelles.html": "Aktuelles", "downloads.html": "Downloads", "kontakt.html": "Kontakt" };
     remember(names[page] || h1.textContent.replace(/\s+/g, " ").trim(), "Seite", page);
   })();
@@ -459,7 +463,7 @@
       if (hits.length) input.setAttribute("aria-activedescendant", "treffer-0"); else input.removeAttribute("aria-activedescendant");
       if (!hits.length) { list.innerHTML = '<li><p class="search-empty">Nichts gefunden. Versuchen Sie einen anderen Begriff – oder rufen Sie uns an: 0931 2789892 0.</p></li>'; return; }
       list.innerHTML = hits.map(function (h, i) {
-        return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + h.u + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
+        return '<li role="presentation" style="--n:' + i + '"><a role="option" id="treffer-' + i + '" href="' + escH(h.u) + '" aria-selected="' + (i === 0) + '"><span></span><small></small></a></li>';
       }).join("");
       $$("a", list).forEach(function (a, i) {
         $("span", a).textContent = hits[i].t; $("small", a).textContent = hits[i].s;
@@ -1091,7 +1095,7 @@
       if (!v) { show(""); return; }
       var hits = dir.filter(function (d) { return v.split(" ").every(function (w) { return d.keys.some(function (k) { return k.indexOf(w) === 0; }); }); });
       if (hits.length) {
-        show(hits.slice(0, 3).map(function (h) { return '<p><a href="' + h.href + '">' + h.num.replace(/ /g, "&nbsp;") + "</a><span>" + h.label + "</span></p>"; }).join(""));
+        show(hits.slice(0, 3).map(function (h) { return '<p><a href="' + escH(h.href) + '">' + escH(h.num).replace(/ /g, "&nbsp;") + "</a><span>" + escH(h.label) + "</span></p>"; }).join(""));
         return;
       }
       /* erst nach einer kurzen Tipp-Pause bemängeln, dann kurz wackeln */
@@ -1250,8 +1254,8 @@
         if (wd === 0 || wd === 6) cls.push("we"); else if (why) cls.push("zu");
         if (s === heute) cls.push("today");
         var label = d + ". " + MON[m] + (why && wd !== 0 && wd !== 6 ? ", geschlossen (" + why + ")" : "") + (evs.length ? ", " + evs.map(function (e) { return e.titel; }).join(", ") : "");
-        if (evs.length) cells += '<button type="button" class="ev ' + cls.join(" ") + '" data-d="' + s + '" aria-pressed="false" aria-label="' + label.replace(/"/g, "&quot;") + '">' + d + "</button>";
-        else cells += '<span class="' + cls.join(" ") + '" aria-label="' + label.replace(/"/g, "&quot;") + '">' + d + "</span>";
+        if (evs.length) cells += '<button type="button" class="ev ' + cls.join(" ") + '" data-d="' + s + '" aria-pressed="false" aria-label="' + escH(label) + '">' + d + "</button>";
+        else cells += '<span class="' + cls.join(" ") + '" aria-label="' + escH(label) + '">' + d + "</span>";
       }
       var i0 = y * 12 + m, zu = K.schliesszeiten.filter(function (z) { var a = z.von.slice(0, 7), b = z.bis.slice(0, 7), c = y + "-" + String(m + 1).padStart(2, "0"); return a <= c && b >= c; });
       cal.innerHTML = '<div class="mc-head"><button type="button" class="mc-prev" aria-label="Voriger Monat"' + (i0 <= minI ? " disabled" : "") + ">" + svg(ICON.left, 20) + "</button><b aria-live=\"polite\">" + MON[m] + " " + y +
@@ -1263,7 +1267,7 @@
       $(".mc-next", cal).addEventListener("click", function () { step(1); });
       $$(".ev", cal).forEach(function (b) { b.addEventListener("click", function () {
         $$(".ev", cal).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-        $(".mc-note", cal).innerHTML = evOn(b.getAttribute("data-d")).map(function (e) { var a = parse(e.von); return "<b>" + e.titel + "</b>" + (e.von === e.bis ? fmtLong(a) : fmt(a) + " – " + fmt(parse(e.bis))); }).join("");
+        $(".mc-note", cal).innerHTML = evOn(b.getAttribute("data-d")).map(function (e) { var a = parse(e.von); return "<b>" + escH(e.titel) + "</b>" + (e.von === e.bis ? fmtLong(a) : fmt(a) + " – " + fmt(parse(e.bis))); }).join("");
       }); });
       if (dir && !reduced) $(".mc-grid", cal).animate([{ opacity: 0, translate: (dir * 24) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 260, easing: "cubic-bezier(.23,1,.32,1)" });
     }
@@ -1293,7 +1297,7 @@
   (function () {
     var inp = document.getElementById("brief-suche"); if (!inp) return;
     var briefe = $$(".brief"), cnt = $(".brief-search .faq-count"), empty = $(".brief-empty");
-    function norm(t) { return t.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss"); }
+    function norm(t) { return t.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u"); }
     briefe.forEach(function (b) { b._orig = $("div", b).innerHTML; b._t = $(".brief-t", b).textContent; });
     function mark(html, q) {
       if (!q) return html;

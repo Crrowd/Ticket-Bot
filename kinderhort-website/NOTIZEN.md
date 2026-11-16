@@ -285,6 +285,14 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Sicherheitsdurchsicht (16.11.2026)
+Ganze Seite geprüft (statische Seite ohne Server-Code, keine Formulare, keine fremden Skripte). Abgesichert:
+- Elternbrief-Texte und Grüße aus `elternbriefe.csv` werden jetzt als reiner Text ausgegeben (vorher wurde HTML übernommen). **Folge: In der Tabelle wirkt kein HTML mehr – Absätze weiter mit `||`.**
+- Termintitel im Kalender, Durchwahl-Treffer und Suchtreffer werden maskiert; „Zuletzt angesehen“ übernimmt aus dem Browser-Speicher nur Links auf eigene Seiten und merkt sich keine Fehlerseiten.
+- Inhalts-Sicherheitsregel (CSP) als `<meta>` in jeder Seite: nur eigene Skripte (plus Prüfsummen der zwei eingebetteten Skripte), Bilder, Schriften, keine fremden Server. Beim Hosting zusätzlich als HTTP-Kopfzeile setzen, dazu `frame-ancestors 'none'`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` und HTTPS mit HSTS.
+- Nebenbei: Markierung in der Elternbrief-Suche saß bei „ß“ verschoben.
+In Ordnung waren: Service Worker (nur eigene GET-Anfragen), externe Links mit `rel="noopener"`, Kalender-Dateien maskieren Sonderzeichen, Daten als eigene Datei statt eingebettet.
+
 ## Raster (15.11.2026)
 Nach dem Spickzettel „Steal this grid“: Handy 4 Spalten, 16 px Rand, 16 px Abstand · Tablet (ab 701 px) 8 Spalten, 32 px Rand, 24 px Abstand · Computer 12 Spalten, Rand automatisch (Inhalt mittig, max. 1180 px), 24 px Abstand. Umgesetzt mit `--margin` und `--gutter` für `.container` und alle Karten-Raster.
 - Behoben: Der Seitenname in der Leiste (Übergang 53) blieb in der Vorschau nach dem Wechsel von „Aktuelles“ zur Startseite stehen; er richtet sich jetzt immer nach der gerade sichtbaren Seite.
