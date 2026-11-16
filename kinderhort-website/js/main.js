@@ -19,7 +19,9 @@
   };
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
   function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
-  var EASE_IO = "cubic-bezier(.65, 0, .35, 1)", EASE_OUT = "cubic-bezier(.23, 1, .32, 1)";
+  var CSSV = getComputedStyle(document.documentElement);
+  var EASE_IO = CSSV.getPropertyValue("--ease-in-out").trim() || "cubic-bezier(.65, 0, .35, 1)",
+      EASE_OUT = CSSV.getPropertyValue("--ease-out").trim() || "cubic-bezier(.23, 1, .32, 1)";
   /* Zustand in der Adresse (teilen, neu laden, zurück) */
   function getParam(k) { try { return new URLSearchParams(location.search).get(k); } catch (e) { return null; } }
   function setParam(k, v) { try { var u = new URL(location.href); if (v) u.searchParams.set(k, v); else u.searchParams.delete(k); history.replaceState(history.state, "", u); } catch (e) { /* file:// */ } }
@@ -68,12 +70,11 @@
   if (header) header.addEventListener("focusin", function () { header.classList.remove("hide"); });
 
   /* Handy-Tastatur: Höhe messen, damit nichts unter ihr verschwindet */
-  var vv = window.visualViewport;
+  var vv = window.visualViewport, lastKb = -1, lastVvh = -1;
   function onViewport() {
-    var kb = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
-    root.style.setProperty("--kb", kb + "px");
-    root.style.setProperty("--vvh", Math.round(vv.height) + "px");
-    root.classList.toggle("kb-open", kb > 80);
+    var kb = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop)), h = Math.round(vv.height);
+    if (kb !== lastKb) { lastKb = kb; root.style.setProperty("--kb", kb + "px"); root.classList.toggle("kb-open", kb > 80); }
+    if (h !== lastVvh) { lastVvh = h; root.style.setProperty("--vvh", h + "px"); }
   }
   if (vv) { vv.addEventListener("resize", onViewport); vv.addEventListener("scroll", onViewport); onViewport(); }
   /* Eingabefeld beim Antippen in den sichtbaren Bereich holen */
@@ -127,14 +128,13 @@
   function knobTo(ul, a) {
     var k = $(".subnav-knob", ul), first = !k;
     if (first) { k = document.createElement("li"); k.className = "subnav-knob"; k.setAttribute("aria-hidden", "true"); ul.insertBefore(k, ul.firstChild); }
-    var moved = !first && k.style.getPropertyValue("--kx") !== a.offsetLeft + "px";
     if (first) k.style.transition = "none";
+    k.style.setProperty("--sw", ul.scrollWidth + "px");
     k.style.setProperty("--kx", a.offsetLeft + "px");
     k.style.setProperty("--ky", a.offsetTop + "px");
     k.style.setProperty("--kw", a.offsetWidth + "px");
     k.style.setProperty("--kh", a.offsetHeight + "px");
     if (first) { void k.offsetWidth; k.style.transition = ""; k.classList.add("on"); }
-    else if (moved && !reduced) { k.classList.remove("moving"); void k.offsetWidth; k.classList.add("moving"); }
   }
   window.addEventListener("resize", function () {
     $$(".subnav ul").forEach(function (ul) { var a = $('a[aria-current="true"]', ul), k = $(".subnav-knob", ul); if (a && k) { k.style.transition = "none"; knobTo(ul, a); void k.offsetWidth; k.style.transition = ""; } });
@@ -1237,7 +1237,7 @@
   function slideKnob(group, btn, anim) {
     var k = $(".vs-knob", group); if (!k || !btn) return;
     if (!anim || reduced) k.style.transition = "none";
-    k.style.width = btn.offsetWidth + "px"; k.style.translate = btn.offsetLeft + "px 0";
+    k.style.setProperty("--vx", btn.offsetLeft + "px"); k.style.setProperty("--vw", btn.offsetWidth + "px");
     if (!anim || reduced) { void k.offsetWidth; k.style.transition = ""; }
   }
 
@@ -1283,7 +1283,7 @@
       if (showCal) render(0);
       var swap = function () { out.hidden = true; inn.hidden = false; extra.forEach(function (x) { if (x && showCal) x.dataset.wasHidden = x.hidden, x.hidden = true; else if (x && x.dataset.wasHidden) x.hidden = x.dataset.wasHidden === "true"; }); };
       if (!anim || reduced || !out.animate) { swap(); return; }
-      out.animate([{ opacity: 1 }, { opacity: 0, scale: .98 }], { duration: 140, easing: "ease-in" }).onfinish = function () { swap(); inn.animate([{ opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1 }], { duration: 240, easing: "cubic-bezier(.23,1,.32,1)" }); };
+      out.animate([{ opacity: 1 }, { opacity: 0, scale: .98 }], { duration: 120, easing: EASE_OUT }).onfinish = function () { swap(); inn.animate([{ opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1 }], { duration: 240, easing: EASE_OUT }); };
     }
     var btns = $$("button", sw);
     btns.forEach(function (b) { b.addEventListener("click", function () {
@@ -1941,7 +1941,7 @@
     function to(el) {
       if (!el || innerWidth <= 1180) { line.style.opacity = 0; return; }
       var r = el.getBoundingClientRect(), u = ul.getBoundingClientRect(), pad = 16;
-      line.style.width = (r.width - pad * 2) + "px"; line.style.translate = (r.left - u.left + pad) + "px 0"; line.style.opacity = 1;
+      line.style.scale = (r.width - pad * 2) + " 1"; line.style.translate = (r.left - u.left + pad) + "px 0"; line.style.opacity = 1;
     }
     $$(":scope > li > a:not(.nav-cta), :scope > li > .drop-toggle", ul).forEach(function (a) { a.addEventListener("mouseenter", function () { to(a); }); });
     ul.addEventListener("mouseleave", function () { line.style.opacity = 0; });

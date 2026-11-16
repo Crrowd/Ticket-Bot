@@ -1,6 +1,6 @@
 # 010 — Eine ease-out-Kurve statt zwei, JS liest die Tokens
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: LOW
 - **Category**: Cohesion & tokens

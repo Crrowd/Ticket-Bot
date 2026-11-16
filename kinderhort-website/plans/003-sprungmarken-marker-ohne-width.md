@@ -1,6 +1,6 @@
 # 003 — Sprungmarken-Marker: clip-path statt width, 250 ms
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: MEDIUM
 - **Category**: Performance + Easing & duration

@@ -1,6 +1,6 @@
 # 001 — Fokusrahmen springt sofort statt zu gleiten
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: HIGH
 - **Category**: Purpose & frequency

@@ -1,6 +1,6 @@
 # 009 — Viewport-Werte nur bei echter Änderung schreiben
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: LOW
 - **Category**: Performance

@@ -272,7 +272,7 @@ Weiche, großzügige Rundungen auf einer Skala: 3 (Linien, Balken) · 6 (kleine 
 ### Do:
 - **Do** Rosé nur für Handlung und Markierung verwenden.
 - **Do** Ränder und Linien aus der Textfarbe mit Deckkraft bauen.
-- **Do** eine Bewegungskurve verwenden: `cubic-bezier(.22, 1, .36, 1)`, 120–220 ms für Rückmeldung, 300–500 ms für Auftritte.
+- **Do** eine Bewegungskurve verwenden: `cubic-bezier(.23, 1, .32, 1)`, 120–220 ms für Rückmeldung, 300–500 ms für Auftritte.
 - **Do** bei „Bewegung reduzieren“ Bewegung im Raum weglassen, Farb- und Deckkraft-Rückmeldung behalten.
 - **Do** Lesetexte auf 62–68ch begrenzen.
 

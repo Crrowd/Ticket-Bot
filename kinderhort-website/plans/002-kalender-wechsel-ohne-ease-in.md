@@ -1,6 +1,6 @@
 # 002 — Liste/Kalender: Abgang mit ease-out statt ease-in
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: HIGH
 - **Category**: Easing & duration

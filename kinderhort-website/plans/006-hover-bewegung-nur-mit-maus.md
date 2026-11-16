@@ -1,6 +1,6 @@
 # 006 — Bewegung beim Überfahren nur mit echter Maus
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: MEDIUM
 - **Category**: Accessibility

@@ -1,6 +1,6 @@
 # 008 — Kopfleiste wird fester per Deckkraft statt Neuberechnung
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: MEDIUM
 - **Category**: Performance

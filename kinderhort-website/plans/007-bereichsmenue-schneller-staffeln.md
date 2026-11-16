@@ -1,6 +1,6 @@
 # 007 — Bereichsmenü: nur Spalten staffeln, Zeilen sofort
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 1d9b6ec
 - **Severity**: MEDIUM
 - **Category**: Purpose & frequency
