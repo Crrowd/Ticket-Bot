@@ -270,14 +270,86 @@ CSS = r'''
 .hist div { display: grid; justify-items: center; gap: 6px; text-align: center; position: relative; padding: 0 4px; }
 .hist div::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: #D4B5B0; border: 3px solid #2D6A6A; }
 .hist b { font-size: .86rem; }
+
+/* Neu-Markierung und Sprungknopf */
+.filter button { white-space: nowrap; }
+.jump { margin-bottom: 6px; display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; border: 0; border-radius: 12px; padding: 11px 16px; background: #D4B5B0; color: #1E3B44; font: 700 .95rem var(--font, inherit); cursor: pointer; transition: background .2s, scale .15s EZ; }
+.jump:hover { background: #ddc3bf; } .jump:active { scale: .97; }
+.jump svg { width: 16px; height: 16px; }
+.badge-neu { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: #D4B5B0; color: #1E3B44; margin-left: 6px; }
+.card.flash { box-shadow: 0 0 0 3px #D4B5B0, var(--shadow); }
+.card[id] { scroll-margin-top: 24px; }
+/* 57 Wetter */
+.wet { width: 290px; display: grid; gap: 8px; }
+.wet .tile { display: flex; gap: 10px; align-items: center; }
+.wet svg { flex: none; }
+/* 58 besetzt */
+.bes { width: 260px; display: grid; gap: 8px; }
+.bes .call { display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 12px; font-weight: 700; font-size: .88rem; background: #D4B5B0; color: #1E3B44; }
+.bes .call.zu { background: rgba(243,248,247,.12); color: #F3FAF8; font-weight: 600; }
+/* 59 Woche */
+.wk { width: 100%; max-width: 420px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.wk div { background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 8px 6px; font-size: .7rem; min-height: 96px; display: grid; align-content: start; gap: 5px; }
+.wk b { font-size: .78rem; } .wk span { padding: 3px 4px; } .wk .today { box-shadow: inset 0 0 0 2px #1E3B44; }
+.wk span { border-radius: 6px; padding: 3px 5px; background: #E6EFED; }
+.wk span.zu { background: #F1E5E3; color: #7E3B31; }
+/* 61 Eingewöhnung */
+.eg { width: 100%; max-width: 400px; display: grid; gap: 6px; }
+.eg div { display: grid; grid-template-columns: 70px 1fr; gap: 10px; background: rgba(243,248,247,.1); color: #F3FAF8; border-radius: 10px; padding: 8px 10px; font-size: .78rem; }
+.eg b { color: #D4B5B0; }
+/* 62 Jahresband */
+.yb { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; color: #F3FAF8; font-size: .62rem; text-align: center; }
+.yb i { display: block; height: 40px; border-radius: 6px; background: rgba(243,248,247,.12); position: relative; overflow: hidden; margin-bottom: 4px; }
+.yb i em { position: absolute; left: 0; right: 0; bottom: 0; background: #D4B5B0; }
+/* 63 Formular */
+.frm { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 8px; font-size: .78rem; }
+.frm label { display: grid; gap: 3px; font-weight: 600; }
+.frm span.f { border: 1.5px solid rgba(30,59,68,.2); border-radius: 9px; padding: 7px 10px; font-weight: 400; color: rgba(30,59,68,.55); }
+/* 64 Wimpel im Jahreslauf */
+.wj { width: 100%; max-width: 400px; display: grid; gap: 12px; justify-items: center; }
+.wj svg { width: 100%; height: auto; }
+.wj path.w { transition: fill .5s EZ; }
+/* 65 Vorschau Team */
+.vt { width: 300px; background: #fff; color: #1E3B44; border-radius: 12px; padding: 12px 14px; font-size: .76rem; display: grid; gap: 6px; box-shadow: 0 10px 22px rgba(0,0,0,.3); }
+.vt .ok { color: #2F7A55; font-weight: 700; } .vt .warn { color: #A5502F; font-weight: 700; }
+/* 66 Platzhalterbild */
+.ph6 { width: 100%; max-width: 360px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #F3FAF8; font-size: .72rem; text-align: center; }
+.ph6 img, .ph6 .muster { width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; display: block; object-fit: cover; margin-bottom: 4px; }
+.ph6 .muster { background: repeating-linear-gradient(135deg, #A8C5C0 0 12px, #b5cfca 12px 24px); display: grid; place-items: center; color: #1E3B44; }
+/* 67 Dunkel */
+.dk { width: 100%; max-width: 380px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dk div { border-radius: 14px; padding: 12px; font-size: .74rem; display: grid; gap: 6px; }
+.dk .hell { background: #F3F8F7; color: #1E3B44; } .dk .dunkel { background: #10232A; color: #E3EEEC; }
+.dk b { font-size: .86rem; } .dk span { border-radius: 8px; padding: 6px 8px; } .dk .hell span { background: #E6EFED; } .dk .dunkel span { background: #1B3640; }
+/* 68 QR */
+.qr { width: 250px; background: #fff; color: #1E3B44; border-radius: 12px; padding: 14px; display: grid; justify-items: center; gap: 8px; font-size: .78rem; text-align: center; box-shadow: 0 10px 22px rgba(0,0,0,.3); }
+.qr svg { width: 110px; height: 110px; }
+/* 69 Sorgen */
+.sg { width: 300px; display: grid; gap: 6px; }
+.sg details { background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 9px 12px; font-size: .8rem; }
+.sg summary { font-weight: 700; cursor: pointer; } .sg p { margin: 6px 0 0; }
+/* 70 Geschwister */
+.gw { width: 260px; display: grid; gap: 8px; }
+.gw .tile { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+/* 71 Barrierefreiheit */
+.bf { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 6px; font-size: .78rem; }
+.bf b { font-size: .9rem; }
+/* 72 Besucherzahlen */
+.bz2 { width: 100%; max-width: 380px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 7px; font-size: .76rem; }
+.bz2 div { display: grid; grid-template-columns: 120px 1fr 34px; gap: 8px; align-items: center; }
+.bz2 i { display: block; height: 10px; border-radius: 4px; background: #2D6A6A; }
+.bz2 span { text-align: right; font-variant-numeric: tabular-nums; }
 '''.replace('EZ', EZ)
 
 IMG = lambda n: f'img/{n}-800.webp'
+NEU_AB = 10 ** 6
 def card(n, k, skill, title, text, where, stage):
+    neu = n >= NEU_AB
+    att = (' frisch" data-k="' + k + ' frisch"' + (' id="neu-start"' if n == NEU_AB else '')) if neu else '" data-k="' + k + '"'
     return f'''
-    <article class="card" data-k="{k}">
+    <article class="card{att}>
       <div class="stage">{stage}</div>
-      <div class="about"><div class="meta"><span class="skill">{skill}</span></div>
+      <div class="about"><div class="meta"><span class="skill">{skill}</span>{'<span class="badge-neu">Neu</span>' if neu else ''}</div>
         <h2>{n} · {title}</h2><p>{text}</p><p class="where">{where}</p></div>
     </article>
 '''
@@ -457,6 +529,57 @@ add('gestalt', 'impeccable delight', 'Unsere Geschichte als Zeitleiste', 'Eine k
     'Hier mit Platzhaltern.',
     '<div class="demo"><div class="hist"><div><b>19__</b>Gründung</div><div><b>19__</b>Hort</div><div><b>20__</b>Krippe</div><div><b>20__</b>Umbau</div><div><b>heute</b>3 Bereiche</div></div></div>')
 
+SV = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+WIMPEL = '<path class="w" d="M20 30l18 34 18-34z"/><path class="w" d="M65 27l18 34 18-34z"/><path class="w" d="M110 24l18 34 18-34z"/><path class="w" d="M155 21l18 34 18-34z"/><path class="w" d="M200 18l18 34 18-34z"/><path class="w" d="M245 21l18 34 18-34z"/><path class="w" d="M290 24l18 34 18-34z"/><path class="w" d="M335 27l18 34 18-34z"/><path class="w" d="M380 30l18 34 18-34z"/>'
+QR = '<svg viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><rect x="0" y="0" width="1" height="1" fill="#1E3B44"/><rect x="1" y="0" width="1" height="1" fill="#1E3B44"/><rect x="2" y="0" width="1" height="1" fill="#1E3B44"/><rect x="3" y="0" width="1" height="1" fill="#1E3B44"/><rect x="4" y="0" width="1" height="1" fill="#1E3B44"/><rect x="5" y="0" width="1" height="1" fill="#1E3B44"/><rect x="6" y="0" width="1" height="1" fill="#1E3B44"/><rect x="8" y="0" width="1" height="1" fill="#1E3B44"/><rect x="10" y="0" width="1" height="1" fill="#1E3B44"/><rect x="12" y="0" width="1" height="1" fill="#1E3B44"/><rect x="14" y="0" width="1" height="1" fill="#1E3B44"/><rect x="15" y="0" width="1" height="1" fill="#1E3B44"/><rect x="16" y="0" width="1" height="1" fill="#1E3B44"/><rect x="17" y="0" width="1" height="1" fill="#1E3B44"/><rect x="18" y="0" width="1" height="1" fill="#1E3B44"/><rect x="19" y="0" width="1" height="1" fill="#1E3B44"/><rect x="20" y="0" width="1" height="1" fill="#1E3B44"/><rect x="0" y="1" width="1" height="1" fill="#1E3B44"/><rect x="6" y="1" width="1" height="1" fill="#1E3B44"/><rect x="9" y="1" width="1" height="1" fill="#1E3B44"/><rect x="11" y="1" width="1" height="1" fill="#1E3B44"/><rect x="14" y="1" width="1" height="1" fill="#1E3B44"/><rect x="20" y="1" width="1" height="1" fill="#1E3B44"/><rect x="0" y="2" width="1" height="1" fill="#1E3B44"/><rect x="2" y="2" width="1" height="1" fill="#1E3B44"/><rect x="3" y="2" width="1" height="1" fill="#1E3B44"/><rect x="4" y="2" width="1" height="1" fill="#1E3B44"/><rect x="6" y="2" width="1" height="1" fill="#1E3B44"/><rect x="8" y="2" width="1" height="1" fill="#1E3B44"/><rect x="10" y="2" width="1" height="1" fill="#1E3B44"/><rect x="12" y="2" width="1" height="1" fill="#1E3B44"/><rect x="14" y="2" width="1" height="1" fill="#1E3B44"/><rect x="16" y="2" width="1" height="1" fill="#1E3B44"/><rect x="17" y="2" width="1" height="1" fill="#1E3B44"/><rect x="18" y="2" width="1" height="1" fill="#1E3B44"/><rect x="20" y="2" width="1" height="1" fill="#1E3B44"/><rect x="0" y="3" width="1" height="1" fill="#1E3B44"/><rect x="2" y="3" width="1" height="1" fill="#1E3B44"/><rect x="3" y="3" width="1" height="1" fill="#1E3B44"/><rect x="4" y="3" width="1" height="1" fill="#1E3B44"/><rect x="6" y="3" width="1" height="1" fill="#1E3B44"/><rect x="9" y="3" width="1" height="1" fill="#1E3B44"/><rect x="11" y="3" width="1" height="1" fill="#1E3B44"/><rect x="14" y="3" width="1" height="1" fill="#1E3B44"/><rect x="16" y="3" width="1" height="1" fill="#1E3B44"/><rect x="17" y="3" width="1" height="1" fill="#1E3B44"/><rect x="18" y="3" width="1" height="1" fill="#1E3B44"/><rect x="20" y="3" width="1" height="1" fill="#1E3B44"/><rect x="0" y="4" width="1" height="1" fill="#1E3B44"/><rect x="2" y="4" width="1" height="1" fill="#1E3B44"/><rect x="3" y="4" width="1" height="1" fill="#1E3B44"/><rect x="4" y="4" width="1" height="1" fill="#1E3B44"/><rect x="6" y="4" width="1" height="1" fill="#1E3B44"/><rect x="8" y="4" width="1" height="1" fill="#1E3B44"/><rect x="10" y="4" width="1" height="1" fill="#1E3B44"/><rect x="12" y="4" width="1" height="1" fill="#1E3B44"/><rect x="14" y="4" width="1" height="1" fill="#1E3B44"/><rect x="16" y="4" width="1" height="1" fill="#1E3B44"/><rect x="17" y="4" width="1" height="1" fill="#1E3B44"/><rect x="18" y="4" width="1" height="1" fill="#1E3B44"/><rect x="20" y="4" width="1" height="1" fill="#1E3B44"/><rect x="0" y="5" width="1" height="1" fill="#1E3B44"/><rect x="6" y="5" width="1" height="1" fill="#1E3B44"/><rect x="9" y="5" width="1" height="1" fill="#1E3B44"/><rect x="11" y="5" width="1" height="1" fill="#1E3B44"/><rect x="14" y="5" width="1" height="1" fill="#1E3B44"/><rect x="20" y="5" width="1" height="1" fill="#1E3B44"/><rect x="0" y="6" width="1" height="1" fill="#1E3B44"/><rect x="1" y="6" width="1" height="1" fill="#1E3B44"/><rect x="2" y="6" width="1" height="1" fill="#1E3B44"/><rect x="3" y="6" width="1" height="1" fill="#1E3B44"/><rect x="4" y="6" width="1" height="1" fill="#1E3B44"/><rect x="5" y="6" width="1" height="1" fill="#1E3B44"/><rect x="6" y="6" width="1" height="1" fill="#1E3B44"/><rect x="8" y="6" width="1" height="1" fill="#1E3B44"/><rect x="10" y="6" width="1" height="1" fill="#1E3B44"/><rect x="12" y="6" width="1" height="1" fill="#1E3B44"/><rect x="14" y="6" width="1" height="1" fill="#1E3B44"/><rect x="15" y="6" width="1" height="1" fill="#1E3B44"/><rect x="16" y="6" width="1" height="1" fill="#1E3B44"/><rect x="17" y="6" width="1" height="1" fill="#1E3B44"/><rect x="18" y="6" width="1" height="1" fill="#1E3B44"/><rect x="19" y="6" width="1" height="1" fill="#1E3B44"/><rect x="20" y="6" width="1" height="1" fill="#1E3B44"/><rect x="0" y="8" width="1" height="1" fill="#1E3B44"/><rect x="2" y="8" width="1" height="1" fill="#1E3B44"/><rect x="4" y="8" width="1" height="1" fill="#1E3B44"/><rect x="6" y="8" width="1" height="1" fill="#1E3B44"/><rect x="1" y="9" width="1" height="1" fill="#1E3B44"/><rect x="3" y="9" width="1" height="1" fill="#1E3B44"/><rect x="5" y="9" width="1" height="1" fill="#1E3B44"/><rect x="9" y="9" width="1" height="1" fill="#1E3B44"/><rect x="12" y="9" width="1" height="1" fill="#1E3B44"/><rect x="15" y="9" width="1" height="1" fill="#1E3B44"/><rect x="18" y="9" width="1" height="1" fill="#1E3B44"/><rect x="0" y="10" width="1" height="1" fill="#1E3B44"/><rect x="2" y="10" width="1" height="1" fill="#1E3B44"/><rect x="4" y="10" width="1" height="1" fill="#1E3B44"/><rect x="6" y="10" width="1" height="1" fill="#1E3B44"/><rect x="10" y="10" width="1" height="1" fill="#1E3B44"/><rect x="13" y="10" width="1" height="1" fill="#1E3B44"/><rect x="16" y="10" width="1" height="1" fill="#1E3B44"/><rect x="19" y="10" width="1" height="1" fill="#1E3B44"/><rect x="1" y="11" width="1" height="1" fill="#1E3B44"/><rect x="3" y="11" width="1" height="1" fill="#1E3B44"/><rect x="5" y="11" width="1" height="1" fill="#1E3B44"/><rect x="0" y="12" width="1" height="1" fill="#1E3B44"/><rect x="2" y="12" width="1" height="1" fill="#1E3B44"/><rect x="4" y="12" width="1" height="1" fill="#1E3B44"/><rect x="6" y="12" width="1" height="1" fill="#1E3B44"/><rect x="9" y="12" width="1" height="1" fill="#1E3B44"/><rect x="12" y="12" width="1" height="1" fill="#1E3B44"/><rect x="15" y="12" width="1" height="1" fill="#1E3B44"/><rect x="18" y="12" width="1" height="1" fill="#1E3B44"/><rect x="10" y="13" width="1" height="1" fill="#1E3B44"/><rect x="13" y="13" width="1" height="1" fill="#1E3B44"/><rect x="16" y="13" width="1" height="1" fill="#1E3B44"/><rect x="19" y="13" width="1" height="1" fill="#1E3B44"/><rect x="0" y="14" width="1" height="1" fill="#1E3B44"/><rect x="1" y="14" width="1" height="1" fill="#1E3B44"/><rect x="2" y="14" width="1" height="1" fill="#1E3B44"/><rect x="3" y="14" width="1" height="1" fill="#1E3B44"/><rect x="4" y="14" width="1" height="1" fill="#1E3B44"/><rect x="5" y="14" width="1" height="1" fill="#1E3B44"/><rect x="6" y="14" width="1" height="1" fill="#1E3B44"/><rect x="0" y="15" width="1" height="1" fill="#1E3B44"/><rect x="6" y="15" width="1" height="1" fill="#1E3B44"/><rect x="9" y="15" width="1" height="1" fill="#1E3B44"/><rect x="12" y="15" width="1" height="1" fill="#1E3B44"/><rect x="15" y="15" width="1" height="1" fill="#1E3B44"/><rect x="18" y="15" width="1" height="1" fill="#1E3B44"/><rect x="0" y="16" width="1" height="1" fill="#1E3B44"/><rect x="2" y="16" width="1" height="1" fill="#1E3B44"/><rect x="3" y="16" width="1" height="1" fill="#1E3B44"/><rect x="4" y="16" width="1" height="1" fill="#1E3B44"/><rect x="6" y="16" width="1" height="1" fill="#1E3B44"/><rect x="10" y="16" width="1" height="1" fill="#1E3B44"/><rect x="13" y="16" width="1" height="1" fill="#1E3B44"/><rect x="16" y="16" width="1" height="1" fill="#1E3B44"/><rect x="19" y="16" width="1" height="1" fill="#1E3B44"/><rect x="0" y="17" width="1" height="1" fill="#1E3B44"/><rect x="2" y="17" width="1" height="1" fill="#1E3B44"/><rect x="3" y="17" width="1" height="1" fill="#1E3B44"/><rect x="4" y="17" width="1" height="1" fill="#1E3B44"/><rect x="6" y="17" width="1" height="1" fill="#1E3B44"/><rect x="0" y="18" width="1" height="1" fill="#1E3B44"/><rect x="2" y="18" width="1" height="1" fill="#1E3B44"/><rect x="3" y="18" width="1" height="1" fill="#1E3B44"/><rect x="4" y="18" width="1" height="1" fill="#1E3B44"/><rect x="6" y="18" width="1" height="1" fill="#1E3B44"/><rect x="9" y="18" width="1" height="1" fill="#1E3B44"/><rect x="12" y="18" width="1" height="1" fill="#1E3B44"/><rect x="15" y="18" width="1" height="1" fill="#1E3B44"/><rect x="18" y="18" width="1" height="1" fill="#1E3B44"/><rect x="0" y="19" width="1" height="1" fill="#1E3B44"/><rect x="6" y="19" width="1" height="1" fill="#1E3B44"/><rect x="10" y="19" width="1" height="1" fill="#1E3B44"/><rect x="13" y="19" width="1" height="1" fill="#1E3B44"/><rect x="16" y="19" width="1" height="1" fill="#1E3B44"/><rect x="19" y="19" width="1" height="1" fill="#1E3B44"/><rect x="0" y="20" width="1" height="1" fill="#1E3B44"/><rect x="1" y="20" width="1" height="1" fill="#1E3B44"/><rect x="2" y="20" width="1" height="1" fill="#1E3B44"/><rect x="3" y="20" width="1" height="1" fill="#1E3B44"/><rect x="4" y="20" width="1" height="1" fill="#1E3B44"/><rect x="5" y="20" width="1" height="1" fill="#1E3B44"/><rect x="6" y="20" width="1" height="1" fill="#1E3B44"/></svg>'
+
+NEU_AB = len(C) + 1
+add('alltag', 'impeccable clarify', 'Wetter-Hinweis: Matschhose oder Sonnenhut', 'Auf der Startseite erscheint bei Regen „Heute bitte Matschhose und Gummistiefel“, bei Hitze „Sonnenhut und Sonnencreme“. Ein Satz, nur wenn er nötig ist.',
+    'Braucht einen kostenlosen Wetterdienst ohne Cookies (z. B. Open-Meteo); bis dahin nur als Idee.',
+    '<div class="demo"><div class="wet"><div class="chips" id="wtc"><button aria-pressed="true" data-w="r">Regen</button><button aria-pressed="false" data-w="s">Sonne</button><button aria-pressed="false" data-w="k">Kalt</button></div><div class="tile" id="wtt">SVG<span>Heute bitte <b style="display:inline">Matschhose und Gummistiefel</b> mitgeben.</span></div></div></div>'.replace('SVG', SV + '<path d="M7 15a4 4 0 1 1 1-7.9A5 5 0 0 1 18 9a3 3 0 0 1 0 6z"/><path d="M9 18l-1 2M13 18l-1 2M17 18l-1 2"/></svg>'))
+add('alltag', 'mobile-native', 'Anrufen nur, wenn jemand da ist', 'Außerhalb der Öffnungszeiten wird der Anruf-Knopf zu „Gerade nicht besetzt – E-Mail schreiben“. Niemand lässt es um 18 Uhr ins Leere klingeln.',
+    'Nutzt die Öffnungszeiten, die „Jetzt geöffnet“ schon kennt.',
+    '<div class="demo"><div class="bes"><div class="chips" id="bsc"><button aria-pressed="true" data-o="1">10:00</button><button aria-pressed="false" data-o="0">18:30</button></div><div class="call" id="bst">Bienengruppe anrufen</div></div></div>')
+add('alltag', 'ui-ux-pro-max', 'Diese Woche auf einen Blick', 'Eine Leiste mit Montag bis Freitag: Termine, Schließtage und Feiertage der laufenden Woche. Der heutige Tag ist umrandet.',
+    'Für den Sonntagabend-Blick: Was kommt diese Woche?',
+    '<div class="demo"><div class="wk"><div><b>Mo 16.</b></div><div class="today"><b>Di 17.</b><span>Basteln</span></div><div><b>Mi 18.</b></div><div><b>Do 19.</b><span>Eltern&shy;abend</span></div><div><b>Fr 20.</b><span class="zu">ge<span class="zu">Schließ&shy;tag</span>shy;schlos<span class="zu">Schließ&shy;tag</span>shy;sen</span></div></div></div>')
+add('neu', 'impeccable onboard', 'Eingewöhnung Schritt für Schritt', 'Für Krippe und Kindergarten: was in den ersten Tagen und Wochen passiert – wann Eltern dabei sind, wann der erste kurze Abschied kommt. Nimmt viel Unsicherheit vor dem Start.',
+    'Die Inhalte (z. B. nach dem Berliner Modell) liefert der Hort.',
+    '<div class="demo"><div class="eg"><div><b>Tag 1–3</b>Sie bleiben dabei, eine Stunde am Vormittag.</div><div><b>Tag 4</b>Erster kurzer Abschied, 15 Minuten.</div><div><b>Woche 2</b>Längere Zeiten, erstes Mittagessen.</div><div><b>Woche 3–4</b>Ihr Kind bleibt bis zur gebuchten Zeit.</div></div></div>')
+add('alltag', 'dataviz', 'Das Kita-Jahr als Band', 'Zwölf kleine Säulen von September bis August: Wie viele Tage im Monat geschlossen ist. Sieht man auf einen Blick, wann Urlaub ohne Betreuung geplant werden muss.',
+    'Rechnet direkt aus schliesstage.csv.',
+    '<div class="demo"><div class="yb">' + ''.join(f'<div><i><em style="height:{h}%"></em></i>{m}</div>' for m, h in zip(['Sep','Okt','Nov','Dez','Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug'], [0,10,5,35,10,0,8,25,15,5,0,90])) + '</div></div>')
+add('alltag', 'impeccable adapt', 'Formulare direkt am Handy ausfüllen', 'Die Medikamentenvereinbarung und ähnliche Formulare gibt es nicht nur als PDF zum Ausdrucken, sondern als kurzes Formular. Am Ende entsteht eine fertige E-Mail – oder ein sauberes PDF zum Unterschreiben.',
+    'Ohne Server: alles bleibt im Browser, bis man selbst auf „Senden“ tippt.',
+    '<div class="demo"><div class="frm"><b>Medikamentenvereinbarung</b><label>Name des Kindes<span class="f">…</span></label><label>Medikament<span class="f">…</span></label><label>Wann und wie viel<span class="f">…</span></label></div></div>')
+add('gestalt', 'impeccable delight', 'Die Wimpelkette im Jahreslauf', 'Die Wimpelkette (das Leitbild der Seite) wechselt leise mit der Jahreszeit die Farben: frisch im Frühling, warm im Herbst, gedeckt im Winter. Immer in der festen Farbfamilie.',
+    'Nur Farbtöne, keine neuen Figuren oder Bewegungen.',
+    '<div class="demo"><div class="wj"><svg viewBox="0 0 420 80" aria-hidden="true"><path d="M10 18 Q210 48 410 18" fill="none" stroke="#F3F8F7" stroke-width="1.5"/>' + WIMPEL + '</svg><div class="chips" id="wjc"><button aria-pressed="false" data-s="fr">Frühling</button><button aria-pressed="false" data-s="so">Sommer</button><button aria-pressed="true" data-s="he">Herbst</button><button aria-pressed="false" data-s="wi">Winter</button></div></div></div>')
+add('team', 'impeccable harden', 'Vorschau, bevor etwas online geht', 'Nach dem Ändern einer Tabelle zeigt eine kleine Seite, was sich ändert: neue Termine, gelöschte Schließtage, Fehler wie ein falsches Datum. Erst danach wird hochgeladen.',
+    'Baut auf der Daten-Prüfung auf, die beim Bauen schon läuft.',
+    '<div class="demo"><div class="vt"><b>Änderungen seit gestern</b><span class="ok">+ Elternabend Hort · 19.11.</span><span class="ok">+ Konzeptionstag · 20.11.</span><span class="warn">! Zeile 14: „31.11.“ gibt es nicht</span></div></div>')
+add('team', 'break-ui', 'Fehlt ein Foto, bleibt es ruhig', 'Wenn ein Bild fehlt oder nicht lädt, erscheint statt eines kaputten Rahmens ein ruhiges Muster in Salbei mit dem Namen des Raums.',
+    'Gefunden beim Stresstest mit leeren Daten.',
+    f'<div class="demo"><div class="ph6"><div><img src="{IMG("lesecke")}" alt="">Lesecke</div><div><div class="muster">Werkraum</div>Foto fehlt</div></div></div>')
+add('gestalt', 'web-design-guidelines', 'Dunkle Ansicht am Abend', 'Wer am Handy die dunkle Darstellung eingeschaltet hat, bekommt die Seite in tiefem Petrol statt hellem Papier – angenehm beim Blick abends im Bett.',
+    'Folgt automatisch der Handy-Einstellung; die Farben bleiben aus der Familie.',
+    '<div class="demo"><div class="dk"><div class="hell"><b>Termine</b><span>Nikolaus · 07.12.</span><span>Weihnachtsmarkt</span></div><div class="dunkel"><b>Termine</b><span>Nikolaus · 07.12.</span><span>Weihnachtsmarkt</span></div></div></div>')
+add('team', 'impeccable harden', 'QR-Code-Aushang am Eingang', 'Ein fertiger Aushang für die Pinnwand: QR-Code zur Seite und die drei wichtigsten Wege – Krankmelden, Termine, Durchwahlen. Neue Eltern haben die Seite sofort auf dem Handy.',
+    'Wird beim Bauen der Seite gleich mit erzeugt.',
+    '<div class="demo"><div class="qr">' + QR + '<b>Hort Grombühl am Handy</b><span>Krankmelden · Termine · Durchwahlen</span></div></div>')
+add('neu', 'impeccable clarify', 'Häufige Sorgen, ehrlich beantwortet', 'Neben den Sachfragen auch die Sorgen: „Mein Kind weint beim Abschied“, „Was, wenn es nicht schläft?“, „Darf ich anrufen und nachfragen?“. Kurze, warme Antworten vom Team.',
+    'Texte vom Team; die Seite stellt nur den Platz bereit.',
+    '<div class="demo"><div class="sg"><details open><summary>Mein Kind weint beim Abschied</summary><p>Das ist am Anfang ganz normal. Ein kurzer, klarer Abschied hilft – und Sie dürfen gern anrufen und nachfragen.</p></details><details><summary>Was, wenn es nicht schläft?</summary><p>…</p></details></div></div>')
+add('alltag', 'ui-ux-pro-max', 'Geschwisterkinder: mehrere Gruppen merken', 'Wer ein Kind in der Krippe und eines im Hort hat, kann beide Gruppen speichern. Krankmelden und Durchwahl fragen dann kurz: „Für wen?“',
+    'Erweitert „Meine Gruppe“; bleibt im eigenen Browser.',
+    '<div class="demo"><div class="gw"><div class="tile"><b style="display:inline">Spatzengruppe</b><span class="small">Krippe</span></div><div class="tile"><b style="display:inline">Hort</b><span class="small">Schulkind</span></div><div class="tile" style="text-align:center;opacity:.8">+ Weitere Gruppe</div></div></div>')
+add('team', 'web-design-guidelines', 'Erklärung zur Barrierefreiheit', 'Eine kurze Seite: was die Webseite für Barrierefreiheit tut (Tastatur, Kontrast, Vorlesen), was noch fehlt, und an wen man sich wenden kann. Für viele Träger wird so eine Erklärung erwartet.',
+    'Den Text entwerfe ich; ob er nötig ist, klärt der Träger.',
+    '<div class="demo"><div class="bf"><b>Barrierefreiheit</b><span>Die Seite ist mit Tastatur bedienbar, Kontraste sind geprüft, Bilder haben Beschreibungen.</span><span>Noch nicht barrierefrei: einige PDF-Formulare.</span><span>Hinweise an: info@…</span></div></div>')
+add('team', 'dataviz', 'Was wird gelesen? – ohne Cookies', 'Eine einfache Zählung, welche Seiten oft aufgerufen werden: Termine, Krankmelden, Ferienplan. So weiß das Team, was Eltern wirklich brauchen. Ohne Cookies, ohne Werbedienste.',
+    'Braucht einen datenschutzfreundlichen Zähler beim Hosting; erst nach dem Umzug.',
+    '<div class="demo"><div class="bz2"><b>Letzte 30 Tage</b>' + ''.join(f'<div>{n}<i style="width:{w}%"></i><span>{z}</span></div>' for n, w, z in [('Termine', 100, 412), ('Krankmelden', 72, 297), ('Ferienplan', 55, 226), ('Kontakt', 40, 165), ('Anmeldung', 18, 74)]) + '</div></div>')
+
 JS = r'''
   /* Gruppenwahl in den Demos */
   var GR = { "Sonnen": ["Sonnengruppe", "14", "16:30"], "Bienen": ["Bienengruppe", "13", "16:30"], "Hort": ["Kinderhort", "0", "18:00"], "Sterne": ["Sternengruppe"], "Spatzen": ["Spatzengruppe"], "Bären": ["Bärengruppe"] };
@@ -582,6 +705,15 @@ JS = r'''
   $("#bzc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#bzc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var h = +b.dataset.h; $("#bzt").textContent = h < 9 ? "Bringzeit bis 9:00 Uhr" : h < 15 ? "Mittagszeit – Anrufe am besten nach 14:30 Uhr" : "Abholzeit: Krippe und Kindergarten bis 16:30 Uhr"; });
   /* 44 Filter */
   $("#evc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#evc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var f = b.dataset.b; $$(".evf .tile[data-b]").forEach(function (t) { t.hidden = !(f === "alle" || t.dataset.b === "haus" || t.dataset.b === f); }); });
+
+  /* Sprung zu den neuen Ideen */
+  (function () { var j = $("#jumpNew"); if (!j) return; j.addEventListener("click", function () { var a = $('.filter button[data-f="alle"]'); if (a && a.getAttribute("aria-pressed") !== "true") a.click(); var t = $("#neu-start"); if (!t) return; t.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); $$(".card.frisch").forEach(function (c) { c.classList.add("flash"); }); setTimeout(function () { $$(".card.flash").forEach(function (c) { c.classList.remove("flash"); }); }, 2400); var h = $("h2", t); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }); })();
+  /* 57 Wetter */
+  $("#wtc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#wtc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var t = { r: "Matschhose und Gummistiefel", s: "Sonnenhut und Sonnencreme", k: "Mütze und Handschuhe" }[b.dataset.w]; $("#wtt b").textContent = t; });
+  /* 58 besetzt */
+  $("#bsc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#bsc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var o = b.dataset.o === "1", c = $("#bst"); c.classList.toggle("zu", !o); c.textContent = o ? "Bienengruppe anrufen" : "Gerade nicht besetzt – E-Mail schreiben"; });
+  /* 64 Wimpel Jahreslauf */
+  (function () { var P = { fr: ["#A8C5C0", "#E7D9A8", "#D4B5B0"], so: ["#F3F8F7", "#D4B5B0", "#7FBFB0"], he: ["#D4B5B0", "#C9926F", "#2D6A6A"], wi: ["#F3F8F7", "#A8C5C0", "#8FA6AC"] }; function set(k) { $$(".wj path.w").forEach(function (w, i) { w.setAttribute("fill", P[k][i % 3]); }); } set("he"); $("#wjc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#wjc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); set(b.dataset.s); }); })();
 '''
 
 out = (head + CSS + vote_css + '''</style>
@@ -592,6 +724,7 @@ out = (head + CSS + vote_css + '''</style>
     <h1>Neue Ideen aus allen Skills</h1>
     <p>Jede Idee stammt aus einem der installierten Skills – das kleine Etikett zeigt, aus welchem. Die Beispiele lassen sich anfassen: tippen, ziehen, schieben. Darunter wie gewohnt <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> und eine Anmerkung.</p>
   </header>
+  <button class="jump" id="jumpNew" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>Zu den neuen Ideen ({NEU_AB}–{LAST})</button>
   <p class="sync-note">Ihre Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
 
   <div class="filter" role="group" aria-label="Ideen filtern">
@@ -601,6 +734,7 @@ out = (head + CSS + vote_css + '''</style>
     <button type="button" data-f="neu" aria-pressed="false">Für neue Eltern</button>
     <button type="button" data-f="gestalt" aria-pressed="false">Gestaltung</button>
     <button type="button" data-f="team" aria-pressed="false">Für das Team</button>
+    <button type="button" data-f="frisch" aria-pressed="false">Neu dazu</button>
     <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
   </div>
 
@@ -611,6 +745,7 @@ out = (head + CSS + vote_css + '''</style>
 
 ''' + helpers + JS + '\n' + vote_js + '})();\n</script>\n')
 
+out = out.replace('{NEU_AB}', str(NEU_AB)).replace('{LAST}', str(len(C)))
 out = re.sub(r'(<div class="about"><div class="meta">.*?</div>\s*<h2>)(\d+) · ', lambda m: m.group(1) + '<span class="num">' + m.group(2) + '</span> ', out, flags=re.S)
 assert out.count('class="num"') == len(C), out.count('class="num"')
 open(D + 'ideen-4.html', 'w', encoding='utf-8').write(out)
