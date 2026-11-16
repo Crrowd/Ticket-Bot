@@ -2113,3 +2113,6 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 @starting-style { .krank .krank-last { opacity: 0; scale: .97; } }
 .ev-filter button { transition: background .15s var(--ease-out), color .15s, scale .16s var(--ease-out); }
 .ev-filter button:active { scale: .97; }
+
+/* Zahl der gemerkten Termine darf kurz aufspringen */
+.saved-row .saved-n { display: inline-block; }

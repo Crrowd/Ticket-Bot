@@ -33,7 +33,7 @@ SEITE = "".join([
     demo(3, "Kalender-Abo: Reiter wechseln", "Wechseln Sie zwischen iPhone, Android und Outlook. Nachher blendet die Anleitung weich ein und die Höhe gleitet mit.", ABO, ABO),
     demo(4, "Merkliste: Termin entfernen", "Tippen Sie auf ✕ bei einem Termin. Nachher zieht sich die Zeile zusammen und die anderen rutschen nach.", MERK, MERK),
     demo(5, "„Alle Termine anzeigen“", "Nachher erscheinen die weiteren Termine nacheinander statt alle auf einmal.", MEHR, MEHR),
-    demo(6, "Nach dem ersten „Merken“", "Tippen Sie auf „Merken“. Darunter erscheinen die Knöpfe für die Merkliste – nachher blenden sie weich ein.", GEMERKT, GEMERKT),
+    demo(6, "Nach dem ersten „Merken“", "Tippen Sie auf „Merken“. Darunter erscheinen die Knöpfe für die Merkliste. Nachher schieben sie den Inhalt darunter weich nach unten und erscheinen kurz nacheinander; „Gemerkt“ erneut antippen klappt sie wieder weich zu.", GEMERKT, GEMERKT),
 ])
 
 CSS = BASIS + '''
@@ -84,7 +84,7 @@ button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px;
 .merken:active { scale: .97; } .merken[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
 .saved { display: flex; flex-wrap: wrap; gap: 8px; }
 .nach .saved { transition: opacity .22s var(--ease-out), translate .22s var(--ease-out); }
-@starting-style { .nach .saved:not([hidden]) { opacity: 0; translate: 0 6px; } }
+
 @media (prefers-reduced-motion: reduce) { .nach .saved { transition-duration: .01s; } }
 '''
 
@@ -177,7 +177,12 @@ JS = r'''
     /* 6 Gemerkt */
     var mk = q(".merken", seite);
     if (mk) { var sv = q(".saved", seite); mk.addEventListener("click", function () {
-      var an = mk.getAttribute("aria-pressed") !== "true"; mk.setAttribute("aria-pressed", an); mk.textContent = an ? "Gemerkt" : "Merken"; sv.hidden = !an; }); }
+      var an = mk.getAttribute("aria-pressed") !== "true"; mk.setAttribute("aria-pressed", an); mk.textContent = an ? "Gemerkt" : "Merken";
+      if (!nach || reduced) { sv.hidden = !an; return; }
+      if (an) { sv.hidden = false; hoehe(sv, 0, sv.offsetHeight, 260, EIO);
+        qa(".btn", sv).forEach(function (x, i) { x.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 220, delay: 60 + i * 50, easing: EOUT, fill: "backwards" }); }); }
+      else { sv.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards" }); hoehe(sv, sv.offsetHeight, 0, 220, EIO, function () { sv.hidden = true; sv.getAnimations().forEach(function (x) { x.cancel(); }); }); }
+    }); }
   });
 })();
 '''

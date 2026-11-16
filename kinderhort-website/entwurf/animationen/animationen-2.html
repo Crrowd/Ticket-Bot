@@ -80,7 +80,7 @@ button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px;
 .merken:active { scale: .97; } .merken[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
 .saved { display: flex; flex-wrap: wrap; gap: 8px; }
 .nach .saved { transition: opacity .22s var(--ease-out), translate .22s var(--ease-out); }
-@starting-style { .nach .saved:not([hidden]) { opacity: 0; translate: 0 6px; } }
+
 @media (prefers-reduced-motion: reduce) { .nach .saved { transition-duration: .01s; } }
 </style>
 <main class="wrap">
@@ -129,7 +129,7 @@ button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px;
       <div class="seite nach" data-art="nach"><span class="etikett">Nachher</span><div class="mehr"><ul class="liste2"></ul><button type="button" class="btn alle">Alle 9 Termine anzeigen</button></div></div>
     </div>
   </section><section class="demo" aria-labelledby="t6">
-    <div class="demo-kopf"><span class="nr">6</span><h2 id="t6">Nach dem ersten „Merken“</h2><p>Tippen Sie auf „Merken“. Darunter erscheinen die Knöpfe für die Merkliste – nachher blenden sie weich ein.</p></div>
+    <div class="demo-kopf"><span class="nr">6</span><h2 id="t6">Nach dem ersten „Merken“</h2><p>Tippen Sie auf „Merken“. Darunter erscheinen die Knöpfe für die Merkliste. Nachher schieben sie den Inhalt darunter weich nach unten und erscheinen kurz nacheinander; „Gemerkt“ erneut antippen klappt sie wieder weich zu.</p></div>
     <div class="paar">
       <div class="seite" data-art="vor"><span class="etikett">Vorher</span><div class="gm"><div class="ev"><span class="d">04<small>Dez</small></span><span><b>Weihnachtsmarkt</b><span>ab 16:30 Uhr</span></span><button type="button" class="merken" aria-pressed="false">Merken</button></div>
 <div class="saved" hidden><span class="btn">Gemerkte Termine in den Kalender (1)</span><span class="btn hell">Gemerkte ansehen</span></div><div class="block">Alle in den Kalender</div></div></div>
@@ -227,7 +227,12 @@ button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px;
     /* 6 Gemerkt */
     var mk = q(".merken", seite);
     if (mk) { var sv = q(".saved", seite); mk.addEventListener("click", function () {
-      var an = mk.getAttribute("aria-pressed") !== "true"; mk.setAttribute("aria-pressed", an); mk.textContent = an ? "Gemerkt" : "Merken"; sv.hidden = !an; }); }
+      var an = mk.getAttribute("aria-pressed") !== "true"; mk.setAttribute("aria-pressed", an); mk.textContent = an ? "Gemerkt" : "Merken";
+      if (!nach || reduced) { sv.hidden = !an; return; }
+      if (an) { sv.hidden = false; hoehe(sv, 0, sv.offsetHeight, 260, EIO);
+        qa(".btn", sv).forEach(function (x, i) { x.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 220, delay: 60 + i * 50, easing: EOUT, fill: "backwards" }); }); }
+      else { sv.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards" }); hoehe(sv, sv.offsetHeight, 0, 220, EIO, function () { sv.hidden = true; sv.getAnimations().forEach(function (x) { x.cancel(); }); }); }
+    }); }
   });
 })();
 </script>

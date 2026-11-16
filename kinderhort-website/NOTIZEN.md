@@ -319,6 +319,7 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - Termine nach Bereich: gehende Termine blenden aus, die übrigen gleiten an ihren Platz.
 - „… anrufen“-Knopf blendet weich ein; Bereichs-Knöpfe geben beim Drücken nach.
 - Mit „Bewegung reduzieren“ klappt alles sofort. Live-Vergleich: entwurf/animationen/.
+- Runde 2: Handy-Menü „Bereiche“ gleitet auf (Einträge nacheinander); Hinweis wegklicken/Rückgängig zieht sich weich zusammen/auf; Kalender-Abo-Reiter gleicht die Höhe an; Merkliste-Zeile zieht sich beim Entfernen zusammen; „Alle … Termine anzeigen“ blendet nacheinander ein; „Gemerkte Termine“-Zeile schiebt den Inhalt weich nach unten, Knöpfe nacheinander, Zahl springt kurz auf, klappt beim letzten Entfernen weich zu.
 
 ## Obere Leiste (16.11.2026)
 - Verhalten wie bisher (verschwindet beim Herunterscrollen ganz, kommt beim Hochscrollen zurück), aber weicher: sanftere Kurve, 0,5 s statt 0,2 s, blendet am Ende leise aus; die Sprungleiste rückt im selben Takt nach. Reagiert etwas gelassener (erst nach 32 px nach unten, 16 px nach oben). Verworfene Varianten: entwurf/leiste/.
