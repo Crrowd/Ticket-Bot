@@ -35,3 +35,9 @@ LINK-PRÜFUNG
 Beim Bauen wird geprüft, ob alle Dateien (PDFs, Bilder) und Sprungziele, auf die die
 Seiten verweisen, wirklich vorhanden sind. Fehler stehen unter „Daten-Prüfung“.
 Links zu fremden Webseiten werden dabei nicht geprüft.
+
+TERMINE NACH BEREICH (Spalte „Bereich“ in termine.csv)
+Leer lassen = Termin für das ganze Haus (immer sichtbar).
+Sonst: Krippe, Kindergarten oder Hort – mehrere mit Komma, z. B. „Krippe, Kindergarten“.
+Sobald ein Termin einen Bereich hat, erscheinen auf „Aktuelles“ die Knöpfe
+Alle · Krippe · Kindergarten · Hort, und der Termin bekommt ein kleines Etikett.

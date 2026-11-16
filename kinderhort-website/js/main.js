@@ -14,7 +14,7 @@
   }
   var ICON = {
     x: '<path d="M6 6l12 12M18 6L6 18"/>', left: '<path d="M15 5l-7 7 7 7"/>', right: '<path d="M9 5l7 7-7 7"/>',
-    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/>', phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
     calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
   };
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
@@ -1305,11 +1305,12 @@
   (function () {
     var sw = $(".view-switch"), cal = $(".month-cal");
     if (!sw || !cal || !K) return;
-    var list = $(".event-list", sw.parentNode), extra = [$(".events-empty", sw.parentNode)];
+    var host = sw.closest("section") || document, list = $(".event-list", host), extra = [$(".events-empty", host)];
     var MON = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
     var now = new Date(), y = now.getFullYear(), m = now.getMonth(), end = parse(K.planEnde), maxI = end.getFullYear() * 12 + end.getMonth(), minI = y * 12 + m;
     K.termine.forEach(function (t) { var d = parse(t.bis); maxI = Math.max(maxI, d.getFullYear() * 12 + d.getMonth()); });
-    function evOn(s) { return K.termine.filter(function (t) { return s >= t.von && s <= t.bis; }); }
+    function evOn(s) { return K.termine.filter(function (t) { return s >= t.von && s <= t.bis && (BEREICH === "alle" || !t.bereich || !t.bereich.length || t.bereich.indexOf(BEREICH) >= 0); }); }
+    document.addEventListener("bereich", function () { if (!cal.hidden) render(0); });
     function feierName(s) { for (var i = 0; i < K.feiertage.length; i++) if (K.feiertage[i].datum === s) return K.feiertage[i].name; return null; }
     function render(dir) {
       var first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), cells = "";
@@ -2031,7 +2032,7 @@
     if (vs) $$("button", vs).forEach(function (b, i) {
       b.addEventListener("click", function () {
         if (reduced) return;
-        setTimeout(function () { var p = i === 0 ? $(".event-list", vs.parentNode) : $(".month-cal", vs.parentNode); if (!p || p.hidden) return; p.classList.remove("slide-from-r", "slide-from-l"); void p.offsetWidth; p.classList.add(i ? "slide-from-r" : "slide-from-l"); }, 0);
+        setTimeout(function () { var hs = vs.closest("section") || document, p = i === 0 ? $(".event-list", hs) : $(".month-cal", hs); if (!p || p.hidden) return; p.classList.remove("slide-from-r", "slide-from-l"); void p.offsetWidth; p.classList.add(i ? "slide-from-r" : "slide-from-l"); }, 0);
       });
     });
   })();
@@ -2293,6 +2294,45 @@
     });
   });
 
+
+
+  /* ---------- Termine nach Bereich: Termine fürs ganze Haus bleiben immer sichtbar ---------- */
+  var BEREICH = "alle";
+  (function () {
+    var box = $(".ev-filter"); if (!box) return;
+    var list = $("#termine .event-list"), leer = $("#termine .ev-filter-empty");
+    $$("button", box).forEach(function (b) { b.addEventListener("click", function () {
+      BEREICH = b.getAttribute("data-b");
+      $$("button", box).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      var n = 0;
+      $$(".event", list).forEach(function (ev) {
+        var bs = (ev.getAttribute("data-bereich") || "").split(" ").filter(Boolean), aus = BEREICH !== "alle" && bs.length && bs.indexOf(BEREICH) < 0;
+        ev.classList.toggle("bf-out", !!aus); if (!aus && !ev.hidden && bs.length) n++;
+      });
+      if (leer) leer.hidden = BEREICH === "alle" || n > 0;
+      document.dispatchEvent(new CustomEvent("bereich"));
+    }); });
+  })();
+
+  /* ---------- Krankmelden mit einem Tipp: zuletzt angerufene Gruppe steht oben ---------- */
+  (function () {
+    var bloecke = $$(".krank"); if (!bloecke.length) return;
+    function zeige() {
+      var g = null; try { g = JSON.parse(store("krank-gruppe") || "null"); } catch (e) {}
+      bloecke.forEach(function (k) {
+        var alt = $(".krank-last", k); if (alt) alt.parentNode.removeChild(alt);
+        if (!g || !$('.krank-area a[href="' + g.href + '"]', k)) return;
+        var a = document.createElement("a"); a.className = "btn btn-primary krank-last"; a.href = g.href;
+        a.innerHTML = svg(ICON.phone, 20) + "<span></span>"; $("span", a).textContent = g.name + " anrufen";
+        var body = $(".krank-body", k); body.insertBefore(a, $(".krank-groups", k));
+        var sm = $("summary small", k); if (sm) { sm.dataset.orig = sm.dataset.orig || sm.textContent; sm.textContent = "Zuletzt: " + g.name; }
+      });
+    }
+    bloecke.forEach(function (k) { $$('.krank-area a[href^="tel:"]', k).forEach(function (a) { a.addEventListener("click", function () {
+      var name = a.textContent.replace(/….*$/, "").trim(); store("krank-gruppe", JSON.stringify({ name: name, href: a.getAttribute("href") })); setTimeout(zeige, 400);
+    }); }); });
+    zeige();
+  })();
 
   /* ---------- Wimpelkette im Jahreslauf: leise Farben je Jahreszeit (nur Farbtöne) ---------- */
   (function () {

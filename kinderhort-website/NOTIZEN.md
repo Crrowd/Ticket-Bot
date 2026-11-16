@@ -2,19 +2,6 @@
 
 Stand: 13.11.2026
 
-## Ja-Ideen Katalog 4, zweite Runde (16.11.2026)
-- **46 Feiertage im Monatskalender:** Feiertage haben einen eigenen Rahmen, stehen in der Legende und mit Namen unter dem Kalender.
-- **47 Elternbrief teilen und drucken:** Jeder Brief hat „Teilen“ (Handy-Teilen oder Link kopieren, Link öffnet den Brief) und „Drucken“ (nur der Brief, mit Kopfzeile).
-- **54 „Meinten Sie …?“ in der Suche:** bei Tippfehlern ein Vorschlag (z. B. Feinplan → Ferienplan); Tipp oder Enter übernimmt ihn.
-- **63 Wimpelkette im Jahreslauf:** Die Wimpel im Fußbereich wechseln die Farben mit der Jahreszeit, nur Farbtöne aus der Familie.
-- **65 Fehlt ein Foto:** Statt eines kaputten Bildes erscheint ein ruhiges Salbei-Muster mit der Bildbeschreibung.
-- **73 Weg zu uns:** „Route öffnen“ jetzt auch im Fußbereich jeder Seite (Apple Karten auf Apple-Geräten, sonst Google Maps). Offen: nächste Haltestelle und Parken – Angaben vom Hort.
-- **75 Tag der offenen Tür:** Band auf der Startseite sechs Wochen vor einem passenden Termin (siehe daten/LIESMICH.txt).
-- **82 Kaputte Links finden:** Link-Prüfung beim Bauen (Dateien und Sprungziele).
-- **95 Nummer kopieren am Computer:** Am Computer kopiert ein Klick auf eine Telefonnummer die Nummer; am Handy wird wie gewohnt angerufen.
-- **96 Monatskalender zum Wischen:** Das Monatsraster folgt jetzt dem Finger und federt zurück, wenn man nicht weit genug wischt.
-- **79 Kinderzeichnungen:** erst als Entwurf (`entwurf/zeichnungen/kinderzeichnungen.html`, private Vorschau https://claude.ai/artifact/XTvjDPfxfeqSaNMbVq6HE6) – Einbau nach Rückmeldung.
-
 ## Design-Stand
 - Webseite nutzt **Entwurf 9** (Salbeitürkis, Grau-Rosé, dunkles Türkis) – fest eingebaut.
 - Varianten (CSS in `entwurf/designs/`, Screenshots in `entwurf/`):
@@ -302,6 +289,27 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Durchwahl finden:** Beim Tippen bleiben nur die passenden Einträge in ihrem türkisen Kasten stehen, die anderen Gruppen und Bereiche verschwinden; Feld leeren zeigt wieder alle. Versteht Tippfehler (Spazen, Sonnengrupe), Kurzformen (Kiga, Krippe, Hort, Büro/Zentrale/Leitung) und Endungen („15“). Esc leert das Feld.
 - **Fragen Sie einfach:** keine dicke Markierung mehr um das Feld beim Tippen (nur der Rand wird etwas dunkler; der gleitende Fokusrahmen lässt Eingabefelder generell aus).
 - **Schlauer:** beantwortet zuerst aus den Daten der Seite – Öffnungszeiten (heute/morgen), Schließtage und Ferien (auch nach Namen, z. B. Weihnachten), Durchwahl einer Gruppe, Krankmelden, Platz/Anmeldung (je Bereich), nächste Termine, Adresse. Sonst aus den häufigen Fragen, jetzt mit Tippfehler-Toleranz, Vorschlägen schon beim Tippen und „Auch passend“.
+
+## Ja-Ideen Katalog 4, zweite Runde (16.11.2026)
+- **46 Feiertage im Monatskalender:** Feiertage haben einen eigenen Rahmen, stehen in der Legende und mit Namen unter dem Kalender.
+- **47 Elternbrief teilen und drucken:** Jeder Brief hat „Teilen“ (Handy-Teilen oder Link kopieren, Link öffnet den Brief) und „Drucken“ (nur der Brief, mit Kopfzeile).
+- **54 „Meinten Sie …?“ in der Suche:** bei Tippfehlern ein Vorschlag (z. B. Feinplan → Ferienplan); Tipp oder Enter übernimmt ihn.
+- **63 Wimpelkette im Jahreslauf:** Die Wimpel im Fußbereich wechseln die Farben mit der Jahreszeit, nur Farbtöne aus der Familie.
+- **65 Fehlt ein Foto:** Statt eines kaputten Bildes erscheint ein ruhiges Salbei-Muster mit der Bildbeschreibung.
+- **73 Weg zu uns:** „Route öffnen“ jetzt auch im Fußbereich jeder Seite (Apple Karten auf Apple-Geräten, sonst Google Maps). Offen: nächste Haltestelle und Parken – Angaben vom Hort.
+- **75 Tag der offenen Tür:** Band auf der Startseite sechs Wochen vor einem passenden Termin (siehe daten/LIESMICH.txt).
+- **82 Kaputte Links finden:** Link-Prüfung beim Bauen (Dateien und Sprungziele).
+- **95 Nummer kopieren am Computer:** Am Computer kopiert ein Klick auf eine Telefonnummer die Nummer; am Handy wird wie gewohnt angerufen.
+- **96 Monatskalender zum Wischen:** Das Monatsraster folgt jetzt dem Finger und federt zurück, wenn man nicht weit genug wischt.
+- **79 Kinderzeichnungen:** erst als Entwurf (`entwurf/zeichnungen/kinderzeichnungen.html`, private Vorschau https://claude.ai/artifact/XTvjDPfxfeqSaNMbVq6HE6) – Einbau nach Rückmeldung.
+
+## Handy-Menü, Datenschutz, Merken-Ideen (16.11.2026)
+- **Handy-Menü:** „Kind krankmelden“ im Kasten „Wir sind für Sie da“ entfernt; Telefon und E-Mail sehen jetzt aus wie die Krankmelde-Karte (heller Kasten, rosé Symbolkachel).
+- **Fotos:** geprüft – alle JPG sind schon höchstens 1600 px groß und optimiert; Browser laden ohnehin die kleineren WebP-Fassungen. Nichts zu tun.
+- **Datenschutz:** ergänzt um Rechtsgrundlagen (KDG), Abschnitt „Was die Seite in Ihrem Browser speichert“ und die Aufsicht (Katholisches Datenschutzzentrum Bayern, Nürnberg). Offen: Datenschutzbeauftragte/r, Hoster, Speicherdauer, Datum.
+- **Termine nach Bereich (44):** neue Spalte „Bereich“ in termine.csv; Knöpfe Alle · Krippe · Kindergarten · Hort auf „Aktuelles“ (Liste und Kalender); Termine fürs ganze Haus bleiben immer sichtbar.
+- **Abholvollmacht (48) und Abwesenheit (86):** E-Mail-Vorlagen auf „Kontakt“ und im Formular-Lotsen bei „Downloads“.
+- **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 
 ## Wünsche aus Screenshots (16.11.2026)
 - Kopfleiste: „Geöffnet“-Anzeige und „Strg K“ entfernt (Öffnungsstatus bleibt im Auftakt der Startseite).

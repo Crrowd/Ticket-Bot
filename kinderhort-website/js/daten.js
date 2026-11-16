@@ -110,25 +110,31 @@ window.KITA = {
    "von": "2026-11-18",
    "bis": "2026-11-18",
    "titel": "Buß- und Bettag",
-   "text": "Unsere Einrichtung hat zu den üblichen Zeiten geöffnet. Für die Hortkinder zählt dieser Tag wie ein Ferientag, hier sind die Ferienbuchungszeiten Ihres Kindes relevant."
+   "text": "Unsere Einrichtung hat zu den üblichen Zeiten geöffnet. Für die Hortkinder zählt dieser Tag wie ein Ferientag, hier sind die Ferienbuchungszeiten Ihres Kindes relevant.",
+   "bereich": []
   },
   {
    "von": "2026-12-04",
    "bis": "2026-12-04",
    "titel": "Weihnachtsmarkt mit Christbaumverkauf",
-   "text": "Freitag, 04.12.2026, ab 16:30 Uhr."
+   "text": "Freitag, 04.12.2026, ab 16:30 Uhr.",
+   "bereich": []
   },
   {
    "von": "2026-12-07",
    "bis": "2026-12-07",
    "titel": "Der Nikolaus besucht uns",
-   "text": "Am 07.12.2026."
+   "text": "Am 07.12.2026.",
+   "bereich": []
   },
   {
    "von": "2027-09-06",
    "bis": "2027-09-10",
    "titel": "Österreich-Ferienfreizeit",
-   "text": "Die Ferienfreizeit der Hortkinder findet vom 06.09. bis 10.09.2027 statt."
+   "text": "Die Ferienfreizeit der Hortkinder findet vom 06.09. bis 10.09.2027 statt.",
+   "bereich": [
+    "hort"
+   ]
   }
  ],
  "suche": [

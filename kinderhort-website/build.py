@@ -38,6 +38,18 @@ def gueltig(datei, rows, felder, pflicht=()):
 SCHLIESSTAGE = sorted(gueltig("schliesstage.csv", read_csv("schliesstage.csv"), ["geöffnet bis", "erster Schließtag", "letzter Schließtag", "wieder geöffnet"],
                               ["Anlass", "erster Schließtag", "letzter Schließtag", "wieder geöffnet", "Schließtage"]), key=lambda r: d(r["erster Schließtag"]))
 TERMINE = gueltig("termine.csv", read_csv("termine.csv"), ["von", "bis"], ["von", "Titel"])
+BEREICH_NAMEN = {"krippe": "krippe", "kinderkrippe": "krippe", "kindergarten": "kiga", "kiga": "kiga", "hort": "hort", "kinderhort": "hort"}
+BEREICH_LABEL = {"krippe": "Krippe", "kiga": "Kindergarten", "hort": "Hort"}
+def bereiche(r, n=None):
+    """Spalte „Bereich“: leer = ganzes Haus, sonst Krippe / Kindergarten / Hort (mehrere mit Komma)."""
+    out = []
+    for teil in re.split(r"[,/]", r.get("Bereich") or ""):
+        t = teil.strip().lower()
+        if not t: continue
+        if t in BEREICH_NAMEN: out.append(BEREICH_NAMEN[t])
+        else: _melde("!", "termine.csv", n, f"Bereich „{teil.strip()}“ unbekannt – bitte Krippe, Kindergarten oder Hort (oder leer für alle)")
+    return out
+for _n, _r in enumerate(TERMINE, start=2): _r["_b"] = bereiche(_r, _n)
 FEIERTAGE = gueltig("feiertage.csv", read_csv("feiertage.csv"), ["Datum"], ["Datum", "Feiertag"])
 HINWEISE = gueltig("hinweise.csv", read_csv("hinweise.csv"), ["Datum"], ["Datum", "Titel"])
 _heute = dt.date.today()
@@ -70,6 +82,8 @@ def mailto(subject, body):
     return f"mailto:{MAIL}?subject={quote(subject)}&body={quote(body)}"
 
 KRANK_MAIL = mailto("Krankmeldung / Abwesenheit", "Liebes Team,\n\nunser Kind kann leider nicht in die Einrichtung kommen.\n\nName des Kindes: \nGruppe / Bereich: \nAbwesend von – bis: \nGrund (freiwillig): \n\nViele Grüße\n")
+ABHOL_MAIL = mailto("Abholung durch eine andere Person", "Liebes Team,\n\nunser Kind wird an folgendem Tag von einer anderen Person abgeholt.\n\nName des Kindes: \nGruppe / Bereich: \nAbholung am: \nAbholende Person (Name): \nBeziehung zum Kind (z. B. Oma, Nachbarin): \nDie Person bringt einen Ausweis mit.\n\nViele Grüße\n")
+URLAUB_MAIL = mailto("Abwesenheit / Urlaub", "Liebes Team,\n\nunser Kind ist in folgendem Zeitraum nicht in der Einrichtung.\n\nName des Kindes: \nGruppe / Bereich: \nAbwesend von – bis: \nGrund (freiwillig, z. B. Urlaub): \n\nViele Grüße\n")
 PLATZ_MAIL = mailto("Platzanfrage", "Liebes Team,\n\nwir interessieren uns für einen Platz in Ihrer Einrichtung.\n\nName des Kindes: \nGeburtsdatum: \nGewünschter Bereich (Krippe / Kindergarten / Hort): \nGewünschter Beginn: \nGewünschte Betreuungszeiten: \nName der Eltern: \nTelefon: \n\nViele Grüße\n")
 
 _dims = {}
@@ -236,9 +250,8 @@ def krank_block(cls=""):
 NAV_EXTRA = ('<li class="nav-extra">'
     f'<figure class="nav-photo">{img("img/p2160110.jpg", "", sizes="360px")}</figure>'
     '<p class="nav-extra-title">Wir sind für Sie da</p>'
-    + krank_block("in-menu") +
-    f'<a class="nav-quick" href="tel:+4993127898920">{icon("phone", 20)}<span>0931&nbsp;2789892&nbsp;0<small>Anrufen, Mo–Fr ab 6:45 Uhr</small></span></a>'
-    f'<a class="nav-quick" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 20)}<span>E-Mail schreiben<small>kinderhort.grombuehl@t-online.de</small></span></a>'
+    + f'<a class="nav-quick" href="tel:+4993127898920"><span class="krank-ic">{icon("phone", 20)}</span><span class="krank-t"><b>0931&nbsp;2789892&nbsp;0</b><small>Anrufen, Mo–Fr ab 6:45 Uhr</small></span></a>'
+    f'<a class="nav-quick" href="mailto:kinderhort.grombuehl@t-online.de"><span class="krank-ic">{icon("mail", 20)}</span><span class="krank-t"><b>E-Mail schreiben</b><small>kinderhort.grombuehl@t-online.de</small></span></a>'
     f'<p class="nav-addr">{icon("pin", 18)}<span>Lindleinstraße 20, 97080 Würzburg</span></p>'
     '</li>')
 
@@ -655,9 +668,10 @@ def ev(r):
     day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
     mon = f"{MONATE[b.month - 1]} {b.year}"
     key = f'{a.isoformat()}|{r["Titel"]}'
-    return (f'<li class="event reveal" data-neu="{erstmals("t|" + key)}" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
+    tag = "".join(f'<span class="ev-bereich">{BEREICH_LABEL[b]}</span>' for b in r.get("_b", []))
+    return (f'<li class="event reveal" data-bereich="{" ".join(r.get("_b", []))}" data-neu="{erstmals("t|" + key)}" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
             f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
-            f'<p><strong>{e(r["Titel"])}{gruppen_zeichen(r["Titel"] + " " + r["Beschreibung"])}</strong>{rich(r["Beschreibung"])}</p>'
+            f'<p><strong>{e(r["Titel"])}{gruppen_zeichen(r["Titel"] + " " + r["Beschreibung"])}</strong>{tag}{rich(r["Beschreibung"])}</p>'
             f'<div class="ev-acts"><button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
             f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button>'
             f'<button class="share" type="button" aria-label="{e(r["Titel"])} teilen">{icon("share", 18)}</button></div></li>')
@@ -1136,9 +1150,14 @@ page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhor
 # =====================================================================
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
                 [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Schließtage")], alt="Bauecke im Kinderhort")
+EV_FILTER = ('<div class="ev-filter no-print" role="group" aria-label="Termine nach Bereich">' + "".join(
+    f'<button type="button" data-b="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{t}</button>' for k, t in [("alle", "Alle"), ("krippe", "Krippe"), ("kiga", "Kindergarten"), ("hort", "Hort")]) + "</div>") if any(r.get("_b") for r in TERMINE) else ""
 akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
+<div class="ev-tools">
 <div class="view-switch no-print" role="group" aria-label="Ansicht der Termine"><span class="vs-knob" aria-hidden="true"></span>
     <button type="button" data-view="list" aria-pressed="true">{icon("list", 18)} Liste</button><button type="button" data-view="cal" aria-pressed="false">{icon("grid", 18)} Kalender</button></div>
+{EV_FILTER}
+</div>
 <div class="notes-grid">
   <div>
   <div class="month-cal" hidden></div>
@@ -1146,6 +1165,7 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
     {"".join(ev(r) for r in TERMINE)}
   </ul>
   <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
+  <p class="ev-filter-empty muted" hidden>Für diesen Bereich stehen gerade keine eigenen Termine an. Termine für das ganze Haus sehen Sie unter „Alle“.</p>
   <div class="btn-row"><a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
   <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button> <button class="btn btn-ghost js-saved-sheet" type="button">Gemerkte ansehen</button></div>
   </div>
@@ -1215,6 +1235,8 @@ downl += section("lotse", "Schnell zum Ziel", "Was möchten Sie tun?", "Eine Fra
     lotse("Mein Kind braucht Medikamente", "Medikamente können wir nur mit einer unterschriebenen Medikamentenvereinbarung geben.", [("downloads/Medikamentenvereinbarung.pdf", "file", "Medikamentenvereinbarung")]),
     lotse("Ich möchte wissen, wann geschlossen ist", "Alle Schließtage stehen im Ferienplan – auch als Kalenderdatei fürs Handy.", [("downloads/Ferienplan_2026_27.pdf", "file", "Schließtage als PDF"), ("downloads/schliesstage.ics", "calendar", "Schließtage in den Kalender")]),
     lotse("Ich habe Fragen zum Hort", "Viele Antworten stehen im KinderhortABC – oder Sie fragen uns direkt.", [("downloads/HortABC.pdf", "file", "KinderhortABC"), ("kontakt.html#frag", "search", "Schnelle Antwort finden")]),
+    lotse("Jemand anderes holt mein Kind ab", "Schicken Sie uns vorher eine kurze E-Mail – die Vorlage enthält alle Angaben, die wir dafür brauchen. Die abholende Person bringt bitte einen Ausweis mit.", [(ABHOL_MAIL, "mail", "Abholung ankündigen")]),
+    lotse("Mein Kind ist ein paar Tage nicht da", "Urlaub, Besuch bei den Großeltern oder Kur: Sagen Sie uns kurz Bescheid, dann können wir Personal und Essen planen.", [(URLAUB_MAIL, "mail", "Abwesenheit melden")]),
     lotse("Ich möchte einen Platz anfragen", "Die vorbereitete E-Mail enthält alle Angaben, die wir für Ihre Anfrage brauchen.", [(PLATZ_MAIL, "mail", "Platz anfragen")]),
 ]) + "</div>", cls="tight")
 downl += section("dateien", "Downloads", "Informationsblätter zum Herunterladen", "", f'''
@@ -1265,6 +1287,14 @@ kon += f'''<section class="section tight" id="schnell">
       <a class="quick-card reveal" href="{PLATZ_MAIL}">
         <span class="quick-icon">{icon("users", 26)}</span>
         <span><strong>Platz anfragen</strong><span>Öffnet eine vorbereitete E-Mail mit allen Angaben, die wir für Ihre Anfrage brauchen.</span></span>
+      </a>
+      <a class="quick-card reveal" href="{ABHOL_MAIL}">
+        <span class="quick-icon">{icon("users", 26)}</span>
+        <span><strong>Abholung ankündigen</strong><span>Wenn eine andere Person Ihr Kind abholt: vorbereitete E-Mail mit allen nötigen Angaben.</span></span>
+      </a>
+      <a class="quick-card reveal" href="{URLAUB_MAIL}">
+        <span class="quick-icon">{icon("calendar", 26)}</span>
+        <span><strong>Abwesenheit melden</strong><span>Urlaub oder ein paar freie Tage: kurze E-Mail mit Zeitraum, damit wir planen können.</span></span>
       </a>
       <div class="quick-card status-mini reveal" id="status-kontakt" hidden>
         <span class="quick-icon">{icon("clock", 26)}</span>
@@ -1351,22 +1381,35 @@ page("impressum.html", "Impressum", "Impressum des Kath. Kinder- und Jugendhorts
 # =====================================================================
 dsg = simple_hero("Datenschutz", "Informationen zum Umgang mit Ihren Daten auf dieser Webseite", "Rechtliches")
 dsg += f'''<section class="section"><div class="container"><div class="prose">
-<p class="todo-hinweis"><strong>Hinweis für den Träger:</strong> Diese Datenschutzerklärung ist eine Vorlage. Bitte die markierten Stellen ergänzen und den Text vor der Veröffentlichung prüfen lassen (z. B. durch den Datenschutzbeauftragten der Diözese).</p>
+<p class="todo-hinweis"><strong>Hinweis für den Träger:</strong> Diese Datenschutzerklärung ist weitgehend ausgefüllt. Offen sind nur noch die markierten Stellen (Datenschutzbeauftragte/r, Hoster, Speicherdauer, Datum). Bitte den Text vor der Veröffentlichung prüfen lassen, z. B. durch die/den Datenschutzbeauftragte/n des Trägers.</p>
 <h2>1. Verantwortliche Stelle</h2>
 <p>{ORG}<br>Lindleinstr. 20<br>97080 Würzburg<br>Telefon: 0931 27898920<br>E-Mail: <a href="mailto:{MAIL}">{MAIL}</a><br>Vertreten durch: Helmut Burmester</p>
 <h2>2. Datenschutzbeauftragte/r</h2>
 <p><mark>[Bitte ergänzen: Name und Kontakt der/des zuständigen Datenschutzbeauftragten]</mark></p>
-<p>Als katholische Einrichtung unterliegen wir dem Gesetz über den Kirchlichen Datenschutz (KDG).</p>
+<p>Als katholische Einrichtung unterliegen wir dem Gesetz über den Kirchlichen Datenschutz (KDG) in der für das Bistum Würzburg geltenden Fassung.</p>
 <h2>3. Hosting und Server-Protokolle</h2>
-<p>Diese Webseite wird bei <mark>[Bitte ergänzen: Name und Anschrift des Hosting-Anbieters]</mark> betrieben. Beim Aufruf der Seiten speichert der Server automatisch technisch notwendige Informationen (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browsertyp). Diese Daten dienen ausschließlich dem sicheren Betrieb der Webseite und werden nach <mark>[Bitte ergänzen: Speicherdauer, z. B. 7 Tagen]</mark> gelöscht.</p>
+<p>Diese Webseite wird bei <mark>[Bitte ergänzen: Name und Anschrift des Hosting-Anbieters]</mark> betrieben. Beim Aufruf der Seiten speichert der Server automatisch technisch notwendige Informationen (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browsertyp). Diese Daten dienen ausschließlich dem sicheren Betrieb der Webseite und werden nach <mark>[Bitte ergänzen: Speicherdauer, z. B. 7 Tagen]</mark> gelöscht. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren Betrieb der Webseite (§ 6 Abs. 1 lit. g KDG). Mit dem Anbieter besteht ein Vertrag über die Verarbeitung im Auftrag (§ 29 KDG).</p>
 <h2>4. Keine Cookies, kein Tracking</h2>
 <p>Diese Webseite setzt keine Cookies, verwendet keine Analyse- oder Werbedienste und bindet keine Inhalte von Drittanbietern ein. Schriftarten werden direkt von unserem Server geladen; es findet keine Verbindung zu Google oder anderen Anbietern statt.</p>
-<h2>5. Kontakt per E-Mail und Telefon</h2>
-<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren (z. B. für eine Krankmeldung oder Platzanfrage), verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihres Anliegens. Die Buttons „Kind krankmelden“ und „Platz anfragen“ öffnen lediglich Ihr eigenes E-Mail-Programm; über diese Webseite selbst werden keine Daten übertragen oder gespeichert.</p>
-<h2>6. Externe Links</h2>
-<p>Die Links „Route planen“, „Apple Karten“, „Google Maps“ und „OpenStreetMap“ öffnen die Wegbeschreibung beim jeweiligen Kartendienst (Apple, Google bzw. OpenStreetMap Foundation). Erst wenn Sie einen davon anklicken, wird eine Verbindung zu diesem Anbieter hergestellt; dort gelten dessen Datenschutzbestimmungen. Auf dieser Webseite selbst ist keine Karte eingebunden.</p>
-<h2>7. Ihre Rechte</h2>
-<p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten sowie ein Widerspruchsrecht. Zudem können Sie sich bei der zuständigen kirchlichen Datenschutzaufsicht beschweren: <mark>[Bitte ergänzen: zuständige Datenschutzaufsicht, z. B. Gemeinsame Datenschutzaufsicht der bayerischen (Erz-)Diözesen]</mark>.</p>
+<h2>5. Was die Seite in Ihrem eigenen Browser speichert</h2>
+<p>Einige Funktionen merken sich Einstellungen nur in Ihrem eigenen Browser (im sogenannten lokalen Speicher). Diese Angaben verlassen Ihr Gerät nicht, wir können sie nicht sehen, und sie werden nicht an uns übertragen:</p>
+<ul>
+  <li>Termine, die Sie mit „Merken“ markiert haben,</li>
+  <li>ob Sie Termine lieber als Liste oder als Kalender sehen,</li>
+  <li>ob die ruhige Ansicht („Bewegung aus“) eingeschaltet ist,</li>
+  <li>die zuletzt angesehenen Seiten (für die Suche),</li>
+  <li>das Datum Ihres letzten Besuchs (damit neue Termine und Elternbriefe markiert werden können),</li>
+  <li>ob der Leitsatz auf der Startseite schon einmal eingeblendet wurde,</li>
+  <li>die Gruppe, die Sie zuletzt über „Kind krankmelden“ angerufen haben (damit sie beim nächsten Mal oben steht).</li>
+</ul>
+<p>Damit die Seite auch ohne Internetverbindung erreichbar bleibt, legt Ihr Browser außerdem eine Kopie der Seiten an. Sie können all das jederzeit in den Einstellungen Ihres Browsers löschen („Websitedaten löschen“). Das Speichern ist für die von Ihnen gewünschten Funktionen erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG).</p>
+<h2>6. Kontakt per E-Mail und Telefon</h2>
+<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren (z. B. für eine Krankmeldung oder Platzanfrage), verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihres Anliegens (§ 6 Abs. 1 lit. c KDG). Die Knöpfe „Kind krankmelden“, „Platz anfragen“ und ähnliche öffnen lediglich Ihr eigenes E-Mail-Programm mit einem vorbereiteten Text; über diese Webseite selbst werden keine Daten übertragen oder gespeichert. Gleiches gilt für „Teilen“ und „Kopieren“: Diese nutzen nur die Funktionen Ihres eigenen Geräts.</p>
+<h2>7. Externe Links</h2>
+<p>Die Links „Route öffnen“, „Route planen“, „Apple Karten“, „Google Maps“ und „OpenStreetMap“ öffnen die Wegbeschreibung beim jeweiligen Kartendienst (Apple, Google bzw. OpenStreetMap Foundation). Erst wenn Sie einen davon anklicken, wird eine Verbindung zu diesem Anbieter hergestellt; dort gelten dessen Datenschutzbestimmungen. Auf dieser Webseite selbst ist keine Karte eingebunden.</p>
+<h2>8. Ihre Rechte</h2>
+<p>Sie haben das Recht auf Auskunft (§ 17 KDG), Berichtigung (§ 18 KDG), Löschung (§ 19 KDG), Einschränkung der Verarbeitung (§ 20 KDG), Datenübertragbarkeit (§ 22 KDG) sowie ein Widerspruchsrecht (§ 23 KDG). Wenden Sie sich dazu einfach an die oben genannte verantwortliche Stelle.</p>
+<p>Zudem können Sie sich bei der zuständigen kirchlichen Datenschutzaufsicht beschweren (§ 48 KDG):<br>Katholisches Datenschutzzentrum Bayern (KdöR)<br>Datenschutzaufsicht für die bayerischen (Erz-)Diözesen<br>Vordere Sterngasse 1, 90402 Nürnberg<br>Telefon: 0911 47774050 · E-Mail: post@kdsz.bayern</p>
 <p class="muted">Stand: <mark>[Datum ergänzen]</mark></p>
 </div></div></section>'''
 page("datenschutz.html", "Datenschutz", "Datenschutzerklärung des Kath. Kinder- und Jugendhorts Grombühl e. V., Würzburg.", "datenschutz.html", dsg)
@@ -1480,7 +1523,7 @@ kita = {
     "feiertage": [{"datum": d(r["Datum"]).isoformat(), "name": r["Feiertag"]} for r in FEIERTAGE],
     "planEnde": (d(SCHLIESSTAGE[-1]["wieder geöffnet"]) if SCHLIESSTAGE else dt.date(_KJ + 1, 8, 31)).isoformat(),
     "oeffnung": "06:45", "schluss": "18:00",
-    "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"], "text": r["Beschreibung"]} for r in TERMINE],
+    "termine": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "titel": r["Titel"], "text": r["Beschreibung"], "bereich": r.get("_b", [])} for r in TERMINE],
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
     "glossar": GLOSSAR,
     "faq": FAQ_ALLE,
