@@ -1003,9 +1003,13 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 .lightbox.open figcaption { translate: 0 0; transition-duration: var(--t-enter); transition-delay: .18s; }
 
 /* Hover-Bewegungen nur mit Maus, nicht beim Antippen am Handy */
-@media (hover: none) {
-  .area-card:hover, a.quick-card:hover, .btn:hover, .subnav a:hover { translate: none; }
-  .area-card:hover .thumb img, .teaser:hover img, .room:hover img, .tour-item button:hover img { scale: 1; }
+@media (hover: none), (pointer: coarse) {
+  .area-card:hover, a.quick-card:hover, .btn:hover, .subnav a:hover, .dl-link:hover, .teaser:hover p svg, .main-nav > ul > li > a:not(.nav-cta):hover::after { translate: none; }
+  .area-card:hover .thumb img, .teaser:hover img, .room:hover img, .tour-item button:hover img, .gal-item:hover img, .word-cloud span:hover,
+  .tour-item button:hover::after, .teaser[data-full]:hover::before { scale: 1; }
+  .group-chip:hover .group-ic svg { rotate: 0deg; scale: 1; translate: none; animation: none; }
+  .brand:hover .brand-mark .bf { animation: none; }
+  .aushang:hover img { rotate: -2deg; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1856,7 +1860,13 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
 @media (max-width: 1180px) { .main-nav { overscroll-behavior: contain; } }
 /* schnelles Tippen ohne Zoom-Verzögerung, ruhige Tipp-Markierung */
 a, button, summary, label, input, [role="tab"] { touch-action: manipulation; }
-html { -webkit-tap-highlight-color: rgb(var(--ink-rgb) / .08); }
+/* mobile-native: keine graue Tipp-Fläche, dafür eigene Rückmeldung beim Drücken */
+html { -webkit-tap-highlight-color: transparent; }
+a:not(.btn):active { opacity: .72; }
+/* Bedienelemente: langes Drücken markiert keinen Text */
+button, .btn, [role="tab"], .nav-toggle, .open-pill { -webkit-user-select: none; user-select: none; }
+/* Kalender: waagerechtes Wischen gehört dem Kalender, senkrecht scrollt die Seite */
+.month-cal { touch-action: pan-y; }
 /* Bildwechsel im Bereichskopf anhalten */
 .kb-pause { position: absolute; right: 16px; top: 16px; z-index: 3; width: 44px; height: 44px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgb(var(--deep-rgb) / .55); color: #fff; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background .14s var(--io); }
 .kb-pause:hover { background: rgb(var(--deep-rgb) / .8); }

@@ -313,6 +313,7 @@ def page(fname, title, desc, active, body, theme="", head=""):
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="theme-color" content="#A8C5C0">
+<meta name="color-scheme" content="light">
 <meta property="og:title" content="{e(full_title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website">
