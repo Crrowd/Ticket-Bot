@@ -187,10 +187,10 @@ window.KITA = {
    "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
   },
   {
-   "t": "Ferienplan & Schließtage",
+   "t": "Schließtage",
    "s": "Kinderkrippe",
    "u": "kinderkrippe.html#ferienplan",
-   "k": "ferien schließtage urlaub geschlossen"
+   "k": "ferien ferienplan schließtage urlaub geschlossen"
   },
   {
    "t": "Kindergarten",
@@ -241,10 +241,10 @@ window.KITA = {
    "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
   },
   {
-   "t": "Ferienplan & Schließtage",
+   "t": "Schließtage",
    "s": "Kindergarten",
    "u": "kindergarten.html#ferienplan",
-   "k": "ferien schließtage urlaub geschlossen"
+   "k": "ferien ferienplan schließtage urlaub geschlossen"
   },
   {
    "t": "Kinderhort",
@@ -295,10 +295,10 @@ window.KITA = {
    "k": "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"
   },
   {
-   "t": "Ferienplan & Schließtage",
+   "t": "Schließtage",
    "s": "Kinderhort",
    "u": "kinderhort.html#ferienplan",
-   "k": "ferien schließtage urlaub geschlossen"
+   "k": "ferien ferienplan schließtage urlaub geschlossen"
   },
   {
    "t": "Zusammenarbeit mit den Schulen",
@@ -337,10 +337,10 @@ window.KITA = {
    "k": "frage antwort hilfe chat"
   },
   {
-   "t": "Ferienplan & Schließtage",
+   "t": "Schließtage",
    "s": "Aktuelles",
    "u": "aktuelles.html#ferienplan",
-   "k": "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"
+   "k": "ferien ferienplan schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"
   },
   {
    "t": "Downloads",

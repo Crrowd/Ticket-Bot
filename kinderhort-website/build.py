@@ -1444,7 +1444,7 @@ def _bereich(page, name, extra):
             ("auszeichnung", "Das zeichnet uns aus", "vorteile besonderheiten konzept fachkraft"),
             ("fragen", "Häufige Fragen", "faq fragen antworten windeln eingewöhnung brotzeit krank ferien katholisch"),
             ("anmeldung", "Platz anfragen & Kennenlernen", "anmeldung anmelden platz anfragen kennenlernen besichtigung aufnahme"),
-            ("ferienplan", "Ferienplan & Schließtage", "ferien schließtage urlaub geschlossen")]
+            ("ferienplan", "Schließtage", "ferien ferienplan schließtage urlaub geschlossen")]
     out = [(name, "Bereich", page, extra)]
     out += [(t, name, f"{page}#{a}", k) for a, t, k in secs]
     return out
@@ -1460,7 +1460,7 @@ SUCHE += [
     ("Was möchten Sie tun?", "Downloads · Formular-Lotse", "downloads.html#lotse", "formular welches formular medikamente krank lotse hilfe"),
     ("Kalender abonnieren", "Downloads", "downloads.html#abo", "abo abonnieren webcal kalender automatisch outlook google iphone"),
     ("Fragen Sie einfach", "Kontakt · Schnelle Antwort", "kontakt.html#frag", "frage antwort hilfe chat"),
-    ("Ferienplan & Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
+    ("Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien ferienplan schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
     ("Downloads", "Unterlagen", "downloads.html", "pdf formulare unterlagen herunterladen"),
     ("KinderhortABC", "Download · PDF", "downloads/HortABC.pdf", "hort abc infos a bis z"),
     ("Medikamentenvereinbarung", "Download · PDF", "downloads/Medikamentenvereinbarung.pdf", "medikamente formular arznei"),

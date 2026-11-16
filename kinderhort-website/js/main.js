@@ -442,7 +442,7 @@
         /* ohne Eingabe: zuerst die zuletzt angesehenen Seiten, dann die am häufigsten gebrauchten Wege */
         var here = location.pathname.split("/").pop() || "index.html";
         var zuletzt = recentList().filter(function (r) { return r.u !== here; }).slice(0, 3).map(function (r) { return { t: r.t, s: r.s, u: r.u, recent: true }; });
-        var oft = ["Kind krankmelden", "Kontakt & Durchwahlen", "Aktuelle Termine", "Ferienplan & Schließtage", "Platz anfragen", "Downloads"];
+        var oft = ["Kind krankmelden", "Kontakt & Durchwahlen", "Aktuelle Termine", "Schließtage", "Platz anfragen", "Downloads"];
         var basis = oft.map(function (t) { return index.filter(function (e) { return e.it.t === t && !/^Kinder/.test(e.it.s); })[0]; }).filter(Boolean).map(function (e) { return e.it; });
         return zuletzt.concat(basis.filter(function (b) { return !zuletzt.some(function (z) { return z.u === b.u; }); })).slice(0, 8);
       }
