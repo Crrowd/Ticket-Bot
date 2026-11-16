@@ -237,9 +237,13 @@ strong, b { font-weight: 600; }
     padding: calc(96px + env(safe-area-inset-top, 0px)) 16px 112px;
     /* Menü öffnet sich kreisförmig aus dem Menü-Knopf oben rechts */
     /* Menü schiebt sich von rechts herein (Variante B), die Seite dahinter wird leicht abgedunkelt */
-    translate: 100% 0; visibility: hidden; transition: translate .28s cubic-bezier(.4,0,1,1), visibility 0s .28s;
+    /* Die Fläche wird von rechts freigelegt und der Inhalt fährt im selben Takt mit – sieht aus wie Hereinschieben,
+       verschiebt aber das Menü selbst nicht (ein verschobenes, festes Element macht die Seite am Handy sonst breiter) */
+    clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .28s cubic-bezier(.4,0,1,1), visibility 0s .28s;
   }
-  .nav-open .main-nav { translate: 0 0; visibility: visible; transition: translate .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
+  .main-nav > ul { translate: 100% 0; transition: translate .28s cubic-bezier(.4,0,1,1); }
+  .nav-open .main-nav { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
+  .nav-open .main-nav > ul { translate: 0 0; transition: translate .42s cubic-bezier(.32,.72,0,1); }
   .main-nav > ul { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; max-width: 1000px; margin: 0 auto; }
   .main-nav > ul > li:not(.nav-extra, :has(.nav-cta)) { border-bottom: 1px solid var(--rule); }
   .main-nav > ul > li:not(.nav-extra) > a, .drop-toggle { width: 100%; justify-content: flex-start; gap: 12px; min-height: 64px; padding: 16px 16px; border-radius: var(--r-sm); font: 600 clamp(1.3rem, 1rem + 1.4vw, 1.7rem)/1.2 var(--font-head); letter-spacing: -.02em; }

@@ -55,6 +55,14 @@ Options -Indexes
   Header unset X-Powered-By
 </IfModule>
 
+# Komprimiert ausliefern (spart am Handy viel Ladezeit)
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/calendar text/vcard application/javascript application/manifest+json image/svg+xml
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/calendar text/vcard application/javascript application/manifest+json image/svg+xml
+</IfModule>
+
 # Kalenderdateien korrekt ausliefern, Caching
 AddType text/calendar .ics
 AddType image/webp .webp
@@ -65,6 +73,8 @@ AddType text/vcard .vcf
   ExpiresByType image/webp "access plus 1 month"
   ExpiresByType image/jpeg "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
-  ExpiresByType text/css "access plus 1 week"
-  ExpiresByType application/javascript "access plus 1 week"
+  # CSS/JS tragen eine Versionsnummer (?v=…) – deshalb dürfen sie lange zwischengespeichert werden
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/html "access plus 0 seconds"
 </IfModule>

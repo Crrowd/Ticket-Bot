@@ -316,6 +316,11 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Schneller laden (16.11.2026)
+- Server komprimiert jetzt (Brotli/Gzip in .htaccess). CSS/JS tragen eine Versionsnummer (?v=…) und dürfen deshalb ein Jahr im Browser bleiben – nach jeder Änderung lädt der Browser trotzdem sofort die neue Fassung (vorher bis zu eine Woche alt möglich). HTML wird nie zwischengespeichert.
+- Upload-Paket enthält verkleinerte CSS/JS (−94 KB), wenn esbuild vorhanden ist (optional; ohne esbuild einfach unverkleinert).
+- Dabei gefunden und behoben: Das neue Menü-Hereinschieben machte die Seite am Handy nach dem ersten Antippen doppelt so breit. Jetzt wird die Fläche freigelegt statt verschoben – gleiches Aussehen, keine Verbreiterung.
+
 ## Handy-Menü (16.11.2026)
 - Fehler behoben: Das Menü spannte sich nur innerhalb der Leiste auf (Ursache: will-change an der Leiste).
 - Öffnen/Schließen jetzt Variante B: schiebt sich von rechts herein (0,42 s), Seite dahinter wird leicht abgedunkelt, Schließen schneller (0,28 s). Verworfene Varianten: entwurf/leiste/menu-live.html.

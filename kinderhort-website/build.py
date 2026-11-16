@@ -1607,6 +1607,18 @@ with open(os.path.join(W, "css/erzeugt.css"), "w", encoding="utf-8") as f:
     for i, (w, z, x, y) in enumerate(WORDS):
         f.write(f".word-cloud span:nth-child({i + 1}) {{ left: {x}%; top: {y}%; font-size: {z}rem; --d: {i * -0.45:.2f}s; }}\n")
 
+def _versionen():
+    """Hängt an CSS/JS eine Versionsnummer (?v=…), damit Browser nach jeder Änderung sofort die neue Fassung laden."""
+    import glob, hashlib
+    dateien = ["css/style.css", "css/erzeugt.css", "js/main.js", "js/daten.js"]
+    v = {d: hashlib.md5(open(os.path.join(W, d), "rb").read()).hexdigest()[:8] for d in dateien}
+    for f in glob.glob(os.path.join(W, "*.html")):
+        if os.path.basename(f).startswith("vorschau"): continue
+        t = open(f, encoding="utf-8").read()
+        t2 = re.sub(r'((?:href|src)=")(' + "|".join(re.escape(d) for d in dateien) + r')(?:\?v=[0-9a-f]+)?"', lambda m: m.group(1) + m.group(2) + "?v=" + v[m.group(2)] + '"', t)
+        if t2 != t: open(f, "w", encoding="utf-8").write(t2)
+_versionen()
+
 def _sicherheits_pruefung():
     import glob
     erlaubt = {_sha(INLINE_JS), _sha(SPEC_RULES)}
@@ -1645,12 +1657,27 @@ def _link_pruefung():
 _link_pruefung()
 
 # ---------- Upload-Paket: nur öffentliche Dateien (keine Notizen, Tabellen, Entwürfe, Hilfsprogramme) ----------
+def _esbuild():
+    """esbuild ist optional: im Suchpfad oder über die Umgebungsvariable KITA_ESBUILD."""
+    import shutil
+    p = os.environ.get("KITA_ESBUILD") or shutil.which("esbuild")
+    return p if p and os.path.exists(p) else None
+def _verkleinert(pfad):
+    import subprocess
+    eb = _esbuild()
+    if not eb: return None
+    try:
+        r = subprocess.run([eb, pfad, "--minify", "--log-level=error", "--charset=utf8"], capture_output=True, timeout=60)
+        return r.stdout if r.returncode == 0 and r.stdout else None
+    except Exception:
+        return None
+
 def _upload_paket():
     import zipfile
     ziel = os.path.join(os.path.dirname(W), "kinderhort-webseite.zip")
     intern_ordner = {"entwurf", "daten", "plans", ".impeccable", "__pycache__", ".git"}
     intern_endung = (".py", ".md", ".csv", ".json", ".zip", ".log", ".sh")
-    n = 0
+    n = 0; gespart = [0]
     with zipfile.ZipFile(ziel, "w", zipfile.ZIP_DEFLATED) as z:
         for wurzel, ordner, dateien in os.walk(W):
             rel = os.path.relpath(wurzel, W)
@@ -1662,9 +1689,13 @@ def _upload_paket():
                 if d.endswith(intern_endung) or d == "vorschau.html" or (d.startswith(".") and d != ".htaccess"):
                     continue
                 pfad = os.path.join(wurzel, d)
-                z.write(pfad, os.path.join("kinderhort-website", os.path.relpath(pfad, W)))
+                ziel_name = os.path.join("kinderhort-website", os.path.relpath(pfad, W))
+                klein = _verkleinert(pfad) if d.endswith((".css", ".js")) else None
+                if klein is not None: z.writestr(ziel_name, klein); gespart[0] += os.path.getsize(pfad) - len(klein)
+                else: z.write(pfad, ziel_name)
                 n += 1
-    print(f"Upload-Paket: {n} Dateien in {os.path.basename(ziel)} (ohne Notizen, Tabellen, Entwürfe)")
+    print(f"Upload-Paket: {n} Dateien in {os.path.basename(ziel)} (ohne Notizen, Tabellen, Entwürfe)"
+          + (f", CSS/JS um {gespart[0] // 1024} KB verkleinert" if gespart[0] else ", CSS/JS unverkleinert (esbuild nicht gefunden – kein Problem)"))
 _upload_paket()
 
 # ---------- am Ende: erstmals.json sichern, Daten-Prüfung ausgeben ----------
