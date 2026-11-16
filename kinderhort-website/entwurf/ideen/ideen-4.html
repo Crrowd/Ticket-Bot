@@ -1,0 +1,549 @@
+<meta charset="utf-8">
+<title>Hort-Webseite Ideen 4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: wie Katalog 1 – Karten mit Live-Bühne auf dunklem Türkis, Erklärung auf hellem Papier.
+   Bewusst nur ein Farbschema: dieselben Farben wie die Webseite. */
+:root {
+  --bg: #A8C5C0; --bg-alt: #B6D0CB; --surface: #2D6A6A; --paper: #F3F8F7; --ink: #1E3B44; --ink-soft: #3A5860;
+  --deep: #142A31; --rose: #D4B5B0; --rose-soft: #F1E5E3; --ok: #7FD6A4; --on: #F3FAF8; --on-soft: #D5E7E4;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --r: 20px; --shadow: 0 1px 2px rgba(20,42,49,.08), 0 14px 30px -16px rgba(20,42,49,.45);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 80px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.025em; text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.stage :focus-visible { outline-color: var(--rose); }
+.kicker { display: inline-block; background: var(--rose); color: var(--ink); font: 700 .74rem var(--font); letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.intro { display: grid; gap: 14px; justify-items: start; max-width: 760px; margin-bottom: 26px; }
+.intro p { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.filter { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(243,248,247,.55); border: 1px solid rgba(255,255,255,.6); margin-bottom: 26px; }
+.filter button, .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; min-height: 40px; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.knob { position: absolute; z-index: 0; top: 5px; left: 0; height: calc(100% - 10px); border-radius: 999px; background: var(--rose); box-shadow: 0 4px 12px -6px rgba(20,42,49,.5); transition: translate .38s var(--ease-io), width .38s var(--ease-io); pointer-events: none; }
+.knob.moving { animation: stretch .38s var(--ease-io); }
+@keyframes stretch { 45% { scale: 1.12 .94; } }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--paper); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.card.out { display: none; }
+.stage { position: relative; background: var(--surface); color: var(--on); min-height: 300px; padding: 22px; display: grid; place-items: center; overflow: hidden; }
+.about { padding: 20px 22px 22px; display: grid; gap: 10px; }
+.about p { color: var(--ink-soft); font-size: .97rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink); }
+.tag.anim { background: var(--rose-soft); }
+.hint { font-size: .8rem; color: var(--on-soft); position: absolute; left: 16px; bottom: 10px; right: 16px; text-align: center; pointer-events: none; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; min-height: 42px; font-weight: 700; cursor: pointer; background: var(--rose); color: var(--ink); transition: scale .12s var(--ease-out), background .15s; }
+.btn:active, .chip:active, .seg button:active, .filter button:active { scale: .97; }
+.btn.ghost { background: rgba(255,255,255,.12); color: var(--on); }
+.replay { position: absolute; top: 12px; right: 12px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.14); color: var(--on); font-weight: 600; font-size: .82rem; cursor: pointer; }
+.replay:hover { background: rgba(255,255,255,.26); }
+.chip { border: 0; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.12); color: var(--on); font-weight: 600; cursor: pointer; transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.chip[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.range { width: 100%; accent-color: var(--rose); }
+.label { font-size: .82rem; color: var(--on-soft); }
+.seg { position: relative; display: inline-flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.seg button { color: var(--on); transition: color .2s; }
+.seg button[aria-pressed="true"] { color: var(--ink); }
+
+
+.skill { font-size: .76rem; font-weight: 600; padding: 3px 10px; border-radius: 6px; background: #E6EFED; color: #1E3B44; font-family: ui-monospace, Menlo, monospace; }
+.where { font-size: .86rem; color: var(--ink-soft); }
+.filter { max-width: 100%; overflow-x: auto; scrollbar-width: none; } .filter::-webkit-scrollbar { display: none; }
+.demo { width: 100%; display: grid; place-items: center; }
+.ph5 { width: 230px; border-radius: 26px; border: 6px solid #0E1E23; background: #A8C5C0; padding: 12px; display: grid; gap: 8px; color: #1E3B44; }
+.tile { background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 10px 12px; font-size: .8rem; text-align: left; }
+.tile b { display: block; font-size: .92rem; }
+.dk2 { background: #2D6A6A; color: #F3FAF8; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.chips button { border: 0; border-radius: 10px; padding: 7px 10px; background: rgba(243,248,247,.85); color: #1E3B44; font: 600 .78rem var(--font, inherit); cursor: pointer; }
+.chips button[aria-pressed="true"] { background: #1E3B44; color: #F3F8F7; }
+.bigcall { display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; background: #D4B5B0; color: #1E3B44; font-weight: 700; padding: 12px; font-size: .9rem; transition: background .2s; }
+.small { font-size: .74rem; opacity: .85; }
+/* 3 App-Kurzbefehle */
+.homescreen { width: 230px; height: 250px; border-radius: 26px; border: 6px solid #0E1E23; background: linear-gradient(160deg, #4a6d74, #1E3B44); position: relative; display: grid; place-items: center; }
+.appicon { width: 58px; height: 58px; border-radius: 15px; background: #1E3B44 url("img/apple-touch-icon.png") center / cover; box-shadow: 0 6px 16px rgba(0,0,0,.4); transition: scale .25s cubic-bezier(.23,1,.32,1); cursor: pointer; border: 0; }
+.homescreen.hold .appicon { scale: 1.08; }
+.qa { position: absolute; left: 50%; top: 18px; translate: -50% 0; width: 180px; border-radius: 14px; background: rgba(243,248,247,.96); color: #1E3B44; font-size: .8rem; overflow: hidden; opacity: 0; scale: .9; transform-origin: 50% 100%; transition: opacity .2s cubic-bezier(.23,1,.32,1), scale .25s cubic-bezier(.23,1,.32,1); }
+.homescreen.hold .qa { opacity: 1; scale: 1; }
+.qa div { padding: 9px 12px; border-bottom: 1px solid rgba(30,59,68,.12); font-weight: 600; } .qa div:last-child { border: 0; }
+/* 4 neu seit Besuch */
+.newlist { width: 260px; display: grid; gap: 6px; }
+.newlist div { background: #2D6A6A; color: #F3FAF8; border-radius: 10px; padding: 9px 12px; font-size: .8rem; display: flex; gap: 8px; align-items: center; }
+.newlist i { width: 8px; height: 8px; border-radius: 50%; background: #7FD6A4; flex: none; transition: scale .3s cubic-bezier(.23,1,.32,1); }
+.newlist div:not(.isnew) i { scale: 0; }
+/* 5 Ablaufdatum */
+.exp { width: 260px; display: grid; gap: 10px; }
+.exp .tile { transition: opacity .4s cubic-bezier(.23,1,.32,1), translate .4s cubic-bezier(.23,1,.32,1); }
+.exp .tile.gone { opacity: .25; translate: 0 4px; text-decoration: line-through; }
+.exp input { width: 100%; accent-color: #2D6A6A; }
+/* 6 wischen */
+.swrow { position: relative; width: 270px; border-radius: 14px; overflow: hidden; background: #7FD6A4; touch-action: pan-y; }
+.swrow .under { position: absolute; inset: 0; display: flex; align-items: center; padding-left: 16px; font-weight: 700; color: #142A31; font-size: .82rem; }
+.swrow .front { position: relative; background: #F3F8F7; color: #1E3B44; font-weight: 600; padding: 12px 14px; font-size: .82rem; cursor: grab; user-select: none; touch-action: pan-y; }
+.swrow .front.saved::after { content: "✓ gemerkt"; float: right; color: #7FD6A4; font-weight: 700; }
+/* 7 Tagesbalken */
+.dayb { width: 100%; max-width: 420px; display: grid; gap: 8px; font-size: .78rem; color: #F3FAF8; }
+.dayb .row { display: grid; grid-template-columns: 92px 1fr; gap: 8px; align-items: center; }
+.dayb .bar { position: relative; height: 18px; border-radius: 6px; background: rgba(243,248,247,.12); }
+.dayb .bar span { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: #D4B5B0; }
+.dayb .bar span.late { background: rgba(212,181,176,.5); }
+.dayb .now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #7FD6A4; }
+.dayb .axis { display: flex; justify-content: space-between; margin-left: 100px; opacity: .7; font-variant-numeric: tabular-nums; }
+/* 8 Wimpel-Countdown */
+.wc { display: grid; justify-items: center; gap: 10px; color: #F3FAF8; }
+.wc svg { width: 300px; height: 70px; overflow: visible; }
+.wc .f { fill: rgba(243,248,247,.18); transition: fill .4s cubic-bezier(.23,1,.32,1); }
+.wc .f.on { fill: #D4B5B0; }
+.wc .f.on.x { fill: #A8C5C0; }
+/* 9 Ruhige Ansicht */
+.calm { display: grid; justify-items: center; gap: 14px; }
+.calm .ball { width: 40px; height: 40px; border-radius: 12px; background: #D4B5B0; animation: bob 1.6s ease-in-out infinite alternate; }
+.calm.off .ball { animation: none; }
+@keyframes bob { to { translate: 0 -18px; } }
+.switch { background: none; border: 0; font: inherit; display: inline-flex; align-items: center; gap: 10px; color: #F3FAF8; font-size: .85rem; font-weight: 600; cursor: pointer; }
+.switch i { width: 42px; height: 24px; border-radius: 999px; background: rgba(243,248,247,.25); position: relative; transition: background .2s; }
+.switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: translate .2s cubic-bezier(.23,1,.32,1); }
+.switch[aria-checked="true"] i { background: #7FD6A4; } .switch[aria-checked="true"] i::after { translate: 18px 0; }
+/* 10 Tastatur */
+.keys { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; font-size: .82rem; display: grid; gap: 8px; }
+.keys div { display: flex; justify-content: space-between; align-items: center; }
+.keys kbd { font: 600 .74rem ui-monospace, monospace; padding: 3px 7px; border-radius: 6px; background: #E6EFED; border: 1px solid rgba(30,59,68,.15); }
+/* 11 Auftakt */
+.hero4 { width: 100%; max-width: 420px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; color: #F3FAF8; }
+.hero4 h4 { margin: 0; font-size: 1.2rem; line-height: 1.15; }
+.hero4 .st { margin-top: 8px; font-size: .74rem; background: rgba(243,248,247,.15); border-radius: 8px; padding: 6px 8px; }
+.pola { position: relative; height: 140px; }
+.pola img { position: absolute; width: 96px; height: 76px; object-fit: cover; border: 4px solid #fff; border-radius: 4px; box-shadow: 0 8px 16px rgba(0,0,0,.35); }
+.pola img:nth-child(1) { left: 0; top: 10px; rotate: -6deg; } .pola img:nth-child(2) { left: 70px; top: 0; rotate: 5deg; } .pola img:nth-child(3) { left: 40px; top: 60px; rotate: -2deg; }
+/* 12 Film */
+.film { width: 100%; max-width: 380px; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; position: relative; background: #142A31; }
+.film img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.08; transition: opacity .6s cubic-bezier(.23,1,.32,1), scale 3.2s linear; }
+.film img.on { opacity: 1; scale: 1; }
+.film .cap { position: absolute; left: 12px; bottom: 16px; color: #fff; font-weight: 700; font-size: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+.film .prog { position: absolute; left: 0; bottom: 0; height: 4px; background: #D4B5B0; width: 0; }
+/* 13 drei Schritte */
+.steps3 { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; counter-reset: s; }
+.steps3 div { background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 12px; font-size: .78rem; position: relative; }
+.steps3 div b { display: block; font-size: .86rem; margin: 6px 0 2px; }
+.steps3 div::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: #D4B5B0; font-weight: 700; }
+/* 14 Gute Gründe */
+.proof { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.proof div { background: rgba(243,248,247,.1); border: 1px solid rgba(243,248,247,.2); color: #F3FAF8; border-radius: 12px; padding: 10px 12px; font-size: .76rem; }
+.proof b { display: block; font-size: 1.15rem; color: #D4B5B0; font-variant-numeric: tabular-nums; }
+/* 15 Weiche */
+.fork { width: 260px; display: grid; gap: 8px; }
+/* 16 Hauskarte */
+.plan4 { width: 100%; max-width: 420px; display: grid; grid-template-columns: 1fr 130px; gap: 12px; align-items: center; }
+.plan4 svg { width: 100%; }
+.plan4 rect { fill: rgba(243,248,247,.12); stroke: rgba(243,248,247,.5); stroke-width: 1.5; cursor: pointer; transition: fill .2s; }
+.plan4 rect.on { fill: #D4B5B0; }
+.plan4 text { fill: #F3FAF8; font-size: 9px; font-weight: 600; pointer-events: none; }
+.plan4 figure { margin: 0; color: #F3FAF8; font-size: .76rem; }
+.plan4 figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; margin-bottom: 4px; }
+/* 17 Klartext */
+.letter { width: 100%; max-width: 400px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px 16px; font-size: .82rem; line-height: 1.5; }
+.letter .sum { background: #F1E5E3; border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; font-weight: 600; }
+/* 18 Aushang */
+.ag { width: 100%; max-width: 440px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(110px, 150px); gap: 12px; align-items: start; }
+.ag label { display: grid; gap: 3px; font-size: .74rem; color: #F3FAF8; margin-bottom: 6px; }
+.ag input { width: 100%; min-width: 0; border: 0; border-radius: 8px; padding: 7px 9px; font: 500 .82rem inherit; }
+.a4 { aspect-ratio: 210 / 297; background: #fff; border-radius: 4px; padding: 12px 10px; color: #1E3B44; box-shadow: 0 10px 24px rgba(0,0,0,.35); display: grid; align-content: start; gap: 6px; text-align: center; overflow: hidden; }
+.a4 .bunt { height: 12px; background: repeating-conic-gradient(from 0deg, transparent 0 0); }
+.a4 h5 { margin: 4px 0 0; font-size: .95rem; line-height: 1.15; overflow-wrap: anywhere; }
+.a4 .dt { font-weight: 700; font-size: .78rem; background: #D4B5B0; border-radius: 6px; padding: 3px; }
+.a4 p { margin: 0; font-size: .6rem; }
+/* 19 Daten-Wächter */
+.guard { width: 100%; max-width: 420px; background: #142A31; color: #F3FAF8; border-radius: 14px; padding: 12px 14px; font: .74rem/1.6 ui-monospace, Menlo, monospace; }
+.guard .ok { color: #7FD6A4; } .guard .warn { color: #F3C98B; } .guard .err { color: #F2A196; }
+/* 20 Punktraster */
+.dots { background: #0d0d0d; border-radius: 14px; padding: 14px; display: grid; gap: 10px; justify-items: center; }
+.dots canvas { image-rendering: pixelated; }
+.dots small { color: #bbb; font: .7rem ui-monospace, monospace; letter-spacing: .08em; }
+/* 21 Gruppenfarben */
+.gc { width: 270px; display: grid; gap: 6px; }
+.gc div { display: flex; align-items: center; gap: 10px; background: #F3F8F7; color: #1E3B44; border-radius: 10px; padding: 8px 10px; font-size: .8rem; }
+.gc i { width: 26px; height: 26px; border-radius: 8px; flex: none; display: grid; place-items: center; font-style: normal; font-size: .7rem; font-weight: 700; }
+/* 22 Merkliste-Blatt */
+.sheetdemo { width: 230px; height: 280px; border-radius: 26px; border: 6px solid #0E1E23; background: #A8C5C0; position: relative; overflow: hidden; display: grid; place-items: center; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: #F3F8F7; border-radius: 18px 18px 0 0; padding: 18px 14px 12px; translate: 0 100%; transition: translate .4s cubic-bezier(.32,.72,0,1); color: #1E3B44; font-size: .78rem; display: grid; gap: 6px; align-content: start; touch-action: none; }
+.sheet::before { content: ""; position: absolute; top: 7px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 3px; background: rgba(30,59,68,.25); }
+.sheetdemo.open .sheet { translate: 0 0; }
+.sheet div { background: #2D6A6A; color: #F3FAF8; border-radius: 10px; padding: 8px 10px; }
+/* 23 Was passiert jetzt */
+.next3 { width: 270px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; font-size: .8rem; display: grid; gap: 8px; }
+.next3 ol { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+/* 24 Morgen offen? */
+.ask2 { width: 270px; display: grid; gap: 8px; }
+.bubble { background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 10px 12px; font-size: .82rem; min-height: 40px; }
+/* Auswahl je Idee */
+.vote { display: grid; gap: 8px; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(30,59,68,.12); }
+.vote-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vote-q { font-weight: 800; font-size: .86rem; }
+.vote-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg-alt); }
+.vote-seg button { border: 0; background: none; padding: 7px 15px; min-height: 38px; border-radius: 999px; font-weight: 700; font-size: .88rem; cursor: pointer; color: var(--ink); transition: background .15s, color .15s, scale .12s var(--ease-out); }
+.vote-seg button:active { scale: .96; }
+.vote-seg button[data-v="ja"][aria-pressed="true"] { background: var(--surface); color: var(--on); }
+.vote-seg button[data-v="merken"][aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.vote-seg button[data-v="nein"][aria-pressed="true"] { background: var(--ink-soft); color: var(--on); }
+.vote-note input { width: 100%; border: 1.5px solid rgba(30,59,68,.18); border-radius: 10px; padding: 9px 11px; font: 500 .9rem var(--font); background: #fff; color: var(--ink); }
+.vote-note input:focus { outline: none; border-color: var(--surface); box-shadow: 0 0 0 3px rgba(45,106,106,.18); }
+.card { transition: box-shadow .25s, opacity .25s; }
+.card[data-vote="ja"] { box-shadow: 0 0 0 3px var(--surface), var(--shadow); }
+.card[data-vote="merken"] { box-shadow: 0 0 0 3px var(--rose), var(--shadow); }
+.card[data-vote="nein"] { opacity: .72; }
+.card[data-vote="nein"] .stage { filter: saturate(.4) brightness(.9); }
+.tally { position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 30; margin: 26px auto 0; width: fit-content; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; padding: 10px 18px; border-radius: 999px; background: var(--deep); color: var(--on); box-shadow: 0 16px 30px -12px rgba(0,0,0,.55); font-size: .9rem; font-weight: 600; }
+.tally b { font-size: 1rem; }
+.tally .t-ja b { color: #9FD8C4; } .tally .t-merken b { color: var(--rose); }
+.tally .saved { font-size: .8rem; color: var(--on-soft); font-weight: 500; }
+.sync-note { font-size: .85rem; color: var(--ink-soft); margin: -10px 0 22px; }
+@media (max-width: 520px) { .tally { border-radius: 18px; } }
+
+.num { display: inline-grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 .35em; margin-right: 4px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .78em; vertical-align: .1em; }
+.foot { margin-top: 30px; color: var(--ink-soft); font-size: .9rem; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="kicker">Ideen 4</span>
+    <h1>Neue Ideen aus allen Skills</h1>
+    <p>Jede Idee stammt aus einem der installierten Skills – das kleine Etikett zeigt, aus welchem. Die Beispiele lassen sich anfassen: tippen, ziehen, schieben. Darunter wie gewohnt <b>Ja</b>, <b>Merken</b> oder <b>Nein</b> und eine Anmerkung.</p>
+  </header>
+  <p class="sync-note">Ihre Auswahl wird gespeichert, und Claude kann sie direkt lesen.</p>
+
+  <div class="filter" role="group" aria-label="Ideen filtern">
+    <span class="knob" aria-hidden="true"></span>
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    <button type="button" data-f="alltag" aria-pressed="false">Für Eltern im Alltag</button>
+    <button type="button" data-f="neu" aria-pressed="false">Für neue Eltern</button>
+    <button type="button" data-f="gestalt" aria-pressed="false">Gestaltung</button>
+    <button type="button" data-f="team" aria-pressed="false">Für das Team</button>
+    <button type="button" data-f="offen" aria-pressed="false">Noch offen</button>
+  </div>
+
+  <div class="grid">
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="ph5" id="d1"><div class="chips" data-g="d1"><button aria-pressed="false">Sonnen</button><button aria-pressed="true">Bienen</button><button aria-pressed="false">Hort</button></div><div class="tile"><b>Heute geöffnet</b>bis <span class="d1t">16:30</span> Uhr</div><div class="tile dk2"><b>Meine Gruppe: <span class="d1g">Bienengruppe</span></b><span class="small">anrufen: … <span class="d1n">13</span></span></div><div class="tile"><b>Nächster Termin</b>Nikolaus · 07.12.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
+        <h2><span class="num">1</span> Mein Tag: die Eltern-Übersicht</h2><p>Für Eltern, deren Kind schon da ist, zeigt die Startseite oben eine kleine Übersicht: Ist heute offen und bis wann, die Durchwahl der eigenen Gruppe, der nächste Termin. Die Gruppe wählt man einmal, sie bleibt im eigenen Browser gespeichert.</p><p class="where">ui-ux-pro-max empfiehlt für Kitas ein „Parent Dashboard“. Alles kommt aus Daten, die die Seite schon hat.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="ph5"><div class="chips" data-g="d2"><button aria-pressed="false">Sterne</button><button aria-pressed="true">Spatzen</button><button aria-pressed="false">Bären</button></div><div class="bigcall"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> <span class="d2g">Spatzengruppe</span> anrufen</div><div class="tile" style="text-align:center">E-Mail mit Vorlage</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable critique</span></div>
+        <h2><span class="num">2</span> Krankmelden mit einem Tipp</h2><p>Wer seine Gruppe einmal gewählt hat, sieht statt der Auswahlliste nur noch einen großen Knopf „Bienengruppe anrufen“ – und darunter die E-Mail. Morgens um sieben, eine Hand am Kind: ein Tipp statt vier.</p><p class="where">Die Frage aus der Critique: „Die eigene Gruppe merken, damit es mit einem Tipp geht.“</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="homescreen" id="hs"><div class="qa"><div>Kind krankmelden</div><div>Termine</div><div>Anrufen</div></div><button class="appicon" type="button" aria-label="App-Symbol gedrückt halten"></button></div><p class="small" style="color:#F3FAF8">Symbol gedrückt halten</p></div></div>
+      <div class="about"><div class="meta"><span class="skill">mobile-native</span></div>
+        <h2><span class="num">3</span> Kurzbefehle am App-Symbol</h2><p>Wer die Seite als App aufs Handy gelegt hat, drückt lange auf das Symbol und bekommt direkt: „Kind krankmelden“, „Termine“, „Anrufen“. Das ist ein Eintrag in der App-Beschreibung, kein Programmieraufwand.</p><p class="where">Funktioniert auf Android und ab iOS 17 teilweise. Halten Sie das Symbol gedrückt.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="newlist" id="nl"><div class="isnew"><i></i>Elternabend Kindergarten · 20.01.</div><div class="isnew"><i></i>Elternbrief „Fasching“</div><div><i></i>Nikolaus · 07.12.</div><div><i></i>Weihnachtsmarkt · 04.12.</div></div><button class="chip" id="nlb" type="button">Letzter Besuch: vor 2 Wochen</button></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable onboard</span></div>
+        <h2><span class="num">4</span> Neu seit Ihrem letzten Besuch</h2><p>Die Seite merkt sich im eigenen Browser, wann man zuletzt da war. Termine und Elternbriefe, die seitdem dazugekommen sind, bekommen einen kleinen grünen Punkt.</p><p class="where">Kein Konto, keine Daten beim Hort – nur ein Datum im eigenen Browser.</p></div>
+    </article>
+
+    <article class="card" data-k="team">
+      <div class="stage"><div class="demo"><div class="exp"><div class="tile" id="ex1"><b>Sankt Martin</b>gilt bis 11.11.</div><div class="tile" id="ex2"><b>Weihnachtsmarkt</b>gilt bis 04.12.</div><label style="color:#F3FAF8;font-size:.78rem">Heute: <b id="exd">01.11.</b><input type="range" id="exr" min="0" max="50" value="0" aria-label="Datum verschieben"></label></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable critique</span></div>
+        <h2><span class="num">5</span> Hinweise mit Ablaufdatum</h2><p>Hinweis-Karten wie „Sankt Martin“ bekommen ein Datum, bis wann sie gelten. Danach verschwinden sie von selbst – keine veralteten Ankündigungen mehr, auch wenn niemand daran denkt.</p><p class="where">Aus der Critique: Die undatierte Karte „Sankt Martin“ wirkt im November schnell veraltet.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="swrow"><div class="under">Merken</div><div class="front" id="sw">Elternabend Kindergarten · 20.01.</div></div><p class="small" style="color:#F3FAF8">Nach rechts ziehen</p></div></div>
+      <div class="about"><div class="meta"><span class="skill">gestures</span></div>
+        <h2><span class="num">6</span> Termin zur Seite wischen = merken</h2><p>Am Handy schiebt man einen Termin mit dem Finger nach rechts, darunter erscheint „Merken“. Ab der Hälfte rastet er ein, davor federt er zurück. Der Knopf „Merken“ bleibt für alle, die lieber tippen.</p><p class="where">Mit Gummiband an den Grenzen und Tastatur-Alternative.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="dayb" id="db"><div class="row"><span>Krippe</span><div class="bar"><span style="left:0;width:86.7%"></span><span class="late" style="left:86.7%;width:8.9%"></span><i class="now"></i></div></div><div class="row"><span>Kindergarten</span><div class="bar"><span style="left:0;width:86.7%"></span><span class="late" style="left:86.7%;width:8.9%"></span><i class="now"></i></div></div><div class="row"><span>Hort</span><div class="bar"><span style="left:0;width:100%"></span><i class="now"></i></div></div><div class="axis"><span>6:45</span><span>12:00</span><span>18:00</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">dataviz</span></div>
+        <h2><span class="num">7</span> Betreuungszeiten als Tagesbalken</h2><p>Statt Uhrzeiten im Text: ein Balken je Bereich von 6:45 bis 18:00, der Spätdienst heller, dazu eine grüne Linie für „jetzt“. Man sieht auf einen Blick, wer wann betreut wird.</p><p class="where">Nach den dataviz-Regeln: eine Farbe für Betreuung, eine Abstufung für Spätdienst, Text statt Legende.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="wc"><svg viewBox="0 0 300 70" id="wcs"></svg><span id="wct">noch 38 Tage bis Weihnachten</span><input type="range" id="wcr" min="0" max="40" value="2" aria-label="Tage verschieben" style="width:220px;accent-color:#D4B5B0"></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable delight</span></div>
+        <h2><span class="num">8</span> Ferien-Countdown als Wimpelkette</h2><p>Je näher die nächsten Schließtage rücken, desto mehr Wimpel einer kleinen Kette färben sich ein. Ist die Kette voll, ist Ferienbeginn. Passt zum Leitbild „Die Wimpelkette“.</p><p class="where">Ein kleines Detail im Kita-Jahr-Zeitstrahl.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="calm" id="cm"><div class="ball"></div><button class="switch" id="cms" role="switch" aria-checked="false" type="button"><i></i>Bewegung aus</button></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">remove-animations</span></div>
+        <h2><span class="num">9</span> Ruhige Ansicht zum Einschalten</h2><p>Ein kleiner Schalter im Fußbereich: „Bewegung aus“. Für alle, denen die Seite zu lebendig ist, ohne dass sie die Einstellung ihres Handys kennen müssen. Gemerkt im eigenen Browser.</p><p class="where">remove-animations: weniger ist für manche Menschen mehr.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="keys"><div>Suche öffnen<kbd>Strg K</kbd></div><div>Bild weiter<kbd>→</kbd></div><div>Schließen<kbd>Esc</kbd></div><div>Diese Hilfe<kbd>?</kbd></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">web-design-guidelines</span></div>
+        <h2><span class="num">10</span> Tastatur-Hilfe mit „?“</h2><p>Wer am Computer „?“ drückt, sieht alle Kürzel: Strg K für die Suche, Pfeiltasten in der Bildansicht, Esc zum Schließen. Hilft Menschen, die ohne Maus arbeiten.</p><p class="where">Richtlinie: Tastaturbedienung sichtbar machen.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="hero4" id="h4"><div><h4>Kath. Kinder- und Jugendhort Grombühl</h4><div class="st">● Jetzt geöffnet</div></div><div class="pola"><img src="img/p2160110-800.webp" alt=""><img src="img/kreatviraum-5-1-800.webp" alt=""><img src="img/turnraum-800.webp" alt=""></div></div><button class="chip" id="h4b" type="button">Abspielen</button></div></div>
+      <div class="about"><div class="meta"><span class="skill">choreograph</span></div>
+        <h2><span class="num">11</span> Der Auftakt als eine Bewegung</h2><p>Beim ersten Besuch erscheint die Startseite in einer einzigen, ruhigen Abfolge: erst der Name, dann fallen drei Fotos wie Polaroids auf den Tisch, zuletzt „Jetzt geöffnet“. Statt vieler einzelner Effekte eine Choreografie.</p><p class="where">choreograph: eine Bewegung pro Bereich, ungleichmäßige Abstände.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="film" id="fm"><img class="on" src="img/p2160110-800.webp" alt=""><img src="img/lesecke-800.webp" alt=""><img src="img/turnraum-800.webp" alt=""><img src="img/werkraum-800.webp" alt=""><span class="cap">Ankommen</span><span class="prog"></span></div><button class="chip" id="fmb" type="button">Film abspielen</button></div></div>
+      <div class="about"><div class="meta"><span class="skill">explainer-default</span></div>
+        <h2><span class="num">12</span> Ein Tag bei uns – Film in 60 Sekunden</h2><p>Ein kurzer, stiller Film aus euren eigenen Fotos: Ankommen, Spielen, Mittagessen, Garten, Abholen – mit kurzen Texten und leiser Musik. Läuft nur auf Tipp, mit Untertiteln.</p><p class="where">Die Explainer-Skills bauen solche Filme aus Code und echten Fotos; hier ein Entwurf als Bildfolge.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="steps3"><div><b>Anfragen</b>Vorbereitete E-Mail</div><div><b>Kennenlernen</b>Haus ansehen</div><div><b>Zusage</b>Wir melden uns</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">landing-page-design</span></div>
+        <h2><span class="num">13</span> In 3 Schritten zum Platz – schon auf der Startseite</h2><p>Für neue Eltern ein klarer Weg direkt auf der Startseite: Anfragen, Kennenlernen, Zusage. Jeder Schritt mit einem Satz, der erste mit Knopf.</p><p class="where">Die Startseite überzeugt schon; so wird aus Interesse ein nächster Schritt.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="proof"><div><b>100 %</b>Fachkräfte im Hort</div><div><b>1,4</b>Note in der Elternbefragung</div><div><b>2</b>Köchinnen, täglich frisch</div><div><b>18:00</b>Hort auch in den Ferien</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
+        <h2><span class="num">14</span> Gute Gründe auf einen Blick</h2><p>Eine schmale Leiste mit Belegen statt Behauptungen: 100 % Fachkräfte im Hort, Elternnote 1,4, eigene Küche, bis 18 Uhr offen. Gerade für Eltern, die Kitas vergleichen.</p><p class="where">ui-ux-pro-max: Für Kitas zählen Vertrauen und Belege. Alle Zahlen stehen schon auf der Seite.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="fork"><div class="chips" data-g="d15"><button aria-pressed="true">Ich bin neu hier</button><button aria-pressed="false">Mein Kind ist schon da</button></div><div class="tile d15a"><b>Unsere Bereiche</b>Krippe · Kindergarten · Hort</div><div class="tile d15b"><b>Platz anfragen</b>in 3 Schritten</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable onboard</span></div>
+        <h2><span class="num">15</span> „Ich bin neu hier“ oder „Mein Kind ist schon da“</h2><p>Ganz oben eine kleine Weiche. Wer neu ist, sieht zuerst Bereiche, Rundgang und Anmeldung. Wer schon da ist, sieht Öffnungszeit, Krankmelden und Termine. Die Wahl bleibt gespeichert und lässt sich jederzeit ändern.</p><p class="where">Zwei Besuchergruppen mit ganz verschiedenen Fragen – eine Seite.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="plan4"><svg viewBox="0 0 220 150" id="hk"><rect x="5" y="5" width="100" height="65" rx="6" data-i="0" class="on"/><text x="14" y="22">Gruppenraum</text><rect x="110" y="5" width="105" height="65" rx="6" data-i="1"/><text x="119" y="22">Turnraum</text><rect x="5" y="75" width="70" height="70" rx="6" data-i="2"/><text x="14" y="92">Lesen</text><rect x="80" y="75" width="135" height="70" rx="6" data-i="3"/><text x="89" y="92">Werkraum</text></svg><figure><img id="hki" src="img/p2160110-800.webp" alt=""><span id="hkt">Gruppenraum: hell, mit Bauecke</span></figure></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable overdrive</span></div>
+        <h2><span class="num">16</span> Hauskarte zum Antippen</h2><p>Ein einfacher Grundriss des Hauses: Räume antippen, Foto und zwei Sätze erscheinen. Ein zweiter Weg in den Rundgang – besonders für Eltern, die sich orientieren wollen.</p><p class="where">Klare Formen statt Zeichnung – ein Plan, kein Bild.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="letter"><div class="sum">Das Wichtigste: Wir haben höchstens 30 Tage im Jahr zu. In offenen Ferienwochen sind nicht alle Erzieherinnen da.</div>Nach dem BayKiBiG (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen …</div></div></div>
+      <div class="about"><div class="meta"><span class="skill">humanizer</span></div>
+        <h2><span class="num">17</span> Elternbriefe zuerst in zwei Sätzen</h2><p>Jeder Elternbrief beginnt mit „Das Wichtigste“: zwei Sätze in Alltagssprache. Der ausführliche Text folgt darunter – so lesen Eltern am Handy das Entscheidende, ohne durch Paragrafen zu scrollen.</p><p class="where">humanizer: Amtsdeutsch in klare Sätze, ohne den Inhalt zu ändern.</p></div>
+    </article>
+
+    <article class="card" data-k="team">
+      <div class="stage"><div class="demo"><div class="ag"><div><label>Titel<input id="agt" value="Laternenfest"></label><label>Datum<input id="agd" value="11.11., 17 Uhr"></label><label>Text<input id="agx" value="Treffpunkt im Garten"></label></div><div class="a4"><svg viewBox="0 0 120 14" style="width:100%"><path d="M0 2 Q60 10 120 2" fill="none" stroke="#D4B5B0"/><path d="M10 4l8 1-4 7z M34 6l8 1-4 7z M58 7l8 0-4 7z M82 6l8-1-3 7z M104 4l8-1-3 7z" fill="#A8C5C0"/></svg><h5 id="agT">Laternenfest</h5><div class="dt" id="agD">11.11., 17 Uhr</div><p id="agX">Treffpunkt im Garten</p><p style="margin-top:auto;opacity:.6">Kath. Kinder- und Jugendhort Grombühl</p></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">figma-designer</span></div>
+        <h2><span class="num">18</span> Aushang-Generator für das Team</h2><p>Termin eintragen, und die Seite setzt daraus einen druckfertigen A4-Aushang im Stil der Webseite: Wimpel oben, Titel, Datum, kurzer Text. Für die Pinnwand im Eingang.</p><p class="where">Gleiche Schrift, Farben und Abstände wie die Seite – nach dem Vorbild eines Design-Systems.</p></div>
+    </article>
+
+    <article class="card" data-k="team">
+      <div class="stage"><div class="demo"><div class="guard"><div class="ok">✓ termine.csv: 5 Termine</div><div class="warn">! termine.csv Zeile 4: „Sankt Martin“ liegt in der Vergangenheit</div><div class="err">✗ schliesstage.csv Zeile 3: Ende (03.11.) vor Anfang (05.11.)</div><div class="warn">! schliesstage.csv: Summe 31 Schließtage (erlaubt 30)</div><div class="ok">✓ elternbriefe.csv: 1 Brief</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">break-ui</span></div>
+        <h2><span class="num">19</span> Daten-Wächter für die Tabellen</h2><p>Beim Bauen der Seite prüft ein kleiner Wächter die Tabellen und sagt in Klartext, was nicht stimmt: Ende vor Anfang, Datum schon vorbei, doppelter Name, fehlendes Feld. Damit kein Tippfehler auf der Seite landet.</p><p class="where">Aus dem Stresstest: Eine leere Tabelle hat den ganzen Bau gestoppt.</p></div>
+    </article>
+
+    <article class="card" data-k="gestalt">
+      <div class="stage"><div class="demo"><div class="dots"><canvas id="dm" width="220" height="40" aria-label="OFFEN BIS 18:00"></canvas><small>KITA GROMBÜHL · HEUTE</small></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">nothing-design</span></div>
+        <h2><span class="num">20</span> Anzeigetafel im Punktraster</h2><p>Eine kleine Anzeige in Punktschrift, wie an einer Bushaltestelle: „OFFEN BIS 18:00“ – etwa im Fußbereich oder im App-Symbol. Ein Gegenpol zur weichen Gestaltung, nur als kleines Detail.</p><p class="where">nothing-design: Punktmatrix, Schwarz und Weiß, sehr reduziert.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="gc"><div><i style="background:#F3E9C9"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></i>Sonnengruppe · Ausflug 12.12.</div><div><i style="background:#E6EFED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></i>Sternengruppe · …15</div><div><i style="background:#F1E5E3"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2"/></svg></i>Bienengruppe · Elternabend</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">ui-ux-pro-max</span></div>
+        <h2><span class="num">21</span> Gruppen erkennt man an ihrem Zeichen</h2><p>Termine, Durchwahlen und Hinweise für eine bestimmte Gruppe tragen deren Symbol: Sonne, Stern, Bär, Biene, Spatz. Eltern sehen sofort, was ihr Kind betrifft – Kinder erkennen ihre Gruppe auch.</p><p class="where">ui-ux-pro-max: Farbzuordnung je Familienmitglied; hier je Gruppe, in Tönen der Seite.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="sheetdemo" id="sd"><button class="chip" id="sdb" type="button">2 gemerkt</button><div class="sheet" id="sh"><b>Gemerkte Termine</b><div>Nikolaus · 07.12.</div><div>Elternabend · 20.01.</div><span class="small">Nach unten ziehen zum Schließen</span></div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">apple-design</span></div>
+        <h2><span class="num">22</span> Merkliste als Blatt von unten</h2><p>Wer Termine gemerkt hat, tippt auf „2 gemerkt“ und ein Blatt gleitet von unten herein – mit den Terminen und „Alle in den Kalender“. Mit dem Finger nach unten zieht man es wieder weg, wie in einer App.</p><p class="where">apple-design: Blätter mit Federkurve, folgen dem Finger.</p></div>
+    </article>
+
+    <article class="card" data-k="neu">
+      <div class="stage"><div class="demo"><div class="next3"><b>So geht es weiter</b><ol><li>Ihr E-Mail-Programm öffnet die Vorlage.</li><li>Sie ergänzen und senden sie ab.</li><li>Wir melden uns bei Ihnen.</li></ol></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
+        <h2><span class="num">23</span> „Was passiert jetzt?“ nach der Anfrage</h2><p>Nach „Platz anfragen“ erscheint ein kurzer Hinweis: die E-Mail ist vorbereitet, Sie schicken sie ab, wir melden uns. Neue Eltern wissen, dass ihre Anfrage nicht im Leeren landet.</p><p class="where">Wie schnell der Hort antwortet, trägt er selbst ein.</p></div>
+    </article>
+
+    <article class="card" data-k="alltag">
+      <div class="stage"><div class="demo"><div class="ask2"><div class="chips" id="aq"><button data-a="Ja, morgen (Dienstag) haben wir ganz normal geöffnet." aria-pressed="false">Morgen?</button><button data-a="Ja, die ganze nächste Woche ist offen." aria-pressed="false">Nächste Woche?</button><button data-a="Zu von 24.12. bis 08.01. – ab 11.01. wieder offen." aria-pressed="false">Weihnachten?</button></div><div class="bubble" id="aqa" aria-live="polite">Tippen Sie eine Frage an.</div></div></div></div>
+      <div class="about"><div class="meta"><span class="skill">impeccable clarify</span></div>
+        <h2><span class="num">24</span> „Ist morgen offen?“ – eine Frage, eine Antwort</h2><p>Unter „Jetzt geöffnet“ drei kleine Fragen zum Antippen: Morgen? Nächste Woche? In den Ferien? Die Antwort kommt sofort aus dem Ferienplan, in einem Satz.</p><p class="where">Nutzt die Daten, die die Seite schon hat.</p></div>
+    </article>
+  </div>
+  <p class="foot">Alle Beispiele beachten „Bewegung reduzieren“. Nichts davon ist schon auf der Seite – sag einfach, welche Ideen eingebaut werden sollen.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover: hover)").matches;
+  function $(s, el) { return (el || document).querySelector(s); }
+  function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function onView(el, fn) {
+    if (!("IntersectionObserver" in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { fn(); io.disconnect(); } }); }, { threshold: .4 });
+    io.observe(el);
+  }
+  function segment(group, onPick) {
+    var knob = $(".knob", group), btns = $$("button", group);
+    function place(b, anim) {
+      if (!anim) knob.style.transition = "none";
+      knob.style.width = b.offsetWidth + "px"; knob.style.translate = b.offsetLeft + "px 0";
+      if (!anim) { void knob.offsetWidth; knob.style.transition = ""; } else if (!reduced) { knob.classList.remove("moving"); void knob.offsetWidth; knob.classList.add("moving"); }
+    }
+    btns.forEach(function (b) { b.addEventListener("click", function () { btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); place(b, true); onPick(b); }); });
+    requestAnimationFrame(function () { place(btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0] || btns[0], false); });
+    addEventListener("resize", function () { var c = btns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]; if (c) place(c, false); });
+  }
+  segment($(".filter"), function (b) { var f = b.dataset.f; $$(".card").forEach(function (c) { c.classList.toggle("out", f === "offen" ? !!c.dataset.vote : f !== "alle" && c.dataset.k.indexOf(f) < 0); }); });
+  var replay = {};
+  $$("[data-replay]").forEach(function (b) { b.addEventListener("click", function () { replay[b.dataset.replay](); }); });
+
+
+
+  /* Gruppenwahl in den Demos */
+  var GR = { "Sonnen": ["Sonnengruppe", "14", "16:30"], "Bienen": ["Bienengruppe", "13", "16:30"], "Hort": ["Kinderhort", "0", "18:00"], "Sterne": ["Sternengruppe"], "Spatzen": ["Spatzengruppe"], "Bären": ["Bärengruppe"] };
+  $$(".chips[data-g]").forEach(function (g) {
+    var id = g.dataset.g;
+    g.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      $$("button", g).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      var v = GR[b.textContent];
+      if (id === "d1") { $(".d1g").textContent = v[0]; $(".d1n").textContent = v[1]; $(".d1t").textContent = v[2]; }
+      if (id === "d2") { $(".d2g").textContent = v[0]; }
+      if (id === "d15") { var neu = b.textContent.indexOf("neu") > 0; $(".d15a").innerHTML = neu ? "<b>Unsere Bereiche</b>Krippe · Kindergarten · Hort" : "<b>Heute geöffnet</b>bis 16:30 Uhr"; $(".d15b").innerHTML = neu ? "<b>Platz anfragen</b>in 3 Schritten" : "<b>Kind krankmelden</b>Gruppe anrufen"; }
+    });
+  });
+  /* 3 Kurzbefehle: gedrückt halten */
+  (function () { var hs = $("#hs"), t; var ic = $(".appicon", hs);
+    function down() { t = setTimeout(function () { hs.classList.add("hold"); }, 400); }
+    function up() { clearTimeout(t); }
+    ic.addEventListener("pointerdown", down); ic.addEventListener("pointerup", up); ic.addEventListener("pointerleave", up);
+    ic.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hs.classList.toggle("hold"); } });
+    document.addEventListener("pointerdown", function (e) { if (!hs.contains(e.target)) hs.classList.remove("hold"); });
+  })();
+  /* 4 letzter Besuch */
+  (function () { var b = $("#nlb"), rows = $$("#nl div"), s = 0, T = ["vor 2 Wochen", "gestern", "vor 2 Monaten"], N = [2, 0, 4];
+    b.addEventListener("click", function () { s = (s + 1) % 3; b.textContent = "Letzter Besuch: " + T[s]; rows.forEach(function (r, i) { r.classList.toggle("isnew", i < N[s]); }); }); })();
+  /* 5 Ablaufdatum */
+  (function () { var r = $("#exr"); function upd() { var d = new Date(2026, 10, 1 + +r.value); $("#exd").textContent = String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "."; $("#ex1").classList.toggle("gone", d > new Date(2026, 10, 11)); $("#ex2").classList.toggle("gone", d > new Date(2026, 11, 4)); } r.addEventListener("input", upd); upd(); })();
+  /* 6 Wischen mit Gummiband */
+  (function () { var f = $("#sw"), w = f.parentNode, x0 = null, dx = 0, W;
+    function rb(x, d) { return (1 - 1 / (x * .55 / d + 1)) * d; }
+    f.addEventListener("pointerdown", function (e) { x0 = e.clientX; W = w.offsetWidth; f.setPointerCapture(e.pointerId); f.style.transition = "none"; });
+    f.addEventListener("pointermove", function (e) { if (x0 === null) return; dx = e.clientX - x0; var x = dx < 0 ? -rb(-dx, 30) : dx > W * .7 ? W * .7 + rb(dx - W * .7, 40) : dx; f.style.translate = x + "px 0"; });
+    function end() { if (x0 === null) return; x0 = null; f.style.transition = "translate .35s cubic-bezier(.23,1,.32,1)"; f.style.translate = "0 0"; if (dx > W * .45) f.classList.toggle("saved"); dx = 0; }
+    f.addEventListener("pointerup", end); f.addEventListener("pointercancel", end);
+    f.tabIndex = 0; f.addEventListener("keydown", function (e) { if (e.key === "Enter") f.classList.toggle("saved"); });
+  })();
+  /* 7 jetzt-Linie */
+  (function () { var n = new Date(), m = n.getHours() * 60 + n.getMinutes(), p = Math.max(0, Math.min(1, (m - 405) / (1080 - 405))); $$("#db .now").forEach(function (l) { l.style.left = (p * 100) + "%"; }); })();
+  /* 8 Wimpel-Countdown */
+  (function () { var s = $("#wcs"), n = 12, h = "";
+    for (var i = 0; i < n; i++) { var x0 = 10 + i * 24, y0 = 8 + 18 * Math.sin(Math.PI * i / (n - 1)) * .9, x1 = x0 + 18, y1 = 8 + 18 * Math.sin(Math.PI * (i + .75) / (n - 1)) * .9; h += '<path class="f' + (i % 2 ? " x" : "") + '" d="M' + x0 + " " + y0 + " L" + x1 + " " + y1 + " L" + ((x0 + x1) / 2) + " " + ((y0 + y1) / 2 + 26) + 'Z"/>'; }
+    s.innerHTML = '<path d="M4 8 Q150 50 296 8" fill="none" stroke="rgba(243,248,247,.5)"/>' + h;
+    var fl = $$(".f", s), r = $("#wcr");
+    function upd() { var left = 40 - +r.value, k = Math.round((1 - left / 40) * n); fl.forEach(function (f, i) { f.classList.toggle("on", i < k); }); $("#wct").textContent = left ? "noch " + left + (left === 1 ? " Tag" : " Tage") + " bis Weihnachten" : "Ferienbeginn!"; }
+    r.addEventListener("input", upd); upd(); })();
+  /* 9 Ruhige Ansicht */
+  $("#cms").addEventListener("click", function () { var on = this.getAttribute("aria-checked") !== "true"; this.setAttribute("aria-checked", on); $("#cm").classList.toggle("off", on); });
+  /* 11 Auftakt */
+  function h4play() { var h = $("#h4"); if (reduced) return;
+    $("h4", h).animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 420, easing: "cubic-bezier(.23,1,.32,1)", fill: "both" });
+    $$(".pola img", h).forEach(function (im, i) { im.animate([{ opacity: 0, transform: "translateY(-30px) scale(1.15)" }, { opacity: 1, transform: "none" }], { duration: 480, delay: 260 + [0, 70, 160][i], easing: "cubic-bezier(.23,1,.32,1)", fill: "both" }); });
+    $(".st", h).animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 820, fill: "both" }); }
+  $("#h4b").addEventListener("click", h4play);
+  /* 12 Film */
+  (function () { var f = $("#fm"), ims = $$("img", f), cap = $(".cap", f), pr = $(".prog", f), C = ["Ankommen", "Lesen & Ausruhen", "Toben im Turnraum", "Werken"], t = null;
+    $("#fmb").addEventListener("click", function () { clearInterval(t); var i = 0; function go() { ims.forEach(function (im, j) { im.classList.toggle("on", j === i); }); cap.textContent = C[i]; pr.style.transition = "none"; pr.style.width = (i / 4 * 100) + "%"; void pr.offsetWidth; pr.style.transition = "width 2.4s linear"; pr.style.width = ((i + 1) / 4 * 100) + "%"; i++; if (i >= 4) clearInterval(t); } go(); t = setInterval(go, 2400); }); })();
+  /* 16 Hauskarte */
+  (function () { var P = [["p2160110", "Gruppenraum: hell, mit Bauecke"], ["turnraum", "Turnraum: Bewegung bei jedem Wetter"], ["lesecke", "Leseecke: Ruhe und Bücher"], ["werkraum", "Werkraum: Holz, Kleber, Ideen"]];
+    $$("#hk rect").forEach(function (r) { r.addEventListener("click", function () { $$("#hk rect").forEach(function (x) { x.classList.toggle("on", x === r); }); var p = P[+r.dataset.i]; $("#hki").src = "img/" + p[0] + "-800.webp"; $("#hkt").textContent = p[1]; }); }); })();
+  /* 18 Aushang */
+  [["agt", "agT"], ["agd", "agD"], ["agx", "agX"]].forEach(function (p) { $("#" + p[0]).addEventListener("input", function () { $("#" + p[1]).textContent = this.value; }); });
+  /* 20 Punktraster */
+  (function () { var c = $("#dm"), x = c.getContext("2d"), txt = "OFFEN BIS 18:00", g = document.createElement("canvas"); g.width = 110; g.height = 12; var gx = g.getContext("2d");
+    gx.fillStyle = "#fff"; gx.font = "bold 10px monospace"; gx.textBaseline = "top"; gx.fillText(txt, 1, 1); var d = gx.getImageData(0, 0, 110, 12).data;
+    x.fillStyle = "#0d0d0d"; x.fillRect(0, 0, 220, 40);
+    for (var yy = 0; yy < 12; yy++) for (var xx = 0; xx < 110; xx++) { var on = d[(yy * 110 + xx) * 4 + 3] > 120; x.fillStyle = on ? "#f2f2f2" : "#222"; x.beginPath(); x.arc(xx * 2 + 1, yy * 3 + 3, on ? .9 : .5, 0, 7); x.fill(); } })();
+  /* 22 Blatt von unten */
+  (function () { var sd = $("#sd"), sh = $("#sh"), y0 = null;
+    $("#sdb").addEventListener("click", function () { sd.classList.add("open"); });
+    sh.addEventListener("pointerdown", function (e) { y0 = e.clientY; sh.setPointerCapture(e.pointerId); sh.style.transition = "none"; });
+    sh.addEventListener("pointermove", function (e) { if (y0 === null) return; var dy = e.clientY - y0; sh.style.translate = "0 " + (dy > 0 ? dy : -(1 - 1 / (-dy * .55 / 20 + 1)) * 20) + "px"; });
+    function end(e) { if (y0 === null) return; var dy = e.clientY - y0; y0 = null; sh.style.transition = ""; sh.style.translate = ""; if (dy > 60) sd.classList.remove("open"); }
+    sh.addEventListener("pointerup", end); sh.addEventListener("pointercancel", end);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") sd.classList.remove("open"); });
+  })();
+  /* 24 Fragen */
+  $("#aq").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#aq button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#aqa").textContent = b.dataset.a; });
+
+  /* Auswahl: Ja / Merken / Nein – gespeichert für Claude */
+  (function () {
+    var cards = $$(".card"), state = {}, db = null, col = null, saveT = {}, savedEl, local = false;
+    var tally = document.createElement("div"); tally.className = "tally"; tally.setAttribute("aria-live", "polite");
+    tally.innerHTML = '<span class="t-ja"><b>0</b> Ja</span><span class="t-merken"><b>0</b> Merken</span><span class="t-nein"><b>0</b> Nein</span><span class="t-offen"><b>0</b> offen</span><span class="saved">verbinde …</span>';
+    $(".grid").after(tally); savedEl = $(".saved", tally);
+    function count() {
+      var c = { ja: 0, merken: 0, nein: 0 }; cards.forEach(function (cd) { var v = state[cd.dataset.nr]; if (v && c[v.wahl] !== undefined) c[v.wahl]++; });
+      $(".t-ja b", tally).textContent = c.ja; $(".t-merken b", tally).textContent = c.merken; $(".t-nein b", tally).textContent = c.nein;
+      $(".t-offen b", tally).textContent = cards.length - c.ja - c.merken - c.nein;
+    }
+    function paint(cd) {
+      var v = state[cd.dataset.nr] || {}; cd.dataset.vote = v.wahl || "";
+      if (!v.wahl) cd.removeAttribute("data-vote");
+      $$(".vote-seg button", cd).forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === v.wahl); });
+      var inp = $(".vote-note input", cd); if (document.activeElement !== inp) inp.value = v.notiz || "";
+    }
+    function save(cd) {
+      var nr = cd.dataset.nr, v = state[nr] || {}; savedEl.textContent = "speichert …";
+      var row = { nr: +nr, titel: cd.dataset.titel, wahl: v.wahl || "", notiz: v.notiz || "", zeit: new Date().toISOString() };
+      if (!col) { try { localStorage.setItem("ideen4-wahl", JSON.stringify(state)); } catch (e) {} savedEl.textContent = "nur auf diesem Gerät gespeichert"; return; }
+      clearTimeout(saveT[nr]);
+      saveT[nr] = setTimeout(function () {
+        col.doc("i4-" + ("0" + nr).slice(-2)).set(row).then(function () { delete saveT[nr]; savedEl.textContent = "✓ gespeichert – Claude sieht deine Auswahl"; }, function (e) { delete saveT[nr]; savedEl.textContent = "Speichern fehlgeschlagen (" + (e && e.code || "Fehler") + ")"; });
+      }, 250);
+    }
+    cards.forEach(function (cd) {
+      var nr = $(".num", cd).textContent, h2 = $(".about h2", cd);
+      cd.dataset.nr = nr; cd.dataset.titel = h2.textContent.replace(/^\s*\d+\s*/, "");
+      var v = document.createElement("div"); v.className = "vote";
+      v.innerHTML = '<div class="vote-row"><span class="vote-q">Einbauen?</span><div class="vote-seg" role="group" aria-label="Entscheidung zu Idee ' + nr + '"><button type="button" data-v="ja" aria-pressed="false">Ja</button><button type="button" data-v="merken" aria-pressed="false">Merken</button><button type="button" data-v="nein" aria-pressed="false">Nein</button></div></div>' +
+        '<label class="vote-note"><span class="visually-hidden">Anmerkung zu Idee ' + nr + '</span><input type="text" maxlength="300" placeholder="Anmerkung (optional), z. B. „etwas schwächer“"></label>';
+      $(".about", cd).appendChild(v);
+      $$(".vote-seg button", v).forEach(function (b) { b.addEventListener("click", function () {
+        var s = state[nr] || (state[nr] = {}); s.wahl = s.wahl === b.dataset.v ? "" : b.dataset.v; paint(cd); count(); save(cd);
+      }); });
+      var inp = $("input", v), last = "";
+      inp.addEventListener("focus", function () { last = inp.value; });
+      inp.addEventListener("change", function () { if (inp.value === last) return; var s = state[nr] || (state[nr] = {}); s.notiz = inp.value.trim(); last = inp.value; save(cd); });
+    });
+    var vh = document.createElement("style"); vh.textContent = ".visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}"; document.head.appendChild(vh);
+    function fromLocal() { local = true; try { state = JSON.parse(localStorage.getItem("ideen4-wahl") || "{}"); } catch (e) { state = {}; } cards.forEach(paint); count(); savedEl.textContent = "nur auf diesem Gerät gespeichert"; }
+    count();
+    var timer = setTimeout(function () { if (!col) fromLocal(); }, 10000);
+    if (!window.claude || !window.claude.use) { clearTimeout(timer); fromLocal(); return; }
+    window.claude.use("db").then(function (d) {
+      if (!d) { clearTimeout(timer); fromLocal(); return; }
+      db = d; col = db.collection("ideen4");
+      col.onSnapshot(function (snap) {
+        clearTimeout(timer);
+        snap.docs.forEach(function (doc) { var x = doc.data() || {}; var nr = String(x.nr); if (saveT[nr]) return; /* eigene Änderung unterwegs */ state[nr] = { wahl: x.wahl || "", notiz: x.notiz || "" }; });
+        cards.forEach(paint); count(); if (!/gespeichert/.test(savedEl.textContent)) savedEl.textContent = "verbunden – Claude sieht deine Auswahl";
+      }, function () { clearTimeout(timer); col = null; fromLocal(); });
+    }, function () { clearTimeout(timer); fromLocal(); });
+  })();
+})();
+</script>
