@@ -316,6 +316,11 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Korrektur gelesen (16.11.2026)
+- Rechtschreibung/Grammatik: „Herzlich willkommen“, „Platz im Kindergarten/Kinderhort“, Kommas (Schlafraum, Wickelraum), Dativ (Außenbereich Krippe), „Meistgestellte Fragen“, „Inhouse-Schulungen“, „freinehmen“.
+- Sprache geglättet: Bobbycars/kleine Räder, „kleines Bällebad“, „etwa vier Wochen“ (einheitlich), „Puppen- und Rollenspielecke“, „Lange Öffnungszeiten“, Hausaufgaben-Satz, „Erzieherinnen und Erziehern“, „Webseite“ statt „Homepage“.
+- Vom Hort bestätigt: Kindergarten „Spielbereich im Flur“ (nicht Außenspielbereich), Krippen-Tagesablauf „9:00 Uhr Freispiel“.
+
 ## Schneller laden (16.11.2026)
 - Server komprimiert jetzt (Brotli/Gzip in .htaccess). CSS/JS tragen eine Versionsnummer (?v=…) und dürfen deshalb ein Jahr im Browser bleiben – nach jeder Änderung lädt der Browser trotzdem sofort die neue Fassung (vorher bis zu eine Woche alt möglich). HTML wird nie zwischengespeichert.
 - Upload-Paket enthält verkleinerte CSS/JS (−94 KB), wenn esbuild vorhanden ist (optional; ohne esbuild einfach unverkleinert).

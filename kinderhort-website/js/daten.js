@@ -417,7 +417,7 @@ window.KITA = {
  ],
  "glossar": {
   "BayKiBiG": "Bayerisches Kinderbildungs- und -betreuungsgesetz. Es regelt unter anderem die Förderung der Kitas und erlaubt bis zu 30 Schließtage im Jahr.",
-  "Inhouseschulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
+  "Inhouse-Schulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
   "Portfolio": "Eine Mappe, in der die Entwicklung Ihres Kindes mit Fotos, Bildern und Beobachtungen festgehalten wird.",
   "Vorkurs Deutsch": "Zusätzliche, schulvorbereitende Förderung für Vorschulkinder in Grammatik, Sprachverständnis und Wortschatz.",
   "Fachkraftquote": "Anteil der Mitarbeitenden mit pädagogischer Fachausbildung. 100 Prozent heißt: nur staatlich anerkannte Erzieherinnen und Erzieher.",
@@ -447,7 +447,7 @@ window.KITA = {
   },
   {
    "q": "Gibt es eine Eingewöhnungszeit?",
-   "a": "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen.",
+   "a": "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung etwa vier Wochen.",
    "u": "kinderkrippe.html#fragen",
    "b": "Kinderkrippe"
   },
@@ -507,7 +507,7 @@ window.KITA = {
   },
   {
    "q": "Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?",
-   "a": "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.",
+   "a": "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Ihr Kind geht gemeinsam mit allen anderen als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.",
    "u": "kinderhort.html#fragen",
    "b": "Kinderhort"
   },

@@ -335,7 +335,7 @@ FOOTER = f'''<footer class="site-footer">
 # ---------- Fachbegriffe (Erklärungen bitte vom Hort prüfen lassen) ----------
 GLOSSAR = {
     "BayKiBiG": "Bayerisches Kinderbildungs- und -betreuungsgesetz. Es regelt unter anderem die Förderung der Kitas und erlaubt bis zu 30 Schließtage im Jahr.",
-    "Inhouseschulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
+    "Inhouse-Schulungen": "Fortbildungen, die im eigenen Haus für das ganze Team gemeinsam stattfinden.",
     "Portfolio": "Eine Mappe, in der die Entwicklung Ihres Kindes mit Fotos, Bildern und Beobachtungen festgehalten wird.",
     "Vorkurs Deutsch": "Zusätzliche, schulvorbereitende Förderung für Vorschulkinder in Grammatik, Sprachverständnis und Wortschatz.",
     "Fachkraftquote": "Anteil der Mitarbeitenden mit pädagogischer Fachausbildung. 100 Prozent heißt: nur staatlich anerkannte Erzieherinnen und Erzieher.",
@@ -606,7 +606,7 @@ def anmeldung_section(bereich):
     kennen = mailto(f"Kennenlernen {bereich}", "Liebes Team,\n\nwir würden gern Ihre Einrichtung kennenlernen.\n\n"
                     f"Bereich: {bereich}\nPassende Tage / Uhrzeiten: \nName: \nTelefon: \n\nViele Grüße\n")
     cards = (f'<div class="anm-card reveal"><span class="anm-n">1</span><h3>Platz anfragen</h3>'
-             f'<p>Schreiben Sie uns, ab wann Sie einen Platz in der {bereich} suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir dafür brauchen.</p>'
+             f'<p>Schreiben Sie uns, ab wann Sie einen Platz {"in der" if bereich == "Kinderkrippe" else "im"} {bereich} suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir dafür brauchen.</p>'
              f'<a class="btn btn-primary" href="{platz}">{icon("mail", 20)} Platz anfragen</a></div>'
              f'<div class="anm-card reveal"><span class="anm-n">2</span><h3>Kennenlernen vereinbaren</h3>'
              '<p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p>'
@@ -772,10 +772,10 @@ home = f'''
   <div class="container welcome">
     <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
     <div class="reveal">
-      <span class="kicker">Herzlich Willkommen</span>
+      <span class="kicker">Herzlich willkommen</span>
       <h2>Schön, dass Sie da sind</h2>
       <blockquote>
-        <p>Herzlich Willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Homepage eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
+        <p>Herzlich willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Webseite eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
         <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
         <details class="read-more"><summary><span>Den ganzen Gruß lesen</span></summary>
         <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
@@ -862,15 +862,15 @@ krippe_tour = [
     ("img/esstisch.jpg", "Unser Gruppenraum", "für die gemeinsamen Mahlzeiten"),
     ("img/p2160131.jpg", "Unser Gruppenraum", "die Entspannungsecke"),
     ("img/nebenraum2.jpg", "Unser Nebenraum", "Der Nebenraum ist dem Gruppenraum direkt angegliedert"),
-    ("img/nebenraum.jpg", "Unser Nebenraum", "Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kl. Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit."),
-    ("img/schlafen.jpg", "Unser Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch Rollo, bzw. mit Vorhang angenehm abgedunkelt werden um eine gemütliche Schlafatmosphäre zu ermöglichen."),
-    ("img/img_6791.jpg", "Unser Wickelraum", "In geschützter Atmosphäre bietet der Wickeltisch, eine auf Kleinkindgröße ausgerichtete sehr niedrige Kindertoilette, sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege."),
+    ("img/nebenraum.jpg", "Unser Nebenraum", "Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kleines Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit."),
+    ("img/schlafen.jpg", "Unser Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch ein Rollo bzw. einen Vorhang angenehm abgedunkelt werden, um eine gemütliche Schlafatmosphäre zu ermöglichen."),
+    ("img/img_6791.jpg", "Unser Wickelraum", "In geschützter Atmosphäre bieten der Wickeltisch, eine auf Kleinkindgröße ausgerichtete, sehr niedrige Kindertoilette sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege."),
     ("img/p2160031.jpg", "Unser weißer Raum", WEISSER_RAUM),
     ("img/turnraum.jpg", "Unser Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert."),
-    ("img/img_6768.jpg", "Unser Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier lädt das Fahren mit BobbyCar, kl. Rädchen usw. ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren."),
+    ("img/img_6768.jpg", "Unser Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier laden Bobbycars, kleine Räder und mehr zum Fahren ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren."),
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht"),
 ]
-krippe = page_hero("Kinderkrippe", "Herzlich Willkommen beim Kath. Kinder- und Jugendhort Grombühl – geborgen ankommen, spielen, entdecken.",
+krippe = page_hero("Kinderkrippe", "Herzlich willkommen beim Kath. Kinder- und Jugendhort Grombühl – geborgen ankommen, spielen, entdecken.",
                    "img/p2160110.jpg", "Sonnen- &amp; Sternengruppe",
                    [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
                    alt="Gruppenraum der Kinderkrippe")
@@ -889,20 +889,20 @@ krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", 
 <span class="group-chip"><span class="group-ic gi-sonne" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span>Sonnengruppe</span>
 <span class="group-chip"><span class="group-ic gi-stern" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span>Sternengruppe</span></div>''' + rooms([
     ("Gruppenraum", "Unterteilt in verschiedene Bereiche: wie z. B. Bauecke, Puppenwohnung, Bücherecke und mit dem großen Tisch für die gemeinsamen Mahlzeiten. Die bodentiefen Fenster fluten die Räume mit viel Licht und bieten eine schöne Aussicht in den Garten. Das Spielen auf dem Boden ist durch die Fußbodenheizung besonders einladend.", "img/p2160110.jpg"),
-    ("Nebenraum", "Der Nebenraum ist dem Gruppenraum direkt angegliedert. Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kl. Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit.", "img/nebenraum.jpg"),
-    ("Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch Rollo, bzw. mit Vorhang angenehm abgedunkelt werden um eine gemütliche Schlafatmosphäre zu ermöglichen.", "img/schlafen.jpg"),
-    ("Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier lädt das Fahren mit BobbyCar, kl. Rädchen usw. ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren.", "img/img_6768.jpg"),
-    ("Wickelraum", "In geschützter Atmosphäre bietet der Wickeltisch, eine auf Kleinkindgröße ausgerichtete sehr niedrige Kindertoilette, sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege.", "img/img_6791.jpg"),
+    ("Nebenraum", "Der Nebenraum ist dem Gruppenraum direkt angegliedert. Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kleines Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit.", "img/nebenraum.jpg"),
+    ("Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch ein Rollo bzw. einen Vorhang angenehm abgedunkelt werden, um eine gemütliche Schlafatmosphäre zu ermöglichen.", "img/schlafen.jpg"),
+    ("Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier laden Bobbycars, kleine Räder und mehr zum Fahren ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren.", "img/img_6768.jpg"),
+    ("Wickelraum", "In geschützter Atmosphäre bieten der Wickeltisch, eine auf Kleinkindgröße ausgerichtete, sehr niedrige Kindertoilette sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege.", "img/img_6791.jpg"),
     ("Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Eingangsbereich", "Der Eingangsbereich bietet tagsüber Möglichkeit zum Abstellen des Kinderwagens.", None),
-    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, die Ruheinsel und den Fußballhof.", None),
+    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", None),
 ]), cls="alt")
 krippe += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von der Kinderkrippe sehen?",
-                  "Herzlich Willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("krippe", krippe_tour))
+                  "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("krippe", krippe_tour))
 krippe += section("tagesablauf", "Tagesablauf", "Der Tagesablauf der Kinderkrippe", "", timeline([
     ("6:45 – 9:00 Uhr", "Bringzeit, die Kinder kommen in der Kita an."),
-    ("9:30 Uhr", "Freispiel"),
+    ("9:00 Uhr", "Freispiel"),
     ("9:30 – 10:00 Uhr", "Gemeinsames Frühstück – zubereitet durch die hauseigene Küche"),
     ("10:00 – 11:15 Uhr", "Morgenkreis, Singen, Fingerspiele, Geburtstagsfeiern, Zeit für gezielte Angebote, z. B. Turnen, kreative Angebote, musikalische Erziehung …"),
     ("10:45 Uhr", "Feste, routinemäßige Wickelzeit – selbstverständlich zu jeder Zeit bei Bedarf"),
@@ -915,7 +915,7 @@ krippe += section("tagesablauf", "Tagesablauf", "Der Tagesablauf der Kinderkripp
     ("16:30 Uhr", "Die Kinderkrippe schließt"),
 ]), cls="alt")
 krippe += section("auszeichnung", "Das zeichnet uns aus", "Was unsere Krippe besonders macht", "", features([
-    "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. 4 Wochen",
+    "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung etwa vier Wochen",
     "Behutsame Begleitung der Kinder in Pflegesituationen, bei Mahlzeiten, Ruhen und Schlafen",
     "Portfolio als Instrument der Dokumentation über den Entwicklungsverlauf des Kindes",
     "Hohe Fachkraftquote",
@@ -925,11 +925,11 @@ krippe += section("auszeichnung", "Das zeichnet uns aus", "Was unsere Krippe bes
     "Hauseigene Küche mit zwei Köchinnen, die täglich abwechslungsreiches und saisonales Essen frisch zubereiten",
     "Das Waschen von Bettwäsche wird von der Kita übernommen",
 ], [("Begleitung &amp; Team", [0, 1, 2, 3]), ("Haus &amp; Garten", [4, 5, 7]), ("Alltag", [6, 8])]))
-krippe += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zur Kinderkrippe", "", faq([
+krippe += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zur Kinderkrippe", "", faq([
     ("Müssen wir Windeln usw. für unser Kind mitbringen?", "Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause."),
     ("Gibt es die Möglichkeit für mein Kind zum Schlafen?", "Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet."),
     ("Ist die Zugehörigkeit zur katholischen Kirche notwendig?", "Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen."),
-    ("Gibt es eine Eingewöhnungszeit?", "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen."),
+    ("Gibt es eine Eingewöhnungszeit?", "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung etwa vier Wochen."),
 ]), cls="alt")
 krippe += abc_section("KrippenABC", "Zum Downloadbereich")
 krippe += anmeldung_section("Kinderkrippe")
@@ -953,7 +953,7 @@ kiga_tour = [
     ("img/p2160152.jpg", "Unser Zimmer Kunterbunt", "Hier werden verschiedene Beschäftigungen passend zur Jahreszeit oder zum Projektthema angeboten. Dies sind beispielsweise kreative Angebote, Bilderbuchbetrachtungen, Fingerspiele oder das Singen von Liedern."),
     ("img/p2160031.jpg", "Unser weißer Raum", WEISSER_RAUM),
     ("img/turnraum.jpg", "Unser Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt."),
-    ("img/p2170222.jpg", "Unser Flur", "Unser großer Außenspielbereich im Flur"),
+    ("img/p2170222.jpg", "Unser Flur", "Unser großer Spielbereich im Flur"),
     ("img/p2170225.jpg", "Unser Flur", "mit wechselnden Spielmaterialien"),
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht."),
 ]
@@ -976,14 +976,14 @@ kiga += section("raeume", "Räumlichkeiten", "Große, helle Räume zum Spielen u
 <span class="group-chip"><span class="group-ic gi-baer" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/></svg></span>Bärengruppe</span>
 <span class="group-chip"><span class="group-ic gi-biene" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/></svg></span>Bienengruppe</span>
 <span class="group-chip"><span class="group-ic gi-spatz" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
-    ("Gruppenraum", "In unseren großen, hellen Gruppenräumen befinden sich jeweils eine Leseecke, eine Bauecke, eine Puppen-, Rollenspielecke, ein Kreativtisch, ein Frühstücks- und Esstisch für das warme frisch zubereitete Mittagessen sowie Spieltische für Brettspiele und Puzzle. Zu jeder Gruppe gehört ein Nebenraum, dort finden altersspezifische Angebote in Kleingruppen statt. Außerdem hat jede Gruppe einen großen Außenspielbereich im Flur mit wechselnden Spielmaterialien.", "img/blick-vom-fenster-in-den-raum.jpg"),
+    ("Gruppenraum", "In unseren großen, hellen Gruppenräumen befinden sich jeweils eine Leseecke, eine Bauecke, eine Puppen- und Rollenspielecke, ein Kreativtisch, ein Frühstücks- und Esstisch für das warme frisch zubereitete Mittagessen sowie Spieltische für Brettspiele und Puzzle. Zu jeder Gruppe gehört ein Nebenraum, dort finden altersspezifische Angebote in Kleingruppen statt. Außerdem hat jede Gruppe einen großen Spielbereich im Flur mit wechselnden Spielmaterialien.", "img/blick-vom-fenster-in-den-raum.jpg"),
     ("Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Zimmer Kunterbunt", "Im Zimmer Kunterbunt findet für alle Mittelkinder (4- bis 5-Jährige) einmal wöchentlich am Vormittag eine Kleingruppenarbeit statt. Die Kinder starten mit dem Morgenkreis und einem gemeinsamen Frühstück. Hier werden verschiedene Beschäftigungen passend zur Jahreszeit oder zum Projektthema angeboten. Dies sind beispielsweise kreative Angebote, Bilderbuchbetrachtungen, Fingerspiele oder das Singen von Liedern.", "img/p2160149.jpg"),
     ("Garten", "Am Schiff, im Tipi, im Sandkasten und auf dem Fußballhof kann sich das Kind täglich an der frischen Luft bewegen. Für den Sandkasten gibt es Spielsachen, die dem Kind täglich zur Verfügung gestellt werden, und es hat die Möglichkeit, mit dem Laufrad, Fahrrad oder anderen Fahrzeugen zu fahren.", None),
 ]), cls="alt")
 kiga += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von unserem Kindergarten sehen?",
-                "Herzlich Willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("kiga", kiga_tour))
+                "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("kiga", kiga_tour))
 kiga += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kindergartens", "", timeline([
     ("6:45 – 8:00 Uhr", "Gruppenübergreifende Frühbetreuung in wechselnden Gruppen"),
     ("8:00 – 9:00 Uhr", "Bringzeit, Ankommen in der eigenen Gruppe, Freispiel, begleitendes Frühstück; jedes Kind darf entscheiden, wann es in dieser Zeit frühstücken möchte"),
@@ -1019,7 +1019,7 @@ kiga += section("auszeichnung", "Das zeichnet uns aus", "Was unseren Kindergarte
   <div class="reveal"><h3>Englisch</h3><p>Hier lernen die Kinder spielerisch die Farben, die Körperteile des Menschen, verschiedene Tiere und singen englische Lieder. Ziel ist es, den Kindern eine Grundlage und einen vertrauten Umgang mit der englischen Sprache zu vermitteln.</p></div>
   <div class="reveal"><h3>Vorkurs Deutsch</h3><p>Der Vorkurs Deutsch ist für Vorschulkinder, die im sprachlichen Bereich eine zusätzliche schulvorbereitende Förderung benötigen. Die Förderung bezieht sich auf die Grammatik, das Sprachverständnis und die Erweiterung des Wortschatzes.</p></div>
 </div>''')
-kiga += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zum Kindergarten", "", faq([
+kiga += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kindergarten", "", faq([
     ("Arbeitet der Kindergarten nach dem offenen Konzept?", "Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend."),
     ("Muss mein Kind für den Kindergarten sauber sein?", "Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden."),
     ("Wie verläuft die Eingewöhnung im Kindergarten?", "Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen."),
@@ -1087,10 +1087,10 @@ hort += section("raeume", "Räumlichkeiten", "Räume für Hausaufgaben, Kreativi
     ("Bereich der ganz Großen", "Kinder ab der 6. Klasse haben hier einen eigenen gemütlichen Bereich zum Chillen.", "img/chilloutarea.jpg"),
 ]), cls="alt")
 hort += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr vom Kinderhort sehen?",
-                "Herzlich Willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("hort", hort_tour))
+                "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("hort", hort_tour))
 hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts", "", timeline([
     ("6:45 – 8:00 Uhr", "In der Frühbetreuung können die Kinder vor der Schule schon spielen oder sich noch ein wenig ausruhen. Gemeinsam gehen die Schulkinder dann zu Unterrichtsbeginn in die Schule."),
-    ("11:15 Uhr", "Jetzt haben die ersten Kinder bereits Schulschluss und im Hort die Möglichkeit, draußen zu spielen, das Gespräch zum Erzieher zu suchen oder sich nach dem anstrengenden Schultag erst einmal auszuruhen und zu entspannen."),
+    ("11:15 Uhr", "Jetzt haben die ersten Kinder bereits Schulschluss und im Hort die Möglichkeit, draußen zu spielen, das Gespräch mit den Erzieherinnen und Erziehern zu suchen oder sich nach dem anstrengenden Schultag erst einmal auszuruhen und zu entspannen."),
     ("12:00 – 13:45 Uhr", "Gleitendes Mittagessen in gemütlicher Runde. Gleichzeitig stehen den Kindern in dieser Zeit alle Bereiche des Hortes zum Spielen zur Verfügung."),
     "Montag bis Donnerstag",
     ("13:45 – 14:00 Uhr", "Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern."),
@@ -1114,7 +1114,7 @@ hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und J
 </div>''' + features([
     "Großzügige Räume zum Spielen und Lernen",
     "Weißer Raum zum Entspannen",
-    "Überlange Öffnungszeiten von 6:45 Uhr bis 18:00 Uhr, auch in den Schulferien",
+    "Lange Öffnungszeiten von 6:45 Uhr bis 18:00 Uhr, auch in den Schulferien",
     "Hauseigene Küche, in der täglich von zwei Köchinnen mit regionalen Zutaten frisch gekocht wird",
     "Tägliche Aktionen während der Schulferien mit Erlebnischarakter",
     "Begleitete, korrigierte Hausaufgaben",
@@ -1132,11 +1132,11 @@ hort += section("schulen", "Zusammenarbeit mit den Schulen", "Gemeinsam mit den 
   <div class="reveal"><p>Wir pflegen eine enge Zusammenarbeit mit den Schulen unserer Hortkinder – zum Beispiel beim Besuch des Hortes auf dem Adventszauber der Josefschule.</p>
   <p>Wir sind offen für alle Schulformen: Grundschulen, Mittelschulen, Realschulen, Gymnasien sowie Förderschulen.</p></div>
 </div>''', cls="alt")
-hort += section("fragen", "Meist gestellte Fragen", "Häufige Fragen zum Kinderhort", "", faq([
+hort += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kinderhort", "", faq([
     ("Hat der Hort auch in den Schulferien geöffnet?", "In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr."),
     ("Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?", "Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage."),
     ("Braucht mein Kind im Hort eine Brotzeit?", "Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken."),
-    ("Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?", "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig."),
+    ("Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?", "Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Ihr Kind geht gemeinsam mit allen anderen als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig."),
     ("Kann ich mein Kind abholen, wann ich möchte?", "Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden."),
     ("Kann ich mein Kind vor der Hausaufgabenzeit abholen?", "Unsere Mindestbuchungszeit beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine."),
     ("Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?", f'Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="{KRANK_MAIL}">vorbereiteten Krankmeldung per E-Mail</a>.'),
