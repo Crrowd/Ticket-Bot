@@ -28,12 +28,35 @@
  ],
  "shortcuts": [
   {
-   "name": "Termine",
-   "url": "./aktuelles.html#termine"
+   "name": "Kind krankmelden",
+   "short_name": "Krankmelden",
+   "url": "./index.html#krankmelden",
+   "icons": [
+    {
+     "src": "img/app-192.png",
+     "sizes": "192x192"
+    }
+   ]
   },
   {
-   "name": "Kind krankmelden",
-   "url": "./kontakt.html#schnell"
+   "name": "Termine",
+   "url": "./aktuelles.html#termine",
+   "icons": [
+    {
+     "src": "img/app-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Durchwahlen",
+   "url": "./kontakt.html#durchwahl-finden",
+   "icons": [
+    {
+     "src": "img/app-192.png",
+     "sizes": "192x192"
+    }
+   ]
   }
  ]
 }

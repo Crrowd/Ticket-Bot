@@ -18,9 +18,48 @@ def read_csv(name):
 def d(s):
     return dt.datetime.strptime(s.strip(), "%d.%m.%Y").date()
 
-SCHLIESSTAGE = sorted(read_csv("schliesstage.csv"), key=lambda r: d(r["erster Schließtag"]))
-TERMINE = read_csv("termine.csv")
-FEIERTAGE = read_csv("feiertage.csv")
+# ---------- Daten-Wächter: prüft die Tabellen und meldet Fehler in Klartext ----------
+PRUEFUNG = []
+def _melde(art, datei, zeile, text): PRUEFUNG.append((art, datei, zeile, text))
+def gueltig(datei, rows, felder, pflicht=()):
+    """Behält nur Zeilen, deren Datumsfelder lesbar sind; alles andere wird gemeldet."""
+    ok = []
+    for n, r in enumerate(rows, start=2):
+        fehl = [f for f in pflicht if not (r.get(f) or "").strip()]
+        if fehl:
+            _melde("✗", datei, n, "fehlt: " + ", ".join(fehl)); continue
+        try:
+            for f in felder:
+                if (r.get(f) or "").strip(): d(r[f])
+        except ValueError:
+            _melde("✗", datei, n, f"Datum „{r.get(f)}“ in Spalte „{f}“ ist nicht lesbar (Format TT.MM.JJJJ)"); continue
+        ok.append(r)
+    return ok
+SCHLIESSTAGE = sorted(gueltig("schliesstage.csv", read_csv("schliesstage.csv"), ["geöffnet bis", "erster Schließtag", "letzter Schließtag", "wieder geöffnet"],
+                              ["Anlass", "erster Schließtag", "letzter Schließtag", "wieder geöffnet", "Schließtage"]), key=lambda r: d(r["erster Schließtag"]))
+TERMINE = gueltig("termine.csv", read_csv("termine.csv"), ["von", "bis"], ["von", "Titel"])
+FEIERTAGE = gueltig("feiertage.csv", read_csv("feiertage.csv"), ["Datum"], ["Datum", "Feiertag"])
+HINWEISE = gueltig("hinweise.csv", read_csv("hinweise.csv"), ["Datum"], ["Datum", "Titel"])
+_heute = dt.date.today()
+for n, r in enumerate(TERMINE, start=2):
+    a, b = d(r["von"]), d(r["bis"] or r["von"])
+    if b < a: _melde("✗", "termine.csv", n, f"„{r['Titel']}“: Ende ({r['bis']}) liegt vor dem Anfang ({r['von']})")
+    elif b < _heute: _melde("·", "termine.csv", n, f"„{r['Titel']}“ ist vorbei und wird nicht mehr angezeigt")
+_seen = {}
+for r in TERMINE:
+    k = (r["von"], r["Titel"].strip().lower())
+    if k in _seen: _melde("!", "termine.csv", 0, f"„{r['Titel']}“ am {r['von']} steht doppelt")
+    _seen[k] = 1
+_summe = 0
+for n, r in enumerate(SCHLIESSTAGE, start=2):
+    a, b, w = d(r["erster Schließtag"]), d(r["letzter Schließtag"]), d(r["wieder geöffnet"])
+    if b < a: _melde("✗", "schliesstage.csv", n, f"„{r['Anlass']}“: letzter Schließtag vor dem ersten")
+    if w <= b: _melde("✗", "schliesstage.csv", n, f"„{r['Anlass']}“: „wieder geöffnet“ muss nach dem letzten Schließtag liegen")
+    try:
+        _summe += int(r["Schließtage"])
+    except ValueError:
+        _melde("✗", "schliesstage.csv", n, f"„{r['Anlass']}“: Schließtage „{r['Schließtage']}“ ist keine Zahl")
+if _summe > 30: _melde("!", "schliesstage.csv", 0, f"zusammen {_summe} Schließtage – erlaubt sind höchstens 30")
 def kita_jahr(t):
     """Kita-Jahr (September bis August), in dem ein Datum liegt."""
     return t.year if t.month >= 9 else t.year - 1
@@ -167,6 +206,15 @@ def mega(active):
         for k, h, t, sub, im in BEREICHE)
     return f'<div class="mega"><div class="mega-cols">{cols}</div><div class="mega-visual" aria-hidden="true">{visual}</div></div>'
 
+GRUPPEN_SVG = {'Sonnengruppe': '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>', 'Sternengruppe': '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>', 'Bärengruppe': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/>', 'Bienengruppe': '<ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/>', 'Spatzengruppe': '<path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/>'}
+def gruppen_zeichen(text):
+    """Symbole der Gruppen, die im Text vorkommen (Sonne, Stern, Bär, Biene, Spatz)."""
+    out = ""
+    for name, p in GRUPPEN_SVG.items():
+        if name.lower() in (text or "").lower() or name.lower().replace("gruppe", "") + " " in (text or "").lower():
+            out += f'<span class="grp-mark" title="{name}" aria-label="{name}" role="img"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg></span>'
+    return out
+
 # Kind krankmelden: Gruppe direkt anrufen oder E-Mail mit Vorlage (funktioniert auch ohne Skript)
 GRUPPEN_TEL = [("Kinderkrippe", [("Sternengruppe", "15"), ("Sonnengruppe", "14")]),
                ("Kindergarten", [("Bienengruppe", "13"), ("Spatzengruppe", "12"), ("Bärengruppe", "11")]),
@@ -174,10 +222,11 @@ GRUPPEN_TEL = [("Kinderkrippe", [("Sternengruppe", "15"), ("Sonnengruppe", "14")
 def krank_block(cls=""):
     groups = "".join(
         f'<div class="krank-area"><p>{area}</p>' + "".join(
-            f'<a href="tel:+499312789892{n}">{name}<small>…&nbsp;{n}</small></a>'
+            f'<a href="tel:+499312789892{n}">{gruppen_zeichen(name)}{name}<small>…&nbsp;{n}</small></a>'
             for name, n in rows) + '</div>'
         for area, rows in GRUPPEN_TEL)
-    return (f'<details class="krank {cls}"><summary><span class="krank-ic">{icon("phone", 20)}</span>'
+    idattr = ' id="krankmelden"' if cls == "in-hero" else ""
+    return (f'<details class="krank {cls}"{idattr}><summary><span class="krank-ic">{icon("phone", 20)}</span>'
             '<span class="krank-t"><b>Kind krankmelden</b><small>Gruppe anrufen oder E-Mail mit Vorlage</small></span></summary>'
             '<div class="krank-body"><p class="krank-hint">Bitte geben Sie möglichst früh am Morgen Bescheid.</p>'
             f'<div class="krank-groups">{groups}</div>'
@@ -265,7 +314,7 @@ FOOTER = f'''<footer class="site-footer">
     </div>
     <div class="footer-bottom">
       <span>© <span id="year">2026</span> {ORG}</span>
-      <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <button class="link-btn js-calm" type="button" role="switch" aria-checked="false">Bewegung aus</button></span>
     </div>
   </div>
 </footer>'''
@@ -314,7 +363,7 @@ def glossar(body):
 # Die Prüfsummen gehören zu den zwei eingebetteten Skripten in page() – ändert sich eines, rechnet build.py neu.
 import hashlib as _hl
 def _sha(t): return "'sha256-" + base64.b64encode(_hl.sha256(t.encode("utf-8")).digest()).decode() + "'"
-INLINE_JS = '(function (c) { try { if (localStorage.getItem("hinweis-aus")) c += " no-hint"; } catch (e) {} document.documentElement.className = c; })("js");'
+INLINE_JS = '(function (c) { try { if (localStorage.getItem("hinweis-aus")) c += " no-hint"; if (localStorage.getItem("ruhig") === "1") c += " calm"; if (localStorage.getItem("besuch")) c += " revisit"; } catch (e) {} document.documentElement.className = c; })("js");'
 SPEC_RULES = """{"prerender":[{"where":{"selector_matches":"a[href$='.html'], a[href*='.html#']"},"eagerness":"moderate"}]}"""
 CSP = ("default-src 'self'; script-src 'self' " + _sha(INLINE_JS) + " " + _sha(SPEC_RULES) + "; "
        "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; "
@@ -496,7 +545,7 @@ def section(id_, kicker, title, intro, content, cls="", center=False):
 
 # ---------- Ferienplan ----------
 PLAN = [(r["Anlass"], r["geöffnet bis"], r["erster Schließtag"], r.get("Hinweis erster Tag", ""),
-         r["letzter Schließtag"], r.get("Hinweis letzter Tag", ""), r["wieder geöffnet"], int(r["Schließtage"]))
+         r["letzter Schließtag"], r.get("Hinweis letzter Tag", ""), r["wieder geöffnet"], int(r["Schließtage"]) if r["Schließtage"].strip().isdigit() else 0)
         for r in SCHLIESSTAGE]
 
 def plan_table():
@@ -570,6 +619,7 @@ WEISSER_RAUM = ("Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hie
 
 _URL = re.compile(r'https?://[^\s<]+[^\s<.,;:!?)\]“"]')
 _MAIL = re.compile(r'[\w.+-]+@[\w-]+(?:\.[\w-]+)+')
+
 def rich(t):
     """Text aus den Tabellen sicher ausgeben: maskieren, **fett**, Adressen und Links anklickbar."""
     t = t.replace("<strong>", "**").replace("</strong>", "**")
@@ -579,15 +629,37 @@ def rich(t):
     s = _MAIL.sub(lambda m: m.group(0) if "href=" in s[max(0, m.start() - 60):m.start()] else f'<a href="mailto:{m.group(0)}">{m.group(0).replace("@", "<wbr>@")}</a>', s)
     return s
 
+# Wann tauchte ein Termin / Brief zum ersten Mal auf? (für „neu seit Ihrem letzten Besuch“)
+_ERST_DATEI = os.path.join(W, "daten", "erstmals.json")
+try:
+    ERSTMALS = json.load(open(_ERST_DATEI, encoding="utf-8"))
+except (OSError, ValueError):
+    ERSTMALS = {}
+def erstmals(key):
+    if key not in ERSTMALS:
+        ERSTMALS[key] = dt.date.today().isoformat()
+    return ERSTMALS[key]
+
 MONATE = ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sep", "Okt", "Nov", "Dez"]
+WOCHENTAG = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+def hinweise_html():
+    """Hinweis-Karten mit Datum; vergangene erscheinen gar nicht (die Seite blendet sie zusätzlich am Tag danach aus)."""
+    out = []
+    for r in sorted(HINWEISE, key=lambda r: d(r["Datum"])):
+        t = d(r["Datum"])
+        if t < dt.date.today():
+            continue
+        out.append(f'<div class="hint" data-tag="{t.isoformat()}"><h3>{e(r["Titel"])}</h3><p class="hint-d">{WOCHENTAG[t.weekday()]}, {t:%d.%m.%Y}</p><p>{rich(r.get("Text", ""))}</p></div>')
+    return "".join(out)
+
 def ev(r):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
     day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
     mon = f"{MONATE[b.month - 1]} {b.year}"
     key = f'{a.isoformat()}|{r["Titel"]}'
-    return (f'<li class="event reveal" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
+    return (f'<li class="event reveal" data-neu="{erstmals("t|" + key)}" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
             f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
-            f'<p><strong>{e(r["Titel"])}</strong>{rich(r["Beschreibung"])}</p>'
+            f'<p><strong>{e(r["Titel"])}{gruppen_zeichen(r["Titel"] + " " + r["Beschreibung"])}</strong>{rich(r["Beschreibung"])}</p>'
             f'<div class="ev-acts"><button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
             f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button>'
             f'<button class="share" type="button" aria-label="{e(r["Titel"])} teilen">{icon("share", 18)}</button></div></li>')
@@ -596,6 +668,7 @@ STATUS_CARD = f'''<div class="status-card" id="status" aria-live="polite" hidden
         <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
         <p class="status-sub"></p>
         <p class="status-next">{icon("calendar", 18)} <span></span></p>
+        <div class="status-ask"><div class="status-q" role="group" aria-label="Kurz gefragt"><button type="button" data-q="morgen">Morgen offen?</button><button type="button" data-q="woche">Nächste Woche?</button><button type="button" data-q="ferien">Nächste Ferien?</button></div><p class="status-a" aria-live="polite"></p></div>
       </div>'''
 
 MARK_CIRCLE = '<svg class="mark-svg" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M60 6 C 30 0 4 8 4 26 C 4 44 40 48 70 44 C 96 40 98 20 84 10 C 74 4 56 3 44 5"/></svg>'
@@ -724,7 +797,7 @@ home = f'''
         <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
         <div class="btn-row"><a class="btn btn-primary" href="aktuelles.html">Alle Termine {icon("arrow", 20)}</a>
           <a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
-        <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
+        <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button> <button class="btn btn-ghost js-saved-sheet" type="button">Gemerkte ansehen</button></div>
       </div>
       <div class="note-card reveal">
         <h3>Unterlagen zum Herunterladen</h3>
@@ -1076,12 +1149,11 @@ akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine 
   </ul>
   <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
   <div class="btn-row"><a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
-  <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button></div>
+  <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button> <button class="btn btn-ghost js-saved-sheet" type="button">Gemerkte ansehen</button></div>
   </div>
   <div class="note-card reveal">
-    <h3>Sankt Martin</h3>
-    <p>Der Sankt-Martins-Umzug / das Martinssingen findet auch in diesem Jahr wieder im kleinen Rahmen in den einzelnen Gruppen statt.</p>
-    <h3 class="mt-2">Schließtage</h3>
+    {hinweise_html()}
+    <h3 class="hint-end">Schließtage</h3>
     <p>Die nächsten Schließtage und alle Ferienzeiten für 2026/2027 finden Sie im <a href="#ferienplan">Ferienplan</a> unten.</p>
     <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
   </div>
@@ -1090,7 +1162,7 @@ BRIEFE = read_csv("elternbriefe.csv")
 def brief(i, r):
     paras = "".join(f"<p>{rich(p.strip())}</p>" for p in r["Text"].split("||") if p.strip())
     gruss = f'<p class="sign-off">{"<br>".join(rich(x) for x in r["Gruß"].split("||"))}</p>' if r.get("Gruß") else ""
-    return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
+    return (f'<details class="brief reveal"{" open" if i == 0 else ""} data-neu="{erstmals("b|" + r["Titel"])}" data-such="{e((r["Titel"] + " " + r["Text"]).lower())}">'
             f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
 if BRIEFE: akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
 <div class="briefe">
@@ -1180,7 +1252,7 @@ page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts
 # =====================================================================
 
 def tel(label, num_display, num):
-    return f'<li><span>{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'
+    return f'<li><span>{gruppen_zeichen(label)}{label}</span><a href="tel:{num}">{num_display.replace(" ", "&nbsp;")}</a></li>'
 kon = simple_hero("Kontakt", "Wir freuen uns auf Sie und Ihr Kind – rufen Sie direkt in der Gruppe an oder schreiben Sie uns.", "So erreichen Sie uns")
 kon += f'''<section class="section tight" id="schnell">
   <div class="container">
@@ -1357,7 +1429,9 @@ with open(os.path.join(W, "manifest.webmanifest"), "w", encoding="utf-8") as f:
                "lang": "de", "start_url": "./index.html", "scope": "./", "display": "standalone", "background_color": "#A8C5C0", "theme_color": "#A8C5C0",
                "icons": [{"src": "img/app-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "img/app-512.png", "sizes": "512x512", "type": "image/png"},
                          {"src": "img/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
-               "shortcuts": [{"name": "Termine", "url": "./aktuelles.html#termine"}, {"name": "Kind krankmelden", "url": "./kontakt.html#schnell"}]},
+               "shortcuts": [{"name": "Kind krankmelden", "short_name": "Krankmelden", "url": "./index.html#krankmelden", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
+                             {"name": "Termine", "url": "./aktuelles.html#termine", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
+                             {"name": "Durchwahlen", "url": "./kontakt.html#durchwahl-finden", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]}]},
               f, ensure_ascii=False, indent=1)
 
 # ---------- Suchindex (Schnellsuche, Strg+K) ----------
@@ -1423,7 +1497,8 @@ def ics(events, name, slug):
     for i, (start, end, title, desc) in enumerate(events):
         out += ["BEGIN:VEVENT", f"UID:{slug}-{start:%Y%m%d}-{i}@kinderhort-grombuehl.de", f"DTSTAMP:{stamp}",
                 f"DTSTART;VALUE=DATE:{start:%Y%m%d}", f"DTEND;VALUE=DATE:{end + dt.timedelta(days=1):%Y%m%d}",
-                f"SUMMARY:{esc(title)}", f"DESCRIPTION:{esc(desc)}", "TRANSP:TRANSPARENT", "END:VEVENT"]
+                f"SUMMARY:{esc(title)}", f"DESCRIPTION:{esc(desc)}", "TRANSP:TRANSPARENT",
+                "BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:Morgen: {esc(title)}", "TRIGGER:-PT6H", "END:VALARM", "END:VEVENT"]
     out.append("END:VCALENDAR")
     return "\r\n".join(out) + "\r\n"
 
@@ -1474,3 +1549,13 @@ with open(os.path.join(W, "sw.js"), "w", encoding="utf-8") as f:
 with open(os.path.join(W, "img/favicon.svg"), "w", encoding="utf-8") as f:
     f.write(BRAND_MARK.replace('class="brand-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', ''))
 print("ok")
+
+# ---------- am Ende: erstmals.json sichern, Daten-Prüfung ausgeben ----------
+with open(_ERST_DATEI, "w", encoding="utf-8") as f:
+    json.dump(ERSTMALS, f, ensure_ascii=False, indent=1, sort_keys=True)
+if PRUEFUNG:
+    print("\nDaten-Prüfung:")
+    for art, datei, zeile, text in PRUEFUNG:
+        print(f"  {art} {datei}" + (f" Zeile {zeile}" if zeile else "") + f": {text}")
+else:
+    print("Daten-Prüfung: alles in Ordnung.")

@@ -735,7 +735,8 @@
         bis.setDate(bis.getDate() + 1);
         lines.push("BEGIN:VEVENT", "UID:gemerkt-" + von + "-" + i + "@kinderhort-grombuehl.de", "DTSTAMP:" + stamp,
           "DTSTART;VALUE=DATE:" + von, "DTEND;VALUE=DATE:" + iso(bis).replace(/-/g, ""),
-          "SUMMARY:" + icsEsc(li.getAttribute("data-titel")), "DESCRIPTION:" + icsEsc(li.getAttribute("data-text")), "END:VEVENT");
+          "SUMMARY:" + icsEsc(li.getAttribute("data-titel")), "DESCRIPTION:" + icsEsc(li.getAttribute("data-text")),
+          "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Morgen: " + icsEsc(li.getAttribute("data-titel")), "TRIGGER:-PT6H", "END:VALARM", "END:VEVENT");
       });
       lines.push("END:VCALENDAR");
       var url = URL.createObjectURL(new Blob([lines.join("\r\n") + "\r\n"], { type: "text/calendar" }));
@@ -2022,6 +2023,146 @@
       im.addEventListener("load", function () { clearTimeout(t); if (im.classList.contains("wait")) { im.classList.remove("wait"); im.classList.add("arrived"); } }, { once: true });
     }, "0px");
   })();
+
+  /* ==========================================================
+     Ideenkatalog 4 – Ja-Ideen (16.11.)
+     ========================================================== */
+
+  /* 3 Kurzbefehl „Kind krankmelden“: Abschnitt öffnen und zeigen */
+  (function () { var k = $("#krankmelden"); if (!k) return;
+    function go() { if (location.hash === "#krankmelden") { k.open = true; k.scrollIntoView({ block: "center" }); $("summary", k).focus({ preventScroll: true }); } }
+    go(); addEventListener("hashchange", go); })();
+
+  /* 4 Neu seit Ihrem letzten Besuch (nur im eigenen Browser) */
+  (function () {
+    var ref = null; try { ref = sessionStorage.getItem("besuch-ref"); } catch (e) {}
+    if (ref === null) { ref = store("besuch") || ""; try { sessionStorage.setItem("besuch-ref", ref); } catch (e) {} }
+    store("besuch", heute);
+    if (!ref) return;   /* erster Besuch: nichts ist „neu“ */
+    $$("[data-neu]").forEach(function (el) {
+      if (el.getAttribute("data-neu") <= ref) return;
+      el.classList.add("is-new");
+      var t = el.matches(".event") ? $("strong", el) : $(".brief-t", el);
+      if (t && !$(".new-tag", t)) { var s = document.createElement("span"); s.className = "new-tag"; s.textContent = "neu"; t.appendChild(s); }
+    });
+  })();
+
+  /* 5 Hinweise verschwinden am Tag danach */
+  $$(".hint[data-tag]").forEach(function (h) { if (h.getAttribute("data-tag") < heute) h.hidden = true; });
+
+  /* 9 Ruhige Ansicht: Bewegung aus (gemerkt im eigenen Browser) */
+  (function () {
+    var calm = store("ruhig") === "1";
+    if (calm) reduced = true;
+    $$(".js-calm").forEach(function (b) {
+      b.setAttribute("aria-checked", calm);
+      b.textContent = calm ? "Bewegung an" : "Bewegung aus";
+      b.addEventListener("click", function () {
+        calm = !calm; store("ruhig", calm ? "1" : null); root.classList.toggle("calm", calm); reduced = calm || matchMedia("(prefers-reduced-motion: reduce)").matches;
+        $$(".js-calm").forEach(function (x) { x.setAttribute("aria-checked", calm); x.textContent = calm ? "Bewegung an" : "Bewegung aus"; });
+        toast(calm ? "Bewegung ausgeschaltet" : "Bewegung eingeschaltet");
+      });
+    });
+    addEventListener("pagereveal", function (e) { if (e.viewTransition && root.classList.contains("calm")) e.viewTransition.skipTransition(); });
+  })();
+
+  /* 6 Termin zur Seite wischen = merken (nur Touch) */
+  (function () {
+    if (!matchMedia("(pointer: coarse)").matches) return;
+    $$(".event-list").forEach(function (ul) {
+      var under = document.createElement("span"); under.className = "swipe-under"; under.setAttribute("aria-hidden", "true"); ul.appendChild(under);
+      $$(".event", ul).forEach(function (li) {
+        var x0 = null, y0 = null, dx = 0, lock = null;
+        li.addEventListener("pointerdown", function (e) { if (e.pointerType !== "touch" || e.target.closest("button, a")) return; x0 = e.clientX; y0 = e.clientY; dx = 0; lock = null; });
+        li.addEventListener("pointermove", function (e) {
+          if (x0 === null) return; var mx = e.clientX - x0, my = e.clientY - y0;
+          if (lock === null && (Math.abs(mx) > 8 || Math.abs(my) > 8)) lock = Math.abs(mx) > Math.abs(my) && mx > 0 ? "x" : "y";
+          if (lock !== "x") return;
+          if (!li.classList.contains("swiping")) { li.classList.add("swiping"); try { li.setPointerCapture(e.pointerId); } catch (x) {}
+            var on = $(".save", li).classList.contains("on"); under.textContent = on ? "Nicht mehr merken" : "Merken";
+            under.style.top = li.offsetTop + "px"; under.style.height = li.offsetHeight + "px"; under.classList.add("show"); }
+          dx = Math.max(0, mx); var w = li.offsetWidth, x = dx > w * .6 ? w * .6 + rubber(dx - w * .6, 40) : dx;
+          li.style.translate = x + "px 0"; under.classList.toggle("ready", dx > w * .4);
+        });
+        function end() {
+          if (x0 === null) return; x0 = null;
+          if (li.classList.contains("swiping")) {
+            li.classList.remove("swiping"); li.style.transition = "translate .3s " + EASE_OUT; li.style.translate = "0 0";
+            setTimeout(function () { li.style.transition = ""; under.classList.remove("show", "ready"); }, 300);
+            if (dx > li.offsetWidth * .4) $(".save", li).click();
+          }
+        }
+        li.addEventListener("pointerup", end); li.addEventListener("pointercancel", end);
+      });
+    });
+  })();
+
+  /* 37 Spürbares Merken: kurzes Vibrieren beim Merken (Android) */
+  $$(".event .save").forEach(function (b) { b.addEventListener("click", function () { if (b.classList.contains("on") && navigator.vibrate && !reduced) { try { navigator.vibrate(10); } catch (e) {} } }); });
+
+  /* 22 Merkliste als Blatt von unten */
+  (function () {
+    var btns = $$(".js-saved-sheet"); if (!btns.length) return;
+    var dlg = document.createElement("dialog"); dlg.className = "saved-sheet"; dlg.setAttribute("aria-labelledby", "ss-t");
+    dlg.innerHTML = '<div class="ss-grip" aria-hidden="true"></div><h2 id="ss-t">Gemerkte Termine</h2><ul class="ss-list"></ul><p class="ss-empty" hidden>Noch nichts gemerkt.</p><div class="btn-row"><button class="btn btn-primary ss-ics" type="button">' + svg(ICON.calendar, 20) + ' Alle in den Kalender</button><button class="btn btn-ghost ss-close" type="button">Schließen</button></div>';
+    document.body.appendChild(dlg);
+    var src = null;
+    function fill() {
+      var list = savedList(), ul = $(".ss-list", dlg), seen = {}; ul.innerHTML = "";
+      $$(".event[data-von]", src).forEach(function (li) {
+        var k = $(".save", li).getAttribute("data-key"); if (list.indexOf(k) < 0 || seen[k]) return; seen[k] = 1;
+        var row = document.createElement("li"), t = document.createElement("span"), d = document.createElement("small"), x = document.createElement("button");
+        t.textContent = li.getAttribute("data-titel"); d.textContent = fmtLong(parse(li.getAttribute("data-von")));
+        x.type = "button"; x.className = "ss-del"; x.setAttribute("aria-label", li.getAttribute("data-titel") + " nicht mehr merken"); x.innerHTML = svg(ICON.x, 18);
+        x.addEventListener("click", function () { $(".save", li).click(); row.remove(); if (!$("li", ul)) $(".ss-empty", dlg).hidden = false; });
+        var tx = document.createElement("div"); tx.append(t, d); row.append(tx, x); ul.appendChild(row);
+      });
+      $(".ss-empty", dlg).hidden = !!$("li", ul);
+    }
+    function close() { dlg.classList.add("closing"); setTimeout(function () { dlg.classList.remove("closing"); dlg.close(); }, reduced ? 0 : 200); }
+    btns.forEach(function (b) { b.addEventListener("click", function () { src = b.closest("section") || document; fill(); dlg.showModal(); }); });
+    $(".ss-close", dlg).addEventListener("click", close);
+    $(".ss-ics", dlg).addEventListener("click", function () { var s = $(".js-saved-ics", src); if (s) s.click(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
+    /* nach unten ziehen schließt */
+    var y0 = null;
+    dlg.addEventListener("pointerdown", function (e) { if (!e.target.closest(".ss-grip, h2")) return; y0 = e.clientY; dlg.style.transition = "none"; dlg.setPointerCapture(e.pointerId); });
+    dlg.addEventListener("pointermove", function (e) { if (y0 === null) return; var dy = e.clientY - y0; dlg.style.translate = "0 " + (dy > 0 ? dy : -rubber(-dy, 20)) + "px"; });
+    function up(e) { if (y0 === null) return; var dy = e.clientY - y0; y0 = null; dlg.style.transition = ""; dlg.style.translate = ""; if (dy > 80) close(); }
+    dlg.addEventListener("pointerup", up); dlg.addEventListener("pointercancel", up);
+  })();
+
+  /* 23 „Was passiert jetzt?“ nach Platz anfragen / Kennenlernen */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]'); if (!a) return;
+    var h = decodeURIComponent(a.getAttribute("href")); if (!/Platzanfrage|Kennenlernen/.test(h)) return;
+    var box = a.parentNode.querySelector(".next-steps"); if (box) return;
+    box = document.createElement("div"); box.className = "next-steps"; box.setAttribute("role", "status");
+    box.innerHTML = "<b>So geht es weiter</b><ol><li>Ihr E-Mail-Programm öffnet die vorbereitete Nachricht.</li><li>Sie ergänzen die Angaben und senden sie ab.</li><li>Wir melden uns bei Ihnen.</li></ol>";
+    a.after(box);
+  });
+
+  /* 24 Kurz gefragt: morgen, nächste Woche, nächste Ferien */
+  $$(".status-ask").forEach(function (box) {
+    var out = $(".status-a", box);
+    function day(d) { return TAGE[d.getDay()]; }
+    $$("button", box).forEach(function (b) {
+      b.addEventListener("click", function () {
+        $$("button", box).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+        var now = new Date(), q = b.dataset.q, t;
+        if (q === "morgen") { var m = new Date(now); m.setDate(m.getDate() + 1); var r = closedReason(m); t = r ? "Nein, morgen (" + day(m) + ") ist geschlossen – " + r + "." : "Ja, morgen (" + day(m) + ") haben wir ganz normal geöffnet."; }
+        else if (q === "woche") {
+          var mo = new Date(now); mo.setDate(mo.getDate() + ((8 - mo.getDay()) % 7 || 7)); var zu = [];
+          for (var i = 0; i < 5; i++) { var x = new Date(mo); x.setDate(mo.getDate() + i); var rr = closedReason(x); if (rr) zu.push(day(x) + " (" + rr + ")"); }
+          t = zu.length ? "Nächste Woche geschlossen: " + zu.join(", ") + "." : "Ja, die ganze nächste Woche (ab " + fmt(mo) + ") ist offen.";
+        } else {
+          var nx = (K && K.schliesszeiten || []).filter(function (z) { return z.bis >= heute; })[0];
+          t = nx ? (nx.von <= heute ? "Gerade ist Schließzeit (" + nx.name + ") bis " + fmt(parse(nx.bis)) + "." : nx.name + ": geschlossen " + (nx.von === nx.bis ? "am " + fmt(parse(nx.von)) : "vom " + fmt(parse(nx.von)) + " bis " + fmt(parse(nx.bis))) + ".") : "Der nächste Ferienplan folgt in Kürze.";
+        }
+        out.textContent = t;
+      });
+    });
+  });
 
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();

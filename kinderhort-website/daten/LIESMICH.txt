@@ -13,6 +13,7 @@ elternbriefe.csv  – Elternbriefe auf der Seite "Aktuelles". Neueste Zeile ganz
                     Absätze im Text und Zeilen im Gruß mit || trennen.
                     Fett mit zwei Sternchen: **Petra Lachnit**. Internet-Adressen (https://…) und
                     E-Mail-Adressen werden automatisch anklickbar – auch in termine.csv.
+hinweise.csv      – Hinweise auf „Aktuelles“ (Spalten: Datum; Titel; Text). Am Tag nach dem Datum verschwinden sie.
 elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von, z. B. "Mutter, Kindergarten").
                     Nur echte Zitate mit Einverständnis der Eltern, ohne Namen.
                     Solange die Datei leer ist, erscheint der Abschnitt nicht.
@@ -20,3 +21,6 @@ elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von
 Datumsformat immer TT.MM.JJJJ, z. B. 04.12.2026.
 
 Danach im Ordner kinderhort-website einmal ausführen:   python3 build.py
+
+Nach dem Bauen prüft „Daten-Prüfung“ die Tabellen und nennt Zeile und Fehler, z. B. ein unlesbares Datum.
+Die Datei erstmals.json bitte nicht von Hand ändern – sie merkt sich, seit wann ein Termin auf der Seite steht.

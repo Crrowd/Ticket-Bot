@@ -288,6 +288,20 @@ Entscheidung offen (Auswahl direkt im Katalog).
 ## Ideenkatalog 4 (16.11.2026)
 Seite: `entwurf/ideen/ideen-4.html` (gebaut mit `entwurf/ideen/mk_ideen4.py`, private Vorschau: https://claude.ai/artifact/S14G9MoJv8azSS2Sifxeoq), Auswahl in der Sammlung `ideen4` (ids `i4-01` … `i4-40`). 40 Ideen, jede mit dem Skill, aus dem sie stammt (ui-ux-pro-max, impeccable, mobile-native, gestures, dataviz, remove-animations, web-design-guidelines, choreograph, explainer, landing-page-design, humanizer, figma-designer, break-ui, nothing-design, apple-design). Nicht genutzt, weil für diese Seite unpassend: pinme (fremdes Hosting), write-swift/animate-expo (native Apps), sound-effects/motion-broll/object-separation (Video/Freistellen am eigenen Rechner), caveman.
 
+Eingebaut (Ja): 3, 4, 5, 6, 9, 11, 19, 21, 22, 23, 24, 33, 37.
+- **3 Kurzbefehle am App-Symbol:** Kind krankmelden (öffnet den Abschnitt auf der Startseite, `#krankmelden`), Termine, Durchwahlen.
+- **4 Neu seit dem letzten Besuch:** grünes „neu“ an Terminen und Elternbriefen. Wann ein Eintrag zuerst auftauchte, merkt sich `daten/erstmals.json` (wird beim Bauen gepflegt – bitte mit hochladen); der letzte Besuch steht nur im Browser der Eltern.
+- **5 Hinweise mit Datum:** neue Tabelle `daten/hinweise.csv` (Datum; Titel; Text). Es steht nur das Datum dabei, am Tag danach verschwindet der Hinweis. „Sankt Martin“ (11.11.) ist deshalb schon weg.
+- **6 Termin nach rechts wischen = merken** (nur am Handy), **37** kurzes Vibrieren beim Merken (Android).
+- **9 „Bewegung aus“** im Fußbereich, gilt für alle Seiten und wird gemerkt.
+- **11 Auftakt:** beim ersten Besuch erst der Name, dann fallen die Fotos, zuletzt „Jetzt geöffnet“ und Krankmelden; bei späteren Besuchen sofort.
+- **19 Daten-Wächter:** `python3 build.py` meldet am Ende Fehler in den Tabellen in Klartext (Datum unlesbar, Ende vor Anfang, doppelt, mehr als 30 Schließtage, fehlende Felder) und überspringt kaputte Zeilen statt abzubrechen.
+- **21 Gruppen-Symbole** an Terminen (wenn eine Gruppe genannt ist), Durchwahlen und Krankmelden.
+- **22 „Gemerkte ansehen“:** Blatt von unten mit allen gemerkten Terminen, einzeln entfernbar, nach unten ziehen schließt.
+- **23 „So geht es weiter“** erscheint nach Platz anfragen / Kennenlernen.
+- **24 Kurz gefragt** unter „Jetzt geöffnet“: Morgen offen? Nächste Woche? Nächste Ferien?
+- **33 Erinnerung am Vorabend (18 Uhr)** in allen Kalenderdateien (Termine, Schließtage, gemerkte Termine).
+
 ## Stresstest, Critique, Handy (16.11.2026)
 **break-ui** (Grenzfall-Daten in Kopien der Seite: Worst Case, leer, eins, viele) – behoben:
 - Gruß im Elternbrief: **fett** mit `**…**` (alte `<strong>`-Schreibweise wird weiter verstanden). War seit der Sicherheitskorrektur als Text sichtbar.

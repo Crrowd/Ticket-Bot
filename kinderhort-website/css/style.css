@@ -1962,3 +1962,72 @@ button, .btn, [role="tab"], .nav-toggle, .open-pill { -webkit-user-select: none;
   table.plan caption { color: var(--ink) !important; font-weight: 600; }
 }
 .section.green .stats { margin-bottom: 32px; }
+
+/* ==========================================================
+   Ideenkatalog 4 – Ja-Ideen (16.11.)
+   ========================================================== */
+/* 9 Ruhige Ansicht: wie „Bewegung reduzieren“, nur per Schalter */
+html.calm *, html.calm *::before, html.calm *::after { animation: none !important; transition-property: color, background-color, border-color, opacity, box-shadow, outline-color !important; transition-duration: .15s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+html.calm .js .reveal:not(.visible), html.calm.js .reveal:not(.visible) { opacity: 1; translate: none; }
+html.calm .section > .container, html.calm .teasers .teaser, html.calm .teasers .teaser img, html.calm .page-hero .page-hero-content { animation: none !important; transform: none !important; }
+html.calm .tour-track.wave-wait .tour-item { opacity: 1; translate: none; }
+html.calm .sig-swash path, html.calm .draw-check path { stroke-dashoffset: 0 !important; }
+html.calm .section-head::after { scale: 1 1 !important; }
+.link-btn.js-calm { text-decoration: underline; text-underline-offset: .18em; }
+
+/* 11 Auftakt als eine Bewegung: erst der Name, dann fallen die Fotos, zuletzt der Status */
+html:not(.revisit) .hero-collage .c1 { animation-delay: .32s; } html:not(.revisit) .hero-collage .c2 { animation-delay: .42s; }
+html:not(.revisit) .hero-collage .c3 { animation-delay: .58s; } html:not(.revisit) .hero-collage .c4 { animation-delay: .66s; }
+html:not(.revisit) .hero-badge { animation-delay: .95s; }
+html:not(.revisit) .hero .status-card:not([hidden]), html:not(.revisit) .hero .krank.in-hero { animation: rise .5s var(--ease-out) .85s both; }
+html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure, html.revisit .hero-badge { animation-duration: .4s; animation-delay: 0s !important; }
+
+/* 4 neu seit dem letzten Besuch */
+.new-tag { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 6px; background: var(--ok); color: var(--deep); font: 600 .75rem/1.5 var(--font-body); vertical-align: middle; }
+.event.is-new .date { box-shadow: 0 0 0 2px var(--ok); }
+
+/* 5 Hinweise mit Datum */
+.hint + .hint, .hint + .hint-end { margin-top: 20px; }
+.hint h3 { margin-bottom: .2em; }
+.hint-d { font-weight: 600; margin: 0 0 6px; color: var(--fg); }
+
+/* 6 Wischen zum Merken */
+.event-list { position: relative; }
+.event-list .event { position: relative; z-index: 1; touch-action: pan-y; }
+.swipe-under { position: absolute; left: 0; right: 0; z-index: 0; display: flex; align-items: center; padding-left: 24px; border-radius: 22px; background: var(--rose-soft); color: var(--ink); font-weight: 600; opacity: 0; transition: opacity .15s, background .15s; pointer-events: none; }
+.swipe-under.show { opacity: 1; }
+.swipe-under.ready { background: var(--ok); }
+
+/* 21 Gruppen-Symbole */
+.grp-mark { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-left: 6px; border-radius: 6px; background: rgb(var(--white-rgb) / .14); vertical-align: -5px; }
+.phone-list .grp-mark, .krank-area .grp-mark { margin: 0 6px 0 0; background: rgb(var(--ink-rgb) / .07); vertical-align: -6px; }
+.phone-list span .grp-mark { background: rgb(var(--white-rgb) / .14); }
+
+/* 22 Merkliste als Blatt von unten */
+.saved-sheet { border: 0; padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px)); margin: auto auto 0; width: min(560px, 100%); max-height: 80dvh; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--paper); color: var(--ink); box-shadow: var(--shadow-lg); overscroll-behavior: contain;
+  translate: 0 0; transition: translate .35s cubic-bezier(.32, .72, 0, 1), opacity .2s; }
+@starting-style { .saved-sheet[open] { translate: 0 100%; } }
+.saved-sheet.closing { translate: 0 100%; transition-duration: .2s; }
+.saved-sheet::backdrop { background: rgb(var(--night-rgb) / .45); }
+.ss-grip { width: 40px; height: 5px; border-radius: 3px; background: rgb(var(--ink-rgb) / .25); margin: 0 auto 12px; touch-action: none; }
+.saved-sheet h2 { font-size: 1.3rem; margin: 0 0 12px; touch-action: none; }
+.ss-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+.ss-list li { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: var(--r-sm); background: rgb(var(--ink-rgb) / .06); }
+.ss-list li div { flex: 1; min-width: 0; display: grid; }
+.ss-list small { color: var(--ink-soft); }
+.ss-del { width: 44px; height: 44px; flex: none; border: 0; border-radius: 12px; background: none; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.ss-del:hover { background: rgb(var(--ink-rgb) / .08); }
+
+/* 23 So geht es weiter */
+.next-steps { margin-top: 12px; padding: 12px 16px; border-radius: var(--r-sm); background: rgb(var(--ink-rgb) / .06); font-size: .92rem; animation: rm-fade .25s var(--ease-out) both; }
+.next-steps ol { margin: 4px 0 0; padding-left: 20px; }
+.next-steps b { font-weight: 600; }
+
+/* 24 Kurz gefragt */
+.status-ask { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.status-q { display: flex; flex-wrap: wrap; gap: 6px; }
+.status-q button { min-height: 44px; padding: 6px 12px; border: 0; border-radius: 10px; background: rgb(var(--white-rgb) / .12); color: inherit; font: 600 .84rem var(--font-body); cursor: pointer; transition: background .14s var(--ease-out); }
+.status-q button[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.status-a { margin: 8px 0 0; font-size: .92rem; }
+.status-a:empty { display: none; }
+@media (hover: hover) and (pointer: fine) { .status-q button:hover { background: rgb(var(--white-rgb) / .2); } }
