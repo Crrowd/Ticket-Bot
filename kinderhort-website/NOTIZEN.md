@@ -285,6 +285,11 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Durchwahl finden und „Fragen Sie einfach“ (16.11.2026)
+- **Durchwahl finden:** Beim Tippen bleiben nur die passenden Einträge in ihrem türkisen Kasten stehen, die anderen Gruppen und Bereiche verschwinden; Feld leeren zeigt wieder alle. Versteht Tippfehler (Spazen, Sonnengrupe), Kurzformen (Kiga, Krippe, Hort, Büro/Zentrale/Leitung) und Endungen („15“). Esc leert das Feld.
+- **Fragen Sie einfach:** keine dicke Markierung mehr um das Feld beim Tippen (nur der Rand wird etwas dunkler; der gleitende Fokusrahmen lässt Eingabefelder generell aus).
+- **Schlauer:** beantwortet zuerst aus den Daten der Seite – Öffnungszeiten (heute/morgen), Schließtage und Ferien (auch nach Namen, z. B. Weihnachten), Durchwahl einer Gruppe, Krankmelden, Platz/Anmeldung (je Bereich), nächste Termine, Adresse. Sonst aus den häufigen Fragen, jetzt mit Tippfehler-Toleranz, Vorschlägen schon beim Tippen und „Auch passend“.
+
 ## Wünsche aus Screenshots (16.11.2026)
 - Kopfleiste: „Geöffnet“-Anzeige und „Strg K“ entfernt (Öffnungsstatus bleibt im Auftakt der Startseite).
 - Kein Lichtstreifen mehr über Knöpfen; kein Konfetti beim Merken.

@@ -1082,45 +1082,71 @@
     addEventListener("resize", function () { close(); });
   })();
 
-  /* ---------- Durchwahl finden ---------- */
-  (function () {
-    var inp = $("#durchwahl");
-    if (!inp) return;
-    var box = inp.closest(".dial"), out = $(".dial-out", box), timer = null, last = "";
-    var norm = function (s) { return s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " ").trim(); };
+  /* ---------- Gemeinsam: Durchwahlen der Seite und unscharfes Suchen ---------- */
+  function normDe(s) { return String(s).toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); }
+  /* Tippfehler verzeihen: Abstand höchstens 1 (ab 4 Buchstaben) bzw. 2 (ab 8) */
+  function nah(a, b) {
+    if (a === b) return true;
+    var max = b.length >= 10 ? 2 : b.length >= 4 ? 1 : 0; if (!max || Math.abs(a.length - b.length) > max) return false;
+    var prev = [], cur, i, j; for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) { cur = [i]; for (j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; }
+    return prev[b.length] <= max;
+  }
+  /* passt ein getipptes Wort zu einem Schlüsselwort? (Anfang oder kleiner Tippfehler) */
+  function passt(w, k) { return k.indexOf(w) === 0 || (w.length >= 4 && (nah(w, k) || nah(w, k.slice(0, w.length)))); }
+  var DW_ALIAS = { kiga: "kindergarten", garten: "kindergarten", kita: "", krabbel: "kinderkrippe", krippe: "kinderkrippe", hort: "kinderhort", schule: "kinderhort", hausaufgaben: "kinderhort",
+    zentrale: "allgemein", buero: "allgemein", verwaltung: "allgemein", leitung: "allgemein", anmeldung: "allgemein", haupt: "allgemein", sonne: "sonnengruppe", stern: "sternengruppe", sterne: "sternengruppe",
+    baer: "baerengruppe", baeren: "baerengruppe", biene: "bienengruppe", bienen: "bienengruppe", spatz: "spatzengruppe", spatzen: "spatzengruppe" };
+  function durchwahlen() {
     var dir = [];
     $$(".phone-card").forEach(function (card) {
       var area = $("h3", card).textContent.trim();
       $$(".phone-list li", card).forEach(function (li) {
         var a = $("a", li); if (!a || !/^tel:/.test(a.getAttribute("href"))) return;
-        var label = $("span", li).textContent.trim();
-        /* Kurzformen: „Krippe“, „Kiga“, „Hort“ finden den Bereich */
-        var alias = /krippe/i.test(area) ? " krippe" : /garten/i.test(area) ? " kiga garten" : /hort/i.test(area) ? " hort schule" : "";
-        dir.push({ keys: norm(label + " " + area + " " + label.replace(/gruppe$/i, "") + alias).split(" "), label: label + " · " + area, num: a.textContent.replace(/ /g, " "), href: a.getAttribute("href") });
+        var label = $("span", li).textContent.trim(), num = a.textContent.replace(/\s+/g, " ").trim(), endung = num.split(" ").pop();
+        dir.push({ li: li, label: label, area: area, num: num, href: a.getAttribute("href"), endung: endung,
+          keys: normDe(label + " " + area + " " + label.replace(/gruppe$/i, "") + (/allgemein/i.test(label) ? " zentrale buero leitung" : "")).split(" ") });
       });
     });
+    return dir;
+  }
+  function suche(dir, q) {
+    var ws = normDe(q).split(" ").filter(Boolean).map(function (w) { return DW_ALIAS[w] !== undefined ? DW_ALIAS[w] : w; }).filter(Boolean);
+    if (!ws.length) return [];
+    var exakt = normDe(q).split(" ").filter(Boolean).map(function (w) { return DW_ALIAS[w] !== undefined; });
+    return dir.filter(function (d) { return ws.every(function (w, i) { if (exakt[i]) return d.keys.some(function (k) { return k.indexOf(w) === 0; }); return /^\d+$/.test(w) ? d.endung === w || d.num.replace(/\D/g, "").slice(-w.length) === w : d.keys.some(function (k) { return passt(w, k); }); }); });
+  }
+
+  /* ---------- Durchwahl finden: Treffer im Kasten, die Listen darunter treten zurück ---------- */
+  (function () {
+    var inp = $("#durchwahl");
+    if (!inp) return;
+    var box = inp.closest(".dial"), out = $(".dial-out", box), timer = null, last = "", wrap = box.parentNode;
+    var dir = durchwahlen();
     function show(html) {
       if (html === last) return; last = html;
       if (reduced) { out.innerHTML = html; return; }
       out.classList.add("swap");
-      setTimeout(function () { out.innerHTML = html; out.classList.remove("swap"); }, 150);
+      setTimeout(function () { out.innerHTML = html; out.classList.remove("swap"); }, 120);
     }
+    function row(h) { return '<p><a href="' + escH(h.href) + '">' + escH(h.num).replace(/ /g, "&nbsp;") + "</a><span>" + escH(h.label + " · " + h.area) + "</span></p>"; }
     inp.addEventListener("input", function () {
       clearTimeout(timer); inp.parentNode.classList.remove("err");
-      var v = norm(inp.value);
-      if (!v) { show(""); return; }
-      var hits = dir.filter(function (d) { return v.split(" ").every(function (w) { return d.keys.some(function (k) { return k.indexOf(w) === 0; }); }); });
-      if (hits.length) {
-        show(hits.slice(0, 3).map(function (h) { return '<p><a href="' + escH(h.href) + '">' + escH(h.num).replace(/ /g, "&nbsp;") + "</a><span>" + escH(h.label) + "</span></p>"; }).join(""));
-        return;
-      }
-      /* erst nach einer kurzen Tipp-Pause bemängeln, dann kurz wackeln */
+      var v = inp.value.trim();
+      wrap.classList.toggle("dial-searching", !!v);
+      if (!v) { show(""); dir.forEach(function (d) { d.li.hidden = false; }); $$(".phone-card", wrap).forEach(function (c) { c.hidden = false; }); return; }
+      var hits = suche(dir, v);
+      /* Treffer bleiben in ihrem türkisen Kasten, alles andere tritt zurück */
+      dir.forEach(function (d) { d.li.hidden = hits.indexOf(d) < 0; });
+      $$(".phone-card", wrap).forEach(function (c) { c.hidden = !$$(".phone-list li", c).some(function (li) { return !li.hidden && $('a[href^="tel:"]', li); }); });
+      if (hits.length) { show(""); return; }
       timer = setTimeout(function () {
         inp.parentNode.classList.add("err");
         if (!reduced) { inp.parentNode.classList.remove("shake"); void inp.parentNode.offsetWidth; inp.parentNode.classList.add("shake"); }
         show('<p><a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a><span>Keine Gruppe gefunden – die Zentrale verbindet Sie gern.</span></p>');
-      }, 650);
+      }, 500);
     });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Escape" && inp.value) { inp.value = ""; inp.dispatchEvent(new Event("input")); } });
   })();
 
   /* ---------- Rundgang als Geschichte ---------- */
@@ -1395,35 +1421,97 @@
     addEventListener("resize", function () { slideKnob(tl, $('[aria-selected="true"]', tl), false); });
   })();
 
-  /* ---------- Fragen-Helfer (Antworten aus den häufigen Fragen) ---------- */
+  /* ---------- Fragen-Helfer: erst eigene Daten (Zeiten, Schließtage, Durchwahlen, Termine …), dann die häufigen Fragen ---------- */
   (function () {
     var box = $(".ask"); if (!box || !K || !K.faq) return;
-    var log = $(".ask-log", box), inp = $("#ask-in", box), F = K.faq;
-    function norm(t) { return t.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9 ]/g, " "); }
-    var STOP = " der die das und ist ein eine einen mein meine meinem kind kinder wir ich sie es zu in im fuer mit auch noch wie was gibt muss muessen kann koennen hat haben den dem des von auf an bei oder ihr ihre unser unsere wann wo wer ";
-    function stems(t) { return norm(t).split(/\s+/).filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }).map(function (w) { return w.length > 5 ? w.slice(0, -2) : w; }); }
-    function best(q) {
-      var st = stems(q), top = null, sc = 0;
-      var idf = st.map(function (s) { var df = F.filter(function (f) { return norm(f.q + " " + f.a).indexOf(s) >= 0; }).length; return df ? Math.log(1 + F.length / df) : 0; });
-      F.forEach(function (f) { var q2 = norm(f.q), a2 = norm(f.a), v = 0; st.forEach(function (s, k) { v += idf[k] * ((q2.indexOf(s) >= 0 ? 2 : 0) + (a2.indexOf(s) >= 0 ? 1 : 0)); }); if (v > sc) { sc = v; top = f; } });
-      return sc >= 1 ? top : null;
+    var log = $(".ask-log", box), inp = $("#ask-in", box), F = K.faq, dir = durchwahlen();
+    var STOP = " der die das und ist ein eine einen mein meine meinem kind kinder wir ich sie es zu in im fuer mit auch noch wie was gibt muss muessen kann koennen hat haben den dem des von auf an bei oder ihr ihre unser unsere wann wo wer sind bitte mir mich man ";
+    function stems(t) { return normDe(t).split(" ").filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }).map(function (w) { return w.length > 5 ? w.slice(0, -2) : w; }); }
+    function trifft(s, text) { if (text.indexOf(s) >= 0) return 1; if (s.length < 5) return 0; return text.split(" ").some(function (w) { return nah(s, w.slice(0, s.length)); }) ? .7 : 0; }
+    function rang(q) {
+      var st = stems(q);
+      var idf = st.map(function (s) { var df = F.filter(function (f) { return trifft(s, normDe(f.q + " " + f.a)); }).length; return df ? Math.log(1 + F.length / df) : 0; });
+      return F.map(function (f) { var q2 = normDe(f.q), a2 = normDe(f.a), v = 0; st.forEach(function (s, k) { v += idf[k] * (2 * trifft(s, q2) + trifft(s, a2)); }); return { f: f, v: v }; })
+        .filter(function (x) { return x.v >= 1; }).sort(function (a, b) { return b.v - a.v; })
+        .filter(function (x, i, all) { return all.findIndex(function (y) { return y.f.q === x.f.q; }) === i; });
+    }
+    function el(tag, text, attrs) { var e = document.createElement(tag); if (text) e.textContent = text; for (var k in attrs || {}) e.setAttribute(k, attrs[k]); return e; }
+    function link(text, href) { return el("a", text, { href: href }); }
+    function z(d) { return fmt(parse(d)); }
+    /* Antworten aus den Daten der Seite */
+    function eigene(q) {
+      var n = " " + normDe(q) + " ", f = document.createDocumentFragment();
+      function line(t) { f.appendChild(document.createTextNode(t)); }
+      function br() { f.appendChild(el("br")); }
+      /* Gruppen im Satz finden: jedes Wort einzeln, Füllwörter zählen nicht */
+      var gruppen = dir.filter(function (d) { return !/allgemein/i.test(d.label) && normDe(q).split(" ").some(function (w) { var a = DW_ALIAS[w]; if (a) return d.keys.some(function (k) { return k.indexOf(a) === 0; }); var gi = w.indexOf("gru"), w2 = gi >= 4 ? w.slice(0, gi) : w; return w2.length >= 4 && d.keys.some(function (k) { return /gruppe$/.test(k) && passt(w2, k.replace(/gruppe$/, "")); }); }); });
+      if (/krank|fieber|abmeld| fehlt| nicht kommen|ausfall/.test(n)) {
+        line("Bitte melden Sie Ihr Kind möglichst früh am Morgen ab – am schnellsten telefonisch direkt in der Gruppe oder per E-Mail mit unserer Vorlage."); br();
+        f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "index.html#krankmelden")); return f;
+      }
+      if (gruppen.length || / telefon| nummer| anruf| durchwahl| erreich/.test(n)) {
+        var hs = gruppen.length ? gruppen : dir.filter(function (d) { return /allgemein/i.test(d.label); });
+        hs.slice(0, 4).forEach(function (d, i) { if (i) br(); line(d.label + " (" + d.area + "): "); f.appendChild(link(d.num, d.href)); });
+        if (!gruppen.length) { br(); f.appendChild(link("Alle Durchwahlen", "kontakt.html#durchwahl-finden")); }
+        return f;
+      }
+      if (/ferien|schliess|geschlossen|urlaub|weihnacht|ostern|pfingst|sommer|fasching|herbst/.test(n)) {
+        var zs = K.schliesszeiten.filter(function (s) { return s.bis >= heute; }), named = zs.filter(function (s) { return n.indexOf(" " + normDe(s.name).split(" ")[0].slice(0, 5)) >= 0; });
+        var pick = named.length ? named : zs.slice(0, 2);
+        if (!pick.length) { line("Der Ferienplan für das nächste Kita-Jahr folgt in Kürze."); return f; }
+        pick.forEach(function (s, i) { if (i) br(); line(s.name + ": geschlossen " + (s.von === s.bis ? "am " + z(s.von) : "vom " + z(s.von) + " bis " + z(s.bis)) + " (" + s.tage + (s.tage === 1 ? " Schließtag)." : " Schließtage).")); });
+        br(); f.appendChild(link("Ganzer Ferienplan", "aktuelles.html#ferienplan")); return f;
+      }
+      if (/ offen| geoeffnet| oeffnungszeit| bis wann| ab wann| uhrzeit| auf hat| zu hat/.test(n)) {
+        if (/ morgen/.test(n)) { var m = new Date(); m.setDate(m.getDate() + 1); var r = closedReason(m); line(r ? "Morgen (" + TAGE[m.getDay()] + ") ist geschlossen – " + r + "." : "Morgen (" + TAGE[m.getDay()] + ") haben wir ganz normal geöffnet: ab " + K.oeffnung + " Uhr, Krippe und Kindergarten bis 16:30 Uhr, Hort bis 18:00 Uhr."); return f; }
+        var st = status(); line(st.today + ". " + st.sub); return f;
+      }
+      if (/platz|anmeld|aufnahme|warteliste|besichtig|kennenlern|bewerb/.test(n)) {
+        var ber = /krippe/.test(n) ? ["Kinderkrippe", "kinderkrippe.html"] : /garten|kiga/.test(n) ? ["Kindergarten", "kindergarten.html"] : /hort/.test(n) ? ["Kinderhort", "kinderhort.html"] : null;
+        line("Schreiben Sie uns, ab wann Sie einen Platz suchen – gern zeigen wir Ihnen vorher unser Haus."); br();
+        f.appendChild(link(ber ? "Platz anfragen: " + ber[0] : "So bekommen Sie einen Platz", ber ? ber[1] + "#anmeldung" : "kinderkrippe.html#anmeldung")); return f;
+      }
+      if (/termin|elternabend| fest |feier|veranstalt| naechst|ausflug/.test(n)) {
+        var ts = K.termine.filter(function (t) { return t.bis >= heute; }).slice(0, 3);
+        if (!ts.length) { line("Aktuell stehen keine weiteren Termine an."); return f; }
+        line("Die nächsten Termine:"); ts.forEach(function (t) { br(); line("• " + z(t.von) + (t.von !== t.bis ? "–" + z(t.bis) : "") + ": " + t.titel); });
+        br(); f.appendChild(link("Alle Termine", "aktuelles.html#termine")); return f;
+      }
+      if (/ adresse| anfahrt| wo ist| wo sind| wo liegt| parken| bus | strassenbahn| lindlein/.test(n)) {
+        line("Lindleinstraße 20, 97080 Würzburg-Grombühl."); br(); f.appendChild(link("Anschrift und Route", "kontakt.html#anschrift")); return f;
+      }
+      return null;
     }
     function add(cls, node) { var m = document.createElement("div"); m.className = "msg " + cls; if (typeof node === "string") m.textContent = node; else m.appendChild(node); log.appendChild(m); log.scrollTop = log.scrollHeight; return m; }
     function ask(q) {
-      add("me", q);
+      add("me", q); vor.innerHTML = "";
       var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht …");
       setTimeout(function () {
-        ty.remove(); var f = best(q), frag = document.createDocumentFragment();
-        if (f) {
-          frag.appendChild(document.createTextNode(f.a));
-          var a = document.createElement("a"); a.href = f.u; a.textContent = "Aus: „" + f.q + "“ (" + f.b + ")"; frag.appendChild(document.createElement("br")); frag.appendChild(a);
+        ty.remove(); var own = eigene(q);
+        if (own) { add("bot", own); return; }
+        var r = rang(q), frag = document.createDocumentFragment();
+        if (r.length) {
+          frag.appendChild(document.createTextNode(r[0].f.a));
+          frag.appendChild(el("br")); frag.appendChild(link("Aus: „" + r[0].f.q + "“ (" + r[0].f.b + ")", r[0].f.u));
+          var more = r.slice(1, 3).filter(function (x) { return x.v >= r[0].v * .5; });
+          if (more.length) { var s2 = el("div", "", { class: "sugg" }); more.forEach(function (x) { var b = el("button", x.f.q, { type: "button" }); b.addEventListener("click", function () { ask(x.f.q); }); s2.appendChild(b); }); frag.appendChild(el("p", "Auch passend:", { class: "also" })); frag.appendChild(s2); }
         } else {
-          frag.appendChild(document.createTextNode("Dazu habe ich in unseren häufigen Fragen leider nichts gefunden. Rufen Sie uns gern an: "));
-          var t = document.createElement("a"); t.href = "tel:+4993127898920"; t.textContent = "0931 2789892 0"; frag.appendChild(t);
+          frag.appendChild(document.createTextNode("Dazu habe ich leider nichts gefunden. Rufen Sie uns gern an: "));
+          frag.appendChild(link("0931 2789892 0", "tel:+4993127898920"));
         }
         add("bot", frag);
-      }, reduced ? 0 : 650);
+      }, reduced ? 0 : 450);
     }
+    /* Vorschläge schon beim Tippen */
+    var vor = el("div", "", { class: "ask-vor", "aria-live": "polite" }); $(".ask-form", box).before(vor);
+    var vt = null;
+    inp.addEventListener("input", function () {
+      clearTimeout(vt);
+      vt = setTimeout(function () {
+        vor.innerHTML = ""; var v = inp.value.trim(); if (v.length < 3) return;
+        rang(v).slice(0, 3).forEach(function (x) { var b = el("button", x.f.q, { type: "button" }); b.addEventListener("click", function () { inp.value = ""; ask(x.f.q); }); vor.appendChild(b); });
+      }, 180);
+    });
     $$(".sugg button", box).forEach(function (b) { b.addEventListener("click", function () { ask(b.textContent); }); });
     $(".ask-form", box).addEventListener("submit", function (e) { e.preventDefault(); var q = inp.value.trim(); if (!q) return; inp.value = ""; ask(q); });
   })();
@@ -1533,7 +1621,7 @@
     }
     document.addEventListener("focusin", function (e) {
       var el = e.target;
-      if (!el.matches(":focus-visible") || el.closest("dialog, .lightbox, .story-view") || el === document.body) { off(); return; }
+      if (!el.matches(":focus-visible") || el.matches("input, textarea, select") || el.closest("dialog, .lightbox, .story-view") || el === document.body) { off(); return; }
       var first = !ring.classList.contains("on"); cur = el.closest(".faq-search, .dial-field, .ask-form, .search-head") || el; place(first || reduced); ring.classList.add("on"); root.classList.add("fring");
     });
     function off() { cur = null; ring.classList.remove("on"); root.classList.remove("fring"); }
