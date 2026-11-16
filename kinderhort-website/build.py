@@ -562,7 +562,7 @@ def plan_table():
 </table>
 </div>
 <p class="plan-note">Damit Sie rechtzeitig Ihre Urlaubspläne schmieden können: Kinderkrippe, Kindergarten und Kinderhort haben die gleichen Schließtage.
-<a href="downloads/Ferienplan_2026_27.pdf">Ferienplan als PDF herunterladen</a></p>
+<a href="downloads/Ferienplan_2026_27.pdf">Schließtage als PDF herunterladen</a></p>
 <a class="aushang no-print" href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen"><img src="img/schliesstage-2026-2027.jpg" alt="" width="593" height="714" loading="lazy" decoding="async"><span>Original-Aushang<small>Zum Vergrößern antippen</small></span></a>
 <div class="btn-row no-print">
   <a class="btn btn-primary" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a>
@@ -1464,7 +1464,7 @@ SUCHE += [
     ("Downloads", "Unterlagen", "downloads.html", "pdf formulare unterlagen herunterladen"),
     ("KinderhortABC", "Download · PDF", "downloads/HortABC.pdf", "hort abc infos a bis z"),
     ("Medikamentenvereinbarung", "Download · PDF", "downloads/Medikamentenvereinbarung.pdf", "medikamente formular arznei"),
-    ("Ferienplan als PDF", "Download · PDF", "downloads/Ferienplan_2026_27.pdf", "ferien schließtage aushang"),
+    ("Schließtage als PDF", "Download · PDF", "downloads/Ferienplan_2026_27.pdf", "ferien ferienplan schließtage aushang"),
     ("Kalenderdateien", "Downloads", "downloads.html#kalender", "ics kalender handy termine schließtage"),
     ("Kontakt aufs Handy speichern", "Kontakt · Adressbuch", "kontakt.html#anschrift", "adressbuch kontakt speichern vcard visitenkarte handy telefonbuch"),
     ("Kontakt & Durchwahlen", "Telefon, E-Mail, Anschrift", "kontakt.html", "telefon telefonnummer anrufen email mail adresse anschrift anfahrt lindleinstraße sternengruppe sonnengruppe bienengruppe spatzengruppe bärengruppe"),

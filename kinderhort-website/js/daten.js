@@ -361,10 +361,10 @@ window.KITA = {
    "k": "medikamente formular arznei"
   },
   {
-   "t": "Ferienplan als PDF",
+   "t": "Schließtage als PDF",
    "s": "Download · PDF",
    "u": "downloads/Ferienplan_2026_27.pdf",
-   "k": "ferien schließtage aushang"
+   "k": "ferien ferienplan schließtage aushang"
   },
   {
    "t": "Kalenderdateien",
