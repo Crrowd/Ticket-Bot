@@ -1213,7 +1213,7 @@ def lotse(q, text, links):
 downl += section("lotse", "Schnell zum Ziel", "Was möchten Sie tun?", "Eine Frage antippen – und Sie bekommen genau das passende Formular oder den richtigen Weg.", '<div class="lotse reveal">' + "".join([
     lotse("Mein Kind ist krank", "Bitte melden Sie Ihr Kind per E-Mail oder telefonisch direkt in der Gruppe ab.", [(KRANK_MAIL, "mail", "Krankmeldung per E-Mail"), ("kontakt.html#durchwahl-finden", "phone", "Durchwahl der Gruppe")]),
     lotse("Mein Kind braucht Medikamente", "Medikamente können wir nur mit einer unterschriebenen Medikamentenvereinbarung geben.", [("downloads/Medikamentenvereinbarung.pdf", "file", "Medikamentenvereinbarung")]),
-    lotse("Ich möchte wissen, wann geschlossen ist", "Alle Schließtage stehen im Ferienplan – auch als Kalenderdatei fürs Handy.", [("downloads/Ferienplan_2026_27.pdf", "file", "Ferienplan als PDF"), ("downloads/schliesstage.ics", "calendar", "Schließtage in den Kalender")]),
+    lotse("Ich möchte wissen, wann geschlossen ist", "Alle Schließtage stehen im Ferienplan – auch als Kalenderdatei fürs Handy.", [("downloads/Ferienplan_2026_27.pdf", "file", "Schließtage als PDF"), ("downloads/schliesstage.ics", "calendar", "Schließtage in den Kalender")]),
     lotse("Ich habe Fragen zum Hort", "Viele Antworten stehen im KinderhortABC – oder Sie fragen uns direkt.", [("downloads/HortABC.pdf", "file", "KinderhortABC"), ("kontakt.html#frag", "search", "Schnelle Antwort finden")]),
     lotse("Ich möchte einen Platz anfragen", "Die vorbereitete E-Mail enthält alle Angaben, die wir für Ihre Anfrage brauchen.", [(PLATZ_MAIL, "mail", "Platz anfragen")]),
 ]) + "</div>", cls="tight")
