@@ -144,9 +144,7 @@ strong, b { font-weight: 600; }
   backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
   border: 1px solid rgb(var(--white-rgb) / .55);
   box-shadow: 0 1px 2px rgb(var(--deep-rgb) / .06), 0 10px 30px -18px rgb(var(--deep-rgb) / .45);
-  transition: background .3s, box-shadow .3s;
 }
-.scrolled .header-inner::before { background: rgb(var(--paper-rgb) / .68); box-shadow: 0 1px 2px rgb(var(--deep-rgb) / .08), 0 18px 40px -20px rgb(var(--deep-rgb) / .6); }
 
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand-mark { width: 42px; height: 42px; flex: none; transition: rotate .5s var(--ease); }
@@ -1872,7 +1870,6 @@ html { -webkit-tap-highlight-color: rgb(var(--ink-rgb) / .08); }
   .hero-collage figure:hover { rotate: 0deg; scale: 1.03; z-index: 2; }
   .area-card:hover { translate: 0 -6px; box-shadow: var(--shadow-lg); }
   .area-card:hover .thumb img { scale: 1.06; }
-  .area-card:hover .more svg { translate: 5px 0; }
-  .room:hover img { scale: 1.05; }
+  .room:hover img { scale: 1.03; }
   .tour-item button:hover img { scale: 1.05; }
 }

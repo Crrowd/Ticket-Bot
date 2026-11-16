@@ -285,6 +285,18 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Animationen nach Emil Kowalski (16.11.2026)
+Audit mit `improve-animations`, zehn Pläne in `plans/` (alle DONE), umgesetzt von einem eigenen Agenten, danach geprüft:
+- Fokusrahmen springt bei Tab sofort (keine Bewegung bei Tastatur-Aktionen).
+- Liste/Kalender: Abgang 120 ms ease-out statt ease-in.
+- Sprungmarken-Marker, Umschalter-Knopf: per `clip-path` statt `width`, 250 bzw. 200 ms; Menü-Strich per `scale`.
+- Kurzmeldungen erscheinen per Transition (`@starting-style`), unterbrechbar.
+- Hover-Bewegung nur mit echter Maus (`hover: hover` und `pointer: fine`).
+- Bereichsmenü: nur Spalten 40 ms versetzt, Zeilen sofort (fertig nach ca. 0,3 s).
+- Kopfleiste wird fester über eine zweite Ebene mit Deckkraft (kein Neuzeichnen beim Scrollen).
+- Viewport-Werte nur bei Änderung; eine ease-out-Kurve (`--io` = `--ease-out` = `cubic-bezier(.23, 1, .32, 1)`), JS liest die Tokens.
+- Nachgebessert: zwei Fehler in den Plänen 006/008 (Reihenfolge der CSS-Regeln) – Pfeil in Bereichskarten und Zoom der Raumfotos wie vorher, alte „scrolled“-Regel der Kopfleiste entfernt.
+
 ## Web Interface Guidelines (16.11.2026)
 Geprüft gegen die Vercel-Richtlinien und behoben:
 - Schmuck-Bewegung läuft höchstens 5 s von selbst (WCAG 2.2.2): Status- und Geöffnet-Punkt pulsieren 2×, die Welle bewegt sich kurz beim Erscheinen des Fußbereichs, Ring ums Leitungsfoto und Wortwolke bewegen sich nur beim Überfahren. Bildwechsel im Bereichskopf hat einen Pause-Knopf (oben rechts).

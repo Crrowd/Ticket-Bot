@@ -151,9 +151,7 @@ strong, b { font-weight: 600; }
   backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
   border: 1px solid rgb(var(--white-rgb) / .55);
   box-shadow: 0 1px 2px rgb(var(--deep-rgb) / .06), 0 10px 30px -18px rgb(var(--deep-rgb) / .45);
-  transition: background .3s, box-shadow .3s;
 }
-.scrolled .header-inner::before { background: rgb(var(--paper-rgb) / .68); box-shadow: 0 1px 2px rgb(var(--deep-rgb) / .08), 0 18px 40px -20px rgb(var(--deep-rgb) / .6); }
 
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand-mark { width: 42px; height: 42px; flex: none; transition: rotate .5s var(--ease); }
@@ -220,12 +218,10 @@ strong, b { font-weight: 600; }
 .mega:has(.mega-col:is(:hover, :focus-within)) .mega-visual figure { opacity: 0; scale: 1.04; }
 .mega:has(.c-krippe:is(:hover, :focus-within)) .mega-visual .v-krippe, .mega:has(.c-kiga:is(:hover, :focus-within)) .mega-visual .v-kiga, .mega:has(.c-hort:is(:hover, :focus-within)) .mega-visual .v-hort { opacity: 1; scale: 1; }
 /* Spalten erscheinen leicht versetzt */
-.mega-col, .mega-visual, .mega li { opacity: 0; translate: 0 6px; transition: opacity var(--t-drop-exit) var(--ease-out), translate var(--t-drop-exit) var(--ease-out), background var(--fast); }
-/* Erst die Spalten, dann ihre Zeilen – jeweils 30 ms versetzt */
-.has-drop:is(:hover, :focus-within, .open) :is(.mega-col, .mega-visual, .mega li) { opacity: 1; translate: 0 0; transition-duration: var(--t-enter); transition-delay: calc((var(--c, 0) + var(--r, 0)) * var(--stagger)); }
+.mega-col, .mega-visual { opacity: 0; translate: 0 6px; transition: opacity var(--t-drop-exit) var(--ease-out), translate var(--t-drop-exit) var(--ease-out), background var(--fast); }
+/* Spalten erscheinen 40 ms versetzt, ihre Zeilen kommen mit */
+.has-drop:is(:hover, :focus-within, .open) :is(.mega-col, .mega-visual) { opacity: 1; translate: 0 0; transition-duration: var(--t-drop); transition-delay: calc(var(--c, 0) * 40ms); }
 .mega-col:nth-child(2) { --c: 1; } .mega-col:nth-child(3) { --c: 2; } .mega-visual { --c: 3; }
-.mega li:nth-child(1) { --r: 1; } .mega li:nth-child(2) { --r: 2; } .mega li:nth-child(3) { --r: 3; } .mega li:nth-child(4) { --r: 4; } .mega li:nth-child(5) { --r: 5; }
-.mega-col:nth-child(2) li { --c: 1; } .mega-col:nth-child(3) li { --c: 2; }
 
 .nav-toggle { position: relative; display: none; width: 46px; height: 46px; border-radius: var(--r-sm); border: 0; background: rgb(var(--ink-rgb) / .1); cursor: pointer; align-items: center; justify-content: center; }
 .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 3px; position: relative; transition: background .25s var(--ease), rotate .25s var(--ease), top .25s var(--ease); }
@@ -353,7 +349,6 @@ strong, b { font-weight: 600; }
 
 .hero-collage { position: relative; aspect-ratio: 1 / .92; max-width: 100%; }
 .hero-collage figure { margin: 0; position: absolute; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 6px solid #fff; transition: rotate .6s var(--ease), scale .6s var(--ease); }
-.hero-collage figure:hover { rotate: 0deg; scale: 1.03; z-index: 2; }
 .hero-collage img { width: 100%; height: 100%; object-fit: cover; }
 .hero-collage .c1 { left: 0; top: 4%; width: 62%; height: 58%; rotate: -3deg; }
 .hero-collage .c2 { right: 0; top: 0; width: 44%; height: 44%; rotate: 4deg; }
@@ -436,12 +431,11 @@ strong, b { font-weight: 600; }
 .subnav a:hover { background: rgb(var(--ink-rgb) / .08); }
 .subnav a[aria-current="true"], .subnav a[aria-current="true"]:hover { background: transparent; }
 .subnav:not(:has(.subnav-knob.on)) a[aria-current="true"] { background: var(--rose); }   /* ohne Skript: einfache Markierung */
-/* Gleitender Marker: bewegt sich mit ease-in-out und dehnt sich unterwegs um 12 % */
-.subnav-knob { position: absolute; left: 0; top: 0; z-index: 0; width: var(--kw, 0px); height: var(--kh, 0px); translate: var(--kx, 0px) var(--ky, 0px); border-radius: 12px; background: var(--rose); box-shadow: 0 4px 12px -6px rgb(var(--deep-rgb) / .5); opacity: 0; list-style: none; pointer-events: none;
-  transition: translate .38s var(--ease-in-out), width .38s var(--ease-in-out), opacity .2s; }
+/* Gleitender Marker: per clip-path auf den aktiven Eintrag zugeschnitten (kein Layout) */
+.subnav-knob { position: absolute; left: 0; top: var(--ky, 0px); z-index: 0; width: var(--sw, 0px); height: var(--kh, 0px); background: var(--rose); opacity: 0; list-style: none; pointer-events: none;
+  clip-path: inset(0 calc(var(--sw, 0px) - var(--kx, 0px) - var(--kw, 0px)) 0 var(--kx, 0px) round 14px);
+  transition: clip-path 250ms var(--ease-in-out), opacity 200ms var(--ease-out); }
 .subnav-knob.on { opacity: 1; }
-.subnav-knob.moving { animation: knob-stretch .38s var(--ease-in-out); }
-@keyframes knob-stretch { 45% { scale: 1.12 .94; } }
 
 /* ---------- Abschnitte ---------- */
 .section { padding: 88px 0; }
@@ -457,10 +451,8 @@ strong, b { font-weight: 600; }
 /* ---------- Bereichskarten ---------- */
 .areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .area-card { border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; text-decoration: none; transition: translate .35s var(--ease), box-shadow .35s; }
-.area-card:hover { translate: 0 -6px; box-shadow: var(--shadow-lg); }
 .area-card .thumb { aspect-ratio: 4 / 3; overflow: hidden; position: relative; }
 .area-card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: scale .8s var(--ease); }
-.area-card:hover .thumb img { scale: 1.06; }
 .area-card .age { position: absolute; left: 14px; top: 14px; background: var(--paper); color: var(--ink); border-radius: 8px; padding: 5px 16px; font-weight: 600; font-size: .84rem; }
 .area-card .bar { height: 5px; background: var(--rose); }
 .area-card .body { padding: 24px 28px 28px; flex: 1; display: flex; flex-direction: column; }
@@ -468,7 +460,6 @@ strong, b { font-weight: 600; }
 .area-card .more { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
 .area-card .more svg { color: var(--rose); }
 .area-card .more svg { transition: translate .3s var(--ease); }
-.area-card:hover .more svg { translate: 5px 0; }
 @media (max-width: 900px) { .areas { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-inline: auto; } }
 
 /* ---------- Begrüßung ---------- */
@@ -518,7 +509,6 @@ strong, b { font-weight: 600; }
 .rooms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .room { border-radius: var(--r); overflow: hidden; display: grid; grid-template-columns: 200px minmax(0, 1fr); box-shadow: var(--shadow); }
 .room img { width: 100%; height: 100%; object-fit: cover; min-height: 200px; transition: scale .8s var(--ease); }
-.room:hover img { scale: 1.05; }
 .room .txt { padding: 24px 28px; }
 .room .txt h3 { margin-bottom: .4em; }
 .room .txt p { margin: 0; color: var(--fg-soft); font-size: 1rem; }
@@ -536,7 +526,6 @@ strong, b { font-weight: 600; }
 .tour-item button { all: unset; cursor: zoom-in; display: block; aspect-ratio: 4 / 3; overflow: hidden; width: 100%; position: relative; }
 .tour-item button:focus-visible { outline: 3px solid var(--rose); outline-offset: -3px; }
 .tour-item img { width: 100%; height: 100%; object-fit: cover; transition: scale .8s var(--ease); }
-.tour-item button:hover img { scale: 1.05; }
 .tour-item figcaption { padding: 20px 24px 24px; }
 .tour-item figcaption strong { display: block; font: 600 1.15rem/1.3 var(--font-head); }
 .tour-item figcaption span { color: var(--fg-soft); font-size: 1rem; display: block; margin-top: 4px; }
@@ -827,13 +816,13 @@ kbd { font: 600 .75rem var(--font-body); padding: 3px 7px; border-radius: 6px; b
 
 /* Kurzmeldungen mit „Rückgängig“ */
 .toasts { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 700; display: grid; gap: 8px; justify-items: center; width: max-content; max-width: calc(100% - 32px); pointer-events: none; }
-.toast { pointer-events: auto; display: flex; align-items: center; gap: 16px; background: var(--deep); padding: 12px 16px 12px 20px; border-radius: 999px; box-shadow: var(--shadow-lg); font-weight: 600; font-size: 1rem; animation: toast-in var(--t-enter) var(--ease-out) both; transition: opacity var(--t-exit) var(--ease-out), translate var(--t-exit) var(--ease-out), scale var(--t-exit) var(--ease-out); }
-.toast.leaving { opacity: 0; translate: 0 8px; scale: .95; }
+.toast { pointer-events: auto; display: flex; align-items: center; gap: 16px; background: var(--deep); padding: 12px 16px 12px 20px; border-radius: 999px; box-shadow: var(--shadow-lg); font-weight: 600; font-size: 1rem; transition: opacity var(--t-enter) var(--ease-out), translate var(--t-enter) var(--ease-out), scale var(--t-enter) var(--ease-out); }
+@starting-style { .toast { opacity: 0; translate: 0 16px; scale: .95; } }
+.toast.leaving { opacity: 0; translate: 0 8px; scale: .95; transition-duration: var(--t-exit); }
 .toast-ok { position: relative; display: grid; place-items: center; color: var(--ok); flex: none; }
 .toast-ok::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--ok); opacity: 0; animation: ok-pulse .6s var(--ease-out) .12s; }
 .toast button { border: 0; background: rgb(var(--white-rgb) / .14); color: var(--fg); font: 600 .92rem var(--font-body); padding: 7px 16px; border-radius: 8px; cursor: pointer; }
 .toast button:hover { background: var(--rose); color: var(--ink); }
-@keyframes toast-in { from { opacity: 0; translate: 0 16px; scale: .95; } }
 
 /* Hinweis auf den nächsten Termin (ausblendbar) */
 .announce { background: var(--surface); }
@@ -1322,7 +1311,9 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .view-switch, .abo-tabs { position: relative; display: inline-flex; gap: 2px; padding: 4px; margin-bottom: 20px; border-radius: 12px; background: rgb(var(--ink-rgb) / .08); }
 .view-switch button, .abo-tabs button { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: none; color: var(--ink); font: 600 .92rem var(--font-body); cursor: pointer; transition: color .2s; }
 .view-switch button[aria-pressed="true"], .abo-tabs button[aria-selected="true"] { color: var(--paper); }
-.vs-knob { position: absolute; z-index: 0; top: 4px; left: 0; height: calc(100% - 8px); border-radius: 8px; background: var(--ink); transition: translate .35s var(--ease-in-out), width .35s var(--ease-in-out); }
+.vs-knob { position: absolute; z-index: 0; top: 4px; left: 0; width: 100%; height: calc(100% - 8px); background: var(--ink);
+  clip-path: inset(0 calc(100% - var(--vx, 0px) - var(--vw, 0px)) 0 var(--vx, 0px) round 8px);
+  transition: clip-path 200ms var(--ease-in-out); }
 .month-cal { background: var(--paper); border-radius: var(--r); padding: 20px; box-shadow: var(--shadow); max-width: 520px; }
 .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .mc-head b { font: 600 1.15rem var(--font-head); }
@@ -1443,9 +1434,9 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 
 /* 40 Gleitender Fokus-Rahmen */
 .focus-ring { position: fixed; left: 0; top: 0; z-index: 2000; pointer-events: none; border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 0 0 4px rgba(212, 181, 176, .55); opacity: 0;
-  transition: translate .22s var(--ease-out), width .22s var(--ease-out), height .22s var(--ease-out), opacity .15s; }
+  transition: opacity 150ms var(--ease-out); }
 .focus-ring.on { opacity: 1; }
-.focus-ring.jump { transition: opacity .15s; }
+.focus-ring.jump { transition: opacity 150ms var(--ease-out); }
 html.fring :focus-visible { outline-color: transparent !important; }
 
 /* 47 Wimpel-Ladeanzeige */
@@ -1569,7 +1560,7 @@ b, strong { font-weight: 600; }
    Design-Kniffe, Ideen 91–109 und Übergänge (Abstimmung 15.11.)
    Eine Kurve, nur Deckkraft und Verschiebung, „Bewegung reduzieren“ wird beachtet.
    ========================================================== */
-:root { --io: cubic-bezier(.22, 1, .36, 1); --rule: color-mix(in oklab, currentColor 16%, transparent); }
+:root { --io: var(--ease-out); --rule: color-mix(in oklab, currentColor 16%, transparent); }
 
 /* Kniff 1 – verschachtelte Rundungen: innen = außen − Abstand */
 .subnav a, .subnav .sn-knob { border-radius: 14px; }                    /* 20 − 6 */
@@ -1754,7 +1745,7 @@ html[data-vt="hoch"]::view-transition-new(root) { animation: vt-up-in .42s var(-
 .room img { transition: scale .6s var(--io); }
 
 /* Übergang 35 – Strich wandert im Menü mit */
-.nav-line { position: absolute; left: 0; bottom: 4px; height: 2px; border-radius: 3px; background: var(--rose-deep); width: 0; opacity: 0; pointer-events: none; transition: translate .25s var(--io), width .25s var(--io), opacity .2s var(--io); }
+.nav-line { position: absolute; left: 0; bottom: 4px; height: 2px; width: 1px; transform-origin: 0 50%; background: var(--rose-deep); opacity: 0; pointer-events: none; transition: translate 200ms var(--ease-in-out), scale 200ms var(--ease-in-out), opacity 200ms var(--ease-out); }
 @media (max-width: 1180px) { .nav-line { display: none; } }
 .main-nav > ul { position: relative; }
 
@@ -1764,8 +1755,13 @@ html[data-vt="hoch"]::view-transition-new(root) { animation: vt-up-in .42s var(-
 .has-drop:hover .mega, .has-drop:focus-within .mega, .has-drop.open .mega { scale: 1; }
 
 /* Übergang 44 – Kopfleiste wird beim Scrollen Pixel für Pixel fester */
-.header-inner::before { background: rgb(var(--paper-rgb) / calc(.5 + var(--hp, 0) * .3)); box-shadow: 0 1px 0 rgb(var(--ink-rgb) / calc(var(--hp, 0) * .08)), 0 calc(10px + var(--hp, 0) * 8px) calc(30px + var(--hp, 0) * 10px) -18px rgb(var(--deep-rgb) / calc(.3 + var(--hp, 0) * .3)); transition: none; }
-.scrolled .header-inner::before { background: rgb(var(--paper-rgb) / calc(.5 + var(--hp, 0) * .3)); box-shadow: 0 1px 0 rgb(var(--ink-rgb) / calc(var(--hp, 0) * .08)), 0 calc(10px + var(--hp, 0) * 8px) calc(30px + var(--hp, 0) * 10px) -18px rgb(var(--deep-rgb) / calc(.3 + var(--hp, 0) * .3)); }
+.header-inner::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: rgb(var(--paper-rgb) / .3);
+  box-shadow: 0 1px 0 rgb(var(--ink-rgb) / .08), 0 18px 40px -18px rgb(var(--deep-rgb) / .6);
+  opacity: var(--hp, 0);
+}
+.nav-open .header-inner::after { opacity: 0; }
 .nav-open .header-inner::before { opacity: 0; }
 
 /* Übergang 45 – Wörter rollen um */
@@ -1875,6 +1871,15 @@ html { -webkit-tap-highlight-color: rgb(var(--ink-rgb) / .08); }
 .kb-pause .i-play, .kb-pause[aria-pressed="true"] .i-pause { display: none; }
 .kb-pause[aria-pressed="true"] .i-play { display: block; }
 .page-hero-card.kb-off .kb.on, .page-hero-card.kb-off > img.cam { animation-play-state: paused; }
+
+/* Hover-Bewegung nur mit echter Maus (Touch löst falsches Hover aus) */
+@media (hover: hover) and (pointer: fine) {
+  .hero-collage figure:hover { rotate: 0deg; scale: 1.03; z-index: 2; }
+  .area-card:hover { translate: 0 -6px; box-shadow: var(--shadow-lg); }
+  .area-card:hover .thumb img { scale: 1.06; }
+  .room:hover img { scale: 1.03; }
+  .tour-item button:hover img { scale: 1.05; }
+}
 
 .spa-page { display: none; }
 .spa-page.active { display: block; }
@@ -3167,7 +3172,9 @@ window.KITA = {
   };
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
   function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
-  var EASE_IO = "cubic-bezier(.65, 0, .35, 1)", EASE_OUT = "cubic-bezier(.23, 1, .32, 1)";
+  var CSSV = getComputedStyle(document.documentElement);
+  var EASE_IO = CSSV.getPropertyValue("--ease-in-out").trim() || "cubic-bezier(.65, 0, .35, 1)",
+      EASE_OUT = CSSV.getPropertyValue("--ease-out").trim() || "cubic-bezier(.23, 1, .32, 1)";
   /* Zustand in der Adresse (teilen, neu laden, zurück) */
   function getParam(k) { try { return new URLSearchParams(location.search).get(k); } catch (e) { return null; } }
   function setParam(k, v) { try { var u = new URL(location.href); if (v) u.searchParams.set(k, v); else u.searchParams.delete(k); history.replaceState(history.state, "", u); } catch (e) { /* file:// */ } }
@@ -3216,12 +3223,11 @@ window.KITA = {
   if (header) header.addEventListener("focusin", function () { header.classList.remove("hide"); });
 
   /* Handy-Tastatur: Höhe messen, damit nichts unter ihr verschwindet */
-  var vv = window.visualViewport;
+  var vv = window.visualViewport, lastKb = -1, lastVvh = -1;
   function onViewport() {
-    var kb = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
-    root.style.setProperty("--kb", kb + "px");
-    root.style.setProperty("--vvh", Math.round(vv.height) + "px");
-    root.classList.toggle("kb-open", kb > 80);
+    var kb = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop)), h = Math.round(vv.height);
+    if (kb !== lastKb) { lastKb = kb; root.style.setProperty("--kb", kb + "px"); root.classList.toggle("kb-open", kb > 80); }
+    if (h !== lastVvh) { lastVvh = h; root.style.setProperty("--vvh", h + "px"); }
   }
   if (vv) { vv.addEventListener("resize", onViewport); vv.addEventListener("scroll", onViewport); onViewport(); }
   /* Eingabefeld beim Antippen in den sichtbaren Bereich holen */
@@ -3275,14 +3281,13 @@ window.KITA = {
   function knobTo(ul, a) {
     var k = $(".subnav-knob", ul), first = !k;
     if (first) { k = document.createElement("li"); k.className = "subnav-knob"; k.setAttribute("aria-hidden", "true"); ul.insertBefore(k, ul.firstChild); }
-    var moved = !first && k.style.getPropertyValue("--kx") !== a.offsetLeft + "px";
     if (first) k.style.transition = "none";
+    k.style.setProperty("--sw", ul.scrollWidth + "px");
     k.style.setProperty("--kx", a.offsetLeft + "px");
     k.style.setProperty("--ky", a.offsetTop + "px");
     k.style.setProperty("--kw", a.offsetWidth + "px");
     k.style.setProperty("--kh", a.offsetHeight + "px");
     if (first) { void k.offsetWidth; k.style.transition = ""; k.classList.add("on"); }
-    else if (moved && !reduced) { k.classList.remove("moving"); void k.offsetWidth; k.classList.add("moving"); }
   }
   window.addEventListener("resize", function () {
     $$(".subnav ul").forEach(function (ul) { var a = $('a[aria-current="true"]', ul), k = $(".subnav-knob", ul); if (a && k) { k.style.transition = "none"; knobTo(ul, a); void k.offsetWidth; k.style.transition = ""; } });
@@ -4385,7 +4390,7 @@ window.KITA = {
   function slideKnob(group, btn, anim) {
     var k = $(".vs-knob", group); if (!k || !btn) return;
     if (!anim || reduced) k.style.transition = "none";
-    k.style.width = btn.offsetWidth + "px"; k.style.translate = btn.offsetLeft + "px 0";
+    k.style.setProperty("--vx", btn.offsetLeft + "px"); k.style.setProperty("--vw", btn.offsetWidth + "px");
     if (!anim || reduced) { void k.offsetWidth; k.style.transition = ""; }
   }
 
@@ -4431,7 +4436,7 @@ window.KITA = {
       if (showCal) render(0);
       var swap = function () { out.hidden = true; inn.hidden = false; extra.forEach(function (x) { if (x && showCal) x.dataset.wasHidden = x.hidden, x.hidden = true; else if (x && x.dataset.wasHidden) x.hidden = x.dataset.wasHidden === "true"; }); };
       if (!anim || reduced || !out.animate) { swap(); return; }
-      out.animate([{ opacity: 1 }, { opacity: 0, scale: .98 }], { duration: 140, easing: "ease-in" }).onfinish = function () { swap(); inn.animate([{ opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1 }], { duration: 240, easing: "cubic-bezier(.23,1,.32,1)" }); };
+      out.animate([{ opacity: 1 }, { opacity: 0, scale: .98 }], { duration: 120, easing: EASE_OUT }).onfinish = function () { swap(); inn.animate([{ opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1 }], { duration: 240, easing: EASE_OUT }); };
     }
     var btns = $$("button", sw);
     btns.forEach(function (b) { b.addEventListener("click", function () {
@@ -5089,7 +5094,7 @@ window.KITA = {
     function to(el) {
       if (!el || innerWidth <= 1180) { line.style.opacity = 0; return; }
       var r = el.getBoundingClientRect(), u = ul.getBoundingClientRect(), pad = 16;
-      line.style.width = (r.width - pad * 2) + "px"; line.style.translate = (r.left - u.left + pad) + "px 0"; line.style.opacity = 1;
+      line.style.scale = (r.width - pad * 2) + " 1"; line.style.translate = (r.left - u.left + pad) + "px 0"; line.style.opacity = 1;
     }
     $$(":scope > li > a:not(.nav-cta), :scope > li > .drop-toggle", ul).forEach(function (a) { a.addEventListener("mouseenter", function () { to(a); }); });
     ul.addEventListener("mouseleave", function () { line.style.opacity = 0; });
