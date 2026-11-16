@@ -228,7 +228,7 @@ strong, b { font-weight: 600; }
 .mega-col:nth-child(2) li { --c: 1; } .mega-col:nth-child(3) li { --c: 2; }
 
 .nav-toggle { position: relative; display: none; width: 46px; height: 46px; border-radius: var(--r-sm); border: 0; background: rgb(var(--ink-rgb) / .1); cursor: pointer; align-items: center; justify-content: center; }
-.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 3px; position: relative; transition: .25s var(--ease); }
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 3px; position: relative; transition: background .25s var(--ease), rotate .25s var(--ease), top .25s var(--ease); }
 .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
 .nav-toggle span::before { top: -7px; } .nav-toggle span::after { top: 7px; }
 .nav-open .nav-toggle span { background: transparent; }
@@ -402,7 +402,7 @@ strong, b { font-weight: 600; }
 .status-card { margin-top: 28px; border-radius: var(--r); padding: 20px 24px; box-shadow: var(--shadow); max-width: 480px; }
 .status-row { display: flex; align-items: center; gap: 12px; font-size: 1.0625rem; }
 .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ok); flex: none; position: relative; }
-.status-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: pulse 2.4s ease-out infinite; }
+.status-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: pulse 2.4s ease-out 2; }
 @keyframes pulse { from { opacity: .7; scale: 1; } to { opacity: 0; scale: 3.2; } }
 .is-closed .status-dot { background: var(--rose); }
 .is-closed .status-dot::after { animation: none; opacity: 0; }
@@ -475,7 +475,7 @@ strong, b { font-weight: 600; }
 .welcome { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 64px; align-items: center; }
 .welcome-photo { position: relative; }
 .welcome-photo img { width: 100%; max-width: 320px; border-radius: 50%; background: var(--rose); }
-.welcome-photo::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 2px dashed var(--ink); opacity: .45; animation: turn 80s linear infinite; }
+.welcome-photo::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 2px dashed var(--ink); opacity: .45; animation: turn 80s linear infinite paused; }
 @keyframes turn { to { rotate: 360deg; } }
 .welcome blockquote { margin: 0; font-size: 1.15rem; max-width: 68ch; }
 .welcome blockquote p:first-child::first-letter { font-family: var(--font-head); font-weight: 600; font-size: 3.4em; float: left; line-height: .82; padding: 6px 12px 0 0; }
@@ -1236,7 +1236,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .open-pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 0; border-radius: 10px; background: rgb(var(--ink-rgb) / .08); color: var(--ink); font: 600 .84rem var(--font-body); cursor: pointer; white-space: nowrap; transition: background var(--fast); }
 .open-pill:hover { background: rgb(var(--ink-rgb) / .14); }
 .open-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--state-open); flex: none; }
-.open-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--state-open); animation: open-ping 2s var(--ease-out) infinite; }
+.open-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--state-open); animation: open-ping 2s var(--ease-out) 2; }
 .open-pill.soon .open-dot { background: var(--state-soon); } .open-pill.soon .open-dot::after { border-color: var(--state-soon); }
 .open-pill.closed .open-dot { background: var(--state-closed); } .open-pill.closed .open-dot::after { display: none; }
 @keyframes open-ping { from { scale: .6; opacity: .9; } to { scale: 1.9; opacity: 0; } }
@@ -1274,7 +1274,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 
 /* 37 Wortwolke */
 .word-cloud { position: relative; height: 240px; margin: 36px auto 8px; max-width: 900px; }
-.word-cloud span { position: absolute; translate: -50% -50%; font: 600 1rem/1 var(--font-head); letter-spacing: -.02em; color: var(--ink); white-space: nowrap; transition: scale .3s var(--ease-out), color .2s; animation: cloud-float 7s ease-in-out infinite; animation-delay: var(--d); }
+.word-cloud span { position: absolute; translate: -50% -50%; font: 600 1rem/1 var(--font-head); letter-spacing: -.02em; color: var(--ink); white-space: nowrap; transition: scale .3s var(--ease-out), color .2s; animation: cloud-float 7s ease-in-out infinite paused; animation-delay: var(--d); }
 .word-cloud span:nth-child(3n) { color: var(--cloud-a); } .word-cloud span:nth-child(4n) { color: var(--cloud-b); }
 .word-cloud span:hover { scale: 1.2; color: var(--ink); }
 @keyframes cloud-float { 50% { translate: -50% calc(-50% - 6px); } }
@@ -1405,7 +1405,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .sugg button:hover { border-color: var(--ink); }
 .ask-form { display: flex; gap: 12px; padding: 16px; border-top: 1px solid var(--rule); }
 .ask-form input { flex: 1; min-width: 0; min-height: 48px; padding: 0 16px; border: 1.5px solid var(--rule); border-radius: 12px; background: #fff; color: var(--ink); font: 500 1rem var(--font-body); }
-.ask-form input:focus { outline: none; border-color: var(--ink); }
+.ask-form input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
 @media (max-width: 520px) { .ask-form { flex-direction: column; } }
 
 /* 58 Fehlerseite */
@@ -1639,8 +1639,9 @@ b, strong { font-weight: 600; }
 .site-footer { position: relative; }
 .foot-wave { position: absolute; left: 0; top: 1px; width: 100%; height: 48px; translate: 0 -100%; display: block; pointer-events: none; }
 .foot-wave path { fill: var(--deep); }
-.foot-wave .w2 { opacity: .45; animation: wave-a 14s ease-in-out infinite alternate; }
-.foot-wave .w1 { animation: wave-b 18s ease-in-out infinite alternate; }
+.foot-wave .w2 { opacity: .45; }
+.foot-wave.go .w2 { animation: wave-a 2.4s ease-in-out 2 alternate; }
+.foot-wave.go .w1 { animation: wave-b 2.4s ease-in-out 2 alternate; }
 @keyframes wave-a { to { translate: -40px 3px; } }
 @keyframes wave-b { to { translate: 30px -2px; } }
 .foot-wave { overflow: visible; }
@@ -1857,6 +1858,23 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
   }
   .page-hero-content p { text-shadow: 0 1px 12px rgb(var(--deep-rgb) / .5); }
 }
+
+/* ---------- Web Interface Guidelines (16.11.) ---------- */
+/* Schmuck-Bewegung läuft höchstens 5 s von selbst; sonst nur beim Überfahren */
+.welcome-photo:hover::before, .word-cloud:hover span { animation-play-state: running; }
+/* Überlagerungen geben das Scrollen nicht an die Seite weiter */
+.lightbox, .story-view, .app-dialog, .search-panel { overscroll-behavior: contain; }
+@media (max-width: 1180px) { .main-nav { overscroll-behavior: contain; } }
+/* schnelles Tippen ohne Zoom-Verzögerung, ruhige Tipp-Markierung */
+a, button, summary, label, input, [role="tab"] { touch-action: manipulation; }
+html { -webkit-tap-highlight-color: rgb(var(--ink-rgb) / .08); }
+/* Bildwechsel im Bereichskopf anhalten */
+.kb-pause { position: absolute; right: 16px; top: 16px; z-index: 3; width: 44px; height: 44px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgb(var(--deep-rgb) / .55); color: #fff; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background .14s var(--io); }
+.kb-pause:hover { background: rgb(var(--deep-rgb) / .8); }
+.kb-pause svg { width: 18px; height: 18px; fill: currentColor; }
+.kb-pause .i-play, .kb-pause[aria-pressed="true"] .i-pause { display: none; }
+.kb-pause[aria-pressed="true"] .i-play { display: block; }
+.page-hero-card.kb-off .kb.on, .page-hero-card.kb-off > img.cam { animation-play-state: paused; }
 
 .spa-page { display: none; }
 .spa-page.active { display: block; }
@@ -2094,7 +2112,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
     <div class="section-head"><span class="kicker">Elternbriefe</span><h2>Liebe Eltern!</h2><p>Alle Elternbriefe an einem Ort – der neueste steht oben.</p></div>
 
 <div class="briefe">
-  <div class="faq-search brief-search reveal" hidden><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="brief-suche" placeholder="Elternbriefe durchsuchen" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
+  <div class="faq-search brief-search reveal" hidden><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="brief-suche" name="brief" placeholder="Elternbriefe durchsuchen, z. B. Fasching …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
   <details class="brief reveal" open data-such="schließtage, fortbildungen und überstunden nach dem baykibig (bayerisches kinderbildungs- und betreuungsgesetz) dürfen kitas in bayern an 30 tagen im jahr schließen. fortbildungen, die in form von inhouseschulungen für alle mitarbeiterinnen und mitarbeiter durchgeführt werden, finden während unserer schließzeit statt. || unser personal arbeitet mit großem engagement. dadurch fallen im laufe eines kindergarten- und hortjahres überstunden an (z. b. st. martin, ferienfreizeit, lebensmittelsammlung, elternabende, weihnachtsmarkt, feste und feiern mit eltern und kindern …). diese überstunden gleichen unsere mitarbeiterinnen und mitarbeiter durch freizeit aus. || während der „schulferienzeiten“, in denen unsere einrichtung geöffnet hat (herbst, fasching, ostern, pfingsten, august), wird immer ein teil der erzieherinnen und erzieher die betreuung ihres kindes übernehmen und gleichzeitig werden einige erzieherinnen und erzieher ihre geleisteten überstunden frei nehmen können."><summary><span class="brief-t">Schließtage, Fortbildungen und Überstunden</span><small>Kita-Jahr 2026/27</small></summary><div><p>Nach dem <button type="button" class="term" data-term="BayKiBiG" aria-haspopup="dialog">BayKiBiG</button> (Bayerisches Kinderbildungs- und Betreuungsgesetz) dürfen Kitas in Bayern an 30 Tagen im Jahr schließen. Fortbildungen, die in Form von <button type="button" class="term" data-term="Inhouseschulungen" aria-haspopup="dialog">Inhouseschulungen</button> für alle Mitarbeiterinnen und Mitarbeiter durchgeführt werden, finden während unserer Schließzeit statt.</p><p>Unser Personal arbeitet mit großem Engagement. Dadurch fallen im Laufe eines Kindergarten- und Hortjahres Überstunden an (z. B. St. Martin, Ferienfreizeit, Lebensmittelsammlung, Elternabende, Weihnachtsmarkt, Feste und Feiern mit Eltern und Kindern …). Diese Überstunden gleichen unsere Mitarbeiterinnen und Mitarbeiter durch Freizeit aus.</p><p>Während der „Schulferienzeiten“, in denen unsere Einrichtung geöffnet hat (Herbst, Fasching, Ostern, Pfingsten, August), wird immer ein Teil der Erzieherinnen und Erzieher die Betreuung Ihres Kindes übernehmen und gleichzeitig werden einige Erzieherinnen und Erzieher ihre geleisteten Überstunden frei nehmen können.</p><p class="sign-off">Im Auftrag des Vorsitzenden<br>&lt;strong&gt;Petra Lachnit&lt;/strong&gt;<br>Einrichtungsleiterin</p></div></details>
   <p class="brief-empty muted" hidden>Kein Elternbrief gefunden.</p>
 </div>
@@ -2176,7 +2194,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
 </section><section class="section alt" id="fragen">
   <div class="container">
     <div class="section-head"><span class="kicker">Meist gestellte Fragen</span><h2>Häufige Fragen zur Kinderkrippe</h2></div>
-    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Müssen wir Windeln usw. für unser Kind mitbringen?</summary><div><p>Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause.</p></div></details><details class="reveal"><summary>Gibt es die Möglichkeit für mein Kind zum Schlafen?</summary><div><p>Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet.</p></div></details><details class="reveal"><summary>Ist die Zugehörigkeit zur katholischen Kirche notwendig?</summary><div><p>Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details><details class="reveal"><summary>Gibt es eine Eingewöhnungszeit?</summary><div><p>Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen.</p></div></details></div>
+    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" name="frage" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Müssen wir Windeln usw. für unser Kind mitbringen?</summary><div><p>Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause.</p></div></details><details class="reveal"><summary>Gibt es die Möglichkeit für mein Kind zum Schlafen?</summary><div><p>Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet.</p></div></details><details class="reveal"><summary>Ist die Zugehörigkeit zur katholischen Kirche notwendig?</summary><div><p>Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details><details class="reveal"><summary>Gibt es eine Eingewöhnungszeit?</summary><div><p>Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung ca. vier Wochen.</p></div></details></div>
   </div>
 </section><section class="section tight">
   <div class="container">
@@ -2268,7 +2286,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
 </section><section class="section alt" id="fragen">
   <div class="container">
     <div class="section-head"><span class="kicker">Meist gestellte Fragen</span><h2>Häufige Fragen zum Kindergarten</h2></div>
-    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Arbeitet der Kindergarten nach dem offenen Konzept?</summary><div><p>Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend.</p></div></details><details class="reveal"><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><div><p>Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details><details class="reveal"><summary>Wie verläuft die Eingewöhnung im Kindergarten?</summary><div><p>Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen.</p></div></details><details class="reveal"><summary>Inwieweit muss ich für die Verpflegung meines Kindes sorgen?</summary><div><p>Das warme Mittagessen wird von unserer hauseigenen Küche zubereitet. Für das Frühstück und den Nachmittagssnack, je nach Buchungszeit, richten Sie für Ihr Kind eine Brotzeit und eine Trinkflasche mit Wasser im Mehrwegbehälter.</p></div></details><details class="reveal"><summary>Ist die Zugehörigkeit zur katholischen Kirche notwendig?</summary><div><p>Nein. Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, beten vor dem Mittagessen, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details><details class="reveal"><summary>Sind die Schließtage in allen Abteilungen des Kinder- und Jugendhorts Grombühl gleich?</summary><div><p>Ja, wir haben in allen Abteilungen des Hauses an maximal 30 gleichen Tagen geschlossen.</p></div></details></div>
+    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" name="frage" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Arbeitet der Kindergarten nach dem offenen Konzept?</summary><div><p>Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend.</p></div></details><details class="reveal"><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><div><p>Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details><details class="reveal"><summary>Wie verläuft die Eingewöhnung im Kindergarten?</summary><div><p>Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen.</p></div></details><details class="reveal"><summary>Inwieweit muss ich für die Verpflegung meines Kindes sorgen?</summary><div><p>Das warme Mittagessen wird von unserer hauseigenen Küche zubereitet. Für das Frühstück und den Nachmittagssnack, je nach Buchungszeit, richten Sie für Ihr Kind eine Brotzeit und eine Trinkflasche mit Wasser im Mehrwegbehälter.</p></div></details><details class="reveal"><summary>Ist die Zugehörigkeit zur katholischen Kirche notwendig?</summary><div><p>Nein. Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, beten vor dem Mittagessen, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details><details class="reveal"><summary>Sind die Schließtage in allen Abteilungen des Kinder- und Jugendhorts Grombühl gleich?</summary><div><p>Ja, wir haben in allen Abteilungen des Hauses an maximal 30 gleichen Tagen geschlossen.</p></div></details></div>
   </div>
 </section><section class="section tight">
   <div class="container">
@@ -2372,7 +2390,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
 </section><section class="section " id="fragen">
   <div class="container">
     <div class="section-head"><span class="kicker">Meist gestellte Fragen</span><h2>Häufige Fragen zum Kinderhort</h2></div>
-    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Hat der Hort auch in den Schulferien geöffnet?</summary><div><p>In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr.</p></div></details><details class="reveal"><summary>Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?</summary><div><p>Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage.</p></div></details><details class="reveal"><summary>Braucht mein Kind im Hort eine Brotzeit?</summary><div><p>Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken.</p></div></details><details class="reveal"><summary>Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?</summary><div><p>Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.</p></div></details><details class="reveal"><summary>Kann ich mein Kind abholen, wann ich möchte?</summary><div><p>Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden.</p></div></details><details class="reveal"><summary>Kann ich mein Kind vor der Hausaufgabenzeit abholen?</summary><div><p>Unsere <button type="button" class="term" data-term="Mindestbuchungszeit" aria-haspopup="dialog">Mindestbuchungszeit</button> beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine.</p></div></details><details class="reveal"><summary>Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?</summary><div><p>Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">vorbereiteten Krankmeldung per E-Mail</a>.</p></div></details><details class="reveal"><summary>Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?</summary><div><p>Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung.</p></div></details></div>
+    <div class="faq"><div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input type="search" id="faq-suche" name="frage" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div><p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p><details class="reveal"><summary>Hat der Hort auch in den Schulferien geöffnet?</summary><div><p>In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr.</p></div></details><details class="reveal"><summary>Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?</summary><div><p>Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage.</p></div></details><details class="reveal"><summary>Braucht mein Kind im Hort eine Brotzeit?</summary><div><p>Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken.</p></div></details><details class="reveal"><summary>Was passiert, wenn mein Kind im Kinder- und Jugendhort Grombühl keine Hausaufgaben machen möchte?</summary><div><p>Die Hausaufgabenzeit im Hort ist ein fester Bestandteil des Tages. Sie beginnt für alle Kinder zur gleichen Zeit. Mit Ihrem Kind gehen alle anderen Kinder gemeinsam als Gruppe in die Hausaufgabenzeit. Dadurch sind die Hausaufgaben für jedes Kind selbstverständlich und wichtig.</p></div></details><details class="reveal"><summary>Kann ich mein Kind abholen, wann ich möchte?</summary><div><p>Die von Ihnen gebuchten Stunden stellen die Grundlage für die Förderung der Kita durch den Freistaat Bayern dar und müssen auch in diesem Umfang genutzt werden.</p></div></details><details class="reveal"><summary>Kann ich mein Kind vor der Hausaufgabenzeit abholen?</summary><div><p>Unsere <button type="button" class="term" data-term="Mindestbuchungszeit" aria-haspopup="dialog">Mindestbuchungszeit</button> beträgt 4 bis 5 Stunden, somit ist die Hausaufgabenzeit Bestandteil des Hortalltages. Ausnahmen bilden hier wichtige Arzttermine.</p></div></details><details class="reveal"><summary>Mein Kind kann nicht in die Einrichtung kommen (z. B. wegen Krankheit). Was muss ich tun?</summary><div><p>Bitte geben Sie uns in diesem Fall telefonisch oder per E-Mail Bescheid – am einfachsten mit unserer <a href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">vorbereiteten Krankmeldung per E-Mail</a>.</p></div></details><details class="reveal"><summary>Sie arbeiten mit einem gruppenübergreifenden Konzept. Was bedeutet das?</summary><div><p>Bei uns im Hort gibt es, abgesehen von der Hausaufgabenzeit, keine festen Gruppen. Die Kinder suchen sich ihre Spielbereiche und -partner selbst. Jeder Bereich ist mit einem Erzieher besetzt. So stehen den Kindern jederzeit alle Bereiche, wie etwa Garten oder Kreativraum, zur Verfügung.</p></div></details></div>
   </div>
 </section><section class="section tight">
   <div class="container">
@@ -2494,7 +2512,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
 
 <div class="ask reveal">
   <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
-  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“"><button class="btn btn-primary" type="submit">Fragen</button></form>
+  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
 </div>
   </div>
 </section><section class="section">
@@ -2503,7 +2521,7 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
       <div class="dial reveal" id="durchwahl-finden">
         <label for="durchwahl">Durchwahl finden</label>
-        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" name="gruppe" type="text" placeholder="Gruppe eingeben, z. B. Spatzen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
         <div class="dial-out" aria-live="polite"></div>
       </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">
@@ -3150,6 +3168,9 @@ window.KITA = {
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
   function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
   var EASE_IO = "cubic-bezier(.65, 0, .35, 1)", EASE_OUT = "cubic-bezier(.23, 1, .32, 1)";
+  /* Zustand in der Adresse (teilen, neu laden, zurück) */
+  function getParam(k) { try { return new URLSearchParams(location.search).get(k); } catch (e) { return null; } }
+  function setParam(k, v) { try { var u = new URL(location.href); if (v) u.searchParams.set(k, v); else u.searchParams.delete(k); history.replaceState(history.state, "", u); } catch (e) { /* file:// */ } }
   /* Text sicher in HTML einsetzen */
   function escH(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   /* nur eigene Seiten als Link zulassen (z. B. „kontakt.html#frag“) */
@@ -3535,7 +3556,7 @@ window.KITA = {
     dlg.innerHTML =
       '<span class="search-grip" aria-hidden="true"></span>' +
       '<div class="search-head">' + svg(ICON.search, 20) +
-      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
+      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" name="suche" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
       "<kbd>Esc</kbd></div>" +
       '<ul class="search-list" id="suchliste" role="listbox" aria-label="Treffer"></ul>' +
       '<div class="search-foot" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> auswählen</span><span><kbd>↵</kbd> öffnen</span><span><kbd>Esc</kbd> schließen</span></div>';
@@ -3681,7 +3702,8 @@ window.KITA = {
   function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
   var TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-  function fmt(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear(); }
+  var DF = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  function fmt(d) { return DF.format(d); }
   function fmtLong(d) { return TAGE[d.getDay()] + ", " + fmt(d); }
   var heute = iso(new Date());
 
@@ -4414,9 +4436,9 @@ window.KITA = {
     var btns = $$("button", sw);
     btns.forEach(function (b) { b.addEventListener("click", function () {
       if (b.getAttribute("aria-pressed") === "true") return;
-      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); slideKnob(sw, b, true); show(b.getAttribute("data-view"), true); store("termine-ansicht", b.getAttribute("data-view"));
+      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); slideKnob(sw, b, true); show(b.getAttribute("data-view"), true); store("termine-ansicht", b.getAttribute("data-view")); setParam("ansicht", b.getAttribute("data-view") === "cal" ? "kalender" : null);
     }); });
-    var pref = store("termine-ansicht") === "cal" ? btns[1] : btns[0];
+    var want = getParam("ansicht"), pref = (want ? want === "kalender" : store("termine-ansicht") === "cal") ? btns[1] : btns[0];
     btns.forEach(function (x) { x.setAttribute("aria-pressed", x === pref); });
     requestAnimationFrame(function () { slideKnob(sw, pref, false); });
     if (pref === btns[1]) show("cal", false);
@@ -4498,13 +4520,14 @@ window.KITA = {
       slideKnob(tl, t, anim); if (focus) t.focus();
     }
     tabs.forEach(function (t, i) {
-      t.addEventListener("click", function () { pick(t, false, true); });
+      t.addEventListener("click", function () { pick(t, false, true); setParam("abo", t.textContent.trim().toLowerCase().split(/\s|\//)[0]); });
       t.addEventListener("keydown", function (e) {
         var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
         if (j === null) return; e.preventDefault(); pick(tabs[(j + tabs.length) % tabs.length], true, true);
       });
     });
-    var ua = navigator.userAgent, start = /Android/i.test(ua) ? tabs[1] : /iPhone|iPad|Macintosh/.test(ua) ? tabs[0] : /Windows/.test(ua) ? tabs[2] : tabs[0];
+    var wantTab = getParam("abo"), byParam = wantTab && tabs.filter(function (t) { return t.textContent.trim().toLowerCase().indexOf(wantTab) === 0; })[0];
+    var ua = navigator.userAgent, start = byParam ? byParam : /Android/i.test(ua) ? tabs[1] : /iPhone|iPad|Macintosh/.test(ua) ? tabs[0] : /Windows/.test(ua) ? tabs[2] : tabs[0];
     requestAnimationFrame(function () { pick(start, false, false); });
     addEventListener("resize", function () { slideKnob(tl, $('[aria-selected="true"]', tl), false); });
   })();
@@ -4525,7 +4548,7 @@ window.KITA = {
     function add(cls, node) { var m = document.createElement("div"); m.className = "msg " + cls; if (typeof node === "string") m.textContent = node; else m.appendChild(node); log.appendChild(m); log.scrollTop = log.scrollHeight; return m; }
     function ask(q) {
       add("me", q);
-      var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht");
+      var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht …");
       setTimeout(function () {
         ty.remove(); var f = best(q), frag = document.createDocumentFragment();
         if (f) {
@@ -4659,7 +4682,7 @@ window.KITA = {
 
   /* ---------- Wimpel-Ladeanzeige bei langsamem Seitenwechsel ---------- */
   (function () {
-    var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen");
+    var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen …");
     l.innerHTML = '<span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>';
     document.body.appendChild(l);
   })();
@@ -4924,9 +4947,11 @@ window.KITA = {
     $$("button", box).forEach(function (b) {
       b.addEventListener("click", function () {
         $$("button", box).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-        on = b.dataset.t ? T[+b.dataset.t] : null; apply();
+        on = b.dataset.t ? T[+b.dataset.t] : null; apply(); setParam("thema", on ? on[0].toLowerCase().split(" ")[0] : null);
       });
     });
+    var wantT = getParam("thema");
+    if (wantT) $$("button", box).forEach(function (b) { if (b.dataset.t && T[+b.dataset.t][0].toLowerCase().indexOf(wantT) === 0) b.click(); });
     input.addEventListener("input", function (e) { if (e.isTrusted && on) setTimeout(function () { items.forEach(function (d) { if (!on[1].test(d.textContent.toLowerCase())) d.hidden = true; }); }, 0); });
   })();
 
@@ -4965,6 +4990,9 @@ window.KITA = {
     /* danach wieder normaler Text (Vorlesen, Kopieren) */
     setTimeout(function () { $$(".ch", ls).forEach(function (c) { c.replaceWith(c.textContent); }); ls.normalize(); ls.classList.remove("typing"); ls.removeAttribute("aria-label"); }, n * 22 + 400);
   })();
+
+  /* Idee 101 – Welle bewegt sich kurz, wenn der Fußbereich erscheint (höchstens 5 s) */
+  if (!reduced) seen($$(".foot-wave"), function (w) { w.classList.add("go"); }, "0px");
 
   /* Idee 107 – Schwung unter der Unterschrift */
   seen($$(".sig-swash"), function (el) { el.classList.add("go"); });
@@ -5030,7 +5058,12 @@ window.KITA = {
       function go() { layers.forEach(function (l) { l.classList.remove("on"); }); void im.offsetWidth; im.classList.add("on"); i = nx; }
       if (im.complete && im.naturalWidth) go(); else im.addEventListener("load", go, { once: true });
     }
-    function run(on) { clearInterval(t); t = on ? setInterval(next, 6500) : null; }
+    var paused = false, pb = document.createElement("button");
+    pb.type = "button"; pb.className = "kb-pause"; pb.setAttribute("aria-pressed", "false"); pb.setAttribute("aria-label", "Bildwechsel anhalten");
+    pb.innerHTML = '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.7l-10-6.6A1 1 0 0 0 8 5.5z"/></svg>';
+    card.appendChild(pb);
+    pb.addEventListener("click", function () { paused = !paused; pb.setAttribute("aria-pressed", paused); pb.setAttribute("aria-label", paused ? "Bildwechsel fortsetzen" : "Bildwechsel anhalten"); card.classList.toggle("kb-off", paused); run(!paused); });
+    function run(on) { clearInterval(t); t = on && !paused ? setInterval(next, 6500) : null; }
     if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { run(es[0].isIntersecting && !document.hidden); }).observe(card);
     document.addEventListener("visibilitychange", function () { run(!document.hidden && card.getBoundingClientRect().bottom > 0); });
   })();

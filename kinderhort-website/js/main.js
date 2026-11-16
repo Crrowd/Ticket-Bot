@@ -20,6 +20,9 @@
   /* Gummiband: hinter einer Grenze folgt das Element dem Finger mit wachsendem Widerstand */
   function rubber(x, d) { var s = x < 0 ? -1 : 1; x = Math.abs(x); return s * (1 - 1 / (x * 0.55 / d + 1)) * d; }
   var EASE_IO = "cubic-bezier(.65, 0, .35, 1)", EASE_OUT = "cubic-bezier(.23, 1, .32, 1)";
+  /* Zustand in der Adresse (teilen, neu laden, zurück) */
+  function getParam(k) { try { return new URLSearchParams(location.search).get(k); } catch (e) { return null; } }
+  function setParam(k, v) { try { var u = new URL(location.href); if (v) u.searchParams.set(k, v); else u.searchParams.delete(k); history.replaceState(history.state, "", u); } catch (e) { /* file:// */ } }
   /* Text sicher in HTML einsetzen */
   function escH(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   /* nur eigene Seiten als Link zulassen (z. B. „kontakt.html#frag“) */
@@ -405,7 +408,7 @@
     dlg.innerHTML =
       '<span class="search-grip" aria-hidden="true"></span>' +
       '<div class="search-head">' + svg(ICON.search, 20) +
-      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
+      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" name="suche" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
       "<kbd>Esc</kbd></div>" +
       '<ul class="search-list" id="suchliste" role="listbox" aria-label="Treffer"></ul>' +
       '<div class="search-foot" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> auswählen</span><span><kbd>↵</kbd> öffnen</span><span><kbd>Esc</kbd> schließen</span></div>';
@@ -551,7 +554,8 @@
   function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
   var TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-  function fmt(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear(); }
+  var DF = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  function fmt(d) { return DF.format(d); }
   function fmtLong(d) { return TAGE[d.getDay()] + ", " + fmt(d); }
   var heute = iso(new Date());
 
@@ -1284,9 +1288,9 @@
     var btns = $$("button", sw);
     btns.forEach(function (b) { b.addEventListener("click", function () {
       if (b.getAttribute("aria-pressed") === "true") return;
-      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); slideKnob(sw, b, true); show(b.getAttribute("data-view"), true); store("termine-ansicht", b.getAttribute("data-view"));
+      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); slideKnob(sw, b, true); show(b.getAttribute("data-view"), true); store("termine-ansicht", b.getAttribute("data-view")); setParam("ansicht", b.getAttribute("data-view") === "cal" ? "kalender" : null);
     }); });
-    var pref = store("termine-ansicht") === "cal" ? btns[1] : btns[0];
+    var want = getParam("ansicht"), pref = (want ? want === "kalender" : store("termine-ansicht") === "cal") ? btns[1] : btns[0];
     btns.forEach(function (x) { x.setAttribute("aria-pressed", x === pref); });
     requestAnimationFrame(function () { slideKnob(sw, pref, false); });
     if (pref === btns[1]) show("cal", false);
@@ -1368,13 +1372,14 @@
       slideKnob(tl, t, anim); if (focus) t.focus();
     }
     tabs.forEach(function (t, i) {
-      t.addEventListener("click", function () { pick(t, false, true); });
+      t.addEventListener("click", function () { pick(t, false, true); setParam("abo", t.textContent.trim().toLowerCase().split(/\s|\//)[0]); });
       t.addEventListener("keydown", function (e) {
         var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
         if (j === null) return; e.preventDefault(); pick(tabs[(j + tabs.length) % tabs.length], true, true);
       });
     });
-    var ua = navigator.userAgent, start = /Android/i.test(ua) ? tabs[1] : /iPhone|iPad|Macintosh/.test(ua) ? tabs[0] : /Windows/.test(ua) ? tabs[2] : tabs[0];
+    var wantTab = getParam("abo"), byParam = wantTab && tabs.filter(function (t) { return t.textContent.trim().toLowerCase().indexOf(wantTab) === 0; })[0];
+    var ua = navigator.userAgent, start = byParam ? byParam : /Android/i.test(ua) ? tabs[1] : /iPhone|iPad|Macintosh/.test(ua) ? tabs[0] : /Windows/.test(ua) ? tabs[2] : tabs[0];
     requestAnimationFrame(function () { pick(start, false, false); });
     addEventListener("resize", function () { slideKnob(tl, $('[aria-selected="true"]', tl), false); });
   })();
@@ -1395,7 +1400,7 @@
     function add(cls, node) { var m = document.createElement("div"); m.className = "msg " + cls; if (typeof node === "string") m.textContent = node; else m.appendChild(node); log.appendChild(m); log.scrollTop = log.scrollHeight; return m; }
     function ask(q) {
       add("me", q);
-      var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht");
+      var ty = add("bot typing", document.createDocumentFragment()); ty.innerHTML = "<i></i><i></i><i></i>"; ty.setAttribute("aria-label", "Antwort wird gesucht …");
       setTimeout(function () {
         ty.remove(); var f = best(q), frag = document.createDocumentFragment();
         if (f) {
@@ -1529,7 +1534,7 @@
 
   /* ---------- Wimpel-Ladeanzeige bei langsamem Seitenwechsel ---------- */
   (function () {
-    var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen");
+    var l = document.createElement("div"); l.className = "nav-loader"; l.setAttribute("role", "status"); l.setAttribute("aria-label", "Seite wird geladen …");
     l.innerHTML = '<span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>';
     document.body.appendChild(l);
   })();
@@ -1794,9 +1799,11 @@
     $$("button", box).forEach(function (b) {
       b.addEventListener("click", function () {
         $$("button", box).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-        on = b.dataset.t ? T[+b.dataset.t] : null; apply();
+        on = b.dataset.t ? T[+b.dataset.t] : null; apply(); setParam("thema", on ? on[0].toLowerCase().split(" ")[0] : null);
       });
     });
+    var wantT = getParam("thema");
+    if (wantT) $$("button", box).forEach(function (b) { if (b.dataset.t && T[+b.dataset.t][0].toLowerCase().indexOf(wantT) === 0) b.click(); });
     input.addEventListener("input", function (e) { if (e.isTrusted && on) setTimeout(function () { items.forEach(function (d) { if (!on[1].test(d.textContent.toLowerCase())) d.hidden = true; }); }, 0); });
   })();
 
@@ -1835,6 +1842,9 @@
     /* danach wieder normaler Text (Vorlesen, Kopieren) */
     setTimeout(function () { $$(".ch", ls).forEach(function (c) { c.replaceWith(c.textContent); }); ls.normalize(); ls.classList.remove("typing"); ls.removeAttribute("aria-label"); }, n * 22 + 400);
   })();
+
+  /* Idee 101 – Welle bewegt sich kurz, wenn der Fußbereich erscheint (höchstens 5 s) */
+  if (!reduced) seen($$(".foot-wave"), function (w) { w.classList.add("go"); }, "0px");
 
   /* Idee 107 – Schwung unter der Unterschrift */
   seen($$(".sig-swash"), function (el) { el.classList.add("go"); });
@@ -1900,7 +1910,12 @@
       function go() { layers.forEach(function (l) { l.classList.remove("on"); }); void im.offsetWidth; im.classList.add("on"); i = nx; }
       if (im.complete && im.naturalWidth) go(); else im.addEventListener("load", go, { once: true });
     }
-    function run(on) { clearInterval(t); t = on ? setInterval(next, 6500) : null; }
+    var paused = false, pb = document.createElement("button");
+    pb.type = "button"; pb.className = "kb-pause"; pb.setAttribute("aria-pressed", "false"); pb.setAttribute("aria-label", "Bildwechsel anhalten");
+    pb.innerHTML = '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.7l-10-6.6A1 1 0 0 0 8 5.5z"/></svg>';
+    card.appendChild(pb);
+    pb.addEventListener("click", function () { paused = !paused; pb.setAttribute("aria-pressed", paused); pb.setAttribute("aria-label", paused ? "Bildwechsel fortsetzen" : "Bildwechsel anhalten"); card.classList.toggle("kb-off", paused); run(!paused); });
+    function run(on) { clearInterval(t); t = on && !paused ? setInterval(next, 6500) : null; }
     if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { run(es[0].isIntersecting && !document.hidden); }).observe(card);
     document.addEventListener("visibilitychange", function () { run(!document.hidden && card.getBoundingClientRect().bottom > 0); });
   })();

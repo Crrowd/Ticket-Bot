@@ -221,7 +221,7 @@ strong, b { font-weight: 600; }
 .mega-col:nth-child(2) li { --c: 1; } .mega-col:nth-child(3) li { --c: 2; }
 
 .nav-toggle { position: relative; display: none; width: 46px; height: 46px; border-radius: var(--r-sm); border: 0; background: rgb(var(--ink-rgb) / .1); cursor: pointer; align-items: center; justify-content: center; }
-.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 3px; position: relative; transition: .25s var(--ease); }
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 3px; position: relative; transition: background .25s var(--ease), rotate .25s var(--ease), top .25s var(--ease); }
 .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
 .nav-toggle span::before { top: -7px; } .nav-toggle span::after { top: 7px; }
 .nav-open .nav-toggle span { background: transparent; }
@@ -395,7 +395,7 @@ strong, b { font-weight: 600; }
 .status-card { margin-top: 28px; border-radius: var(--r); padding: 20px 24px; box-shadow: var(--shadow); max-width: 480px; }
 .status-row { display: flex; align-items: center; gap: 12px; font-size: 1.0625rem; }
 .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ok); flex: none; position: relative; }
-.status-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: pulse 2.4s ease-out infinite; }
+.status-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: pulse 2.4s ease-out 2; }
 @keyframes pulse { from { opacity: .7; scale: 1; } to { opacity: 0; scale: 3.2; } }
 .is-closed .status-dot { background: var(--rose); }
 .is-closed .status-dot::after { animation: none; opacity: 0; }
@@ -468,7 +468,7 @@ strong, b { font-weight: 600; }
 .welcome { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 64px; align-items: center; }
 .welcome-photo { position: relative; }
 .welcome-photo img { width: 100%; max-width: 320px; border-radius: 50%; background: var(--rose); }
-.welcome-photo::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 2px dashed var(--ink); opacity: .45; animation: turn 80s linear infinite; }
+.welcome-photo::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 2px dashed var(--ink); opacity: .45; animation: turn 80s linear infinite paused; }
 @keyframes turn { to { rotate: 360deg; } }
 .welcome blockquote { margin: 0; font-size: 1.15rem; max-width: 68ch; }
 .welcome blockquote p:first-child::first-letter { font-family: var(--font-head); font-weight: 600; font-size: 3.4em; float: left; line-height: .82; padding: 6px 12px 0 0; }
@@ -1229,7 +1229,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .open-pill { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 0; border-radius: 10px; background: rgb(var(--ink-rgb) / .08); color: var(--ink); font: 600 .84rem var(--font-body); cursor: pointer; white-space: nowrap; transition: background var(--fast); }
 .open-pill:hover { background: rgb(var(--ink-rgb) / .14); }
 .open-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--state-open); flex: none; }
-.open-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--state-open); animation: open-ping 2s var(--ease-out) infinite; }
+.open-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--state-open); animation: open-ping 2s var(--ease-out) 2; }
 .open-pill.soon .open-dot { background: var(--state-soon); } .open-pill.soon .open-dot::after { border-color: var(--state-soon); }
 .open-pill.closed .open-dot { background: var(--state-closed); } .open-pill.closed .open-dot::after { display: none; }
 @keyframes open-ping { from { scale: .6; opacity: .9; } to { scale: 1.9; opacity: 0; } }
@@ -1267,7 +1267,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 
 /* 37 Wortwolke */
 .word-cloud { position: relative; height: 240px; margin: 36px auto 8px; max-width: 900px; }
-.word-cloud span { position: absolute; translate: -50% -50%; font: 600 1rem/1 var(--font-head); letter-spacing: -.02em; color: var(--ink); white-space: nowrap; transition: scale .3s var(--ease-out), color .2s; animation: cloud-float 7s ease-in-out infinite; animation-delay: var(--d); }
+.word-cloud span { position: absolute; translate: -50% -50%; font: 600 1rem/1 var(--font-head); letter-spacing: -.02em; color: var(--ink); white-space: nowrap; transition: scale .3s var(--ease-out), color .2s; animation: cloud-float 7s ease-in-out infinite paused; animation-delay: var(--d); }
 .word-cloud span:nth-child(3n) { color: var(--cloud-a); } .word-cloud span:nth-child(4n) { color: var(--cloud-b); }
 .word-cloud span:hover { scale: 1.2; color: var(--ink); }
 @keyframes cloud-float { 50% { translate: -50% calc(-50% - 6px); } }
@@ -1398,7 +1398,7 @@ h2.words.go .hw > span { translate: 0 0; transition: translate .7s var(--ease-ou
 .sugg button:hover { border-color: var(--ink); }
 .ask-form { display: flex; gap: 12px; padding: 16px; border-top: 1px solid var(--rule); }
 .ask-form input { flex: 1; min-width: 0; min-height: 48px; padding: 0 16px; border: 1.5px solid var(--rule); border-radius: 12px; background: #fff; color: var(--ink); font: 500 1rem var(--font-body); }
-.ask-form input:focus { outline: none; border-color: var(--ink); }
+.ask-form input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
 @media (max-width: 520px) { .ask-form { flex-direction: column; } }
 
 /* 58 Fehlerseite */
@@ -1632,8 +1632,9 @@ b, strong { font-weight: 600; }
 .site-footer { position: relative; }
 .foot-wave { position: absolute; left: 0; top: 1px; width: 100%; height: 48px; translate: 0 -100%; display: block; pointer-events: none; }
 .foot-wave path { fill: var(--deep); }
-.foot-wave .w2 { opacity: .45; animation: wave-a 14s ease-in-out infinite alternate; }
-.foot-wave .w1 { animation: wave-b 18s ease-in-out infinite alternate; }
+.foot-wave .w2 { opacity: .45; }
+.foot-wave.go .w2 { animation: wave-a 2.4s ease-in-out 2 alternate; }
+.foot-wave.go .w1 { animation: wave-b 2.4s ease-in-out 2 alternate; }
 @keyframes wave-a { to { translate: -40px 3px; } }
 @keyframes wave-b { to { translate: 30px -2px; } }
 .foot-wave { overflow: visible; }
@@ -1850,3 +1851,20 @@ p, li, dd, td, figcaption, summary { overflow-wrap: break-word; }
   }
   .page-hero-content p { text-shadow: 0 1px 12px rgb(var(--deep-rgb) / .5); }
 }
+
+/* ---------- Web Interface Guidelines (16.11.) ---------- */
+/* Schmuck-Bewegung läuft höchstens 5 s von selbst; sonst nur beim Überfahren */
+.welcome-photo:hover::before, .word-cloud:hover span { animation-play-state: running; }
+/* Überlagerungen geben das Scrollen nicht an die Seite weiter */
+.lightbox, .story-view, .app-dialog, .search-panel { overscroll-behavior: contain; }
+@media (max-width: 1180px) { .main-nav { overscroll-behavior: contain; } }
+/* schnelles Tippen ohne Zoom-Verzögerung, ruhige Tipp-Markierung */
+a, button, summary, label, input, [role="tab"] { touch-action: manipulation; }
+html { -webkit-tap-highlight-color: rgb(var(--ink-rgb) / .08); }
+/* Bildwechsel im Bereichskopf anhalten */
+.kb-pause { position: absolute; right: 16px; top: 16px; z-index: 3; width: 44px; height: 44px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgb(var(--deep-rgb) / .55); color: #fff; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background .14s var(--io); }
+.kb-pause:hover { background: rgb(var(--deep-rgb) / .8); }
+.kb-pause svg { width: 18px; height: 18px; fill: currentColor; }
+.kb-pause .i-play, .kb-pause[aria-pressed="true"] .i-pause { display: none; }
+.kb-pause[aria-pressed="true"] .i-play { display: block; }
+.page-hero-card.kb-off .kb.on, .page-hero-card.kb-off > img.cam { animation-play-state: paused; }

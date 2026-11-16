@@ -446,7 +446,7 @@ def faq(items):
     for q, a in items:
         out.append(f'<details class="reveal"><summary>{q}</summary><div><p>{a}</p></div></details>')
     search = ('<div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label>'
-              f'{icon("search", 20)}<input type="search" id="faq-suche" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln" autocomplete="off" enterkeyhint="search">'
+              f'{icon("search", 20)}<input type="search" id="faq-suche" name="frage" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln …" autocomplete="off" enterkeyhint="search">'
               '<span class="faq-count" aria-live="polite"></span></div>'
               '<p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p>')
     return '<div class="faq">' + search + "".join(out) + "</div>"
@@ -1032,7 +1032,7 @@ def brief(i, r):
             f'<summary><span class="brief-t">{e(r["Titel"])}</span><small>{e(r["Stand"])}</small></summary><div>{paras}{gruss}</div></details>')
 akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle Elternbriefe an einem Ort – der neueste steht oben.", f'''
 <div class="briefe">
-  <div class="faq-search brief-search reveal"{" hidden" if len(BRIEFE) < 2 else ""}><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label>{icon("search", 20)}<input type="search" id="brief-suche" placeholder="Elternbriefe durchsuchen" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
+  <div class="faq-search brief-search reveal"{" hidden" if len(BRIEFE) < 2 else ""}><label class="visually-hidden" for="brief-suche">Elternbriefe durchsuchen</label>{icon("search", 20)}<input type="search" id="brief-suche" name="brief" placeholder="Elternbriefe durchsuchen, z. B. Fasching …" autocomplete="off" enterkeyhint="search"><span class="faq-count" aria-live="polite"></span></div>
   {"".join(brief(i, r) for i, r in enumerate(BRIEFE))}
   <p class="brief-empty muted" hidden>Kein Elternbrief gefunden.</p>
 </div>''', cls="alt")
@@ -1141,7 +1141,7 @@ kon += f'''<section class="section tight" id="schnell">
 kon += section("frag", "Schnelle Antwort", "Fragen Sie einfach", "Tippen Sie Ihre Frage ein – die Antwort kommt aus unseren häufigen Fragen. Findet sich nichts, rufen Sie uns gern an.", f'''
 <div class="ask reveal">
   <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
-  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“"><button class="btn btn-primary" type="submit">Fragen</button></form>
+  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
 </div>''', cls="tight alt")
 kon += f'''<section class="section">
   <div class="container contact-grid">
@@ -1149,7 +1149,7 @@ kon += f'''<section class="section">
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
       <div class="dial reveal" id="durchwahl-finden">
         <label for="durchwahl">Durchwahl finden</label>
-        <div class="dial-field">{icon("search", 20)}<input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-field">{icon("search", 20)}<input id="durchwahl" name="gruppe" type="text" placeholder="Gruppe eingeben, z. B. Spatzen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
         <div class="dial-out" aria-live="polite"></div>
       </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">

@@ -81,7 +81,7 @@
 
 <div class="ask reveal">
   <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
-  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“"><button class="btn btn-primary" type="submit">Fragen</button></form>
+  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
 </div>
   </div>
 </section><section class="section">
@@ -90,7 +90,7 @@
       <h2 class="visually-hidden">Durchwahlen der Gruppen</h2>
       <div class="dial reveal" id="durchwahl-finden">
         <label for="durchwahl">Durchwahl finden</label>
-        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" type="text" placeholder="Gruppe eingeben, z. B. Spatzen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
+        <div class="dial-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="durchwahl" name="gruppe" type="text" placeholder="Gruppe eingeben, z. B. Spatzen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></div>
         <div class="dial-out" aria-live="polite"></div>
       </div>
       <div class="phone-card theme-krippe reveal"><h3><span class="dot"></span>Kinderkrippe</h3><ul class="phone-list">

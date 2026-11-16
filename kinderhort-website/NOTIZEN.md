@@ -285,6 +285,14 @@ Entscheidung offen (Auswahl direkt im Katalog).
 
 Entscheidung offen (Auswahl direkt im Katalog).
 
+## Web Interface Guidelines (16.11.2026)
+Geprüft gegen die Vercel-Richtlinien und behoben:
+- Schmuck-Bewegung läuft höchstens 5 s von selbst (WCAG 2.2.2): Status- und Geöffnet-Punkt pulsieren 2×, die Welle bewegt sich kurz beim Erscheinen des Fußbereichs, Ring ums Leitungsfoto und Wortwolke bewegen sich nur beim Überfahren. Bildwechsel im Bereichskopf hat einen Pause-Knopf (oben rechts).
+- Zustand in der Adresse: `?thema=essen` (Fragen), `?ansicht=kalender` (Termine), `?abo=android` (Kalender-Abo) – teilbar und neu ladbar.
+- Felder mit `name`, Platzhalter mit „…“, Ladehinweise mit „…“, Datum über `Intl.DateTimeFormat`.
+- Fokus im Fragen-Helfer über `:focus-visible`; keine verdeckte `transition: all` mehr.
+- Überlagerungen (Bildansicht, Geschichte, App-Fenster, Suche, Handy-Menü) geben das Scrollen nicht an die Seite weiter; schnelles Tippen ohne Zoom-Verzögerung, ruhige Tipp-Markierung.
+
 ## impeccable: polish · harden · document · typeset (16.11.2026)
 Audit vorher 14/20. Umgesetzt:
 - **polish:** keine Feder-Kurven mehr (Download-Haken, App-Symbol); Etikett am Handy 0.8rem ohne Sperrung; farbige Streifen an runden Karten entfernt (Downloads, Anschrift, Kurzinfo, Hinweis, Räume ohne Bild); Auswahlfarbe, Cursor, Scrollleiste, Unterstreichung im Palettenton.
