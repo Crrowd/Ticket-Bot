@@ -37,9 +37,9 @@ def phone(v, name, text):
 
 PHONES = "".join([
     phone("heute", "Heute", "Leiste rutscht ganz nach oben weg"),
-    phone("d", "D · Wird zur Linie", "Klappt zu einer dünnen Linie zusammen, die zeigt, wie weit man gelesen hat. Tippen holt sie zurück."),
-    phone("e", "E · Kommt beim Anhalten", "Blendet beim Scrollen leise aus und taucht wieder auf, sobald man kurz anhält"),
-    phone("f", "F · Seitliche Lasche", "Gleitet nach rechts aus dem Bild, nur eine kleine Lasche mit dem Logo bleibt am Rand"),
+    phone("g", "G · Zur Mitte zusammenziehen", "Inhalt blendet aus, dann zieht sich die Leiste zur Mitte zusammen und ist weg"),
+    phone("h", "H · Nach oben wegklappen", "Klappt wie eine Klappe nach oben weg und verschwindet"),
+    phone("i", "I · Nacheinander", "Menü, Lupe, Name und Logo gehen nacheinander, zuletzt die Leiste selbst"),
 ])
 
 html = f'''<title>Leiste beim Scrollen</title>
@@ -90,23 +90,28 @@ h1 {{ margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; text-
 /* Heute */
 .phone[data-v="heute"] .bar {{ transition: translate .25s cubic-bezier(.23,1,.32,1); }}
 .phone[data-v="heute"] .bar.hide {{ translate: 0 calc(-100% - 8px); transition-duration: .2s; }}
-/* D: wird zur Linie (mit Lesefortschritt) */
-.phone[data-v="d"] .pill {{ overflow: hidden; max-height: 80px; transition: max-height .45s cubic-bezier(.23,1,.32,1), min-height .45s cubic-bezier(.23,1,.32,1), padding .45s cubic-bezier(.23,1,.32,1), border-radius .45s cubic-bezier(.23,1,.32,1), background-color .3s, box-shadow .3s; }}
-.phone[data-v="d"] .pill > * {{ transition: opacity .2s ease; }}
-.phone[data-v="d"] .pill::after {{ content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--fort, 0) * 100%); background: #D4B5B0; border-radius: inherit; opacity: 0; transition: opacity .3s; }}
-.phone[data-v="d"] .bar.hide .pill {{ min-height: 5px; max-height: 5px; padding: 0; border-radius: 3px; background: rgba(243,248,247,.55); box-shadow: none; cursor: pointer; }}
-.phone[data-v="d"] .bar.hide .pill > * {{ opacity: 0; }}
-.phone[data-v="d"] .bar.hide .pill::after {{ opacity: 1; }}
-.phone[data-v="d"] .bar.hide {{ padding-top: 6px; }}
-.phone[data-v="d"] .bar {{ height: 64px; box-sizing: border-box; transition: padding .45s cubic-bezier(.23,1,.32,1); }}
-/* E: kommt beim Anhalten zurück */
-.phone[data-v="e"] .bar {{ transition: opacity .5s ease, translate .6s cubic-bezier(.23,1,.32,1); }}
-.phone[data-v="e"] .bar.hide {{ opacity: 0; translate: 0 -14px; pointer-events: none; transition-duration: .25s, .3s; }}
-/* F: seitliche Lasche */
-.phone[data-v="f"] .pill {{ transition: translate .5s cubic-bezier(.23,1,.32,1), border-radius .5s cubic-bezier(.23,1,.32,1); }}
-.phone[data-v="f"] .bar {{ transition: padding .5s cubic-bezier(.23,1,.32,1); }}
-.phone[data-v="f"] .bar.hide {{ padding-right: 0; }}
-.phone[data-v="f"] .bar.hide .pill {{ translate: calc(100% - 52px) 0; border-radius: 18px 0 0 18px; cursor: pointer; }}
+/* G: zur Mitte zusammenziehen */
+.phone[data-v="g"] .pill {{ clip-path: inset(0 0 0 0 round 18px); transition: clip-path .45s cubic-bezier(.65,0,.35,1), opacity .2s ease .35s; }}
+.phone[data-v="g"] .pill > * {{ transition: opacity .25s ease .2s; }}
+.phone[data-v="g"] .bar.hide .pill {{ clip-path: inset(0 50% 0 50% round 18px); opacity: 0; transition: clip-path .45s cubic-bezier(.65,0,.35,1) .12s, opacity .2s ease .45s; pointer-events: none; }}
+.phone[data-v="g"] .bar.hide .pill > * {{ opacity: 0; transition-delay: 0s; transition-duration: .15s; }}
+/* H: nach oben wegklappen */
+.phone[data-v="h"] .bar {{ perspective: 700px; }}
+.phone[data-v="h"] .pill {{ transform-origin: 50% 0; transition: transform .5s cubic-bezier(.23,1,.32,1), opacity .35s ease; }}
+.phone[data-v="h"] .bar.hide .pill {{ transform: rotateX(-88deg); opacity: 0; pointer-events: none; transition-duration: .42s, .3s; transition-timing-function: cubic-bezier(.55,0,.75,.3), ease; }}
+/* I: nacheinander */
+.phone[data-v="i"] .pill > *, .phone[data-v="i"] .tools > *, .phone[data-v="i"] .brand > * {{ transition: opacity .2s ease, translate .25s cubic-bezier(.23,1,.32,1); }}
+.phone[data-v="i"] .pill {{ transition: opacity .25s ease, scale .3s cubic-bezier(.23,1,.32,1); }}
+.phone[data-v="i"] .bar:not(.hide) .pill {{ transition-delay: 0s; }}
+.phone[data-v="i"] .bar:not(.hide) .mark {{ transition-delay: .08s; }}
+.phone[data-v="i"] .bar:not(.hide) .name {{ transition-delay: .14s; }}
+.phone[data-v="i"] .bar:not(.hide) .lupe {{ transition-delay: .2s; }}
+.phone[data-v="i"] .bar:not(.hide) .tools .btn:last-child {{ transition-delay: .26s; }}
+.phone[data-v="i"] .bar.hide .tools .btn:last-child {{ opacity: 0; translate: 0 -8px; transition-delay: 0s; }}
+.phone[data-v="i"] .bar.hide .lupe {{ opacity: 0; translate: 0 -8px; transition-delay: .07s; }}
+.phone[data-v="i"] .bar.hide .name {{ opacity: 0; translate: 0 -8px; transition-delay: .14s; }}
+.phone[data-v="i"] .bar.hide .mark {{ opacity: 0; translate: 0 -8px; transition-delay: .21s; }}
+.phone[data-v="i"] .bar.hide .pill {{ opacity: 0; scale: .94; transition-delay: .3s; pointer-events: none; }}
 
 @media (prefers-reduced-motion: reduce) {{ .bar, .pill, .name, .lupe {{ transition-duration: .01s !important; }} }}
 
@@ -148,7 +153,7 @@ section .q {{ background: rgba(243,248,247,.12); border-radius: 10px; padding: 8
     <button type="button" id="hoch">Alle nach oben</button>
   </div>
   <div class="tabs" role="group" aria-label="Variante wählen">
-    <button type="button" data-z="heute" aria-pressed="true">Heute</button><button type="button" data-z="d" aria-pressed="false">D · Linie</button><button type="button" data-z="e" aria-pressed="false">E · Beim Anhalten</button><button type="button" data-z="f" aria-pressed="false">F · Lasche</button>
+    <button type="button" data-z="heute" aria-pressed="true">Heute</button><button type="button" data-z="g" aria-pressed="false">G · Zur Mitte</button><button type="button" data-z="h" aria-pressed="false">H · Wegklappen</button><button type="button" data-z="i" aria-pressed="false">I · Nacheinander</button>
   </div>
   <div class="phones">{PHONES}</div>
 </main>
