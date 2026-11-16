@@ -205,6 +205,71 @@ CSS = r'''
 .fridge::before { content: ""; position: absolute; top: -8px; left: 50%; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #D4B5B0; box-shadow: 0 3px 6px rgba(0,0,0,.3); }
 .fridge h6 { margin: 6px 0 2px; font-size: .78rem; }
 .fridge div { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(30,59,68,.12); padding: 2px 0; }
+
+/* 41 Suche antwortet */
+.srch { width: 300px; background: #142A31; color: #F3FAF8; border-radius: 16px; padding: 10px; display: grid; gap: 8px; font-size: .8rem; }
+.srch .in { background: rgba(243,248,247,.1); border-radius: 10px; padding: 9px 12px; }
+.srch .ans { background: #F3F8F7; color: #1E3B44; border-radius: 10px; padding: 9px 12px; }
+.srch .hit { padding: 6px 12px; opacity: .85; }
+/* 42 Jetzt im Tagesablauf */
+.tl4 { width: 290px; display: grid; gap: 6px; }
+.tl4 div { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 10px; background: rgba(243,248,247,.08); color: #F3FAF8; font-size: .8rem; transition: background .3s EZ; }
+.tl4 time { font-variant-numeric: tabular-nums; opacity: .8; }
+.tl4 div.now { background: #D4B5B0; color: #1E3B44; font-weight: 700; }
+.tl4 div.now time { opacity: 1; }
+/* 43 Bringzeit */
+.bz { width: 290px; display: grid; gap: 8px; }
+.bz .tile b { display: flex; align-items: center; gap: 8px; }
+.bz i { width: 10px; height: 10px; border-radius: 50%; background: #7FD6A4; display: inline-block; }
+/* 44/45 Filter nach Bereich */
+.evf { width: 300px; display: grid; gap: 6px; }
+.evf .tile { display: flex; justify-content: space-between; gap: 8px; }
+.evf .tile span { font-size: .7rem; padding: 1px 7px; border-radius: 6px; background: #E6EFED; align-self: center; }
+/* 46 Feiertage im Kalender */
+.mcal { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 12px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-size: .74rem; text-align: center; }
+.mcal b { font-size: .66rem; opacity: .6; }
+.mcal span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 8px; font-weight: 600; }
+.mcal .zu { background: #F1E5E3; } .mcal .fe { background: #F6D9D3; color: #7E3B31; box-shadow: inset 0 0 0 1.5px #B8574A; } .mcal .ev { background: #1E3B44; color: #F3F8F7; }
+.mleg { grid-column: 1 / -1; display: flex; gap: 10px; justify-content: center; font-size: .68rem; margin-top: 4px; }
+/* 47 Brief teilen */
+.bshare { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 12px 14px; font-size: .8rem; display: grid; gap: 8px; }
+.bshare .row { display: flex; gap: 6px; }
+.bshare .row span { padding: 6px 10px; border-radius: 9px; background: #E6EFED; font-weight: 600; font-size: .74rem; }
+/* 48 Vollmacht */
+.voll { width: 290px; background: #fff; color: #1E3B44; border-radius: 12px; padding: 12px 14px; font: .74rem/1.55 ui-monospace, Menlo, monospace; box-shadow: 0 10px 22px rgba(0,0,0,.3); }
+/* 49 Kontakt-Karte */
+.vcard { width: 260px; background: #F3F8F7; color: #1E3B44; border-radius: 18px; padding: 14px; display: grid; justify-items: center; gap: 6px; font-size: .8rem; text-align: center; }
+.vcard .av { width: 56px; height: 56px; border-radius: 50%; background: #E6EFED; display: grid; place-items: center; }
+/* 50 Eilmeldung */
+.alarm { width: 100%; max-width: 420px; display: grid; gap: 10px; }
+.alarm .bar { background: #B8574A; color: #fff; border-radius: 12px; padding: 10px 14px; font-size: .82rem; font-weight: 600; display: flex; gap: 10px; align-items: center; }
+.alarm .bar i { width: 10px; height: 10px; border-radius: 50%; background: #fff; flex: none; }
+.alarm .page { background: rgba(243,248,247,.1); border-radius: 12px; height: 70px; }
+/* 51 Alle Fragen */
+.allq { width: 300px; display: grid; gap: 6px; }
+/* 52 Team */
+.team { width: 100%; max-width: 400px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.team div { background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 10px; text-align: center; font-size: .72rem; }
+.team .ph { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 6px; background: #D4B5B0; display: grid; place-items: center; font-weight: 700; font-size: .9rem; }
+/* 53 Eingang finden */
+.door { width: 100%; max-width: 380px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #F3FAF8; font-size: .76rem; }
+.door figure { margin: 0; } .door img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; margin-bottom: 4px; }
+.door b { color: #D4B5B0; }
+/* 54 Meinten Sie */
+.mean { width: 290px; background: #142A31; color: #F3FAF8; border-radius: 16px; padding: 10px; display: grid; gap: 8px; font-size: .8rem; }
+.mean .in { background: rgba(243,248,247,.1); border-radius: 10px; padding: 9px 12px; }
+.mean u { text-decoration-color: #F2A196; text-decoration-style: wavy; }
+.mean a { color: #D4B5B0; font-weight: 700; }
+/* 55 Neuigkeiten-Abo */
+.news { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 8px; font-size: .8rem; }
+.news .f { border: 1.5px solid rgba(30,59,68,.2); border-radius: 10px; padding: 9px 12px; color: rgba(30,59,68,.55); }
+.news .b { background: #D4B5B0; border-radius: 10px; padding: 9px 12px; text-align: center; font-weight: 700; }
+/* 56 Geschichte */
+.hist { width: 100%; max-width: 420px; display: grid; grid-auto-flow: column; gap: 0; align-items: start; color: #F3FAF8; font-size: .72rem; position: relative; }
+.hist::before { content: ""; position: absolute; left: 6%; right: 6%; top: 9px; height: 2px; background: rgba(243,248,247,.3); }
+.hist div { display: grid; justify-items: center; gap: 6px; text-align: center; position: relative; padding: 0 4px; }
+.hist div::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: #D4B5B0; border: 3px solid #2D6A6A; }
+.hist b { font-size: .86rem; }
 '''.replace('EZ', EZ)
 
 IMG = lambda n: f'img/{n}-800.webp'
@@ -342,6 +407,56 @@ add('team', 'impeccable harden', 'Kühlschrank-Zettel zum Ausdrucken', 'Eine ein
     'Wie der Jahresposter, nur noch knapper.',
     '<div class="demo"><div class="fridge"><h6>Kinderhort Grombühl</h6><div><span>Zentrale</span><b>2789892 0</b></div><div><span>Sternengruppe</span><b>… 15</b></div><div><span>Bienengruppe</span><b>… 13</b></div><div><span>Öffnungszeiten</span><b>6:45–18:00</b></div><h6>Schließtage</h6><div><span>Weihnachten</span><b>24.12.–08.01.</b></div><div><span>Ostern</span><b>25.–30.03.</b></div></div></div>')
 
+
+add('alltag', 'impeccable clarify', 'Die Suche beantwortet Fragen', 'Wer in die Suche (Lupe oben) eine Frage tippt – „morgen offen?“, „Nummer Bienen“ – bekommt die Antwort direkt oben über den Treffern, wie im Fragen-Helfer. Ohne erst zur Kontaktseite zu wechseln.',
+    'Nutzt denselben schlauen Helfer, der auf „Kontakt“ schon antwortet.',
+    '<div class="demo"><div class="srch"><div class="in"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:6px"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>Nummer Bienen</div><div class="ans"><b>Bienengruppe</b> · 0931 2789892 13</div><div class="hit">Kontakt &amp; Durchwahlen</div><div class="hit">Kindergarten · Bereich</div></div></div>')
+add('alltag', 'dataviz', '„Jetzt gerade“ im Tagesablauf', 'Im Tagesablauf jeder Bereichsseite ist der Abschnitt hervorgehoben, der gerade läuft – etwa „Mittagessen“ oder „Hausaufgabenzeit“. Eltern sehen, ob jetzt ein guter Moment zum Anrufen ist.',
+    'Rechnet mit den Uhrzeiten, die im Tagesablauf schon stehen.',
+    '<div class="demo"><div class="tl4" id="tl4"><div data-t="405"><time>6:45</time>Ankommen, Frühstück</div><div data-t="540"><time>9:00</time>Morgenkreis, Projekte</div><div data-t="690"><time>11:30</time>Mittagessen</div><div data-t="750"><time>12:30</time>Ruhezeit</div><div data-t="870"><time>14:30</time>Garten, Abholzeit</div></div></div>')
+add('alltag', 'impeccable clarify', 'Bring- und Abholzeit als Hinweis', 'Unter „Jetzt geöffnet“ steht zur passenden Zeit ein kleiner Satz: „Bringzeit bis 9:00 Uhr“ morgens oder „Abholzeit Krippe und Kindergarten bis 16:30“ am Nachmittag.',
+    'Nur zu den Zeiten, in denen er wirklich hilft.',
+    '<div class="demo"><div class="bz"><div class="chips" id="bzc"><button aria-pressed="true" data-h="8">8:00</button><button aria-pressed="false" data-h="12">12:00</button><button aria-pressed="false" data-h="16">16:00</button></div><div class="tile"><b><i></i><span id="bzt">Bringzeit bis 9:00 Uhr</span></b></div></div></div>')
+add('alltag', 'ui-ux-pro-max', 'Termine nach Bereich filtern', 'Über den Terminen kleine Knöpfe: Alle · Krippe · Kindergarten · Hort. Ein Tipp, und nur noch die Termine für den eigenen Bereich stehen da. Termine fürs ganze Haus bleiben immer sichtbar.',
+    'Braucht in der Termin-Tabelle eine kleine Spalte „Bereich“.',
+    '<div class="demo"><div class="evf"><div class="chips" id="evc"><button aria-pressed="true" data-b="alle">Alle</button><button aria-pressed="false" data-b="krippe">Krippe</button><button aria-pressed="false" data-b="kiga">Kindergarten</button><button aria-pressed="false" data-b="hort">Hort</button></div><div class="tile" data-b="haus">Weihnachtsmarkt <span>ganzes Haus</span></div><div class="tile" data-b="kiga">Elternabend Kindergarten <span>Kiga</span></div><div class="tile" data-b="hort">Ferienfreizeit <span>Hort</span></div><div class="tile" data-b="krippe">Eingewöhnungs-Café <span>Krippe</span></div></div></div>')
+add('alltag', 'mobile-native', 'Kalender-Abo nur für den eigenen Bereich', 'Neben dem Abo für alle Termine gibt es eines nur für Krippe, eines für Kindergarten, eines für Hort. Im Handy-Kalender stehen dann nur die Termine, die einen betreffen – und sie aktualisieren sich von selbst.',
+    'Baut auf der Spalte „Bereich“ aus der vorigen Idee auf.',
+    '<div class="demo"><div class="evf"><div class="tile">Alle Termine <span>abonnieren</span></div><div class="tile">Nur Krippe <span>abonnieren</span></div><div class="tile">Nur Kindergarten <span>abonnieren</span></div><div class="tile">Nur Hort <span>abonnieren</span></div></div></div>')
+add('alltag', 'dataviz', 'Feiertage im Monatskalender', 'Im Kalender auf „Aktuelles“ sind Feiertage eigens markiert und mit Namen versehen, zusätzlich zu Schließtagen und Terminen. So sieht man auf einen Blick, warum ein Tag frei ist.',
+    'Die Feiertage stehen schon in feiertage.csv.',
+    '<div class="demo"><div class="mcal"><b>Mo</b><b>Di</b><b>Mi</b><b>Do</b><b>Fr</b><b>Sa</b><b>So</b><span></span><span></span><span></span><span></span><span></span><span></span><span class="fe" title="Allerheiligen">1</span><span class="zu">2</span><span class="zu">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span class="ev">11</span><span>12</span><span>13</span><span>14</span><span>15</span><div class="mleg"><span>■ Termin</span><span style="color:#B8574A">■ Feiertag</span><span style="color:#C9A49E">■ geschlossen</span></div></div></div>')
+add('alltag', 'web-design-guidelines', 'Elternbrief teilen und drucken', 'Jeder Elternbrief bekommt „Teilen“ (z. B. an den Partner per Nachricht) und „Drucken“ – gedruckt nur der Brief, sauber auf einer Seite, ohne Menü und Fußbereich.',
+    'Wie „Termin teilen“, das es schon gibt.',
+    '<div class="demo"><div class="bshare"><b>Schließtage, Fortbildungen und Überstunden</b><span class="small">Kita-Jahr 2026/27</span><div class="row"><span>Teilen</span><span>Drucken</span><span>Link kopieren</span></div></div></div>')
+add('alltag', 'impeccable clarify', 'Abholvollmacht als Vorlage', 'Wenn Oma oder ein Nachbar das Kind abholt: eine fertige E-Mail-Vorlage mit allen nötigen Angaben – Name des Kindes, wer abholt, an welchem Tag. Spart Rückfragen an der Tür.',
+    'Wie Krankmelden und Platz anfragen; ob eine E-Mail reicht oder eine Unterschrift nötig ist, entscheidet der Hort.',
+    '<div class="demo"><div class="voll">Betreff: Abholung durch eine andere Person<br><br>Name des Kindes: …<br>Gruppe: …<br>Abholung am: …<br>Abholende Person: …<br>Ausweis wird mitgebracht: ja</div></div>')
+add('alltag', 'mobile-native', 'Die eigene Gruppe als Kontakt speichern', 'Neben jeder Durchwahl ein kleiner Knopf: „Als Kontakt speichern“. Im Handy steht dann „Kita – Bienengruppe“ mit der richtigen Nummer – gefunden in einer Sekunde.',
+    'Es gibt schon die Kontaktkarte fürs ganze Haus; das hier ist eine je Gruppe.',
+    '<div class="demo"><div class="vcard"><div class="av"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#1E3B44" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2"/></svg></div><b>Kita – Bienengruppe</b><span>0931 2789892 13</span><span style="margin-top:4px;padding:7px 12px;border-radius:10px;background:#1E3B44;color:#F3F8F7;font-weight:700;font-size:.74rem">Als Kontakt speichern</span></div></div>')
+add('team', 'impeccable harden', 'Wichtiger Hinweis auf allen Seiten', 'Für Ausnahmen – Schließung wegen Unwetter, Wasserrohrbruch, Streik – trägt das Team einen „wichtigen Hinweis“ ein. Er erscheint auffällig oben auf jeder Seite, bis das Datum vorbei ist.',
+    'Eine Zeile mehr in hinweise.csv mit „wichtig“.',
+    '<div class="demo"><div class="alarm"><div class="bar"><i></i>Heute (Do) wegen Sturmwarnung ab 13 Uhr geschlossen.</div><div class="page"></div></div></div>')
+add('neu', 'impeccable distill', 'Alle Fragen auf einer Seite', 'Die häufigen Fragen aus Krippe, Kindergarten und Hort gesammelt auf einer eigenen Seite – mit Suche und den Themen-Knöpfen. Für Eltern, die sich noch nicht für einen Bereich entschieden haben.',
+    'Die Fragen bleiben auch auf den Bereichsseiten.',
+    '<div class="demo"><div class="allq"><div class="chips"><button aria-pressed="true">Alle</button><button aria-pressed="false">Krippe</button><button aria-pressed="false">Kindergarten</button><button aria-pressed="false">Hort</button></div><div class="tile">Gibt es eine Eingewöhnungszeit? <span class="small">· Krippe</span></div><div class="tile">Braucht mein Kind eine Brotzeit? <span class="small">· Hort</span></div></div></div>')
+add('neu', 'landing-page-design', 'Unser Team', 'Eine kleine Seite mit Fotos (oder Namen) und Rollen: Leitung, Gruppenleitungen, Küche. Neue Eltern wissen vorher, wen sie treffen – das schafft Vertrauen.',
+    'Nur mit Einverständnis des Teams; Fotos liefert der Hort.',
+    '<div class="demo"><div class="team"><div><div class="ph">PL</div><b>Petra Lachnit</b><br>Einrichtungsleitung</div><div><div class="ph">?</div><b>Name</b><br>Bienengruppe</div><div><div class="ph">?</div><b>Name</b><br>Küche</div></div></div>')
+add('neu', 'impeccable onboard', 'Eingang finden – mit Fotos', 'Für den ersten Tag: wo ist welcher Eingang, wo ist die Krippe, wo die Garderobe? Zwei, drei Fotos mit kurzen Sätzen nehmen die Unsicherheit beim ersten Bringen.',
+    'Fotos vom Eingangsbereich liefert der Hort.',
+    f'<div class="demo"><div class="door"><figure><img src="{IMG("p2160110")}" alt=""><b>1</b> Haupteingang Lindleinstraße, Klingel „Krippe“</figure><figure><img src="{IMG("lesecke")}" alt=""><b>2</b> Garderobe links, Hausschuhe ins Fach</figure></div></div>')
+add('alltag', 'impeccable clarify', '„Meinten Sie …?“ in der Suche', 'Bei Tippfehlern in der Suche – „Feinplan“, „Krankmedlung“ – erscheint „Meinten Sie: Ferienplan?“. Ein Tipp, und die richtigen Treffer sind da.',
+    'Gleiche Tippfehler-Toleranz wie in „Durchwahl finden“.',
+    '<div class="demo"><div class="mean"><div class="in"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:6px"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><u>Krankmedlung</u></div><div>Meinten Sie: <a>Krankmeldung</a>?</div></div></div>')
+add('team', 'pinme-email', 'Neuigkeiten per E-Mail (später)', 'Eltern tragen ihre E-Mail ein und bekommen eine kurze Nachricht, wenn ein neuer Elternbrief oder Termin erscheint. Braucht einen kleinen Dienst beim Hosting – erst sinnvoll, wenn der Webspace steht.',
+    'Datenschutz: Einwilligung und Abmelde-Link sind Pflicht.',
+    '<div class="demo"><div class="news"><b>Neuigkeiten per E-Mail</b><div class="f">ihre@adresse.de</div><div class="b">Anmelden</div><span class="small">Abmelden jederzeit mit einem Klick.</span></div></div>')
+add('gestalt', 'impeccable delight', 'Unsere Geschichte als Zeitleiste', 'Eine kleine Zeitleiste: Gründung, Umbau, neue Krippe, Auszeichnungen. Zeigt, dass hier seit Jahrzehnten Kinder groß werden. Die Jahreszahlen kommen vom Hort.',
+    'Hier mit Platzhaltern.',
+    '<div class="demo"><div class="hist"><div><b>19__</b>Gründung</div><div><b>19__</b>Hort</div><div><b>20__</b>Krippe</div><div><b>20__</b>Umbau</div><div><b>heute</b>3 Bereiche</div></div></div>')
+
 JS = r'''
   /* Gruppenwahl in den Demos */
   var GR = { "Sonnen": ["Sonnengruppe", "14", "16:30"], "Bienen": ["Bienengruppe", "13", "16:30"], "Hort": ["Kinderhort", "0", "18:00"], "Sterne": ["Sternengruppe"], "Spatzen": ["Spatzengruppe"], "Bären": ["Bärengruppe"] };
@@ -460,6 +575,13 @@ JS = r'''
         if (Math.abs(dx) > 70) { k.style.translate = (dx > 0 ? 300 : -300) + "px 0"; k.style.opacity = 0; setTimeout(function () { k.style.transition = "none"; k.style.translate = ""; k.style.rotate = ""; k.style.opacity = ""; st.prepend(k); }, 300); } else { k.style.translate = ""; k.style.rotate = ""; } }
       k.addEventListener("pointermove", mv); k.addEventListener("pointerup", up); });
     st.tabIndex = 0; st.setAttribute("aria-label", "Karten: Pfeiltaste rechts für die nächste"); st.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { var k = top(); st.prepend(k); } }); })();
+
+  /* 42 jetzt im Tagesablauf */
+  (function () { var n = new Date(), m = n.getHours() * 60 + n.getMinutes(), rows = $$("#tl4 div"), cur = null; rows.forEach(function (r) { if (+r.dataset.t <= m) cur = r; }); (cur || rows[2]).classList.add("now"); })();
+  /* 43 Bringzeit */
+  $("#bzc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#bzc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var h = +b.dataset.h; $("#bzt").textContent = h < 9 ? "Bringzeit bis 9:00 Uhr" : h < 15 ? "Mittagszeit – Anrufe am besten nach 14:30 Uhr" : "Abholzeit: Krippe und Kindergarten bis 16:30 Uhr"; });
+  /* 44 Filter */
+  $("#evc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#evc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); var f = b.dataset.b; $$(".evf .tile[data-b]").forEach(function (t) { t.hidden = !(f === "alle" || t.dataset.b === "haus" || t.dataset.b === f); }); });
 '''
 
 out = (head + CSS + vote_css + '''</style>
