@@ -1026,7 +1026,9 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 
 /* ---------- Leiste nur beim Hochscrollen ---------- */
 /* weich: sanft anlaufen, ruhig auslaufen, am Ende leise ausblenden */
-.site-header { transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; will-change: translate; }
+.site-header { transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }
+/* Kein will-change/transform auf der Leiste: sonst spannt sich das Handy-Menü (position: fixed) nur innerhalb der Leiste auf */
+.nav-open .site-header { translate: none; opacity: 1; }
 .site-header.hide { translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s cubic-bezier(.45,0,.2,1), opacity .3s ease .15s; }
 /* Ohne Leiste rücken die Sprungmarken nach oben – im selben Takt */
 .subnav { transition: top .5s cubic-bezier(.22,1,.36,1); }
