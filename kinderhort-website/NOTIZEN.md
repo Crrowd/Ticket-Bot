@@ -14,7 +14,7 @@ Stand: 13.11.2026
 - [ ] **Nur das Upload-Paket hochladen** (`kinderhort-webseite.zip`, entsteht bei `python3 build.py`), nicht den ganzen Projektordner.
 - [ ] **Sicherheit beim Umzug (.htaccess):** HTTPS-Weiterleitung und Strict-Transport-Security einschalten, sobald das SSL-Zertifikat läuft (Zeilen sind vorbereitet, nur # entfernen). Falls der Hoster „Options -Indexes“ nicht erlaubt (Fehler 500), diese Zeile auskommentieren. Nach dem Umzug einmal prüfen: https://securityheaders.com
 - [ ] PDFs vor dem Hochladen: Autor-Feld in den Dateieigenschaften prüfen (Medikamentenvereinbarung enthält einen Personennamen).
-- [x] Datenschutzerklärung anlegen – Vorlage steht; **offen: Hoster, Datenschutzbeauftragte/r, Aufsicht, Datum ergänzen und prüfen lassen**
+- [x] Datenschutzerklärung anlegen – Vorlage steht; **offen: Hoster und Datum ergänzen, Speicherdauer der Server-Protokolle beim Hoster auf 7 Tage stellen, prüfen lassen**
 - [x] Impressum: TMG-Verweise auf DDG (Digitale-Dienste-Gesetz, seit Mai 2024) umstellen
 - [x] Weiterleitungen alter URLs (`/kinderkrippe/`, `/kindergarten/`, `/kinderhort/`, `/aktuelles/`, `/downloads/`, `/kontakt/`, `/impressum/`, `?page_id=…`) auf die neuen Seiten
 
@@ -309,7 +309,7 @@ Entscheidung offen (Auswahl direkt im Katalog).
 ## Handy-Menü, Datenschutz, Merken-Ideen (16.11.2026)
 - **Handy-Menü:** „Kind krankmelden“ im Kasten „Wir sind für Sie da“ entfernt; Telefon und E-Mail sehen jetzt aus wie die Krankmelde-Karte (heller Kasten, rosé Symbolkachel).
 - **Fotos:** geprüft – alle JPG sind schon höchstens 1600 px groß und optimiert; Browser laden ohnehin die kleineren WebP-Fassungen. Nichts zu tun.
-- **Datenschutz:** ergänzt um Rechtsgrundlagen (KDG), Abschnitt „Was die Seite in Ihrem Browser speichert“ und die Aufsicht (Katholisches Datenschutzzentrum Bayern, Nürnberg). Offen: Datenschutzbeauftragte/r, Hoster, Speicherdauer, Datum.
+- **Datenschutz:** ergänzt um Rechtsgrundlagen (KDG), Abschnitt „Was die Seite in Ihrem Browser speichert“ und die Aufsicht (Katholisches Datenschutzzentrum Bayern, Nürnberg). Datenschutzbeauftragte: Katrin Hofmann; Server-Protokolle: 7 Tage (beim Hoster so einstellen). Offen: Hoster, Datum; ggf. eigene E-Mail-Adresse für Frau Hofmann.
 - **Termine nach Bereich (44):** neue Spalte „Bereich“ in termine.csv; Knöpfe Alle · Krippe · Kindergarten · Hort auf „Aktuelles“ (Liste und Kalender); Termine fürs ganze Haus bleiben immer sichtbar.
 - **Abholvollmacht (48) und Abwesenheit (86):** E-Mail-Vorlagen auf „Kontakt“ und im Formular-Lotsen bei „Downloads“.
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
