@@ -2116,3 +2116,7 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 
 /* Zahl der gemerkten Termine darf kurz aufspringen */
 .saved-row .saved-n { display: inline-block; }
+
+/* Hinweis beim Bereichs-Filter blendet weich ein */
+.ev-filter-empty { transition: opacity .18s var(--ease-out), translate .18s var(--ease-out); }
+@starting-style { .ev-filter-empty:not([hidden]) { opacity: 0; translate: 0 4px; } }

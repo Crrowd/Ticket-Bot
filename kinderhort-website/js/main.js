@@ -1399,7 +1399,9 @@
       $(".mc-next", cal).addEventListener("click", function () { step(1); });
       $$(".ev", cal).forEach(function (b) { b.addEventListener("click", function () {
         $$(".ev", cal).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-        $(".mc-note", cal).innerHTML = evOn(b.getAttribute("data-d")).map(function (e) { var a = parse(e.von); return "<b>" + escH(e.titel) + "</b>" + (e.von === e.bis ? fmtLong(a) : fmt(a) + " – " + fmt(parse(e.bis))); }).join("");
+        var mn = $(".mc-note", cal);
+        mn.innerHTML = evOn(b.getAttribute("data-d")).map(function (e) { var a = parse(e.von); return "<b>" + escH(e.titel) + "</b>" + (e.von === e.bis ? fmtLong(a) : fmt(a) + " – " + fmt(parse(e.bis))); }).join("");
+        if (!reduced && mn.animate) mn.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "ease-out" });
       }); });
       if (dir && !reduced) $(".mc-grid", cal).animate([{ opacity: 0, translate: (dir * 24) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 260, easing: "cubic-bezier(.23,1,.32,1)" });
     }
@@ -2365,7 +2367,11 @@
           var nx = (K && K.schliesszeiten || []).filter(function (z) { return z.bis >= heute; })[0];
           t = nx ? (nx.von <= heute ? "Gerade ist Schließzeit (" + nx.name + ") bis " + fmt(parse(nx.bis)) + "." : nx.name + ": geschlossen " + (nx.von === nx.bis ? "am " + fmt(parse(nx.von)) : "vom " + fmt(parse(nx.von)) + " bis " + fmt(parse(nx.bis))) + ".") : "Der nächste Ferienplan folgt in Kürze.";
         }
-        out.textContent = t;
+        var von = out.offsetHeight; out.textContent = t;
+        if (!reduced && out.animate) {
+          hoehe(out, von, out.offsetHeight, 220, EASE_OUT);
+          out.animate([{ opacity: 0, translate: "0 4px" }, { opacity: 1, translate: "0 0" }], { duration: 200, easing: EASE_OUT });
+        }
       });
     });
   });
