@@ -381,6 +381,40 @@ CSS = r'''
 .log { width: 300px; display: grid; gap: 6px; color: #F3FAF8; font-size: .74rem; }
 .log div { background: rgba(243,248,247,.1); border-radius: 10px; padding: 8px 10px; display: grid; gap: 2px; }
 .log span { opacity: .75; }
+
+/* Runde 6 */
+.urlaub { width: 280px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 8px; font-size: .78rem; }
+.urlaub .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.urlaub .f { border: 1.5px solid rgba(30,59,68,.2); border-radius: 9px; padding: 7px 10px; }
+.urlaub .b { background: #D4B5B0; border-radius: 10px; padding: 9px 12px; text-align: center; font-weight: 700; }
+.utr { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 8px; font-size: .78rem; }
+.utr .big { font-size: 2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.utr .bar { display: flex; gap: 2px; } .utr .bar i { flex: 1; height: 14px; border-radius: 3px; background: #E6EFED; } .utr .bar i.u { background: #D4B5B0; } .utr .bar i.w { background: transparent; }
+.chk { width: 290px; display: grid; gap: 6px; }
+.chk label { display: flex; gap: 10px; align-items: center; background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 9px 12px; font-size: .8rem; cursor: pointer; }
+.chk input { accent-color: #2D6A6A; width: 16px; height: 16px; }
+.chk .pb { height: 6px; border-radius: 3px; background: rgba(243,248,247,.2); overflow: hidden; } .chk .pb span { display: block; height: 100%; width: 0; background: #D4B5B0; transition: width .3s EZ; }
+.vgl { width: 100%; max-width: 420px; background: #F3F8F7; color: #1E3B44; border-radius: 14px; padding: 6px; font-size: .72rem; border-collapse: separate; border-spacing: 0; }
+.vgl th, .vgl td { padding: 7px 6px; text-align: left; border-bottom: 1px solid rgba(30,59,68,.1); }
+.vgl tr:last-child td { border-bottom: 0; } .vgl th { font-size: .76rem; }
+.zahl { width: 100%; max-width: 420px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; color: #F3FAF8; text-align: center; font-size: .74rem; }
+.zahl b { display: block; font-size: 1.8rem; line-height: 1.1; color: #D4B5B0; font-variant-numeric: tabular-nums; }
+.bu { width: 100%; max-width: 340px; color: #F3FAF8; }
+.bu img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; display: block; }
+.bu p { margin: 8px 0 0; font-size: .86rem; } .bu span { opacity: .75; font-size: .74rem; }
+.job { width: 290px; background: #F3F8F7; color: #1E3B44; border-radius: 16px; padding: 14px; display: grid; gap: 6px; font-size: .78rem; }
+.job b { font-size: .95rem; } .job .tags { display: flex; flex-wrap: wrap; gap: 5px; } .job .tags span { background: #E6EFED; border-radius: 6px; padding: 2px 8px; font-size: .7rem; }
+.copy { width: 290px; display: grid; gap: 8px; }
+.copy .nr { all: unset; display: flex; justify-content: space-between; align-items: center; gap: 8px; background: #F3F8F7; color: #1E3B44; border-radius: 12px; padding: 10px 12px; font-size: .84rem; cursor: pointer; }
+.copy .nr em { font-style: normal; font-size: .72rem; font-weight: 700; color: #2D6A6A; }
+.swm { width: 270px; overflow: hidden; border-radius: 16px; background: #F3F8F7; color: #1E3B44; touch-action: pan-y; cursor: grab; user-select: none; }
+.swm .track { display: flex; transition: translate .35s EZ; }
+.swm .mo { flex: 0 0 100%; padding: 12px; display: grid; gap: 8px; font-size: .74rem; }
+.swm .mo b { font-size: .9rem; text-align: center; } .swm .g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; }
+.swm .g span { aspect-ratio: 1; display: grid; place-items: center; border-radius: 6px; } .swm .g .zu { background: #F1E5E3; } .swm .g .ev { background: #1E3B44; color: #F3F8F7; }
+.swm .mdots { background: none; display: flex; justify-content: center; gap: 5px; padding-bottom: 10px; } .swm .mdots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(30,59,68,.25); } .swm .mdots i.on { background: #1E3B44; }
+.spat { width: 280px; display: grid; gap: 8px; }
+.spat .msg { background: #F3F8F7; color: #1E3B44; border-radius: 14px 14px 14px 4px; padding: 10px 12px; font-size: .8rem; }
 '''.replace('EZ', EZ)
 
 IMG = lambda n: f'img/{n}-800.webp'
@@ -623,7 +657,6 @@ add('team', 'dataviz', 'Was wird gelesen? – ohne Cookies', 'Eine einfache Zäh
 
 KZ = ['<path d="M50 20c-14 0-24 10-24 22 0 10 6 16 12 20l-2 18h28l-2-18c6-4 12-10 12-20 0-12-10-22-24-22z" fill="none" stroke="#2D6A6A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 42h1M58 42h1M43 52q7 6 14 0" stroke="#2D6A6A" stroke-width="4" stroke-linecap="round" fill="none"/>', '<path d="M18 78l14-40 14 26 12-18 22 32z" fill="none" stroke="#B8574A" stroke-width="4" stroke-linejoin="round"/><circle cx="72" cy="26" r="9" fill="none" stroke="#C9926F" stroke-width="4"/>', '<path d="M22 70h56M30 70V40l20-16 20 16v30M44 70V54h12v16" fill="none" stroke="#1E3B44" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>']
 
-NEU_AB = len(C) + 1
 add('alltag', 'impeccable clarify', 'Was braucht mein Kind jeden Tag?', 'Je Bereich eine kurze Liste: Wechselkleidung, Hausschuhe, Trinkflasche, im Hort das Hausaufgabenheft. Zum Abhaken am Morgen, gespeichert nur im eigenen Browser.',
     'Anders als die Packliste für den ersten Tag: für jeden Tag.',
     '<div class="demo"><div class="lst"><div class="chips"><button aria-pressed="true">Krippe</button><button aria-pressed="false">Kindergarten</button><button aria-pressed="false">Hort</button></div><div class="tile"><i></i>Wechselkleidung (2 Sets)</div><div class="tile"><i></i>Windeln und Feuchttücher</div><div class="tile"><i></i>Hausschuhe mit Namen</div></div></div>')
@@ -666,6 +699,52 @@ add('alltag', 'humanizer', 'Antworten fangen mit Ja oder Nein an', 'Bei den häu
 add('team', 'impeccable harden', 'Wer hat was geändert?', 'Pflegen mehrere Personen die Tabellen, zeigt ein kleines Protokoll, wer wann was geändert hat. Ein Fehler lässt sich mit einem Klick zurücknehmen.',
     'Das gibt es technisch schon (Git); es fehlt nur eine einfache Ansicht.',
     '<div class="demo"><div class="log"><div><b>Termin „Elternabend Hort“ ergänzt</b><span>Leitung · heute, 9:14</span></div><div><b>Schließtag 20.11. ergänzt</b><span>Büro · gestern</span></div></div></div>')
+
+SWM = '<div class="mo"><b>November 2026</b><div class="g"><span></span><span></span><span></span><span></span><span></span><span></span><span>1</span><span class=zu>2</span><span class=zu>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span class=ev>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span class=zu>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span></div></div><div class="mo"><b>Dezember 2026</b><div class="g"><span></span><span>1</span><span>2</span><span>3</span><span class=ev>4</span><span>5</span><span>6</span><span class=ev>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span class=zu>24</span><span class=zu>25</span><span class=zu>26</span><span class=zu>27</span><span class=zu>28</span><span class=zu>29</span><span class=zu>30</span><span class=zu>31</span></div></div><div class="mo"><b>Januar 2027</b><div class="g"><span></span><span></span><span></span><span></span><span class=zu>1</span><span class=zu>2</span><span>3</span><span>4</span><span>5</span><span class=zu>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span class=ev>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span></div></div>'
+
+NEU_AB = len(C) + 1
+add('alltag', 'impeccable clarify', 'Urlaub oder Abwesenheit melden', 'Wenn das Kind ein paar Tage nicht kommt – Urlaub, Oma-Besuch, Kur: Von–bis eintragen, Gruppe wählen, fertig ist die E-Mail an die Gruppe. Wie beim Krankmelden.',
+    'Hilft dem Team bei der Planung von Personal und Essen.',
+    '<div class="demo"><div class="urlaub"><b>Mein Kind ist nicht da</b><div class="row"><span class="f">von 22.12.</span><span class="f">bis 06.01.</span></div><span class="f">Bienengruppe</span><div class="b">E-Mail vorbereiten</div></div></div>')
+add('alltag', 'dataviz', 'Wie viele Urlaubstage brauche ich?', 'Aus den Schließtagen rechnet die Seite aus, wie viele Arbeitstage Eltern im Kita-Jahr abdecken müssen – ohne Wochenenden und Feiertage. Gut für die Urlaubsplanung im Januar.',
+    'Rechnet direkt aus schliesstage.csv und feiertage.csv.',
+    '<div class="demo"><div class="utr"><span>Im Kita-Jahr 2026/27 geschlossen an</span><span class="big">24</span><span>Arbeitstagen – so viele Urlaubstage sollten Sie einplanen.</span><div class="bar">' + ''.join('<i class="u"></i>' if i % 9 in (0, 4) else '<i class="w"></i>' if i % 7 in (5, 6) else '<i></i>' for i in range(42)) + '</div></div></div>')
+add('alltag', 'impeccable clarify', 'Allergien und Unverträglichkeiten mitteilen', 'Eine Vorlage für Allergien, Unverträglichkeiten und Ernährungswünsche – mit dem Hinweis, welche Nachweise die Küche braucht. Nichts geht im Gespräch an der Tür verloren.',
+    'Wie die anderen Vorlagen: alles bleibt im Browser, bis man selbst sendet.',
+    '<div class="demo"><div class="voll">Betreff: Allergie / Ernährung<br><br>Name des Kindes: …<br>Gruppe: …<br>Allergie oder Unverträglichkeit: …<br>Ärztlicher Nachweis liegt bei: ja / folgt</div></div>')
+add('neu', 'impeccable onboard', 'Unterlagen-Checkliste bis zum Start', 'Was vor dem ersten Tag abgegeben sein muss: Vertrag, Masern-Nachweis, Untersuchungsheft, Abholberechtigte, Notfallnummern. Zum Abhaken, mit Fortschrittsbalken.',
+    'Die genaue Liste liefert der Hort.',
+    '<div class="demo"><div class="chk" id="chk"><label><input type="checkbox" checked>Betreuungsvertrag</label><label><input type="checkbox">Masern-Nachweis</label><label><input type="checkbox">Abholberechtigte Personen</label><label><input type="checkbox">Notfallnummern</label><div class="pb"><span></span></div></div></div>')
+add('neu', 'impeccable clarify', 'Krippe, Kindergarten, Hort im Vergleich', 'Eine kleine Tabelle für Eltern, die noch suchen: Alter, Öffnungszeiten, Gruppen, Essen, Anmeldung – nebeneinander. Ein Blick statt drei Seiten.',
+    'Die Angaben kommen von den Bereichsseiten; hier Beispielwerte.',
+    '<div class="demo"><table class="vgl"><tr><th></th><th>Krippe</th><th>Kiga</th><th>Hort</th></tr><tr><td>Alter</td><td>1–3</td><td>3–6</td><td>6–10</td></tr><tr><td>Offen</td><td>bis 16:30</td><td>bis 16:30</td><td>bis 17:00</td></tr><tr><td>Gruppen</td><td>2</td><td>4</td><td>3</td></tr></table></div>')
+add('gestalt', 'impeccable typeset', 'Zahlen, die etwas erzählen', 'Drei große Zahlen auf der Startseite: Seit wann es den Hort gibt, wie viele Kinder hier groß werden, wie viele Menschen sich kümmern. Ruhig gesetzt, ohne Hochzählen.',
+    'Zahlen vom Hort; hier Platzhalter.',
+    '<div class="demo"><div class="zahl"><div><b>19__</b>gegründet</div><div><b>3</b>Bereiche unter einem Dach</div><div><b>__</b>Menschen im Team</div></div></div>')
+add('gestalt', 'humanizer', 'Bildunterschriften von den Kindern', 'Unter einigen Fotos steht, was die Kinder selbst dazu sagen: „Hier bauen wir die höchsten Türme.“ Das klingt echter als jede Werbezeile.',
+    'Die Kinder erzählen, das Team schreibt mit.',
+    f'<div class="demo"><figure class="bu" style="margin:0"><img src="{IMG("baueckenstadion")}" alt=""><p>„Hier bauen wir die höchsten Türme. Manchmal fallen sie um, dann bauen wir neu.“</p><span>– Kind, 5 Jahre, über die Bauecke</span></figure></div>')
+add('team', 'landing-page-design', 'Wir suchen Verstärkung', 'Eine Seite für offene Stellen: was die Arbeit hier ausmacht, was wir bieten, ein Ansprechpartner. Viele Bewerber schauen zuerst auf die Webseite der Einrichtung.',
+    'Nur sichtbar, wenn eine Stelle eingetragen ist.',
+    '<div class="demo"><div class="job"><span class="small">Wir suchen</span><b>Erzieherin oder Erzieher (m/w/d)</b><div class="tags"><span>Kindergarten</span><span>Teilzeit möglich</span><span>ab Januar</span></div><span>Kleines Team, feste Gruppe, Zeit für Vorbereitung.</span></div></div>')
+add('alltag', 'landing-page-design', 'Der Elternbeirat stellt sich vor', 'Wer sitzt im Elternbeirat, wofür setzt er sich ein, wie erreicht man ihn? Eine kurze Seite, gepflegt vom Beirat selbst – über eine eigene kleine Tabelle.',
+    'Nur mit Einverständnis der Mitglieder.',
+    '<div class="demo"><div class="team"><div><div class="ph">?</div><b>Vorsitz</b><br>Kindergarten</div><div><div class="ph">?</div><b>Stellvertretung</b><br>Hort</div><div><div class="ph">?</div><b>Kasse</b><br>Krippe</div></div></div>')
+add('alltag', 'web-design-guidelines', 'Am Computer: Nummer kopieren statt wählen', 'Am Computer kann man Telefonnummern nicht antippen. Dort kopiert ein Klick die Nummer und zeigt kurz „Kopiert“. Am Handy bleibt alles wie gewohnt: tippen und anrufen.',
+    'Kleine Änderung, großer Unterschied am Schreibtisch.',
+    '<div class="demo"><div class="copy"><button class="nr" id="cpy" type="button">0931 2789892 13<em>Kopieren</em></button><span class="small" style="color:#F3FAF8">Klicken Sie auf die Nummer</span></div></div>')
+add('alltag', 'gestures', 'Monatskalender zum Wischen', 'Im Kalender auf „Aktuelles“ wechselt man am Handy mit einer Wischbewegung zum nächsten Monat – wie im Kalender auf dem eigenen Handy. Die Pfeile bleiben für alle, die lieber tippen.',
+    'Wischen Sie im Beispiel nach links.',
+    '<div class="demo"><div class="swm" id="swm" tabindex="0" aria-label="Kalender, Pfeiltasten zum Blättern"><div class="track">' + SWM + '</div><div class="mdots"><i class="on"></i><i></i><i></i></div></div></div>')
+add('team', 'landing-page-design', 'Förderverein und Spenden', 'Was der Förderverein ermöglicht – das neue Klettergerüst, Ausflüge, Bücher – und wie man mitmachen oder spenden kann. Mit einem aktuellen Wunsch, z. B. „Sandkasten-Spielzeug“.',
+    'Nur wenn es einen Förderverein gibt oder geben soll.',
+    '<div class="demo"><div class="job"><span class="small">Aktueller Wunsch</span><b>Neues Spielzeug für den Sandkasten</b><div style="height:8px;border-radius:4px;background:#E6EFED;overflow:hidden"><span style="display:block;height:100%;width:65%;background:#2D6A6A"></span></div><span>65 % geschafft · Danke an alle Familien!</span></div></div>')
+add('alltag', 'impeccable clarify', 'Was gilt bei Streik oder Notbetreuung?', 'Eine Seite, die vorher erklärt, wie es läuft, wenn der Betrieb eingeschränkt ist: Wer Anspruch auf Notbetreuung hat, wie man sich meldet, wo es Neuigkeiten gibt.',
+    'Ergänzt den „wichtigen Hinweis“ – der sagt, dass etwas ist; diese Seite sagt, was dann gilt.',
+    '<div class="demo"><div class="allq"><div class="tile"><b>Wer bekommt Notbetreuung?</b>Eltern ohne andere Möglichkeit, bitte vorher melden.</div><div class="tile"><b>Wo erfahre ich Neues?</b>Oben auf jeder Seite dieser Webseite.</div></div></div>')
+add('alltag', 'mobile-native', '„Wir kommen heute später“', 'Ein Knopf für den Alltag: Nachricht an die Gruppe, dass man später abholt oder bringt – mit Uhrzeit. Öffnet die E-Mail oder, wenn gewünscht, eine SMS an das Gruppenhandy.',
+    'Ob es ein Gruppenhandy gibt, entscheidet der Hort.',
+    '<div class="demo"><div class="spat"><div class="chips" id="spc"><button aria-pressed="true" data-z="15 Minuten">+15 Min</button><button aria-pressed="false" data-z="30 Minuten">+30 Min</button><button aria-pressed="false" data-z="eine Stunde">+1 Std</button></div><div class="msg" id="spm">Hallo Bienengruppe, wir holen Mia heute etwa 15 Minuten später ab. Danke!</div></div></div>')
 
 JS = r'''
   /* Gruppenwahl in den Demos */
@@ -804,6 +883,14 @@ JS = r'''
 
   /* Kostenrechner */
   (function () { var r = $("#rr"); if (!r) return; r.addEventListener("input", function () { $("#rh").textContent = r.value; $("#rres").textContent = "ca. " + (125 + r.value * 15) + " € im Monat"; }); })();
+
+  /* Runde 6 */
+  (function () { var bx = $$("#chk input"), bar = $("#chk .pb span"); function u() { bar.style.width = (bx.filter(function (x) { return x.checked; }).length / bx.length * 100) + "%"; } bx.forEach(function (x) { x.addEventListener("change", u); }); u(); })();
+  (function () { var b = $("#cpy"); b.addEventListener("click", function () { var em = $("em", b); try { navigator.clipboard.writeText("0931278989213"); } catch (e) {} em.textContent = "Kopiert"; setTimeout(function () { em.textContent = "Kopieren"; }, 1600); }); })();
+  (function () { var w = $("#swm"), t = $(".track", w), d = $$(".mdots i", w), i = 0, x0 = null; function go(n) { i = Math.max(0, Math.min(2, n)); t.style.translate = (-i * 100) + "% 0"; d.forEach(function (x, k) { x.classList.toggle("on", k === i); }); }
+    w.addEventListener("pointerdown", function (e) { x0 = e.clientX; }); w.addEventListener("pointerup", function (e) { if (x0 === null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); });
+    w.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") go(i + 1); if (e.key === "ArrowLeft") go(i - 1); }); })();
+  $("#spc").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; $$("#spc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); $("#spm").textContent = "Hallo Bienengruppe, wir holen Mia heute etwa " + b.dataset.z + " später ab. Danke!"; });
 '''
 
 out = (head + CSS + vote_css + '''</style>
