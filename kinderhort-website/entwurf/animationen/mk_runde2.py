@@ -1,0 +1,198 @@
+"""Live-Vorschau Runde 2: sechs kleine Stellen, vorher / nachher."""
+import os
+D = os.path.dirname(os.path.abspath(__file__)) + "/"
+alt = open(D + "animationen-live.html", encoding="utf-8").read()
+BASIS = alt[alt.index("<style>") + 7:alt.index("/* ---------- Aufklapp-Kästen")]
+
+def demo(nr, titel, text, inhalt_vor, inhalt_nach):
+    return f'''<section class="demo" aria-labelledby="t{nr}">
+    <div class="demo-kopf"><span class="nr">{nr}</span><h2 id="t{nr}">{titel}</h2><p>{text}</p></div>
+    <div class="paar">
+      <div class="seite" data-art="vor"><span class="etikett">Vorher</span>{inhalt_vor}</div>
+      <div class="seite nach" data-art="nach"><span class="etikett">Nachher</span>{inhalt_nach}</div>
+    </div>
+  </section>'''
+
+MENU = '''<div class="menu"><a>Startseite <i>›</i></a><button type="button" class="bereiche" aria-expanded="false">Bereiche <i class="pf">›</i></button>
+<div class="sub" hidden><a>Kinderkrippe <small>ab 11 Monaten</small></a><a>Kindergarten <small>3 bis 6 Jahre</small></a><a>Kinderhort <small>Schulkinder</small></a></div>
+<a>Aktuelles <i>›</i></a><a>Downloads <i>›</i></a><span class="kontakt">Kontakt</span></div>'''
+HINWEIS = '''<div class="hw-box"><div class="hinweis"><div><b>Sankt Martin</b><span>Laternenumzug am Mittwoch, 11.11. um 17 Uhr</span></div><button type="button" class="x" aria-label="Hinweis ausblenden">✕</button></div>
+<div class="block">Nächste Schließzeit: Weihnachten</div><div class="block">Termine im Dezember</div><button type="button" class="klein zurueck" hidden>Rückgängig</button></div>'''
+ABO = '''<div class="abo"><div class="tabs2" role="tablist"><button type="button" aria-selected="true" data-p="0">iPhone</button><button type="button" aria-selected="false" data-p="1">Android</button><button type="button" aria-selected="false" data-p="2">Outlook</button></div>
+<div class="panel-box"><ol class="panel" data-i="0"><li>Auf „Termine abonnieren“ tippen.</li><li>„Abonnieren“ bestätigen.</li><li>Fertig.</li></ol>
+<ol class="panel" data-i="1" hidden><li>Abo-Adresse kopieren.</li><li>Am Computer Google Kalender öffnen.</li><li>„Weitere Kalender“ → „Per URL“ wählen.</li><li>Adresse einfügen.</li><li>Fertig – der Kalender erscheint auch auf dem Handy.</li></ol>
+<ol class="panel" data-i="2" hidden><li>Abo-Adresse kopieren.</li><li>In Outlook „Kalender hinzufügen“ und „Aus dem Internet abonnieren“ wählen.</li></ol></div></div>'''
+MERK = '''<div class="merk"><ul class="ml"></ul><button type="button" class="klein reset">Zurücksetzen</button></div>'''
+MEHR = '''<div class="mehr"><ul class="liste2"></ul><button type="button" class="btn alle">Alle 9 Termine anzeigen</button></div>'''
+GEMERKT = '''<div class="gm"><div class="ev"><span class="d">04<small>Dez</small></span><span><b>Weihnachtsmarkt</b><span>ab 16:30 Uhr</span></span><button type="button" class="merken" aria-pressed="false">Merken</button></div>
+<div class="saved" hidden><span class="btn">Gemerkte Termine in den Kalender (1)</span><span class="btn hell">Gemerkte ansehen</span></div><div class="block">Alle in den Kalender</div></div>'''
+
+SEITE = "".join([
+    demo(1, "Handy-Menü: „Bereiche“ aufklappen", "Tippen Sie auf „Bereiche“. Heute springt die Liste auf, nachher gleitet sie auf und die drei Einträge blenden nacheinander ein.", MENU, MENU),
+    demo(2, "Hinweis wegklicken", "Tippen Sie auf ✕. Heute ist die Karte schlagartig weg, nachher zieht sie sich weich zusammen. „Rückgängig“ holt sie zurück.", HINWEIS, HINWEIS),
+    demo(3, "Kalender-Abo: Reiter wechseln", "Wechseln Sie zwischen iPhone, Android und Outlook. Nachher blendet die Anleitung weich ein und die Höhe gleitet mit.", ABO, ABO),
+    demo(4, "Merkliste: Termin entfernen", "Tippen Sie auf ✕ bei einem Termin. Nachher zieht sich die Zeile zusammen und die anderen rutschen nach.", MERK, MERK),
+    demo(5, "„Alle Termine anzeigen“", "Nachher erscheinen die weiteren Termine nacheinander statt alle auf einmal.", MEHR, MEHR),
+    demo(6, "Nach dem ersten „Merken“", "Tippen Sie auf „Merken“. Darunter erscheinen die Knöpfe für die Merkliste – nachher blenden sie weich ein.", GEMERKT, GEMERKT),
+])
+
+CSS = BASIS + '''
+[hidden] { display: none !important; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 12px; border: 0; background: var(--rose); color: var(--ink); font: 600 .92rem var(--font); cursor: pointer; transition: scale .16s var(--ease-out); }
+.btn:active { scale: .97; } .btn.hell { background: var(--chip); }
+.klein { justify-self: start; min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); font: 600 .84rem var(--font); cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--rose-deep); outline-offset: 2px; }
+.block { border-radius: 14px; background: var(--card); color: var(--on); padding: 14px; font-weight: 600; font-size: .9rem; }
+/* 1 Menü */
+.menu { background: var(--paper); border-radius: 22px; padding: 10px; display: grid; }
+.menu > a, .menu .bereiche { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 12px; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink); font: 600 1.25rem var(--font); letter-spacing: -.02em; text-align: left; cursor: pointer; }
+.menu i { font-style: normal; opacity: .45; transition: rotate .3s var(--ease-out); }
+.menu .bereiche[aria-expanded="true"] .pf { rotate: 90deg; }
+.sub { display: grid; padding: 6px; margin: 4px 0 8px; border-radius: 14px; background: rgba(30,59,68,.05); overflow: hidden; }
+.sub a { display: grid; padding: 10px 12px; border-radius: 10px; font-weight: 600; color: var(--ink); }
+.sub small { font-weight: 400; color: var(--soft); }
+.menu .kontakt { margin-top: 10px; display: grid; place-items: center; min-height: 50px; border-radius: 14px; background: var(--ink); color: var(--on); font-weight: 600; }
+/* 2 Hinweis */
+.hw-box { display: grid; gap: 10px; }
+.hinweis { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px; border-radius: 14px; background: var(--paper); color: var(--ink); }
+.hinweis div { display: grid; } .hinweis span { color: var(--soft); font-size: .88rem; }
+.x { width: 36px; height: 36px; flex: none; border-radius: 10px; border: 0; background: var(--chip); color: var(--ink); cursor: pointer; }
+/* 3 Abo */
+.abo { background: var(--paper); border-radius: 18px; padding: 14px; display: grid; gap: 12px; color: var(--ink); }
+.tabs2 { display: inline-flex; gap: 2px; padding: 4px; border-radius: 12px; background: var(--chip); justify-self: start; }
+.tabs2 button { min-height: 38px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: var(--ink); font: 600 .86rem var(--font); cursor: pointer; }
+.tabs2 button[aria-selected="true"] { background: var(--ink); color: var(--on); }
+.panel-box { overflow: hidden; }
+.panel { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; color: var(--soft); font-size: .9rem; }
+/* 4 Merkliste */
+.merk { background: var(--paper); border-radius: 18px; padding: 12px; display: grid; gap: 10px; }
+.ml { list-style: none; margin: 0; padding: 0; display: grid; }
+.ml li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 1px solid var(--line); color: var(--ink); overflow: hidden; }
+.ml li div { display: grid; } .ml small { color: var(--soft); }
+/* 5 Termine */
+.mehr { display: grid; gap: 10px; }
+.liste2 { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.liste2 li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px; border-radius: 16px; background: var(--card); color: var(--on); }
+.liste2 .d, .ev .d { display: grid; place-items: center; height: 48px; border-radius: 10px; background: var(--rose); color: var(--ink); font-weight: 700; line-height: 1.05; text-align: center; }
+.liste2 .d small, .ev .d small { display: block; font-size: .66rem; font-weight: 600; }
+.liste2 b { font-size: .92rem; }
+/* 6 Gemerkt */
+.gm { display: grid; gap: 10px; }
+.ev { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px; border-radius: 16px; background: var(--card); color: var(--on); }
+.ev b { display: block; font-size: .92rem; } .ev span span { font-size: .8rem; opacity: .85; }
+.merken { min-height: 40px; padding: 0 14px; border-radius: 10px; border: 0; background: rgba(14,30,35,.35); color: var(--on); font: 600 .86rem var(--font); cursor: pointer; transition: scale .16s var(--ease-out); }
+.merken:active { scale: .97; } .merken[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.saved { display: flex; flex-wrap: wrap; gap: 8px; }
+.nach .saved { transition: opacity .22s var(--ease-out), translate .22s var(--ease-out); }
+@starting-style { .nach .saved:not([hidden]) { opacity: 0; translate: 0 6px; } }
+@media (prefers-reduced-motion: reduce) { .nach .saved { transition-duration: .01s; } }
+'''
+
+JS = r'''
+(function () {
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var EIO = "cubic-bezier(.77,0,.175,1)", EOUT = "cubic-bezier(.23,1,.32,1)";
+  function q(s, el) { return (el || document).querySelector(s); }
+  function qa(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function hoehe(el, von, bis, ms, ease, fertig) {
+    el.style.overflow = "hidden";
+    var a = el.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: reduced ? 1 : ms, easing: ease });
+    a.onfinish = function () { el.style.overflow = ""; if (fertig) fertig(); };
+    return a;
+  }
+  var X = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  qa(".seite").forEach(function (seite) {
+    var nach = seite.getAttribute("data-art") === "nach";
+
+    /* 1 Menü */
+    var b = q(".bereiche", seite);
+    if (b) { var sub = q(".sub", seite); b.addEventListener("click", function () {
+      var auf = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", auf);
+      if (!nach || reduced) { sub.hidden = !auf; return; }
+      if (auf) { sub.hidden = false; var h = sub.offsetHeight; hoehe(sub, 0, h, 280, EIO);
+        qa("a", sub).forEach(function (a, i) { a.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 220, delay: 80 + i * 30, easing: EOUT, fill: "backwards" }); }); }
+      else { var h2 = sub.offsetHeight; sub.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: "forwards" }); hoehe(sub, h2, 0, 240, EIO, function () { sub.hidden = true; sub.getAnimations().forEach(function (x) { x.cancel(); }); }); }
+    }); }
+
+    /* 2 Hinweis */
+    var hw = q(".hinweis", seite);
+    if (hw) { var zur = q(".zurueck", seite);
+      q(".x", hw).addEventListener("click", function () {
+        if (!nach || reduced) { hw.hidden = true; zur.hidden = false; return; }
+        var h = hw.offsetHeight; hw.animate([{ opacity: 1, scale: 1 }, { opacity: 0, scale: .98 }], { duration: 180, fill: "forwards" });
+        hoehe(hw, h, 0, 250, EIO, function () { hw.hidden = true; hw.getAnimations().forEach(function (x) { x.cancel(); }); zur.hidden = false; });
+        hw.animate([{ marginBottom: "0px" }, { marginBottom: "-10px" }], { duration: 250, easing: EIO, fill: "forwards" });
+      });
+      zur.addEventListener("click", function () {
+        zur.hidden = true; hw.hidden = false;
+        if (!nach || reduced) return;
+        var h = hw.offsetHeight; hoehe(hw, 0, h, 250, EIO);
+        hw.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 80, fill: "backwards" });
+      });
+    }
+
+    /* 3 Abo-Reiter */
+    var tabs = qa(".tabs2 button", seite);
+    if (tabs.length) { var box = q(".panel-box", seite), panels = qa(".panel", seite);
+      tabs.forEach(function (t) { t.addEventListener("click", function () {
+        tabs.forEach(function (x) { x.setAttribute("aria-selected", x === t); });
+        var i = t.getAttribute("data-p"), von = box.offsetHeight;
+        panels.forEach(function (p) { p.hidden = p.getAttribute("data-i") !== i; });
+        if (!nach || reduced) return;
+        var bis = box.offsetHeight; hoehe(box, von, bis, 200, EOUT);
+        var p = panels[+i]; p.animate([{ opacity: 0, translate: "0 4px" }, { opacity: 1, translate: "0 0" }], { duration: 180, easing: EOUT });
+      }); });
+    }
+
+    /* 4 Merkliste */
+    var ml = q(".ml", seite);
+    if (ml) {
+      function fuelle() { ml.innerHTML = [["Weihnachtsmarkt", "Freitag, 04.12."], ["Der Nikolaus besucht uns", "Montag, 07.12."], ["Elternabend Kindergarten", "Dienstag, 12.01."]].map(function (r) { return '<li><div><b>' + r[0] + "</b><small>" + r[1] + '</small></div><button type="button" class="x" aria-label="' + r[0] + ' nicht mehr merken">' + X + "</button></li>"; }).join(""); }
+      fuelle();
+      ml.addEventListener("click", function (e) { var x = e.target.closest(".x"); if (!x) return; var li = x.closest("li");
+        if (!nach || reduced) { li.parentNode.removeChild(li); return; }
+        var h = li.offsetHeight; li.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: "forwards" });
+        hoehe(li, h, 0, 200, EOUT, function () { li.parentNode.removeChild(li); });
+        li.animate([{ paddingTop: "10px", paddingBottom: "10px" }, { paddingTop: "0px", paddingBottom: "0px" }], { duration: 200, easing: EOUT, fill: "forwards" });
+      });
+      q(".reset", seite).addEventListener("click", fuelle);
+    }
+
+    /* 5 Alle Termine */
+    var l2 = q(".liste2", seite);
+    if (l2) { var T = [["18", "Nov", "Buß- und Bettag"], ["04", "Dez", "Weihnachtsmarkt"], ["07", "Dez", "Der Nikolaus besucht uns"], ["12", "Jan", "Elternabend Kindergarten"], ["20", "Jan", "Eingewöhnungs-Café"], ["11", "Feb", "Fasching"], ["26", "Mär", "Osterfrühstück"], ["15", "Mai", "Sommerfest"], ["06", "Sep", "Ferienfreizeit"]];
+      var alleB = q(".alle", seite);
+      function zeige3() { l2.innerHTML = T.map(function (t, i) { return '<li' + (i > 2 ? " hidden" : "") + '><span class="d">' + t[0] + "<small>" + t[1] + "</small></span><b>" + t[2] + "</b></li>"; }).join(""); alleB.textContent = "Alle 9 Termine anzeigen"; }
+      zeige3();
+      alleB.addEventListener("click", function () {
+        var rest = qa("li[hidden]", l2);
+        if (!rest.length) { zeige3(); return; }
+        rest.forEach(function (li, i) { li.hidden = false;
+          if (nach && !reduced) li.animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 250, delay: Math.min(i, 7) * 40, easing: EOUT, fill: "backwards" }); });
+        alleB.textContent = "Wieder weniger zeigen";
+      });
+    }
+
+    /* 6 Gemerkt */
+    var mk = q(".merken", seite);
+    if (mk) { var sv = q(".saved", seite); mk.addEventListener("click", function () {
+      var an = mk.getAttribute("aria-pressed") !== "true"; mk.setAttribute("aria-pressed", an); mk.textContent = an ? "Gemerkt" : "Merken"; sv.hidden = !an; }); }
+  });
+})();
+'''
+
+html = f'''<title>Feinschliff Bewegung 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>{CSS}</style>
+<main class="wrap">
+  <header class="kopf"><h1>Feinschliff Bewegung, zweite Runde</h1>
+  <p>Sechs kleine Stellen, jeweils links wie heute, rechts mit Bewegung. Tippen Sie in beiden Spalten dasselbe an und vergleichen Sie.</p></header>
+  {SEITE}
+</main>
+<script>{JS}</script>
+'''
+open(D + "animationen-2.html", "w", encoding="utf-8").write(html)
+print("ok", len(html) // 1024, "KB")
