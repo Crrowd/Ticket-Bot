@@ -2604,6 +2604,19 @@
     zeige(0);
   })();
 
+  /* Leiste „Auf dieser Seite“: beim Scrollen da, kurz nach dem Anhalten ausgeblendet (nur wenn sie oben klebt) */
+  (function () {
+    var nav = $(".subnav"); if (!nav) return;
+    var t = 0, PAUSE = 1400;
+    function klebt() { return nav.getBoundingClientRect().top <= parseFloat(getComputedStyle(nav).top) + 1; }
+    function ruhe() { if (klebt() && !nav.matches(":hover, :focus-within")) nav.classList.add("ruht"); }
+    function wach() { nav.classList.remove("ruht"); clearTimeout(t); t = setTimeout(ruhe, PAUSE); }
+    addEventListener("scroll", wach, { passive: true });
+    nav.addEventListener("mouseleave", function () { clearTimeout(t); t = setTimeout(ruhe, PAUSE); });
+    nav.addEventListener("focusin", function () { nav.classList.remove("ruht"); });
+    nav.addEventListener("focusout", function () { clearTimeout(t); t = setTimeout(ruhe, PAUSE); });
+  })();
+
   /* Symbol-Knöpfe ohne sichtbaren Text: Beschriftung auch als Hinweis beim Darüberfahren */
   $$("button[aria-label], a[aria-label]").forEach(function (el) { if (!el.title && !el.textContent.trim()) el.title = el.getAttribute("aria-label"); });
 

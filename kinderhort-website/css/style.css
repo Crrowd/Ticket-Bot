@@ -2180,3 +2180,10 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 @media (max-width: 1240px) { .subnav a { padding: 8px 9px; font-size: .86rem; } }
 .kurz { margin-inline: auto; }
 .kurz-t { text-align: center; }
+
+/* Leiste „Auf dieser Seite“ ruht: nach dem Anhalten sanft weg, beim Scrollen sofort wieder da */
+.subnav { transition: top .5s cubic-bezier(.22,1,.36,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
+.subnav.ruht { opacity: 0; translate: 0 -10px; pointer-events: none; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .45s var(--ease-in-out), translate .45s var(--ease-in-out); }
+@media (prefers-reduced-motion: reduce) { .subnav.ruht { translate: none; } .subnav, .subnav.ruht { transition: opacity .2s linear !important; } }
+body:has(.site-header.hide) .subnav { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
+body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .45s var(--ease-in-out), translate .45s var(--ease-in-out); }
