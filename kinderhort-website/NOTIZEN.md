@@ -500,3 +500,7 @@ Entscheidung offen.
 - Pfeile blättern bis 30 Wochen vor; am Wochenende steht dort schon die kommende Woche.
 - Daten kommen automatisch aus Schliesszeiten.csv, Feiertage und Termine.csv, keine eigene Pflege nötig.
 - Höhe ist vorab reserviert (kein Springen), Handy: Tage untereinander.
+
+## Bereichsseiten: Leiste & Kurzinfo (17.11.2026)
+- Leiste „Auf dieser Seite“ enger (Abstand, Innenrand, Schrift .9rem), damit beim Kinderhort alle 9 Punkte ab ca. 1180 px Fensterbreite ganz sichtbar sind; schmaler wird weiter gewischt.
+- „Das Wichtigste in Kürze“ auf Krippe, Kindergarten, Hort mittig.
