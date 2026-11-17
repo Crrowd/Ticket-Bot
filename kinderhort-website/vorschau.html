@@ -2141,6 +2141,18 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
   body.nav-open::after { opacity: 1; visibility: visible; transition: opacity .42s ease-out, visibility 0s; }
 }
 
+/* ===== Prüfung „7 UI-Fehler“ (17.11.2026) ===== */
+/* Tippflächen mindestens 44 × 44 px (Fließtext-Links ausgenommen) */
+.view-switch button, .abo-tabs button, .ev-filter button, .faq-topics button, .ask-vor button, .sugg button { min-height: 44px; }
+.brand { min-height: 44px; }
+.announce a, .foot-route, .link-btn { position: relative; }
+.announce a::after, .foot-route::after, .link-btn::after { content: ""; position: absolute; inset: -9px -8px; }
+/* Verschachtelte Rundungen: innen kleiner als außen (innen ≈ außen − Abstand) */
+.krank-ic { border-radius: 8px; }
+.phone-list .grp-mark, .krank-area .grp-mark { border-radius: 4px; }
+.dl-link .ficon { border-radius: 6px; }
+.quick-icon { border-radius: 12px; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -6057,6 +6069,9 @@ window.KITA = {
       setTimeout(function () { URL.revokeObjectURL(url); }, 1000); toast("Kalenderdatei erstellt");
     });
   })();
+
+  /* Symbol-Knöpfe ohne sichtbaren Text: Beschriftung auch als Hinweis beim Darüberfahren */
+  $$("button[aria-label], a[aria-label]").forEach(function (el) { if (!el.title && !el.textContent.trim()) el.title = el.getAttribute("aria-label"); });
 
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();

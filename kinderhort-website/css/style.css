@@ -2133,3 +2133,15 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
   body::after { content: ""; position: fixed; inset: 0; z-index: 99; background: rgb(14 30 35 / .35); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .28s ease, visibility 0s .28s; }
   body.nav-open::after { opacity: 1; visibility: visible; transition: opacity .42s ease-out, visibility 0s; }
 }
+
+/* ===== Prüfung „7 UI-Fehler“ (17.11.2026) ===== */
+/* Tippflächen mindestens 44 × 44 px (Fließtext-Links ausgenommen) */
+.view-switch button, .abo-tabs button, .ev-filter button, .faq-topics button, .ask-vor button, .sugg button { min-height: 44px; }
+.brand { min-height: 44px; }
+.announce a, .foot-route, .link-btn { position: relative; }
+.announce a::after, .foot-route::after, .link-btn::after { content: ""; position: absolute; inset: -9px -8px; }
+/* Verschachtelte Rundungen: innen kleiner als außen (innen ≈ außen − Abstand) */
+.krank-ic { border-radius: 8px; }
+.phone-list .grp-mark, .krank-area .grp-mark { border-radius: 4px; }
+.dl-link .ficon { border-radius: 6px; }
+.quick-icon { border-radius: 12px; }

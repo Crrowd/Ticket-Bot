@@ -2571,6 +2571,9 @@
     });
   })();
 
+  /* Symbol-Knöpfe ohne sichtbaren Text: Beschriftung auch als Hinweis beim Darüberfahren */
+  $$("button[aria-label], a[aria-label]").forEach(function (el) { if (!el.title && !el.textContent.trim()) el.title = el.getAttribute("aria-label"); });
+
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 })();

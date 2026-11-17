@@ -316,6 +316,12 @@ Entscheidung offen (Auswahl direkt im Katalog).
 - **Krankmelden mit einem Tipp (2):** Die zuletzt angerufene Gruppe steht beim nächsten Mal als großer Knopf oben (nur im eigenen Browser gespeichert).
 - **Sprungleiste (Überblick … Schließtage):** Der Punkt wechselt erst, wenn die Überschrift des Abschnitts oben unter der Leiste angekommen ist (vorher zu früh). Gilt für alle Seiten mit dieser Leiste.
 
+## Prüfung „7 UI-Fehler“ (17.11.2026)
+- Gemessen auf allen Seiten am Handy: keine dünne Schrift (alles mindestens 400), keine vagen Knopftexte („Ja/Nein/OK“), Auswahl immer deutlich (dunkler oder rosé Hintergrund).
+- Tippflächen auf mindestens 44 × 44 px gebracht: Umschalter Liste/Kalender, Bereichs-Filter, Abo-Reiter, Fragen-Themen, Vorschläge im Fragen-Helfer, Logo, „Alle Termine“-Link im Hinweis, „Route öffnen“, „Als App“, „Bewegung aus“. Fließtext-Links und Begriffs-Erklärungen im Text sind (wie in den Richtlinien) ausgenommen.
+- Verschachtelte Rundungen: Symbolkacheln innen kleiner gerundet als ihre Karte (Krankmelden 8 px, Gruppenzeichen 4 px, PDF-Kachel 6 px, Kontakt-Kacheln 12 px).
+- Symbol-Knöpfe ohne Text zeigen ihre Beschriftung jetzt auch als Hinweis beim Darüberfahren.
+
 ## Korrektur gelesen (16.11.2026)
 - Rechtschreibung/Grammatik: „Herzlich willkommen“, „Platz im Kindergarten/Kinderhort“, Kommas (Schlafraum, Wickelraum), Dativ (Außenbereich Krippe), „Meistgestellte Fragen“, „Inhouse-Schulungen“, „freinehmen“.
 - Sprache geglättet: Bobbycars/kleine Räder, „kleines Bällebad“, „etwa vier Wochen“ (einheitlich), „Puppen- und Rollenspielecke“, „Lange Öffnungszeiten“, Hausaufgaben-Satz, „Erzieherinnen und Erziehern“, „Webseite“ statt „Homepage“.
