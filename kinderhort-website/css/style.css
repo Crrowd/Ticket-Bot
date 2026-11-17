@@ -2145,3 +2145,31 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .phone-list .grp-mark, .krank-area .grp-mark { border-radius: 4px; }
 .dl-link .ficon { border-radius: 6px; }
 .quick-icon { border-radius: 12px; }
+
+/* ===== Diese Woche auf einen Blick (Startseite) ===== */
+.woche { margin: 0 0 28px; padding: 16px; border-radius: var(--r); background: var(--paper); color: var(--ink); box-shadow: var(--shadow); min-height: 216px; }
+.wo-kopf { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.wo-kopf h3 { margin: 0; font-size: 1.0625rem; text-align: center; }
+.wo-kopf h3 span { font-weight: 500; color: var(--ink-soft); margin-left: 4px; font-variant-numeric: tabular-nums; }
+.wo-pfeil { width: 44px; height: 44px; flex: none; border-radius: 50%; border: 0; background: rgb(var(--ink-rgb) / .07); color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: background var(--fast), scale .16s var(--ease-out); }
+.wo-pfeil:active { scale: .97; }
+.wo-pfeil:disabled { opacity: .35; cursor: default; }
+@media (hover: hover) and (pointer: fine) { .wo-pfeil:not(:disabled):hover { background: rgb(var(--ink-rgb) / .12); } }
+.wo-tage { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.wo-tag { display: grid; align-content: start; gap: 6px; min-height: 128px; padding: 10px; border-radius: 12px; background: #fff; border: 2px solid transparent; }
+.wo-tag.heute { border-color: var(--ink); }
+.wo-d { font-weight: 700; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.wo-d small { display: block; font-weight: 500; font-size: .8rem; color: var(--ink-soft); }
+.wo-ein { display: grid; gap: 4px; }
+.wo-e { display: block; padding: 5px 8px; border-radius: 8px; font-size: .84rem; line-height: 1.3; background: rgb(var(--ink-rgb) / .07); overflow-wrap: break-word; }
+.wo-e small { display: block; font-size: .74rem; font-weight: 600; opacity: .85; }
+.wo-e.zu { background: var(--rose-soft); }
+.wo-e.fe { background: var(--rose-soft); box-shadow: inset 0 0 0 1.5px var(--rose-deep); }
+.wo-e.wo-t { background: var(--surface); color: var(--on-surface); font-weight: 600; }
+.wo-frei { font-size: .84rem; color: var(--ink-soft); }
+@media (max-width: 700px) {
+  .woche { min-height: 440px; }
+  .wo-tage { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .wo-tag { min-height: 0; grid-template-columns: 64px minmax(0, 1fr); align-items: center; padding: 8px 10px; }
+}
+@media print { .woche { display: none; } }

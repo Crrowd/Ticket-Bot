@@ -2571,6 +2571,39 @@
     });
   })();
 
+
+  /* ---------- Diese Woche auf einen Blick (Startseite): Termine, Schließtage, Feiertage Mo–Fr ---------- */
+  (function () {
+    var box = $("[data-woche]"); if (!box || !K) return;
+    var KURZ = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], MON = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+    var versatz = 0, MAX = 30;
+    function fe(s) { for (var i = 0; i < K.feiertage.length; i++) if (K.feiertage[i].datum === s) return K.feiertage[i].name; return null; }
+    function zu(s) { for (var i = 0; i < K.schliesszeiten.length; i++) { var z = K.schliesszeiten[i]; if (s >= z.von && s <= z.bis) return z; } return null; }
+    function kurz(d) { return String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "."; }
+    function zeige(richtung) {
+      var jetzt = new Date(), m = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate());
+      /* am Wochenende zeigt „Diese Woche“ schon die kommende Woche */
+      if (m.getDay() === 6) m.setDate(m.getDate() + 2); else if (m.getDay() === 0) m.setDate(m.getDate() + 1);
+      m.setDate(m.getDate() - ((m.getDay() + 6) % 7) + versatz * 7);
+      var fr = new Date(m); fr.setDate(m.getDate() + 4);
+      var titel = versatz === 0 ? (jetzt.getDay() === 0 || jetzt.getDay() === 6 ? "Kommende Woche" : "Diese Woche") : versatz === 1 ? "Nächste Woche" : "Woche ab " + kurz(m);
+      var tage = "";
+      for (var i = 0; i < 5; i++) {
+        var d = new Date(m); d.setDate(m.getDate() + i); var s = iso(d), e = "", f = fe(s), z = zu(s);
+        if (f) e += '<span class="wo-e fe"><small>Feiertag</small>' + escH(f) + "</span>";
+        else if (z) e += '<span class="wo-e zu"><small>geschlossen</small>' + escH(z.name) + "</span>";
+        K.termine.forEach(function (t) { if (s >= t.von && s <= t.bis) e += '<span class="wo-e wo-t">' + escH(t.titel) + "</span>"; });
+        tage += '<li class="wo-tag' + (s === heute ? " heute" : "") + '"' + (s === heute ? ' aria-current="date"' : "") + '><span class="wo-d">' + KURZ[d.getDay()] + " " + d.getDate() + ".<small>" + MON[d.getMonth()] + "</small></span><span class=\"wo-ein\">" + (e || '<span class="wo-frei">geöffnet</span>') + "</span></li>";
+      }
+      box.innerHTML = '<div class="wo-kopf"><button class="wo-pfeil" type="button" aria-label="Vorige Woche"' + (versatz <= 0 ? " disabled" : "") + ">" + svg(ICON.left, 20) + '</button><h3 aria-live="polite">' + titel + ' <span>' + kurz(m) + " – " + kurz(fr) + '</span></h3><button class="wo-pfeil" type="button" aria-label="Nächste Woche"' + (versatz >= MAX ? " disabled" : "") + ">" + svg(ICON.right, 20) + '</button></div><ul class="wo-tage">' + tage + "</ul>";
+      var p = $$(".wo-pfeil", box);
+      p[0].addEventListener("click", function () { if (versatz > 0) { versatz--; zeige(-1); $$(".wo-pfeil", box)[versatz > 0 ? 0 : 1].focus(); } });
+      p[1].addEventListener("click", function () { if (versatz < MAX) { versatz++; zeige(1); $$(".wo-pfeil", box)[1].focus(); } });
+      if (richtung && !reduced) $(".wo-tage", box).animate([{ opacity: 0, translate: (richtung * 16) + "px 0" }, { opacity: 1, translate: "0 0" }], { duration: 240, easing: EASE_OUT });
+    }
+    zeige(0);
+  })();
+
   /* Symbol-Knöpfe ohne sichtbaren Text: Beschriftung auch als Hinweis beim Darüberfahren */
   $$("button[aria-label], a[aria-label]").forEach(function (el) { if (!el.title && !el.textContent.trim()) el.title = el.getAttribute("aria-label"); });
 

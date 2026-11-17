@@ -803,6 +803,7 @@ home = f'''
   <div class="container">
     <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
       <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
+    <div class="woche reveal" data-woche aria-label="Diese Woche: Termine, Schließtage und Feiertage"></div>
     <div class="notes-grid">
       <div>
         <ul class="event-list" data-max="3">

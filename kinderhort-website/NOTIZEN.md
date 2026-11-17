@@ -493,3 +493,10 @@ Entscheidung offen.
 47 Foto wird zur Seite (schon eingebaut, Empfehlung) · 48 Nach oben schieben · 49 Wimpel öffnet die Seite · 50 Weicher Fokuswechsel · 51 Trennlinie zeichnet sich (Empfehlung) · 52 Fotos erscheinen als Welle (Empfehlung) · 53 Großer Titel wird zur Leiste · 54 Fotoreihe mit Vorschau · 55 Telefon klingelt kurz · 56 Link füllt sich mit Farbe · 57 Kalenderblatt blättert · 58 Platzhalter beim Laden · 59 Wimpel im Logo wehen
 
 Entscheidung offen.
+
+## Diese Woche auf einen Blick (17.11.2026)
+- Startseite, Bereich „Aktuelles“: Wochenleiste Mo–Fr über den Terminen.
+- Zeigt je Tag Feiertag, Schließtag (rosé) oder Termin (petrol), sonst „geöffnet“; heute ist umrandet.
+- Pfeile blättern bis 30 Wochen vor; am Wochenende steht dort schon die kommende Woche.
+- Daten kommen automatisch aus Schliesszeiten.csv, Feiertage und Termine.csv, keine eigene Pflege nötig.
+- Höhe ist vorab reserviert (kein Springen), Handy: Tage untereinander.
