@@ -1515,10 +1515,10 @@ table.plan tr.next .amp-tag { background: var(--state-next); color: #fff; }
 @media (hover: hover) and (pointer: fine) {
   .tour-item { position: relative; }
   .tour-item figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 16px; background: linear-gradient(rgb(var(--deep-rgb) / 0), rgb(var(--deep-rgb) / .88)); color: var(--on-surface); pointer-events: none;
-    translate: 0 calc(100% - 52px); transition: translate .35s var(--ease-out); }
-  .tour-item figcaption span { color: #D5E7E4; opacity: 0; transition: opacity .25s var(--ease-out) .05s; }
-  .tour-item:hover figcaption, .tour-item:focus-within figcaption { translate: 0 0; }
-  .tour-item:hover figcaption span, .tour-item:focus-within figcaption span { opacity: 1; }
+    display: grid; grid-template-rows: auto 0fr; transition: grid-template-rows .35s var(--ease-out); }
+  .tour-item figcaption span { min-height: 0; overflow: hidden; margin-top: 0; color: #D5E7E4; opacity: 0; transition: opacity .25s var(--ease-out) .05s, margin-top .35s var(--ease-out); }
+  .tour-item:hover figcaption, .tour-item:focus-within figcaption { grid-template-rows: auto 1fr; }
+  .tour-item:hover figcaption span, .tour-item:focus-within figcaption span { opacity: 1; margin-top: 4px; }
 }
 
 /* 79 Doppeltipp-Zoom in der Bildansicht */

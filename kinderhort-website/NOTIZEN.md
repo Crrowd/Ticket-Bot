@@ -504,3 +504,4 @@ Entscheidung offen.
 ## Bereichsseiten: Leiste & Kurzinfo (17.11.2026)
 - Leiste „Auf dieser Seite“ enger (Abstand, Innenrand, Schrift .9rem), damit beim Kinderhort alle 9 Punkte ab ca. 1180 px Fensterbreite ganz sichtbar sind; schmaler wird weiter gewischt.
 - „Das Wichtigste in Kürze“ auf Krippe, Kindergarten, Hort mittig.
+- Rundgang (Maus): Bildtitel steht immer ganz sichtbar, Beschreibung klappt beim Darüberfahren darunter auf (vorher war der Titel abgeschnitten).
