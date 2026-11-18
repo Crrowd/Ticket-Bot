@@ -285,12 +285,12 @@ strong, b { font-weight: 600; }
   .nav-quick small { display: block; font-weight: 500; font-size: .84rem; opacity: .8; word-break: break-all; }
   .nav-addr { display: flex; align-items: center; gap: 12px; margin: 4px 0 0; color: var(--fg-soft); font-size: .92rem; }
   /* Einträge gleiten nacheinander herein */
-  .nav-open .main-nav > ul > li { animation: menu-in .45s var(--ease-out) both; }
+  .nav-open .main-nav > ul > li { animation: menu-in .3s var(--ease-out) both; }
   .nav-open .main-nav > ul > li:nth-child(2) { animation-delay: 30ms; }
-  .nav-open .main-nav > ul > li:nth-child(3) { animation-delay: 60ms; }
-  .nav-open .main-nav > ul > li:nth-child(4) { animation-delay: 90ms; }
-  .nav-open .main-nav > ul > li:nth-child(5) { animation-delay: 120ms; }
-  .nav-open .main-nav > ul > li:nth-child(6) { animation-delay: 150ms; }
+  .nav-open .main-nav > ul > li:nth-child(3) { animation-delay: 55ms; }
+  .nav-open .main-nav > ul > li:nth-child(4) { animation-delay: 75ms; }
+  .nav-open .main-nav > ul > li:nth-child(5) { animation-delay: 90ms; }
+  .nav-open .main-nav > ul > li:nth-child(6) { animation-delay: 100ms; }
   .mega { position: static; display: none; grid-template-columns: minmax(0, 1fr); padding: 8px; margin: 4px 0 8px; background: var(--paper); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; opacity: 1; visibility: visible; translate: none; scale: 1; transition: none; }
   .mega::before, .mega-visual { display: none; }
   .has-drop.open .mega { display: grid; }
@@ -1456,12 +1456,7 @@ body.nav-loading .nav-loader { opacity: 1; translate: -50% 0; }
 .nav-loader span:nth-child(odd) { background: var(--rose-deep); } .nav-loader span:nth-child(even) { background: var(--ink); }
 @keyframes flag-hop { 0%, 60%, 100% { translate: 0 0; rotate: 0deg; } 30% { translate: 0 6px; rotate: 8deg; } }
 
-/* 60 Fotos mit Tiefe beim Scrollen */
-/* Maße von Anfang an setzen, damit nichts springt; JS liefert nur die Verschiebung */
-.js .page-hero-card > img { inset: -9% 0; height: 118%; translate: 0 var(--py, 0px); }
 .teaser { overflow: hidden; }
-.js .teaser > img { translate: 0 var(--py, 0px); scale: 1.1; }
-.js .teaser:hover > img { scale: 1.16; }
 
 /* 9 Kleine Feier */
 .confetti { position: fixed; z-index: 3000; width: 8px; height: 12px; border-radius: 3px; pointer-events: none; }
@@ -1622,12 +1617,6 @@ b, strong { font-weight: 600; }
 .faq-topics button:active { scale: .97; }
 .faq-topics button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-surface); }
 
-/* Idee 92 – Bereichskarten kippen leicht zur Maus (nur Computer) */
-@media (hover: hover) and (pointer: fine) {
-  .areas { perspective: 1200px; }
-  .area-card.tilt { transition: transform .5s var(--io), box-shadow .35s; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
-  .area-card.tilt:hover { translate: 0 -6px; }
-}
 
 /* Idee 97 – Hinweis ohne Internet */
 .offline-note { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 650; translate: -50% 16px; opacity: 0; display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px); padding: 10px 16px; border-radius: 12px; background: var(--deep); color: var(--on-surface); font-weight: 600; font-size: .92rem; box-shadow: var(--shadow-lg); pointer-events: none; transition: opacity .25s var(--io), translate .25s var(--io), background .25s; }
@@ -2244,10 +2233,6 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .subnav { transform-origin: 50% 0; }
 .subnav.ruht { opacity: 0; translate: 0 -14px; scale: .985; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .subnav.ruht { translate: none; scale: 1; } }
-/* 3 Bereichskarten heben sich sanft an (translate fehlte in der Übergangsliste) */
-@media (hover: hover) and (pointer: fine) {
-  .area-card.tilt { transition: transform .5s var(--io), translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
-}
 /* 4 Bilder im Bereiche-Menü folgen zügig */
 .mega-visual figure { transition: opacity .2s var(--ease-out), scale .3s var(--ease-out); }
 /* 5 Foto-Zoom beim Darüberfahren 450 ms (Aufdecken beim Scrollen bleibt 800 ms) */
@@ -2279,11 +2264,8 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .kurz-t { font-weight: 500; }
 
 /* ===== Animations-Audit Runde 4 (18.11.2026) ===== */
-/* 1 Fotos bewegen sich nicht mit dem Scrollen: Tiefen-Effekt und der Zusatz-Zoom dafür entfernt */
-.js .page-hero-card > img { inset: 0; height: 100%; translate: none; }
-.js .teaser > img { translate: none; scale: 1; }
+/* 1 Fotos bewegen sich nicht mit dem Scrollen (Tiefen-Effekt samt Regeln entfernt) */
 /* 2 Große Startseiten-Fotos zoomen beim Darüberfahren so dezent wie die Karten */
-.js .teaser:hover > img { scale: 1; }
 @media (hover: hover) and (pointer: fine) { .js .teaser:hover > img { scale: 1.03; } }
 /* 3 Telefon-Symbole wackeln nicht mehr beim Darüberfahren */
 a[href^="tel:"]:hover svg { animation: none; }

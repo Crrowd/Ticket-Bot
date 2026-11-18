@@ -542,3 +542,4 @@ Entscheidung offen.
 - Große Startseiten-Fotos: Hover-Zoom 103 % (vorher 116 %).
 - Telefon-Symbole (Gruppen-Knöpfe bei „Kind krankmelden“, Handy-Menü) wackeln nicht mehr beim Darüberfahren.
 - Abschnitte gleiten nicht mehr an das Scrollen gekoppelt heran, Seitentitel schrumpft nicht mehr; einmaliges Einblenden bleibt.
+- Aufgeräumt: tote Regeln von Tiefen-Effekt und Karten-Kippen entfernt. Handy-Menü: Einträge 300 ms mit abnehmendem Versatz (0/30/55/75/90/100 ms).
