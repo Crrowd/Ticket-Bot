@@ -511,3 +511,12 @@ Entscheidung offen.
 - Vorschau: Datenschutz-Seite aufgenommen (Link führte dort ins Leere).
 - Leiste „Auf dieser Seite“: weicheres Verschwinden (0,7–0,8 s, sanfte Kurve, 14 px nach oben, minimal kleiner); Zurückkommen zügig (0,3–0,4 s).
 - Leiste „Auf dieser Seite“: Klick setzt den Balken sofort auf den gewählten Punkt; er bleibt dort, bis man ca. 160 px weiterscrollt (vorher blieb er beim Punkt davor).
+
+## Animations-Review umgesetzt (18.11.2026)
+- Suche per „/“ oder Strg+K: sofort da (per Klick weiter mit Einblenden).
+- Bildansicht per Pfeiltasten: sofort wechseln, 120 ms Überblenden (per Klick/Wischen wie bisher).
+- Leiste „Auf dieser Seite“ und Abschnittstitel: kein top-Übergang mehr; beim Ein-/Ausblenden der Kopfleiste gleiten sie per translate (250 ms). Ausblenden der Leiste 0,5 s.
+- Zuklappen: ease-out statt ease-in. Rundgang-Federn 240 ms, Bildunterschrift 250 ms.
+- Pfeile in Knöpfen: 3 px Nachrutschen statt Flug. Menüpunkte rutschen per translate statt padding.
+- Jahresband-Nadel per translate. Runde Knöpfe/Teilen 97 %. Neu-Punkt aus 50 % + Einblenden. Menü-Striche per translate.
+- Galerie-Filter (Baustein einblicke(), derzeit auf keiner Seite eingebunden): 280 ms, unterbrechbar.

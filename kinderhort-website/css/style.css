@@ -2205,3 +2205,42 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 .subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: 0 -14px; scale: .985; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .7s cubic-bezier(.4,0,.2,1), translate .8s cubic-bezier(.4,0,.2,1), scale .8s cubic-bezier(.4,0,.2,1); }
 .subnav:not(.ruht), body:has(.site-header.hide) .subnav:not(.ruht) { transition: top .5s cubic-bezier(.22,1,.36,1), opacity .28s cubic-bezier(.22,1,.36,1), translate .38s cubic-bezier(.22,1,.36,1), scale .38s cubic-bezier(.22,1,.36,1); }
 @media (prefers-reduced-motion: reduce) { .subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: none; scale: 1; } .subnav, .subnav.ruht, body:has(.site-header.hide) .subnav { transition: opacity .3s linear !important; } }
+
+/* ===== Animations-Review (18.11.2026): alle Funde ===== */
+/* Suche per Tastenkürzel: sofort da */
+.search-panel.sofort, .search-panel.sofort::backdrop { transition: none !important; }
+/* Klebende Leisten: kein „top“ mehr animieren (gleiten per translate aus dem Skript) */
+.subnav, body:has(.site-header.hide) .subnav, .subnav:not(.ruht), body:has(.site-header.hide) .subnav:not(.ruht) { transition: opacity .25s var(--ease-out), translate .25s var(--ease-out), scale .25s var(--ease-out); }
+.subnav.ruht, body:has(.site-header.hide) .subnav.ruht { transition: opacity .5s var(--ease-out), translate .5s var(--ease-out), scale .5s var(--ease-out); }
+.sticky-title { transition: none; }
+@media (prefers-reduced-motion: reduce) { .subnav, .subnav.ruht, body:has(.site-header.hide) .subnav, body:has(.site-header.hide) .subnav.ruht { transition: opacity .3s linear !important; } }
+/* Rundgang-Bildunterschrift: zügiger, ohne margin-Animation */
+@media (hover: hover) and (pointer: fine) {
+  .tour-item figcaption { transition: grid-template-rows .25s var(--ease-out); }
+  .tour-item figcaption span, .tour-item:hover figcaption span, .tour-item:focus-within figcaption span { margin-top: 0; padding-top: 4px; transition: opacity .2s var(--ease-out) .04s; }
+}
+/* Pfeile in Knöpfen: kleines Nachrutschen statt Keyframe-Flug */
+.btn:hover svg:last-child:not(:first-child), .area-card:hover .more svg, .teaser:hover p svg { animation: none; }
+.btn svg:last-child:not(:first-child), .area-card .more svg, .teaser p svg { transition: translate .18s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .btn:hover svg:last-child:not(:first-child), .area-card:hover .more svg, .teaser:hover p svg { translate: 3px 0; } }
+/* Menüpunkte: Text rutscht per translate statt padding */
+.mega li a:hover { padding-left: 12px; }
+.mega li a .ml { transition: translate var(--fast) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .mega li a:hover .ml { translate: 4px 0; } }
+@media (max-width: 1180px) { .main-nav .mega li a:hover .ml { translate: none; } }
+.round-btn, .nav-toggle, .drop-toggle, .main-nav > ul > li > a, .mega li a, .mega-title { transition-property: background, color, scale, box-shadow; transition-duration: var(--fast), var(--fast), .12s, var(--fast); }
+.lotse-item summary { transition: none; }
+/* Jahresband-Nadel per translate */
+.yl-pin { left: 0; transition: translate .3s var(--ease-out); }
+/* Drücken überall gleich stark */
+.round-btn:active, .event .share:active { scale: .97; }
+/* Neu-Punkt: nicht aus dem Nichts */
+.nav-badge { scale: .5; opacity: 0; transition: scale .25s var(--ease-out), opacity .18s var(--ease-out); }
+.nav-badge.show { scale: 1; opacity: 1; }
+.nav-toggle .toggle-badge, .nav-open .nav-toggle .toggle-badge { transition: scale .25s var(--ease-out), opacity .18s var(--ease-out); }
+.nav-open .nav-toggle .toggle-badge { scale: .5; opacity: 0; }
+/* Menü-Striche per translate statt top */
+.nav-toggle span::before { top: -7px; } .nav-toggle span::after { top: 7px; }
+.nav-open .nav-toggle span::before { top: -7px; translate: 0 7px; }
+.nav-open .nav-toggle span::after { top: 7px; translate: 0 -7px; }
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { transition: rotate .22s var(--io), translate .22s var(--io), background .22s var(--io), filter .22s var(--io); }

@@ -54,20 +54,33 @@
     return document.body.classList.contains("nav-open") || $(".has-drop.open") || $(".search-panel[open]") ||
       (header && header.matches(":focus-within, :hover")) || ($(".lightbox") && $(".lightbox").classList.contains("open"));
   }
+  /* Kopfleiste ein-/ausblenden. Klebende Leisten springen an ihre neue Stelle und gleiten per translate hin
+     (läuft auf der Grafikkarte, statt „top“ zu animieren) */
+  function kopf(weg) {
+    if (!header || header.classList.contains("hide") === weg) return;
+    var mit = $$(".subnav, .sticky-title").filter(function (el) { return el.getClientRects().length; }).map(function (el) { return [el, el.getBoundingClientRect().top]; });
+    header.classList.toggle("hide", weg);
+    document.dispatchEvent(new Event("kopfwechsel"));
+    if (reduced) return;
+    mit.forEach(function (p) {
+      var d = p[1] - p[0].getBoundingClientRect().top;
+      if (Math.abs(d) > 1 && Math.abs(d) < 200) p[0].animate([{ translate: "0 " + d + "px" }, { translate: "0 0" }], { duration: 250, easing: EASE_OUT, composite: "add" });
+    });
+  }
   function onScroll() {
     if (!header) return;
     var y = window.scrollY, dy = y - lastY;
     lastY = y;
     header.classList.toggle("scrolled", y > 8);
-    if (y < 120 || busy()) { header.classList.remove("hide"); travel = 0; return; }
+    if (y < 120 || busy()) { kopf(false); travel = 0; return; }
     /* erst nach ein paar Pixeln in dieselbe Richtung reagieren – kein Flackern bei kleinen Bewegungen */
     travel = (travel > 0) === (dy > 0) ? travel + dy : dy;
-    if (travel > 32) header.classList.add("hide");
-    else if (travel < -16) header.classList.remove("hide");
+    if (travel > 32) kopf(true);
+    else if (travel < -16) kopf(false);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-  if (header) header.addEventListener("focusin", function () { header.classList.remove("hide"); });
+  if (header) header.addEventListener("focusin", function () { kopf(false); });
 
   /* Handy-Tastatur: Höhe messen, damit nichts unter ihr verschwindet */
   var vv = window.visualViewport, lastKb = -1, lastVvh = -1;
@@ -268,7 +281,7 @@
     }
     function bounds(dir) {
       if (reduced || !track.animate) return;
-      track.animate([{ translate: "0 0" }, { translate: (dir * 18) + "px 0" }, { translate: "0 0" }], { duration: 360, easing: EASE_OUT });
+      track.animate([{ translate: "0 0" }, { translate: (dir * 18) + "px 0" }, { translate: "0 0" }], { duration: 240, easing: EASE_OUT });
     }
     $(".tour-prev", tour).addEventListener("click", function () {
       if (atEdge(items[0], -1)) bounds(1); else track.scrollBy({ left: -step(), behavior: "smooth" });
@@ -333,10 +346,10 @@
   lbImg.addEventListener("mousedown", function (e) { if (!zoom.on) return; e.preventDefault(); pan = { x: e.clientX, y: e.clientY, tx: zoom.tx, ty: zoom.ty }; lb.classList.add("panning"); });
   addEventListener("mousemove", function (e) { if (!pan) return; zoom.tx = pan.tx + e.clientX - pan.x; zoom.ty = pan.ty + e.clientY - pan.y; zoomClamp(); zoomApply(); });
   addEventListener("mouseup", function () { if (pan) { pan = null; lb.classList.remove("panning"); } });
-  function show(i, dir) {
+  function show(i, dir, taste) {
     zoomReset();
     var prev = lbImg.classList.contains("ready") && lb.classList.contains("open") ? lbImg.getBoundingClientRect() : null;
-    if (prev && !reduced) {
+    if (prev && !reduced && !taste) {
       /* Altes und neues Bild überlappen: das alte blendet aus, während das neue einblendet */
       var g = lbImg.cloneNode();
       g.className = "lb-ghost";
@@ -347,7 +360,8 @@
     idx = (i + group.length) % group.length;
     var el = group[idx];
     setSrc(el);
-    if (prev && dir && !reduced) lbImg.animate([{ opacity: 0, transform: "translateX(" + dir * 24 + "px)" }, { opacity: 1, transform: "none" }], { duration: 250, easing: EASE_OUT });
+    /* per Pfeiltaste: sofort wechseln, nur kurz überblenden – wer schnell blättert, soll nicht warten */
+    if (prev && dir && !reduced) lbImg.animate(taste ? [{ opacity: .35 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateX(" + dir * 24 + "px)" }, { opacity: 1, transform: "none" }], { duration: taste ? 120 : 250, easing: EASE_OUT });
     lbImg.alt = el.getAttribute("data-title") || "";
     lbTitle.textContent = el.getAttribute("data-title") || "";
     lbText.textContent = el.getAttribute("data-text") || "";
@@ -410,8 +424,8 @@
   document.addEventListener("keydown", function (e) {
     if (!lb.classList.contains("open")) return;
     if (e.key === "Escape") { if (zoom.on) { zoomReset(); return; } closeLb(); }
-    if (e.key === "ArrowLeft") show(idx - 1, -1);
-    if (e.key === "ArrowRight") show(idx + 1, 1);
+    if (e.key === "ArrowLeft") show(idx - 1, -1, true);
+    if (e.key === "ArrowRight") show(idx + 1, 1, true);
   });
   /* Wischen: Das Bild folgt dem Finger 1:1, ohne Übergang. Nach oben und bei nur einem Bild seitlich: Gummiband */
   var t0 = null;
@@ -566,8 +580,11 @@
       as[sel].scrollIntoView({ block: "nearest" });
       input.setAttribute("aria-activedescendant", "treffer-" + sel);
     };
-    var openSearch = function (ev) {
+    var openSearch = function (ev, perTaste) {
       if (dlg.open) return;
+      /* per Tastenkürzel ohne Einblenden: sofort tippen können */
+      dlg.classList.toggle("sofort", !!perTaste);
+      if (perTaste) requestAnimationFrame(function () { requestAnimationFrame(function () { dlg.classList.remove("sofort"); }); });
       if (document.body.classList.contains("nav-open")) { setMenu(false); closeTop = null; }
       /* Das Suchfenster wächst aus dem Knopf, der es geöffnet hat */
       var src = ev && ev.currentTarget && ev.currentTarget.getBoundingClientRect ? ev.currentTarget : $(".search-btn");
@@ -595,8 +612,8 @@
     });
     searchBtns.forEach(function (b) { b.addEventListener("click", openSearch); });
     document.addEventListener("keydown", function (e) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); if (dlg.open) dlg.close(); else openSearch(); }
-      if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && !dlg.open) { e.preventDefault(); openSearch(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); if (dlg.open) dlg.close(); else openSearch(null, true); }
+      if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && !dlg.open) { e.preventDefault(); openSearch(null, true); }
     });
     /* Handy: Blatt nach unten wischen zum Schließen */
     var s0 = null;
@@ -879,10 +896,14 @@
       });
       var ti = dayIdx(new Date());
       if (ti >= 0 && ti < ylen) { var tm = document.createElement("span"); tm.className = "yl-today"; tm.style.left = (ti / ylen * 100) + "%"; bar.appendChild(tm); }
-      var cur = Math.min(ylen - 1, Math.max(0, ti)), dragging = false;
+      var cur = Math.min(ylen - 1, Math.max(0, ti)), dragging = false, pinAnteil = null;
+      /* Nadel per translate (Grafikkarte) statt „left“; Pixel aus der Breite des Bands */
+      function pinSetzen(x) { pin.style.translate = (x !== undefined ? x : pinAnteil * bar.clientWidth + "px") + " 0"; }
+      if (window.ResizeObserver) new ResizeObserver(function () { if (pinAnteil === null || dragging) return; pin.style.transition = "none"; pinSetzen(); void pin.offsetWidth; pin.style.transition = ""; }).observe(bar);
       function showDay(i, x) {
         cur = i;
-        pin.style.left = x !== undefined ? x : (i + .5) / ylen * 100 + "%";
+        if (x === undefined) pinAnteil = (i + .5) / ylen;
+        pinSetzen(x);
         var dt = new Date(y0, 8, 1 + i), s = iso(dt), hit = null, next = null;
         K.schliesszeiten.forEach(function (z) { if (s >= z.von && s <= z.bis) hit = z; if (!next && z.von > s) next = z; });
         var reason = closedReason(dt), label = fmtLong(dt);
@@ -1492,24 +1513,26 @@
   /* ---------- Einblicke: Fotos nach Bereich filtern (weiches Umsortieren) ---------- */
   (function () {
     var chips = $$(".gal-chips button"), grid = $(".gal-grid"); if (!grid) return;
-    var items = $$(".gal-item", grid), busy = false;
+    var items = $$(".gal-item", grid), wechsel = 0;
     chips.forEach(function (c) { c.addEventListener("click", function () {
-      if (busy || c.getAttribute("aria-pressed") === "true") return;
+      if (c.getAttribute("aria-pressed") === "true") return;
+      /* ein neuer Klick mitten in der Bewegung lenkt einfach um: Positionen von jetzt messen, dann neu starten */
+      clearTimeout(wechsel);
       chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c); });
       var cat = c.getAttribute("data-cat"), keep = function (f) { return cat === "alle" || f.getAttribute("data-cat") === cat; };
       var first = new Map(); items.forEach(function (f) { if (!f.hidden) first.set(f, f.getBoundingClientRect()); });
+      items.forEach(function (f) { f.getAnimations().forEach(function (a) { a.cancel(); }); f.classList.remove("leave"); });
       var leaving = items.filter(function (f) { return !f.hidden && !keep(f); });
       if (reduced || !grid.animate) { items.forEach(function (f) { f.hidden = !keep(f); }); return; }
-      busy = true; leaving.forEach(function (f) { f.classList.add("leave"); });
-      setTimeout(function () {
+      leaving.forEach(function (f) { f.classList.add("leave"); });
+      wechsel = setTimeout(function () {
         items.forEach(function (f) { f.classList.remove("leave"); f.hidden = !keep(f); });
         items.forEach(function (f) {
           if (f.hidden) return; var a = first.get(f), b = f.getBoundingClientRect();
-          if (a) f.animate([{ translate: (a.left - b.left) + "px " + (a.top - b.top) + "px" }, { translate: "0 0" }], { duration: 420, easing: EASE_IO });
-          else f.animate([{ opacity: 0, scale: .92 }, { opacity: 1, scale: 1 }], { duration: 300, delay: 100, easing: EASE_OUT, fill: "backwards" });
+          if (a) f.animate([{ translate: (a.left - b.left) + "px " + (a.top - b.top) + "px" }, { translate: "0 0" }], { duration: 280, easing: EASE_OUT });
+          else f.animate([{ opacity: 0, scale: .92 }, { opacity: 1, scale: 1 }], { duration: 220, delay: 40, easing: EASE_OUT, fill: "backwards" });
         });
-        busy = false;
-      }, leaving.length ? 150 : 0);
+      }, leaving.length ? 120 : 0);
     }); });
   })();
 
@@ -1828,7 +1851,8 @@
     var sub = $(".subnav"), hdr = $(".site-header");
     function top() {
       var hidden = hdr && hdr.classList.contains("hide"), t;
-      if (sub) t = sub.getBoundingClientRect().bottom + 6; else t = hidden ? 8 : (hdr ? hdr.getBoundingClientRect().bottom + 6 : 8);
+      var sn = $$(".subnav").filter(function (n) { return n.getClientRects().length; })[0];
+      if (sn) t = (parseFloat(getComputedStyle(sn).top) || 0) + sn.offsetHeight + 6; else t = hidden ? 8 : (hdr ? hdr.offsetHeight + 6 : 8);
       made.forEach(function (st) {
         st.style.setProperty("--st-top", Math.max(8, Math.round(t)) + "px");
         /* sichtbar, sobald die eigentliche Überschrift oben verschwunden ist */
@@ -1837,7 +1861,7 @@
     }
     var tick = false;
     addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; top(); }); } }, { passive: true });
-    addEventListener("resize", top); top();
+    addEventListener("resize", top); document.addEventListener("kopfwechsel", top); top();
   })();
 
   /* =====================================================================
@@ -2427,7 +2451,7 @@
     };
     d.sanftZu = function () {
       zu = true;
-      fade([{ opacity: 1 }, { opacity: 0 }], { duration: o.ms * (o.ausblenden || .5), easing: "ease-in", fill: "forwards" });
+      fade([{ opacity: 1 }, { opacity: 0 }], { duration: o.ms * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
       fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
         zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
       });
