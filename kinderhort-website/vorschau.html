@@ -2261,6 +2261,23 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .status-q button { transition: scale .16s var(--ease-out), background var(--fast), color var(--fast), border-color var(--fast); }
 .status-q button:active { scale: .97; }
 
+/* ===== Feinschliff nach Unslop-Prüfung (18.11.2026) ===== */
+/* 1 Kein Lichtstreifen über den Hauptknöpfen: Hover ist nur die Farbänderung */
+.hero-actions .btn-primary::after, .nav-cta::after, .cta-band .btn-primary::after { content: none; }
+/* 2 Bereichskarten: nur leichtes Anheben (3 px), Foto rückt kaum merklich näher */
+@media (hover: hover) and (pointer: fine) {
+  .area-card { transition: translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+  .area-card:hover { translate: 0 -3px; }
+  .area-card:hover .thumb img { scale: 1.03; }
+}
+/* 4 Große Fotos bewegen sich nicht mehr mit dem Scrollen (einmaliges Einblenden bleibt) */
+.teasers:not(.three) .teaser, .teasers:not(.three) .teaser img { animation: none; }
+/* 5 Welle über der Fußzeile bleibt ruhig */
+.foot-wave.go .w1, .foot-wave.go .w2 { animation: none; }
+/* 7 Hervorhebungen im Fließtext und kleine Beschriftungen eine Stufe leichter; Überschriften und Knöpfe bleiben */
+:is(p, li, td, dd, figcaption, small) :is(b, strong):not(button *, .btn *) { font-weight: 500; }
+.kurz-t { font-weight: 500; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -5717,12 +5734,7 @@ window.KITA = {
     input.addEventListener("input", function (e) { if (e.isTrusted && on) setTimeout(function () { items.forEach(function (d) { if (!on[1].test(d.textContent.toLowerCase())) d.hidden = true; }); }, 0); });
   })();
 
-  /* Idee 92 – Bereichskarten kippen leicht zur Maus */
-  if (finePtr && !reduced) $$(".area-card").forEach(function (c) {
-    c.classList.add("tilt");
-    c.addEventListener("pointermove", function (e) { var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.setProperty("--ry", (x * 6).toFixed(2) + "deg"); c.style.setProperty("--rx", (-y * 5).toFixed(2) + "deg"); });
-    c.addEventListener("pointerleave", function () { c.style.setProperty("--ry", "0deg"); c.style.setProperty("--rx", "0deg"); });
-  });
+  /* Idee 92 (Karten kippen zur Maus) entfernt: Feinschliff 18.11.2026 */
 
   /* Idee 97 – Hinweis ohne Internet */
   (function () {

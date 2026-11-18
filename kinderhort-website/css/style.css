@@ -2253,3 +2253,20 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .ask-vor button:active, .sugg button:active, .kb-pause:active { scale: .97; }
 .status-q button { transition: scale .16s var(--ease-out), background var(--fast), color var(--fast), border-color var(--fast); }
 .status-q button:active { scale: .97; }
+
+/* ===== Feinschliff nach Unslop-Prüfung (18.11.2026) ===== */
+/* 1 Kein Lichtstreifen über den Hauptknöpfen: Hover ist nur die Farbänderung */
+.hero-actions .btn-primary::after, .nav-cta::after, .cta-band .btn-primary::after { content: none; }
+/* 2 Bereichskarten: nur leichtes Anheben (3 px), Foto rückt kaum merklich näher */
+@media (hover: hover) and (pointer: fine) {
+  .area-card { transition: translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+  .area-card:hover { translate: 0 -3px; }
+  .area-card:hover .thumb img { scale: 1.03; }
+}
+/* 4 Große Fotos bewegen sich nicht mehr mit dem Scrollen (einmaliges Einblenden bleibt) */
+.teasers:not(.three) .teaser, .teasers:not(.three) .teaser img { animation: none; }
+/* 5 Welle über der Fußzeile bleibt ruhig */
+.foot-wave.go .w1, .foot-wave.go .w2 { animation: none; }
+/* 7 Hervorhebungen im Fließtext und kleine Beschriftungen eine Stufe leichter; Überschriften und Knöpfe bleiben */
+:is(p, li, td, dd, figcaption, small) :is(b, strong):not(button *, .btn *) { font-weight: 500; }
+.kurz-t { font-weight: 500; }

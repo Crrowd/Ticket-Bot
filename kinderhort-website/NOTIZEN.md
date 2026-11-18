@@ -529,3 +529,10 @@ Entscheidung offen.
 - Aufgeräumt: tote Übergangsregeln der Leiste entfernt, ease-in-Kurven ersetzt, Kopfleisten-Kurven als Werte.
 - Logo-Fund zurückgenommen: die Drehung greift nicht (spätere Regel setzt sie auf 0).
 - Drück-Rückmeldung (97 %, 160 ms) jetzt auch für „Morgen offen?“-Fragen, Vorschlags-Knöpfe auf Kontakt und den Pause-Knopf der Bildwechsel.
+
+## Feinschliff nach Unslop-Prüfung (18.11.2026)
+- Kein Lichtstreifen mehr über den Hauptknöpfen (Hover = Farbänderung).
+- Bereichskarten: Kippen zur Maus entfernt, Anheben 3 px, Foto-Zoom 1,03.
+- Große Fotos bewegen sich nicht mehr mit dem Scrollen; Welle über der Fußzeile ruhig.
+- Hervorhebungen im Fließtext und „Das Wichtigste in Kürze“ Gewicht 500; Überschriften, Knöpfe und Status-Zeile unverändert.
+- Nicht übernommen (bewusst): Einstieg der Startseite bleibt, rosé Schilder vor Abschnitten bleiben.

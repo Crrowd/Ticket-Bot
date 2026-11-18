@@ -2064,12 +2064,7 @@
     input.addEventListener("input", function (e) { if (e.isTrusted && on) setTimeout(function () { items.forEach(function (d) { if (!on[1].test(d.textContent.toLowerCase())) d.hidden = true; }); }, 0); });
   })();
 
-  /* Idee 92 – Bereichskarten kippen leicht zur Maus */
-  if (finePtr && !reduced) $$(".area-card").forEach(function (c) {
-    c.classList.add("tilt");
-    c.addEventListener("pointermove", function (e) { var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.setProperty("--ry", (x * 6).toFixed(2) + "deg"); c.style.setProperty("--rx", (-y * 5).toFixed(2) + "deg"); });
-    c.addEventListener("pointerleave", function () { c.style.setProperty("--ry", "0deg"); c.style.setProperty("--rx", "0deg"); });
-  });
+  /* Idee 92 (Karten kippen zur Maus) entfernt: Feinschliff 18.11.2026 */
 
   /* Idee 97 – Hinweis ohne Internet */
   (function () {
