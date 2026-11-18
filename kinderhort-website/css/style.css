@@ -2187,3 +2187,6 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 @media (prefers-reduced-motion: reduce) { .subnav.ruht { translate: none; } .subnav, .subnav.ruht { transition: opacity .2s linear !important; } }
 body:has(.site-header.hide) .subnav { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
 body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .45s var(--ease-in-out), translate .45s var(--ease-in-out); }
+
+/* Unterstreichung im rosé Kontaktband in Türkis, damit sie sich abhebt */
+.cta-band .mark-svg path { stroke: #2D6A6A; }
