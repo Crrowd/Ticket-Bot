@@ -145,6 +145,20 @@
     });
   });
 
+  /* Bereiche-Menü (Computer): nach Klick auf einen Eintrag schließen, auch wenn die Maus noch darüber ist */
+  $$(".has-drop").forEach(function (li) {
+    $$(".mega a", li).forEach(function (a) {
+      a.addEventListener("click", function () {
+        if (document.body.classList.contains("nav-open")) return;
+        li.classList.remove("open"); li.classList.add("zu");
+        $(".drop-toggle", li).setAttribute("aria-expanded", "false");
+        a.blur();
+      });
+    });
+    $(".drop-toggle", li).addEventListener("mouseenter", function () { li.classList.remove("zu"); });
+    $(".drop-toggle", li).addEventListener("click", function () { li.classList.remove("zu"); });
+  });
+
   /* ---------- Sprungmarken: aktuellen Abschnitt hervorheben ---------- */
   /* Ein Marker für alle Einträge, der von Punkt zu Punkt gleitet */
   function knobTo(ul, a) {

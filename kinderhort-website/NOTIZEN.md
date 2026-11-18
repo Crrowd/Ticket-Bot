@@ -506,3 +506,4 @@ Entscheidung offen.
 - „Das Wichtigste in Kürze“ auf Krippe, Kindergarten, Hort mittig.
 - Rundgang (Maus): Bildtitel steht immer ganz sichtbar, Beschreibung klappt beim Darüberfahren darunter auf (vorher war der Titel abgeschnitten).
 - Leiste „Auf dieser Seite“: sichtbar beim Scrollen, blendet 1,4 s nach dem Anhalten aus (nur wenn sie oben klebt; bleibt bei Maus darüber oder Tastaturfokus).
+- Bereiche-Menü (Computer): schließt nach Klick auf einen Eintrag; öffnet erst wieder, wenn die Maus erneut auf „Bereiche“ zeigt.

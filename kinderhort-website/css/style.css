@@ -2190,3 +2190,8 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 
 /* Unterstreichung im rosé Kontaktband in Türkis, damit sie sich abhebt */
 .cta-band .mark-svg path { stroke: #2D6A6A; }
+
+/* Bereiche-Menü nach Auswahl geschlossen, bis die Maus es verlässt */
+.has-drop.zu .mega { opacity: 0 !important; visibility: hidden !important; pointer-events: none; translate: 0 -6px !important; transition: opacity .18s var(--ease-out), translate .18s var(--ease-out), visibility 0s .18s !important; }
+.has-drop.zu .drop-toggle svg { rotate: 0deg; }
+.has-drop.zu:hover .drop-toggle { background: none; }

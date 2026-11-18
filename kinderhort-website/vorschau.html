@@ -2198,6 +2198,11 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 /* Unterstreichung im rosé Kontaktband in Türkis, damit sie sich abhebt */
 .cta-band .mark-svg path { stroke: #2D6A6A; }
 
+/* Bereiche-Menü nach Auswahl geschlossen, bis die Maus es verlässt */
+.has-drop.zu .mega { opacity: 0 !important; visibility: hidden !important; pointer-events: none; translate: 0 -6px !important; transition: opacity .18s var(--ease-out), translate .18s var(--ease-out), visibility 0s .18s !important; }
+.has-drop.zu .drop-toggle svg { rotate: 0deg; }
+.has-drop.zu:hover .drop-toggle { background: none; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -3688,6 +3693,20 @@ window.KITA = {
       li.classList.remove("open");
       $(".drop-toggle", li).setAttribute("aria-expanded", "false");
     });
+  });
+
+  /* Bereiche-Menü (Computer): nach Klick auf einen Eintrag schließen, auch wenn die Maus noch darüber ist */
+  $$(".has-drop").forEach(function (li) {
+    $$(".mega a", li).forEach(function (a) {
+      a.addEventListener("click", function () {
+        if (document.body.classList.contains("nav-open")) return;
+        li.classList.remove("open"); li.classList.add("zu");
+        $(".drop-toggle", li).setAttribute("aria-expanded", "false");
+        a.blur();
+      });
+    });
+    $(".drop-toggle", li).addEventListener("mouseenter", function () { li.classList.remove("zu"); });
+    $(".drop-toggle", li).addEventListener("click", function () { li.classList.remove("zu"); });
   });
 
   /* ---------- Sprungmarken: aktuellen Abschnitt hervorheben ---------- */
