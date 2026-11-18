@@ -2199,3 +2199,9 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 /* Platz für den runden „Nach oben“-Knopf: er verdeckte sonst den Datenschutz-Link */
 .footer-bottom { padding-right: 84px; }
 @media (max-width: 700px) { .footer-bottom { padding-right: 68px; } }
+
+/* Leiste „Auf dieser Seite“: weicheres Verschwinden (länger, sanfte Kurve, leicht kleiner) */
+.subnav, body:has(.site-header.hide) .subnav { transform-origin: 50% 0; }
+.subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: 0 -14px; scale: .985; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .7s cubic-bezier(.4,0,.2,1), translate .8s cubic-bezier(.4,0,.2,1), scale .8s cubic-bezier(.4,0,.2,1); }
+.subnav:not(.ruht), body:has(.site-header.hide) .subnav:not(.ruht) { transition: top .5s cubic-bezier(.22,1,.36,1), opacity .28s cubic-bezier(.22,1,.36,1), translate .38s cubic-bezier(.22,1,.36,1), scale .38s cubic-bezier(.22,1,.36,1); }
+@media (prefers-reduced-motion: reduce) { .subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: none; scale: 1; } .subnav, .subnav.ruht, body:has(.site-header.hide) .subnav { transition: opacity .3s linear !important; } }
