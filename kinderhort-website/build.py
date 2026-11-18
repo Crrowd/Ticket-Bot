@@ -321,12 +321,13 @@ FOOTER = f'''<footer class="site-footer">
           <li><a href="aktuelles.html">Aktuelles</a></li>
           <li><a href="downloads.html">Downloads</a></li>
           <li><button type="button" class="link-btn js-app">Als App aufs Handy</button></li>
+          <li><button class="link-btn js-calm" type="button" role="switch" aria-checked="false">Bewegung aus</button></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© <span id="year">2026</span> {ORG}</span>
-      <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <button class="link-btn js-calm" type="button" role="switch" aria-checked="false">Bewegung aus</button></span>
+      <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </div>
 </footer>'''

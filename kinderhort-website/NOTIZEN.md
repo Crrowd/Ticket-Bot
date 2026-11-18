@@ -507,3 +507,5 @@ Entscheidung offen.
 - Rundgang (Maus): Bildtitel steht immer ganz sichtbar, Beschreibung klappt beim Darüberfahren darunter auf (vorher war der Titel abgeschnitten).
 - Leiste „Auf dieser Seite“: sichtbar beim Scrollen, blendet 1,4 s nach dem Anhalten aus (nur wenn sie oben klebt; bleibt bei Maus darüber oder Tastaturfokus).
 - Bereiche-Menü (Computer): schließt nach Klick auf einen Eintrag; öffnet erst wieder, wenn die Maus erneut auf „Bereiche“ zeigt.
+- Fußzeile: „Bewegung aus“ steht jetzt in der Spalte „Seiten“ unter „Als App aufs Handy“; rechts unten Platz für den Nach-oben-Knopf (verdeckte vorher den Datenschutz-Link).
+- Vorschau: Datenschutz-Seite aufgenommen (Link führte dort ins Leere).

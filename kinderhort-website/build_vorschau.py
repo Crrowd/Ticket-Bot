@@ -5,7 +5,7 @@ import os, re, io, base64
 from PIL import Image
 
 W = os.path.dirname(os.path.abspath(__file__))
-PAGES = ["index", "aktuelles", "kinderkrippe", "kindergarten", "kinderhort", "downloads", "kontakt", "impressum"]
+PAGES = ["index", "aktuelles", "kinderkrippe", "kindergarten", "kinderhort", "downloads", "kontakt", "impressum", "datenschutz"]
 ORIG = "https://kinderhort-grombuehl.de/wp-content/uploads/"
 PDFS = {
     "downloads/Ferienplan_2026_27.pdf": ORIG + "2026/10/Ferienplan_2026_27.pdf",
