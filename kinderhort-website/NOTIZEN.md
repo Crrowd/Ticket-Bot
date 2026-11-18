@@ -510,3 +510,4 @@ Entscheidung offen.
 - Fußzeile: „Bewegung aus“ steht jetzt in der Spalte „Seiten“ unter „Als App aufs Handy“; rechts unten Platz für den Nach-oben-Knopf (verdeckte vorher den Datenschutz-Link).
 - Vorschau: Datenschutz-Seite aufgenommen (Link führte dort ins Leere).
 - Leiste „Auf dieser Seite“: weicheres Verschwinden (0,7–0,8 s, sanfte Kurve, 14 px nach oben, minimal kleiner); Zurückkommen zügig (0,3–0,4 s).
+- Leiste „Auf dieser Seite“: Klick setzt den Balken sofort auf den gewählten Punkt; er bleibt dort, bis man ca. 160 px weiterscrollt (vorher blieb er beim Punkt davor).

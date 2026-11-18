@@ -3806,15 +3806,23 @@ window.KITA = {
       var nav = sicht[0].a.closest(".subnav"), unten = nav ? nav.getBoundingClientRect().bottom : 120;
       var grenze = Math.max(unten, 0) + 32, wahl = null;
       sicht.forEach(function (p) { if (p.mark.getBoundingClientRect().top <= grenze) wahl = p; });
+      /* nach einem Klick in der Leiste bleibt der gewählte Punkt, bis man ein Stück weiterscrollt */
+      if (halt) { if (Math.abs(scrollY - halt.y) < 160) { setze(halt.a); return; } halt = null; }
       /* ganz unten angekommen: der letzte sichtbare Abschnitt zählt, auch wenn er nicht bis oben reicht */
       if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) {
         var last = sicht[sicht.length - 1]; if (last.mark.getBoundingClientRect().top < innerHeight) wahl = last;
       }
       if (wahl) setze(wahl.a);
     }
-    function plane() { if (!spyQ) { spyQ = true; requestAnimationFrame(spy); } }
+    /* Nach Klick: Balken sofort auf den gewählten Punkt, bis das Scrollen zur Ruhe kommt */
+    var gesperrt = false, sperrT = 0, halt = null, geklickt = null;
+    function frei() { clearTimeout(sperrT); sperrT = setTimeout(function () { gesperrt = false; halt = { a: geklickt, y: scrollY }; }, 180); }
+    function plane() { if (gesperrt) { frei(); return; } if (!spyQ) { spyQ = true; requestAnimationFrame(spy); } }
     addEventListener("scroll", plane, { passive: true }); addEventListener("resize", plane);
-    document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".subnav a")) setTimeout(plane, 50); });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest(".subnav a"); if (!a) return;
+      setze(a); geklickt = a; halt = null; gesperrt = true; frei();
+    });
     spy();
   }
 
