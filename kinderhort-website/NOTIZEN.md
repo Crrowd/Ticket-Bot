@@ -536,3 +536,9 @@ Entscheidung offen.
 - Große Fotos bewegen sich nicht mehr mit dem Scrollen; Welle über der Fußzeile ruhig.
 - Hervorhebungen im Fließtext und „Das Wichtigste in Kürze“ Gewicht 500; Überschriften, Knöpfe und Status-Zeile unverändert.
 - Nicht übernommen (bewusst): Einstieg der Startseite bleibt, rosé Schilder vor Abschnitten bleiben.
+
+## Animations-Audit Runde 4 umgesetzt (18.11.2026)
+- Tiefen-Effekt beim Scrollen entfernt (Startseiten-Fotos, Titelfoto der Bereichsseiten), samt Zusatz-Zoom 110 %.
+- Große Startseiten-Fotos: Hover-Zoom 103 % (vorher 116 %).
+- Telefon-Symbole (Gruppen-Knöpfe bei „Kind krankmelden“, Handy-Menü) wackeln nicht mehr beim Darüberfahren.
+- Abschnitte gleiten nicht mehr an das Scrollen gekoppelt heran, Seitentitel schrumpft nicht mehr; einmaliges Einblenden bleibt.

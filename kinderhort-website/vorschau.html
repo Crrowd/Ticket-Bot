@@ -2278,6 +2278,18 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 :is(p, li, td, dd, figcaption, small) :is(b, strong):not(button *, .btn *) { font-weight: 500; }
 .kurz-t { font-weight: 500; }
 
+/* ===== Animations-Audit Runde 4 (18.11.2026) ===== */
+/* 1 Fotos bewegen sich nicht mit dem Scrollen: Tiefen-Effekt und der Zusatz-Zoom dafür entfernt */
+.js .page-hero-card > img { inset: 0; height: 100%; translate: none; }
+.js .teaser > img { translate: none; scale: 1; }
+/* 2 Große Startseiten-Fotos zoomen beim Darüberfahren so dezent wie die Karten */
+.js .teaser:hover > img { scale: 1; }
+@media (hover: hover) and (pointer: fine) { .js .teaser:hover > img { scale: 1.03; } }
+/* 3 Telefon-Symbole wackeln nicht mehr beim Darüberfahren */
+a[href^="tel:"]:hover svg { animation: none; }
+/* 4 Abschnitte und Seitentitel nicht mehr an das Scrollen gekoppelt (einmaliges Einblenden bleibt) */
+.section > .container, .page-hero .page-hero-content { animation: none; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -5465,23 +5477,7 @@ window.KITA = {
     document.body.appendChild(l);
   })();
 
-  /* ---------- Fotos mit Tiefe beim Scrollen ---------- */
-  (function () {
-    if (reduced) return;
-    var imgs = $$(".page-hero-card > img, .teaser > img"); if (!imgs.length) return;
-    imgs.forEach(function (im) { im.classList.add("depth"); });
-    var ticking = false;
-    function upd() {
-      ticking = false; var h = innerHeight;
-      imgs.forEach(function (im) {
-        var box = im.parentNode.getBoundingClientRect(); if (box.bottom < 0 || box.top > h) return;
-        var p = (box.top + box.height / 2 - h / 2) / h, max = box.height * (im.closest(".teaser") ? .05 : .08);
-        im.style.setProperty("--py", Math.max(-max, Math.min(max, -p * max * 1.6)).toFixed(1) + "px");
-      });
-    }
-    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-    upd();
-  })();
+  /* Fotos mit Tiefe beim Scrollen: entfernt (Runde 4, 18.11.2026) – Fotos stehen ruhig */
 
   /* ---------- Als App auf den Startbildschirm ---------- */
   (function () {

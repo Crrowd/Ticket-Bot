@@ -1795,23 +1795,7 @@
     document.body.appendChild(l);
   })();
 
-  /* ---------- Fotos mit Tiefe beim Scrollen ---------- */
-  (function () {
-    if (reduced) return;
-    var imgs = $$(".page-hero-card > img, .teaser > img"); if (!imgs.length) return;
-    imgs.forEach(function (im) { im.classList.add("depth"); });
-    var ticking = false;
-    function upd() {
-      ticking = false; var h = innerHeight;
-      imgs.forEach(function (im) {
-        var box = im.parentNode.getBoundingClientRect(); if (box.bottom < 0 || box.top > h) return;
-        var p = (box.top + box.height / 2 - h / 2) / h, max = box.height * (im.closest(".teaser") ? .05 : .08);
-        im.style.setProperty("--py", Math.max(-max, Math.min(max, -p * max * 1.6)).toFixed(1) + "px");
-      });
-    }
-    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-    upd();
-  })();
+  /* Fotos mit Tiefe beim Scrollen: entfernt (Runde 4, 18.11.2026) – Fotos stehen ruhig */
 
   /* ---------- Als App auf den Startbildschirm ---------- */
   (function () {

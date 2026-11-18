@@ -2270,3 +2270,15 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 /* 7 Hervorhebungen im Fließtext und kleine Beschriftungen eine Stufe leichter; Überschriften und Knöpfe bleiben */
 :is(p, li, td, dd, figcaption, small) :is(b, strong):not(button *, .btn *) { font-weight: 500; }
 .kurz-t { font-weight: 500; }
+
+/* ===== Animations-Audit Runde 4 (18.11.2026) ===== */
+/* 1 Fotos bewegen sich nicht mit dem Scrollen: Tiefen-Effekt und der Zusatz-Zoom dafür entfernt */
+.js .page-hero-card > img { inset: 0; height: 100%; translate: none; }
+.js .teaser > img { translate: none; scale: 1; }
+/* 2 Große Startseiten-Fotos zoomen beim Darüberfahren so dezent wie die Karten */
+.js .teaser:hover > img { scale: 1; }
+@media (hover: hover) and (pointer: fine) { .js .teaser:hover > img { scale: 1.03; } }
+/* 3 Telefon-Symbole wackeln nicht mehr beim Darüberfahren */
+a[href^="tel:"]:hover svg { animation: none; }
+/* 4 Abschnitte und Seitentitel nicht mehr an das Scrollen gekoppelt (einmaliges Einblenden bleibt) */
+.section > .container, .page-hero .page-hero-content { animation: none; }
