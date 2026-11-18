@@ -2254,6 +2254,13 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .area-card .thumb img, .room img, .tour-item img, .teaser img { transition: scale .45s var(--ease-out); }
 .js .reveal :is(.thumb, .room > img, .teaser > img, .split img, .welcome-photo img) { transition: clip-path .8s var(--ease-out) calc(var(--i, 0) * var(--stagger) + 60ms), scale .45s var(--ease-out); }
 
+/* Drück-Rückmeldung auch für Frage-, Vorschlags- und Pause-Knöpfe (wie alle anderen Knöpfe) */
+.ask-vor button, .sugg button { transition: scale .16s var(--ease-out), border-color var(--fast), background var(--fast), color var(--fast); }
+.kb-pause { transition: background .14s var(--io), scale .16s var(--ease-out); }
+.ask-vor button:active, .sugg button:active, .kb-pause:active { scale: .97; }
+.status-q button { transition: scale .16s var(--ease-out), background var(--fast), color var(--fast), border-color var(--fast); }
+.status-q button:active { scale: .97; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }

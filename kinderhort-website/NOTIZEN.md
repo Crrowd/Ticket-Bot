@@ -528,3 +528,4 @@ Entscheidung offen.
 - Bilder im Bereiche-Menü: Einblenden 200 ms, Zoom 300 ms. Foto-Zoom beim Darüberfahren 450 ms (Aufdecken beim Scrollen bleibt 800 ms).
 - Aufgeräumt: tote Übergangsregeln der Leiste entfernt, ease-in-Kurven ersetzt, Kopfleisten-Kurven als Werte.
 - Logo-Fund zurückgenommen: die Drehung greift nicht (spätere Regel setzt sie auf 0).
+- Drück-Rückmeldung (97 %, 160 ms) jetzt auch für „Morgen offen?“-Fragen, Vorschlags-Knöpfe auf Kontakt und den Pause-Knopf der Bildwechsel.
