@@ -1,0 +1,407 @@
+<title>Animationen vorher und nachher</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: eine Spalte Karten, je Fund zwei Bühnen (Vorher | Nachher) nebeneinander, am Handy untereinander */
+:root {
+  --salbei: #A8C5C0; --petrol: #1E3B44; --rose: #D4B5B0; --tuerkis: #2D6A6A; --papier: #F3F8F7;
+  --bg: #DCE8E5; --card: #F3F8F7; --stage: #FFFFFF; --ink: #1E3B44; --soft: #4A6670; --line: rgb(30 59 68 / .14);
+  --vor: #B5574B; --nach: #2D6A6A; --chip: rgb(30 59 68 / .07);
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12252B; --card: #1A3138; --stage: #22404A; --ink: #E6F0EE; --soft: #A9C2BF; --line: rgb(230 240 238 / .14);
+  --vor: #E29A8F; --nach: #8CC9C0; --chip: rgb(230 240 238 / .08); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12252B; --card: #1A3138; --stage: #22404A; --ink: #E6F0EE; --soft: #A9C2BF; --line: rgb(230 240 238 / .14);
+  --vor: #E29A8F; --nach: #8CC9C0; --chip: rgb(230 240 238 / .08); color-scheme: dark }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--font); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+header h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1.15; margin: 0 0 8px; letter-spacing: -.02em; text-wrap: balance; }
+header p { margin: 0; color: var(--soft); max-width: 62ch; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: .9rem; font-weight: 600; }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.v { background: var(--vor); } .dot.n { background: var(--nach); }
+.hinweis { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: var(--chip); font-size: .88rem; }
+.fund { background: var(--card); border-radius: 18px; padding: 20px; display: grid; gap: 14px; border: 1px solid var(--line); }
+.fund h2 { margin: 0; font-size: 1.12rem; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.fund h2 small { font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: var(--chip); color: var(--soft); }
+.fund > p { margin: 0; color: var(--soft); max-width: 70ch; }
+.paar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .paar { grid-template-columns: minmax(0, 1fr); } }
+.seite { background: var(--stage); border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; border: 1px solid var(--line); }
+.seite .kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .8rem; font-weight: 700; }
+.seite .kopf b { padding: 2px 9px; border-radius: 999px; color: #fff; }
+.v .kopf b { background: var(--vor); } .n .kopf b { background: var(--nach); }
+:root[data-theme="dark"] .seite .kopf b { color: #12252B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seite .kopf b { color: #12252B; } }
+.seite .kopf span { color: var(--soft); font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.bedien { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: 600 .88rem var(--font); color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 10px; min-height: 40px; padding: 8px 14px; cursor: pointer; transition: scale .16s var(--ease-out), background .15s; }
+button:active { scale: .97; }
+button:focus-visible { outline: 3px solid var(--tuerkis); outline-offset: 2px; }
+.buehne { position: relative; height: 150px; border-radius: 10px; background: var(--chip); overflow: hidden; }
+.klein { font-size: .8rem; color: var(--soft); }
+
+/* A Suche */
+.dlg { position: absolute; inset: 18px 18px auto; padding: 12px 14px; border-radius: 12px; background: var(--petrol); color: #F3F8F7; font-weight: 600; box-shadow: 0 10px 30px rgb(0 0 0 / .25); opacity: 0; scale: .96; translate: 0 -6px; visibility: hidden; transition: opacity .22s var(--ease-out), scale .22s var(--ease-out), translate .22s var(--ease-out), visibility 0s .22s; }
+.dlg.auf { opacity: 1; scale: 1; translate: 0 0; visibility: visible; transition-delay: 0s; }
+.dlg.sofort { transition: none !important; }
+.dlg i { display: block; margin-top: 8px; height: 30px; border-radius: 8px; background: rgb(255 255 255 / .14); font-style: normal; font-weight: 500; font-size: .85rem; padding: 5px 10px; }
+
+/* B Bildansicht */
+.fotos { position: absolute; inset: 0; display: flex; }
+.foto { flex: none; width: 100%; height: 100%; display: grid; place-items: center; font-weight: 800; font-size: 1.5rem; color: var(--petrol); }
+.f0 { background: #A8C5C0; } .f1 { background: #D4B5B0; } .f2 { background: #CFE0DC; } .f3 { background: #E9D6D2; }
+
+/* C Zuklappen */
+.akk { border-radius: 10px; background: var(--chip); overflow: hidden; }
+.akk .s { padding: 10px 12px; font-weight: 700; }
+.akk .inhalt { padding: 0 12px 12px; }
+.akk .inhalt p { margin: 0; }
+
+/* D Galerie-Filter */
+.gal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; min-height: 132px; align-content: start; }
+.kachel { height: 62px; border-radius: 8px; display: grid; place-items: center; font-weight: 700; font-size: .78rem; color: var(--petrol); }
+.kachel.k { background: #A8C5C0; } .kachel.h { background: #D4B5B0; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button[aria-pressed="true"] { background: var(--petrol); color: #F3F8F7; border-color: transparent; }
+.sperre { font-size: .78rem; font-weight: 700; color: var(--vor); opacity: 0; transition: opacity .15s; }
+.sperre.zeig { opacity: 1; }
+
+/* E Rand federn */
+.spur { position: absolute; inset: 20px 0 20px 12px; display: flex; gap: 8px; }
+.spur span { flex: none; width: 46%; border-radius: 10px; }
+
+/* F Bildunterschrift */
+.bild { position: absolute; inset: 0; background: linear-gradient(135deg, #A8C5C0, #CFE0DC 60%, #D4B5B0); cursor: pointer; }
+.cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; color: #F3F8F7; background: linear-gradient(rgb(30 59 68 / 0), rgb(30 59 68 / .9)); display: grid; grid-template-rows: auto 0fr; }
+.cap strong { font-size: .98rem; }
+.cap span { min-height: 0; overflow: hidden; opacity: 0; font-size: .85rem; }
+.v .cap { transition: grid-template-rows .35s var(--ease-out); }
+.v .cap span { margin-top: 0; transition: opacity .25s var(--ease-out) .05s, margin-top .35s var(--ease-out); }
+.n .cap { transition: grid-template-rows .25s var(--ease-out); }
+.n .cap span { transition: opacity .2s var(--ease-out) .04s; }
+.n .cap span em { display: block; padding-top: 4px; font-style: normal; }
+.bild.offen .cap { grid-template-rows: auto 1fr; } .bild.offen .cap span { opacity: 1; }
+.v .bild.offen .cap span { margin-top: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .bild:hover .cap { grid-template-rows: auto 1fr; } .bild:hover .cap span { opacity: 1; }
+  .v .bild:hover .cap span { margin-top: 4px; }
+}
+
+/* G Hover-Pfeil */
+.mehr { display: inline-flex; align-items: center; gap: 8px; background: var(--petrol); color: #F3F8F7; border: 0; }
+.mehr svg { width: 18px; height: 18px; }
+@keyframes fly { 45% { translate: 16px 0; opacity: 0; } 46% { translate: -16px 0; opacity: 0; } 100% { translate: 0 0; opacity: 1; } }
+.v .mehr:hover svg, .v .mehr.tipp svg { animation: fly .45s var(--ease-out); }
+.n .mehr svg { transition: translate .18s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .n .mehr:hover svg { translate: 3px 0; } }
+.n .mehr.tipp svg { translate: 3px 0; }
+
+/* H Drück-Stärke */
+.rund { width: 64px; height: 64px; border-radius: 50%; padding: 0; display: grid; place-items: center; background: var(--petrol); color: #F3F8F7; border: 0; transition: scale .16s var(--ease-out); }
+.v .rund:active { scale: .92; } .n .rund:active { scale: .97; }
+.rund svg { width: 26px; height: 26px; }
+
+/* I Neu-Punkt */
+.menu-ic { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; background: var(--chip); font-weight: 700; }
+.badge { position: absolute; top: -6px; right: -8px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #23704F; color: #fff; font-size: .74rem; line-height: 20px; text-align: center; }
+.v .badge { scale: 0; transition: scale .25s var(--ease-out); }
+.n .badge { scale: .5; opacity: 0; transition: scale .25s var(--ease-out), opacity .18s var(--ease-out); }
+.badge.an { scale: 1; opacity: 1; }
+
+/* J Leiste beim Scrollen */
+.scrollbox { position: relative; height: 230px; overflow-y: auto; border-radius: 10px; background: var(--chip); overscroll-behavior: contain; }
+.sb-kopf { position: sticky; top: 0; z-index: 3; height: 40px; margin-bottom: -40px; background: var(--petrol); color: #F3F8F7; font-size: .8rem; font-weight: 700; display: flex; align-items: center; padding: 0 12px; transition: translate .5s var(--ease-out); }
+.sb-kopf.weg { translate: 0 -100%; }
+.sb-leiste { position: sticky; z-index: 2; margin: 52px 8px 0; padding: 8px 10px; border-radius: 10px; background: color-mix(in oklab, var(--stage) 85%, transparent); border: 1px solid var(--line); font-size: .78rem; font-weight: 700; display: flex; gap: 10px; white-space: nowrap; overflow: hidden; }
+.sb-leiste em { font-style: normal; padding: 2px 8px; border-radius: 6px; }
+.sb-leiste em:first-child { background: var(--rose); color: var(--petrol); }
+.v .sb-leiste { top: 46px; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
+.v .sb-leiste.hoch { top: 6px; }
+.v .sb-leiste.ruht { opacity: 0; translate: 0 -14px; scale: .985; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .7s cubic-bezier(.4,0,.2,1), translate .8s cubic-bezier(.4,0,.2,1), scale .8s cubic-bezier(.4,0,.2,1); }
+.n .sb-leiste { top: 6px; translate: 0 40px; transition: translate .25s var(--ease-out), opacity .2s var(--ease-out), scale .25s var(--ease-out); }
+.n .sb-leiste.hoch { translate: 0 0; }
+.n .sb-leiste.ruht { opacity: 0; translate: 0 -12px; scale: .985; transition: opacity .5s var(--ease-out), translate .5s var(--ease-out), scale .5s var(--ease-out); }
+.n .sb-leiste.ruht:not(.hoch) { translate: 0 28px; }
+.sb-text { padding: 14px 12px 40px; display: grid; gap: 10px; }
+.sb-text div { height: 44px; border-radius: 8px; background: var(--stage); }
+
+/* K Datumsnadel */
+.band { position: absolute; left: 14px; right: 14px; top: 58px; height: 34px; border-radius: 8px; background: linear-gradient(90deg, #A8C5C0 0 42%, #D4B5B0 42% 50%, #A8C5C0 50% 82%, #D4B5B0 82% 90%, #A8C5C0 90%); }
+.nadel { position: absolute; top: -8px; bottom: -8px; width: 3px; margin-left: -1.5px; border-radius: 3px; background: var(--petrol); }
+.v .nadel { left: 10%; transition: left .3s var(--ease-out); }
+.n .nadel { left: 0; translate: var(--x, 0px) 0; transition: translate .3s var(--ease-out); }
+
+footer { color: var(--soft); font-size: .85rem; }
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Animationen der Kita-Webseite: vorher und nachher</h1>
+  <p>Jeder Fund aus der Prüfung, zum Selbst-Ausprobieren. Links steht der heutige Stand, rechts der Vorschlag. Drück die Knöpfe auf beiden Seiten und vergleiche.</p>
+  <div class="legende"><span><i class="dot v"></i>Vorher: so ist es jetzt</span><span><i class="dot n"></i>Nachher: so würde ich es einbauen</span></div>
+  <div class="hinweis" id="rm" hidden>Auf deinem Gerät ist „Bewegung reduzieren“ eingeschaltet. Die Beispiele laufen hier trotzdem, damit du sie vergleichen kannst. Auf der echten Seite bleiben sie dann ruhig.</div>
+</header>
+
+<section class="fund" data-demo="suche">
+  <h2>Suche per Tastatur <small>Wichtig</small></h2>
+  <p>Wer die Suche mit der Taste „/“ öffnet, will sofort tippen. Mit Maus oder Finger darf sie weiter sanft erscheinen, mit der Tastatur ist sie sofort da.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>immer 220 ms</span></div><div class="buehne"><div class="dlg">Wonach suchen Sie?<i>Ferien, krank, Telefon …</i></div></div><div class="bedien"><button type="button" data-a="klick">Lupe anklicken</button><button type="button" data-a="taste">Taste „/“</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>Klick 220 ms · Taste sofort</span></div><div class="buehne"><div class="dlg">Wonach suchen Sie?<i>Ferien, krank, Telefon …</i></div></div><div class="bedien"><button type="button" data-a="klick">Lupe anklicken</button><button type="button" data-a="taste">Taste „/“</button></div></div>
+  </div>
+  <p class="klein">Du kannst auch wirklich „/“ auf der Tastatur drücken, dann öffnen beide Seiten gleichzeitig.</p>
+</section>
+
+<section class="fund" data-demo="lb">
+  <h2>Bildansicht mit Pfeiltasten <small>Wichtig</small></h2>
+  <p>Wer schnell hintereinander die Pfeiltaste drückt, wartet links jedes Mal auf das Gleiten. Rechts wechselt das Bild sofort mit einem kurzen Überblenden.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>Gleiten 300 ms</span></div><div class="buehne"><div class="fotos"><div class="foto f0">Bild 1</div><div class="foto f1">Bild 2</div><div class="foto f2">Bild 3</div><div class="foto f3">Bild 4</div></div></div><div class="bedien"><button type="button" data-a="-1">← Taste</button><button type="button" data-a="1">→ Taste</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>sofort + 120 ms Überblenden</span></div><div class="buehne"><div class="fotos"><div class="foto f0">Bild 1</div><div class="foto f1">Bild 2</div><div class="foto f2">Bild 3</div><div class="foto f3">Bild 4</div></div></div><div class="bedien"><button type="button" data-a="-1">← Taste</button><button type="button" data-a="1">→ Taste</button></div></div>
+  </div>
+  <p class="klein">Tipp: Drück mehrmals schnell auf „→ Taste“.</p>
+</section>
+
+<section class="fund" data-demo="akk">
+  <h2>Zuklappen bei den Fragen <small>Wichtig</small></h2>
+  <p>Beim Zuklappen verblasst der Text links erst zögerlich und dann plötzlich (ease-in). Rechts verblasst er sofort und gleichmäßig weich.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>Ausblenden ease-in</span></div><div class="akk"><div class="s">Wann ist die Kita geöffnet?</div><div class="inhalt"><p>Montag bis Freitag von 6:45 bis 18:00 Uhr, auch in den Schulferien. An bis zu 30 Tagen im Jahr ist geschlossen.</p></div></div><div class="bedien"><button type="button" data-a="t">Auf- und zuklappen</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>Ausblenden ease-out</span></div><div class="akk"><div class="s">Wann ist die Kita geöffnet?</div><div class="inhalt"><p>Montag bis Freitag von 6:45 bis 18:00 Uhr, auch in den Schulferien. An bis zu 30 Tagen im Jahr ist geschlossen.</p></div></div><div class="bedien"><button type="button" data-a="t">Auf- und zuklappen</button></div></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="gal">
+  <h2>Galerie-Filter</h2>
+  <p>Links rutschen die Bilder 420 ms, und solange ist jeder weitere Klick gesperrt. Rechts geht es in 280 ms, und ein neuer Klick lenkt die Bewegung einfach um.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>420 ms, gesperrt</span></div><div class="chips"><button type="button" data-f="alle" aria-pressed="true">Alle</button><button type="button" data-f="k" aria-pressed="false">Krippe</button><button type="button" data-f="h" aria-pressed="false">Hort</button></div><div class="gal"><div class="kachel k">Krippe</div><div class="kachel h">Hort</div><div class="kachel k">Krippe</div><div class="kachel h">Hort</div><div class="kachel k">Krippe</div><div class="kachel h">Hort</div></div><span class="sperre">Klick ignoriert</span></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>280 ms, unterbrechbar</span></div><div class="chips"><button type="button" data-f="alle" aria-pressed="true">Alle</button><button type="button" data-f="k" aria-pressed="false">Krippe</button><button type="button" data-f="h" aria-pressed="false">Hort</button></div><div class="gal"><div class="kachel k">Krippe</div><div class="kachel h">Hort</div><div class="kachel k">Krippe</div><div class="kachel h">Hort</div><div class="kachel k">Krippe</div><div class="kachel h">Hort</div></div><span class="sperre"></span></div>
+  </div>
+  <p class="klein">Tipp: Klick schnell hintereinander „Krippe“, „Hort“, „Alle“.</p>
+</section>
+
+<section class="fund" data-demo="rand">
+  <h2>Rundgang: Federn am Ende</h2>
+  <p>Am letzten Bild federt die Reihe kurz zurück, als Zeichen „hier ist Schluss“. Rechts ist das knapper und wirkt dadurch klarer.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>360 ms</span></div><div class="buehne"><div class="spur"><span class="f2"></span><span class="f1"></span><span class="f0"></span></div></div><div class="bedien"><button type="button" data-a="go">Weiter (schon am Ende)</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>240 ms</span></div><div class="buehne"><div class="spur"><span class="f2"></span><span class="f1"></span><span class="f0"></span></div></div><div class="bedien"><button type="button" data-a="go">Weiter (schon am Ende)</button></div></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="cap">
+  <h2>Rundgang: Bildunterschrift</h2>
+  <p>Beim Darüberfahren klappt die Beschreibung auf. Das passiert bei jedem der 24 Bilder, deshalb rechts etwas zügiger.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>350 ms</span></div><div class="buehne"><div class="bild" tabindex="0"><div class="cap"><strong>Unser Kreativraum</strong><span>Freizeitbereich der Hortkinder</span></div></div></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>250 ms</span></div><div class="buehne"><div class="bild" tabindex="0"><div class="cap"><strong>Unser Kreativraum</strong><span><em>Freizeitbereich der Hortkinder</em></span></div></div></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="pfeil">
+  <h2>Pfeil im Knopf beim Darüberfahren</h2>
+  <p>Links fliegt der Pfeil raus und wieder rein. Fährt man mit der Maus am Rand hin und her, springt er jedes Mal neu. Rechts rutscht er nur ein kleines Stück nach und bleibt ruhig.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>Flug 450 ms</span></div><div class="bedien"><button type="button" class="mehr">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>3 px, 180 ms</span></div><div class="bedien"><button type="button" class="mehr">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="druck">
+  <h2>Runde Knöpfe beim Drücken</h2>
+  <p>Links schrumpft der Knopf auf 92 % und wirkt dadurch wackelig. Rechts gibt er wie alle anderen Knöpfe der Seite nur leicht nach (97 %).</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>92 %</span></div><div class="bedien"><button type="button" class="rund" aria-label="Nach oben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>97 %</span></div><div class="bedien"><button type="button" class="rund" aria-label="Nach oben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div></div>
+  </div>
+  <p class="klein">Gedrückt halten und loslassen.</p>
+</section>
+
+<section class="fund" data-demo="badge">
+  <h2>Neu-Punkt an „Aktuelles“</h2>
+  <p>Links wächst der Punkt aus dem Nichts. Rechts startet er halb so groß und blendet dabei ein.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>aus 0 %</span></div><div class="bedien"><span class="menu-ic">Aktuelles<span class="badge">2</span></span><button type="button" data-a="t">Punkt zeigen / weg</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>aus 50 % + Einblenden</span></div><div class="bedien"><span class="menu-ic">Aktuelles<span class="badge">2</span></span><button type="button" data-a="t">Punkt zeigen / weg</button></div></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="leiste">
+  <h2>Leiste „Auf dieser Seite“ beim Scrollen <small>Wichtig</small></h2>
+  <p>Links rutscht die Leiste 0,5 s lang hinterher, wenn die Kopfleiste verschwindet, und braucht 0,8 s zum Ausblenden. Rechts folgt sie in 0,25 s und blendet in 0,5 s aus. Sie läuft dabei über die Grafikkarte statt über die Seitenberechnung, das ruckelt auf älteren Handys weniger.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>folgt 500 ms · weg 800 ms</span></div><div class="scrollbox"><div class="sb-kopf">Kopfleiste</div><div class="sb-leiste"><em>Überblick</em><em>Räume</em><em>Rundgang</em><em>Tagesablauf</em></div><div class="sb-text"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>folgt 250 ms · weg 500 ms</span></div><div class="scrollbox"><div class="sb-kopf">Kopfleiste</div><div class="sb-leiste"><em>Überblick</em><em>Räume</em><em>Rundgang</em><em>Tagesablauf</em></div><div class="sb-text"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
+  </div>
+  <p class="klein">In beiden Kästen nach unten scrollen, kurz anhalten, dann wieder etwas hoch.</p>
+</section>
+
+<section class="fund" data-demo="nadel">
+  <h2>Gleich aussehen, weniger rechnen</h2>
+  <p>Diese Fälle sehen vorher und nachher gleich aus. Nachher bewegt sich aber nur das Element selbst, ohne dass der Browser die Seite neu berechnen muss. Das hier ist die Datumsnadel im Jahresband, genauso werden die Menüpunkte beim Darüberfahren, die Fragen-Liste und die drei Striche des Handy-Menüs umgestellt.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>über „left“</span></div><div class="buehne"><div class="band"><span class="nadel"></span></div></div><div class="bedien"><button type="button" data-a="go">Anderes Datum</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>über „translate“</span></div><div class="buehne"><div class="band"><span class="nadel"></span></div></div><div class="bedien"><button type="button" data-a="go">Anderes Datum</button></div></div>
+  </div>
+</section>
+
+<footer>Entwurf zur Abstimmung, Kath. Kinder- und Jugendhort Grombühl e. V.</footer>
+</div>
+
+<script>
+(function () {
+  var EO = "cubic-bezier(.23,1,.32,1)";
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function seiten(name) { var f = document.querySelector('[data-demo="' + name + '"]'); return { v: f.querySelector(".v"), n: f.querySelector(".n") }; }
+  try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.getElementById("rm").hidden = false; } catch (e) {}
+
+  /* A Suche */
+  (function () {
+    var s = seiten("suche");
+    function auf(seite, perTaste) {
+      var d = seite.querySelector(".dlg"), offen = d.classList.contains("auf");
+      var sofort = perTaste && seite === s.n;
+      d.classList.toggle("sofort", sofort);
+      if (sofort) void d.offsetWidth;
+      d.classList.toggle("auf", !offen);
+      if (sofort) requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.remove("sofort"); }); });
+    }
+    [s.v, s.n].forEach(function (seite) { $$("button", seite).forEach(function (b) { b.addEventListener("click", function () { auf(seite, b.dataset.a === "taste"); }); }); });
+    document.addEventListener("keydown", function (e) { if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); auf(s.v, true); auf(s.n, true); } });
+  })();
+
+  /* B Bildansicht */
+  (function () {
+    var s = seiten("lb");
+    [s.v, s.n].forEach(function (seite) {
+      var fotos = seite.querySelector(".fotos"), i = 0, nachher = seite === s.n;
+      $$("button", seite).forEach(function (b) {
+        b.addEventListener("click", function () {
+          var alt = i; i = (i + +b.dataset.a + 4) % 4;
+          if (nachher) {
+            fotos.getAnimations().forEach(function (a) { a.cancel(); });
+            fotos.style.translate = (-i * 100) + "% 0";
+            fotos.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 120, easing: EO });
+          } else {
+            /* wie heute: jede Taste wartet, bis das Gleiten fertig ist */
+            var vonX = -alt * 100, bisX = -i * 100;
+            var a = fotos.animate([{ translate: vonX + "% 0" }, { translate: bisX + "% 0" }], { duration: 300, easing: "cubic-bezier(.65,0,.35,1)", fill: "forwards" });
+            fotos._q = (fotos._q || Promise.resolve()).then(function () { return a.finished.catch(function () {}); });
+            fotos.style.translate = bisX + "% 0";
+          }
+        });
+      });
+    });
+  })();
+
+  /* C Zuklappen */
+  (function () {
+    var s = seiten("akk");
+    [s.v, s.n].forEach(function (seite) {
+      var box = seite.querySelector(".akk"), inh = seite.querySelector(".inhalt"), offen = true, lauf = null, nachher = seite === s.n;
+      seite.querySelector("button").addEventListener("click", function () {
+        var von = box.getBoundingClientRect().height;
+        if (lauf) lauf.cancel();
+        inh.getAnimations().forEach(function (a) { a.cancel(); });
+        offen = !offen; inh.hidden = false;
+        var kopfH = box.querySelector(".s").getBoundingClientRect().height;
+        var bis = offen ? box.scrollHeight : kopfH;
+        if (offen) { box.style.height = ""; bis = box.getBoundingClientRect().height; }
+        inh.animate(offen ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }], { duration: offen ? 260 : 170, delay: offen ? 50 : 0, easing: offen ? "ease-out" : (nachher ? EO : "ease-in"), fill: "both" });
+        lauf = box.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: 340, easing: "cubic-bezier(.77,0,.175,1)" });
+        box.style.height = offen ? "" : kopfH + "px";
+        lauf.onfinish = function () { lauf = null; };
+      });
+    });
+  })();
+
+  /* D Galerie-Filter */
+  (function () {
+    var s = seiten("gal");
+    [s.v, s.n].forEach(function (seite) {
+      var nachher = seite === s.n, gal = seite.querySelector(".gal"), kacheln = $$(".kachel", gal), busy = false, hinweis = seite.querySelector(".sperre"), ht = 0;
+      $$(".chips button", seite).forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (busy) { hinweis.classList.add("zeig"); clearTimeout(ht); ht = setTimeout(function () { hinweis.classList.remove("zeig"); }, 600); return; }
+          $$(".chips button", seite).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+          var f = b.dataset.f, erst = new Map();
+          kacheln.forEach(function (k) { if (!k.hidden) erst.set(k, k.getBoundingClientRect()); });
+          kacheln.forEach(function (k) { k.getAnimations().forEach(function (a) { a.cancel(); }); k.hidden = !(f === "alle" || k.classList.contains(f)); });
+          var ms = nachher ? 280 : 420;
+          kacheln.forEach(function (k) {
+            if (k.hidden) return; var a = erst.get(k), z = k.getBoundingClientRect();
+            if (a) k.animate([{ translate: (a.left - z.left) + "px " + (a.top - z.top) + "px" }, { translate: "0 0" }], { duration: ms, easing: nachher ? EO : "cubic-bezier(.65,0,.35,1)" });
+            else k.animate([{ opacity: 0, scale: .92 }, { opacity: 1, scale: 1 }], { duration: nachher ? 220 : 300, delay: nachher ? 40 : 100, easing: EO, fill: "backwards" });
+          });
+          if (!nachher) { busy = true; setTimeout(function () { busy = false; }, ms + 100); }
+        });
+      });
+    });
+  })();
+
+  /* E Rand federn */
+  (function () {
+    var s = seiten("rand");
+    [s.v, s.n].forEach(function (seite) {
+      var spur = seite.querySelector(".spur"), ms = seite === s.n ? 240 : 360;
+      seite.querySelector("button").addEventListener("click", function () {
+        spur.getAnimations().forEach(function (a) { a.cancel(); });
+        spur.animate([{ translate: "0 0" }, { translate: "-18px 0" }, { translate: "0 0" }], { duration: ms, easing: EO });
+      });
+    });
+  })();
+
+  /* F Bildunterschrift: Antippen auf Touch */
+  $$('[data-demo="cap"] .bild').forEach(function (b) {
+    b.addEventListener("click", function () { b.classList.toggle("offen"); });
+    b.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); b.classList.toggle("offen"); } });
+  });
+
+  /* G Pfeil: Antippen zeigt den Effekt auch am Handy */
+  $$('[data-demo="pfeil"] .mehr').forEach(function (b) {
+    b.addEventListener("click", function () { b.classList.remove("tipp"); void b.offsetWidth; b.classList.add("tipp"); setTimeout(function () { b.classList.remove("tipp"); }, 600); });
+  });
+
+  /* I Neu-Punkt */
+  (function () {
+    var s = seiten("badge");
+    [s.v, s.n].forEach(function (seite) { seite.querySelector("button").addEventListener("click", function () { seite.querySelector(".badge").classList.toggle("an"); }); });
+    setTimeout(function () { $$('[data-demo="badge"] .badge').forEach(function (b) { b.classList.add("an"); }); }, 300);
+  })();
+
+  /* J Leiste */
+  (function () {
+    var s = seiten("leiste");
+    [s.v, s.n].forEach(function (seite) {
+      var box = seite.querySelector(".scrollbox"), kopf = seite.querySelector(".sb-kopf"), leiste = seite.querySelector(".sb-leiste"), lastY = 0, t = 0;
+      box.addEventListener("scroll", function () {
+        var y = box.scrollTop, runter = y > lastY; lastY = y;
+        var weg = y > 30 && runter ? true : (!runter ? false : kopf.classList.contains("weg"));
+        kopf.classList.toggle("weg", weg); leiste.classList.toggle("hoch", weg);
+        leiste.classList.remove("ruht"); clearTimeout(t);
+        t = setTimeout(function () { if (box.scrollTop > 30) leiste.classList.add("ruht"); }, 1400);
+      }, { passive: true });
+    });
+  })();
+
+  /* K Datumsnadel */
+  (function () {
+    var s = seiten("nadel"), stellen = [.1, .46, .7, .86, .3];
+    [s.v, s.n].forEach(function (seite) {
+      var n = seite.querySelector(".nadel"), band = seite.querySelector(".band"), i = 0, nachher = seite === s.n;
+      function setze() { var p = stellen[i]; if (nachher) n.style.setProperty("--x", (band.clientWidth * p) + "px"); else n.style.left = (p * 100) + "%"; }
+      setze();
+      seite.querySelector("button").addEventListener("click", function () { i = (i + 1) % stellen.length; setze(); });
+      addEventListener("resize", setze);
+    });
+  })();
+})();
+</script>
