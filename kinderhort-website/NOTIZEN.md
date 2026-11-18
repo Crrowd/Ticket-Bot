@@ -520,3 +520,11 @@ Entscheidung offen.
 - Pfeile in Knöpfen: 3 px Nachrutschen statt Flug. Menüpunkte rutschen per translate statt padding.
 - Jahresband-Nadel per translate. Runde Knöpfe/Teilen 97 %. Neu-Punkt aus 50 % + Einblenden. Menü-Striche per translate.
 - Galerie-Filter (Baustein einblicke(), derzeit auf keiner Seite eingebunden): 280 ms, unterbrechbar.
+
+## Animations-Audit Runde 2 umgesetzt (18.11.2026)
+- Handy-Menü schließt mit ease-out 240 ms (vorher ease-in 280 ms). Öffnen unverändert.
+- Leiste „Auf dieser Seite“ und Abschnittstitel gleiten im Takt der Kopfleiste (500 ms, Kurven --ease-kopf-weg / --ease-kopf-da). Kopfleiste selbst unverändert (abgenommen).
+- Bereichskarten heben sich sanft an (250 ms; translate fehlte im Übergang).
+- Bilder im Bereiche-Menü: Einblenden 200 ms, Zoom 300 ms. Foto-Zoom beim Darüberfahren 450 ms (Aufdecken beim Scrollen bleibt 800 ms).
+- Aufgeräumt: tote Übergangsregeln der Leiste entfernt, ease-in-Kurven ersetzt, Kopfleisten-Kurven als Werte.
+- Logo-Fund zurückgenommen: die Drehung greift nicht (spätere Regel setzt sie auf 0).

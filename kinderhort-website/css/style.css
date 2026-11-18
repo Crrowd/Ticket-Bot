@@ -239,9 +239,9 @@ strong, b { font-weight: 600; }
     /* Menü schiebt sich von rechts herein (Variante B), die Seite dahinter wird leicht abgedunkelt */
     /* Die Fläche wird von rechts freigelegt und der Inhalt fährt im selben Takt mit – sieht aus wie Hereinschieben,
        verschiebt aber das Menü selbst nicht (ein verschobenes, festes Element macht die Seite am Handy sonst breiter) */
-    clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .28s cubic-bezier(.4,0,1,1), visibility 0s .28s;
+    clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .24s var(--ease-out), visibility 0s .24s;   /* schließt sofort weich */
   }
-  .main-nav > ul { translate: 100% 0; transition: translate .28s cubic-bezier(.4,0,1,1); }
+  .main-nav > ul { translate: 100% 0; transition: translate .24s var(--ease-out); }
   .nav-open .main-nav { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
   .nav-open .main-nav > ul { translate: 0 0; transition: translate .42s cubic-bezier(.32,.72,0,1); }
   .main-nav > ul { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; max-width: 1000px; margin: 0 auto; }
@@ -1031,13 +1031,13 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 
 /* ---------- Leiste nur beim Hochscrollen ---------- */
 /* weich: sanft anlaufen, ruhig auslaufen, am Ende leise ausblenden */
-.site-header { transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }
+:root { --ease-kopf-da: cubic-bezier(.22,1,.36,1); --ease-kopf-weg: cubic-bezier(.45,0,.2,1); }   /* abgenommen, nicht ändern */
+.site-header { transition: translate .5s var(--ease-kopf-da), opacity .35s ease; }
 /* Kein will-change/transform auf der Leiste: sonst spannt sich das Handy-Menü (position: fixed) nur innerhalb der Leiste auf */
 .nav-open .site-header { translate: none; opacity: 1; }
-.site-header.hide { translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s cubic-bezier(.45,0,.2,1), opacity .3s ease .15s; }
-/* Ohne Leiste rücken die Sprungmarken nach oben – im selben Takt */
-.subnav { transition: top .5s cubic-bezier(.22,1,.36,1); }
-body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0px)); transition: top .5s cubic-bezier(.45,0,.2,1); }
+.site-header.hide { translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s var(--ease-kopf-weg), opacity .3s ease .15s; }
+/* Ohne Leiste rücken die Sprungmarken nach oben (gleiten per translate aus dem Skript, im Takt der Kopfleiste) */
+body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0px)); }
 
 /* ---------- Handy-Tastatur ---------- */
 /* Suche sitzt direkt über der Tastatur und passt in den verbleibenden Platz */
@@ -2181,13 +2181,6 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 .kurz { margin-inline: auto; }
 .kurz-t { text-align: center; }
 
-/* Leiste „Auf dieser Seite“ ruht: nach dem Anhalten sanft weg, beim Scrollen sofort wieder da */
-.subnav { transition: top .5s cubic-bezier(.22,1,.36,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
-.subnav.ruht { opacity: 0; translate: 0 -10px; pointer-events: none; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .45s var(--ease-in-out), translate .45s var(--ease-in-out); }
-@media (prefers-reduced-motion: reduce) { .subnav.ruht { translate: none; } .subnav, .subnav.ruht { transition: opacity .2s linear !important; } }
-body:has(.site-header.hide) .subnav { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .2s var(--ease-out), translate .2s var(--ease-out); }
-body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,0,.2,1), opacity .45s var(--ease-in-out), translate .45s var(--ease-in-out); }
-
 /* Unterstreichung im rosé Kontaktband in Türkis, damit sie sich abhebt */
 .cta-band .mark-svg path { stroke: #2D6A6A; }
 
@@ -2199,12 +2192,6 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 /* Platz für den runden „Nach oben“-Knopf: er verdeckte sonst den Datenschutz-Link */
 .footer-bottom { padding-right: 84px; }
 @media (max-width: 700px) { .footer-bottom { padding-right: 68px; } }
-
-/* Leiste „Auf dieser Seite“: weicheres Verschwinden (länger, sanfte Kurve, leicht kleiner) */
-.subnav, body:has(.site-header.hide) .subnav { transform-origin: 50% 0; }
-.subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: 0 -14px; scale: .985; transition: top .5s cubic-bezier(.22,1,.36,1), opacity .7s cubic-bezier(.4,0,.2,1), translate .8s cubic-bezier(.4,0,.2,1), scale .8s cubic-bezier(.4,0,.2,1); }
-.subnav:not(.ruht), body:has(.site-header.hide) .subnav:not(.ruht) { transition: top .5s cubic-bezier(.22,1,.36,1), opacity .28s cubic-bezier(.22,1,.36,1), translate .38s cubic-bezier(.22,1,.36,1), scale .38s cubic-bezier(.22,1,.36,1); }
-@media (prefers-reduced-motion: reduce) { .subnav.ruht, body:has(.site-header.hide) .subnav.ruht { translate: none; scale: 1; } .subnav, .subnav.ruht, body:has(.site-header.hide) .subnav { transition: opacity .3s linear !important; } }
 
 /* ===== Animations-Review (18.11.2026): alle Funde ===== */
 /* Suche per Tastenkürzel: sofort da */
@@ -2244,3 +2231,18 @@ body:has(.site-header.hide) .subnav.ruht { transition: top .5s cubic-bezier(.45,
 .nav-open .nav-toggle span::before { top: -7px; translate: 0 7px; }
 .nav-open .nav-toggle span::after { top: 7px; translate: 0 -7px; }
 .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { transition: rotate .22s var(--io), translate .22s var(--io), background .22s var(--io), filter .22s var(--io); }
+
+/* ===== Animations-Audit Runde 2 (18.11.2026) ===== */
+/* Leiste „Auf dieser Seite“ ruht (Zustand; Übergänge siehe Review oben) */
+.subnav { transform-origin: 50% 0; }
+.subnav.ruht { opacity: 0; translate: 0 -14px; scale: .985; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .subnav.ruht { translate: none; scale: 1; } }
+/* 3 Bereichskarten heben sich sanft an (translate fehlte in der Übergangsliste) */
+@media (hover: hover) and (pointer: fine) {
+  .area-card.tilt { transition: transform .5s var(--io), translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+}
+/* 4 Bilder im Bereiche-Menü folgen zügig */
+.mega-visual figure { transition: opacity .2s var(--ease-out), scale .3s var(--ease-out); }
+/* 5 Foto-Zoom beim Darüberfahren 450 ms (Aufdecken beim Scrollen bleibt 800 ms) */
+.area-card .thumb img, .room img, .tour-item img, .teaser img { transition: scale .45s var(--ease-out); }
+.js .reveal :is(.thumb, .room > img, .teaser > img, .split img, .welcome-photo img) { transition: clip-path .8s var(--ease-out) calc(var(--i, 0) * var(--stagger) + 60ms), scale .45s var(--ease-out); }

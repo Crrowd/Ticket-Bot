@@ -64,7 +64,8 @@
     if (reduced) return;
     mit.forEach(function (p) {
       var d = p[1] - p[0].getBoundingClientRect().top;
-      if (Math.abs(d) > 1 && Math.abs(d) < 200) p[0].animate([{ translate: "0 " + d + "px" }, { translate: "0 0" }], { duration: 250, easing: EASE_OUT, composite: "add" });
+      /* im selben Takt wie die Kopfleiste selbst, sonst schiebt sich die Leiste unter die noch sichtbare Kopfleiste */
+      if (Math.abs(d) > 1 && Math.abs(d) < 200) p[0].animate([{ translate: "0 " + d + "px" }, { translate: "0 0" }], { duration: 500, easing: CSSV.getPropertyValue(weg ? "--ease-kopf-weg" : "--ease-kopf-da").trim(), composite: "add" });
     });
   }
   function onScroll() {
