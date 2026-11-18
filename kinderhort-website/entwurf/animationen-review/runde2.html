@@ -1,0 +1,206 @@
+<title>Animationen Runde 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: eine Spalte Karten, je Fund zwei Bühnen (Vorher | Nachher) nebeneinander, am Handy untereinander */
+:root {
+  --salbei: #A8C5C0; --petrol: #1E3B44; --rose: #D4B5B0; --tuerkis: #2D6A6A; --papier: #F3F8F7;
+  --bg: #DCE8E5; --card: #F3F8F7; --stage: #FFFFFF; --ink: #1E3B44; --soft: #4A6670; --line: rgb(30 59 68 / .14);
+  --vor: #B5574B; --nach: #2D6A6A; --chip: rgb(30 59 68 / .07);
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12252B; --card: #1A3138; --stage: #22404A; --ink: #E6F0EE; --soft: #A9C2BF; --line: rgb(230 240 238 / .14);
+  --vor: #E29A8F; --nach: #8CC9C0; --chip: rgb(230 240 238 / .08); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12252B; --card: #1A3138; --stage: #22404A; --ink: #E6F0EE; --soft: #A9C2BF; --line: rgb(230 240 238 / .14);
+  --vor: #E29A8F; --nach: #8CC9C0; --chip: rgb(230 240 238 / .08); color-scheme: dark }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--font); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+header h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1.15; margin: 0 0 8px; letter-spacing: -.02em; text-wrap: balance; }
+header p { margin: 0; color: var(--soft); max-width: 62ch; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: .9rem; font-weight: 600; }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.v { background: var(--vor); } .dot.n { background: var(--nach); }
+.hinweis { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: var(--chip); font-size: .88rem; }
+.fund { background: var(--card); border-radius: 18px; padding: 20px; display: grid; gap: 14px; border: 1px solid var(--line); }
+.fund h2 { margin: 0; font-size: 1.12rem; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.fund h2 small { font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: var(--chip); color: var(--soft); }
+.fund > p { margin: 0; color: var(--soft); max-width: 70ch; }
+.paar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .paar { grid-template-columns: minmax(0, 1fr); } }
+.seite { background: var(--stage); border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; border: 1px solid var(--line); }
+.seite .kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .8rem; font-weight: 700; }
+.seite .kopf b { padding: 2px 9px; border-radius: 999px; color: #fff; }
+.v .kopf b { background: var(--vor); } .n .kopf b { background: var(--nach); }
+:root[data-theme="dark"] .seite .kopf b { color: #12252B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seite .kopf b { color: #12252B; } }
+.seite .kopf span { color: var(--soft); font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.bedien { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: 600 .88rem var(--font); color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 10px; min-height: 40px; padding: 8px 14px; cursor: pointer; transition: scale .16s var(--ease-out), background .15s; }
+button:active { scale: .97; }
+button:focus-visible { outline: 3px solid var(--tuerkis); outline-offset: 2px; }
+.buehne { position: relative; height: 150px; border-radius: 10px; background: var(--chip); overflow: hidden; }
+.klein { font-size: .8rem; color: var(--soft); }
+
+
+/* 1 Handy-Menü */
+.handy { position: relative; height: 230px; border-radius: 14px; overflow: hidden; background: var(--papier); border: 1px solid var(--line); }
+.handy .kopfz { height: 40px; background: var(--petrol); color: #F3F8F7; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: .8rem; font-weight: 700; }
+.handy .seiteninhalt { padding: 12px; display: grid; gap: 8px; } .handy .seiteninhalt div { height: 26px; border-radius: 6px; background: var(--chip); }
+.schub { position: absolute; inset: 40px 0 0 0; background: #fff; clip-path: inset(0 0 0 100%); visibility: hidden; }
+.schub ul { list-style: none; margin: 0; padding: 14px; display: grid; gap: 8px; translate: 100% 0; }
+.schub li { padding: 9px 12px; border-radius: 10px; background: #EEF4F3; color: #1E3B44; font-weight: 700; font-size: .9rem; }
+.schub.auf { clip-path: inset(0); visibility: visible; transition: clip-path .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
+.schub.auf ul { translate: 0 0; transition: translate .42s cubic-bezier(.32,.72,0,1); }
+.v .schub:not(.auf) { transition: clip-path .28s cubic-bezier(.4,0,1,1), visibility 0s .28s; }
+.v .schub:not(.auf) ul { transition: translate .28s cubic-bezier(.4,0,1,1); }
+.n .schub:not(.auf) { transition: clip-path .24s cubic-bezier(.23,1,.32,1), visibility 0s .24s; }
+.n .schub:not(.auf) ul { transition: translate .24s cubic-bezier(.23,1,.32,1); }
+
+/* 2 Kopfleiste + Leiste */
+.box2 { position: relative; height: 240px; overflow-y: auto; border-radius: 10px; background: var(--chip); overscroll-behavior: contain; }
+.k2 { position: sticky; top: 0; z-index: 3; height: 44px; margin-bottom: -44px; background: var(--petrol); color: #F3F8F7; font-size: .8rem; font-weight: 700; display: flex; align-items: center; padding: 0 12px;
+  transition: translate .5s cubic-bezier(.22,1,.36,1), opacity .35s ease; }
+.k2.weg { translate: 0 calc(-100% - 8px); opacity: 0; transition: translate .5s cubic-bezier(.45,0,.2,1), opacity .3s ease .15s; }
+.l2 { position: sticky; top: 6px; z-index: 2; margin: 56px 8px 0; padding: 8px 10px; border-radius: 10px; background: #F3F8F7; border: 1px solid rgb(30 59 68 / .18); color: #1E3B44; font-size: .78rem; font-weight: 700; display: flex; gap: 10px; white-space: nowrap; overflow: hidden; translate: 0 46px; }
+.l2 em { font-style: normal; padding: 2px 8px; border-radius: 6px; } .l2 em:first-child { background: var(--rose); }
+.l2.hoch { translate: 0 0; }
+.v .l2 { transition: translate .25s cubic-bezier(.23,1,.32,1); }
+.n .l2 { transition: translate .5s cubic-bezier(.22,1,.36,1); }
+.n .l2.hoch { transition: translate .5s cubic-bezier(.45,0,.2,1); }
+.t2 { padding: 14px 12px 60px; display: grid; gap: 10px; } .t2 div { height: 44px; border-radius: 8px; background: var(--stage); }
+
+/* 3 Bereichskarte */
+.karte { width: min(240px, 100%); border-radius: 16px; overflow: hidden; background: #fff; color: #1E3B44; box-shadow: 0 4px 14px rgb(30 59 68 / .12); cursor: pointer; }
+.karte .foto2 { height: 110px; background: linear-gradient(135deg, #A8C5C0, #D4B5B0); }
+.karte p { margin: 0; padding: 12px 14px; font-weight: 700; }
+.v .karte { transition: box-shadow .35s; }
+.n .karte { transition: translate .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+.karte.hebt { translate: 0 -6px; box-shadow: 0 14px 30px rgb(30 59 68 / .22); }
+@media (hover: hover) and (pointer: fine) { .karte:hover { translate: 0 -6px; box-shadow: 0 14px 30px rgb(30 59 68 / .22); } }
+
+/* 4 Menü-Bildwechsel */
+.mm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px; }
+.mm-spalten { display: grid; gap: 6px; }
+.mm-spalten button { text-align: left; }
+.mm-bild { position: relative; height: 140px; border-radius: 10px; overflow: hidden; }
+.mm-bild figure { margin: 0; position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; color: #1E3B44; opacity: 0; scale: 1.04; }
+.mm-bild figure.an { opacity: 1; scale: 1; }
+.v .mm-bild figure { transition: opacity .35s ease, scale .6s var(--ease-out); }
+.n .mm-bild figure { transition: opacity .2s var(--ease-out), scale .3s var(--ease-out); }
+.mm-bild .b0 { background: #A8C5C0; } .mm-bild .b1 { background: #D4B5B0; } .mm-bild .b2 { background: #CFE0DC; }
+
+/* 5 Foto-Zoom */
+.zoomrahmen { position: relative; height: 150px; border-radius: 12px; overflow: hidden; cursor: pointer; }
+.zoomrahmen div { position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, #F3F8F7 0 12%, transparent 13%), radial-gradient(circle at 70% 60%, #D4B5B0 0 18%, transparent 19%), linear-gradient(135deg, #A8C5C0, #2D6A6A); }
+.v .zoomrahmen div { transition: scale .8s var(--ease-out); }
+.n .zoomrahmen div { transition: scale .45s var(--ease-out); }
+.zoomrahmen.zoom div { scale: 1.06; }
+@media (hover: hover) and (pointer: fine) { .zoomrahmen:hover div { scale: 1.06; } }
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Animationen, Runde 2: vorher und nachher</h1>
+  <p>Die Funde aus dem zweiten Durchgang zum Selbst-Ausprobieren. Links ist der heutige Stand, rechts der Vorschlag. Drück die Knöpfe auf beiden Seiten oder fahr mit der Maus darüber.</p>
+  <div class="legende"><span><i class="dot v"></i>Vorher: so ist es jetzt</span><span><i class="dot n"></i>Nachher: so würde ich es einbauen</span></div>
+  <div class="hinweis" id="rm" hidden>Auf deinem Gerät ist „Bewegung reduzieren“ eingeschaltet. Die Beispiele laufen hier trotzdem, damit du sie vergleichen kannst.</div>
+</header>
+
+<section class="fund" data-demo="menue">
+  <h2>1 · Handy-Menü schließen <small>Wichtig</small></h2>
+  <p>Links zögert das Menü beim Schließen erst und schießt dann weg. Rechts geht es sofort los und läuft weich aus. Das Öffnen bleibt auf beiden Seiten gleich.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>zu: 280 ms, zögerlich</span></div><div class="handy"><div class="kopfz">Kinderhort <span>☰</span></div><div class="seiteninhalt"><div></div><div></div><div></div><div></div></div><div class="schub"><ul><li>Startseite</li><li>Bereiche</li><li>Aktuelles</li><li>Downloads</li></ul></div></div><div class="bedien"><button type="button" data-a="t">Menü öffnen / schließen</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>zu: 240 ms, sofort weich</span></div><div class="handy"><div class="kopfz">Kinderhort <span>☰</span></div><div class="seiteninhalt"><div></div><div></div><div></div><div></div></div><div class="schub"><ul><li>Startseite</li><li>Bereiche</li><li>Aktuelles</li><li>Downloads</li></ul></div></div><div class="bedien"><button type="button" data-a="t">Menü öffnen / schließen</button></div></div>
+  </div>
+  <p class="klein">Tipp: Öffnen, kurz warten, dann schließen und nur aufs Schließen achten.</p>
+</section>
+
+<section class="fund" data-demo="kopf">
+  <h2>2 · Kopfleiste und Leiste „Auf dieser Seite“ <small>Wichtig</small></h2>
+  <p>Links rutscht die Leiste schon hoch, während die Kopfleiste noch da ist, und schiebt sich darunter. Rechts bewegen sich beide gemeinsam, im Tempo der Kopfleiste, das du schon abgenommen hast.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>Leiste 250 ms, Kopf 500 ms</span></div><div class="box2"><div class="k2">Kopfleiste</div><div class="l2"><em>Überblick</em><em>Räume</em><em>Rundgang</em><em>Tagesablauf</em></div><div class="t2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div><div class="bedien"><button type="button" data-a="t">Kopfleiste weg / zurück</button></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>beide 500 ms, gleiche Kurve</span></div><div class="box2"><div class="k2">Kopfleiste</div><div class="l2"><em>Überblick</em><em>Räume</em><em>Rundgang</em><em>Tagesablauf</em></div><div class="t2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div><div class="bedien"><button type="button" data-a="t">Kopfleiste weg / zurück</button></div></div>
+  </div>
+  <p class="klein">Du kannst auch in den Kästen scrollen: runter blendet die Kopfleiste aus, hoch holt sie zurück.</p>
+</section>
+
+<section class="fund" data-demo="karte">
+  <h2>3 · Bereichskarten auf der Startseite</h2>
+  <p>Links springt die Karte beim Darüberfahren ruckartig 6 px nach oben, weil der Übergang dafür fehlt. Rechts hebt sie sich sanft an.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>springt</span></div><div class="karte" tabindex="0"><div class="foto2"></div><p>Kinderkrippe</p></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>250 ms</span></div><div class="karte" tabindex="0"><div class="foto2"></div><p>Kinderkrippe</p></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+  </div>
+</section>
+
+<section class="fund" data-demo="mm">
+  <h2>4 · Bilder im Bereiche-Menü</h2>
+  <p>Beim Überfahren der Spalten wechselt das Bild. Links blendet es träge über, rechts folgt es der Maus zügig. Das passiert jedes Mal, wenn man im Menü hin und her fährt.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>350 ms + 600 ms Zoom</span></div><div class="mm"><div class="mm-spalten"><button type="button" data-b="0">Kinderkrippe</button><button type="button" data-b="1">Kindergarten</button><button type="button" data-b="2">Kinderhort</button></div><div class="mm-bild"><figure class="b0 an">Krippe</figure><figure class="b1">Kindergarten</figure><figure class="b2">Hort</figure></div></div></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>200 ms + 300 ms Zoom</span></div><div class="mm"><div class="mm-spalten"><button type="button" data-b="0">Kinderkrippe</button><button type="button" data-b="1">Kindergarten</button><button type="button" data-b="2">Kinderhort</button></div><div class="mm-bild"><figure class="b0 an">Krippe</figure><figure class="b1">Kindergarten</figure><figure class="b2">Hort</figure></div></div></div>
+  </div>
+  <p class="klein">Mit der Maus schnell über die drei Namen fahren oder sie antippen.</p>
+</section>
+
+<section class="fund" data-demo="zoom">
+  <h2>5 · Foto-Zoom beim Darüberfahren</h2>
+  <p>Fotos auf den Karten zoomen beim Darüberfahren leicht heran. Links dauert das fast eine Sekunde, rechts knapp eine halbe. Langsam wirkt ruhig, kann aber auch träge wirken. Hier entscheidet dein Gefühl.</p>
+  <div class="paar">
+    <div class="seite v"><div class="kopf"><b>Vorher</b><span>800 ms</span></div><div class="zoomrahmen" tabindex="0"><div></div></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+    <div class="seite n"><div class="kopf"><b>Nachher</b><span>450 ms</span></div><div class="zoomrahmen" tabindex="0"><div></div></div><span class="klein">Mit der Maus darüberfahren oder antippen</span></div>
+  </div>
+</section>
+
+<section class="fund">
+  <h2>Ohne Vorschau</h2>
+  <p><b>Logo:</b> Die gemeldete Drehung greift gar nicht, eine spätere Regel stellt sie schon auf null. Beim Logo winken stattdessen die Fähnchen, daran ändere ich nichts.</p>
+  <p><b>Aufräumen:</b> Ähnliche Kurven werden zusammengelegt und tote Regeln entfernt. Sichtbar ändert sich dadurch nichts, die Seite wird nur leichter wartbar.</p>
+</section>
+
+<footer>Entwurf zur Abstimmung, Kath. Kinder- und Jugendhort Grombühl e. V.</footer>
+</div>
+
+<script>
+(function () {
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.getElementById("rm").hidden = false; } catch (e) {}
+  /* 1 Menü */
+  $$('[data-demo="menue"] .seite').forEach(function (s) { s.querySelector("button").addEventListener("click", function () { s.querySelector(".schub").classList.toggle("auf"); }); });
+  /* 2 Kopfleiste */
+  $$('[data-demo="kopf"] .seite').forEach(function (s) {
+    var box = s.querySelector(".box2"), k = s.querySelector(".k2"), l = s.querySelector(".l2"), lastY = 0, travel = 0, still = false;
+    function setze(weg) { k.classList.toggle("weg", weg); l.classList.toggle("hoch", weg); }
+    /* so weit gescrollt starten, dass die Leiste oben klebt wie auf der echten Seite */
+    function kleben() { if (box.scrollTop < 100) { still = true; box.scrollTop = 100; lastY = 100; } }
+    kleben();
+    s.querySelector("button").addEventListener("click", function () { kleben(); setze(!k.classList.contains("weg")); });
+    box.addEventListener("scroll", function () {
+      if (still) { still = false; lastY = box.scrollTop; return; }
+      var y = box.scrollTop, dy = y - lastY; lastY = y;
+      if (y < 20) { setze(false); travel = 0; return; }
+      travel = (travel > 0) === (dy > 0) ? travel + dy : dy;
+      if (travel > 24) setze(true); else if (travel < -12) setze(false);
+    }, { passive: true });
+  });
+  /* 3 Karte + 5 Zoom: Antippen am Handy */
+  $$('[data-demo="karte"] .karte').forEach(function (c) { c.addEventListener("click", function () { c.classList.toggle("hebt"); }); });
+  $$('[data-demo="zoom"] .zoomrahmen').forEach(function (c) { c.addEventListener("click", function () { c.classList.toggle("zoom"); }); });
+  /* 4 Menü-Bilder */
+  $$('[data-demo="mm"] .seite').forEach(function (s) {
+    var figs = $$("figure", s);
+    $$(".mm-spalten button", s).forEach(function (b) {
+      function zeig() { figs.forEach(function (f, i) { f.classList.toggle("an", i === +b.dataset.b); }); }
+      b.addEventListener("mouseenter", zeig); b.addEventListener("focus", zeig); b.addEventListener("click", zeig);
+    });
+  });
+})();
+</script>
