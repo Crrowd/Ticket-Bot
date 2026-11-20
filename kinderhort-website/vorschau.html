@@ -2388,6 +2388,11 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .hero-badge b { font-size: 1.9rem; margin-bottom: 2px; }
 @media (max-width: 700px) { .hero-badge { width: 96px; height: 96px; font-size: .76rem; } .hero-badge b { font-size: 1.6rem; } }
 
+/* Leiste „Auf dieser Seite“: zentriert; bei 10 Punkten (Kinderhort) etwas enger, damit nichts abgeschnitten wird (21.11.2026) */
+.subnav ul { margin-inline: auto; }
+.subnav ul:has(> li:nth-child(10)) a { padding: 8px 7px; font-size: .86rem; }
+@media (max-width: 1240px) { .subnav ul:has(> li:nth-child(10)) a { padding: 8px 6px; font-size: .82rem; } }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
