@@ -551,3 +551,6 @@ Entscheidung offen.
 - Zwischenüberschriften (Foto-Karten, Bereichskarten, Wochenleiste) einheitlich 1,25rem.
 - Fokus-Ring ohne Einblenden. Jahreszeiten-Teilchen im Startbereich entfernt.
 - Offen zur Entscheidung: Text auf Fotos (1), Startbereich-Collage (2).
+- Foto-Karten der Startseite: ganzes Foto (4 : 3), Text darunter (große Karten Petrol, Rundgang hell).
+- Startbereich Mittelweg: Fotos leicht gekippt im 2×2-Raster ohne Überlappung, kleiner „3“-Sticker, oben bündig; Weißer-Raum-Foto in der Collage durch Leseecke ersetzt.
+- „Ein Haus für jedes Alter“ linksbündig; „Alle Termine“ im Band als Rand-Knopf (Handy: eigene Zeile); Textlinks halbfett mit feiner Linie; Fußzeilen-Links am Handy 44 px; Schließtage-Knöpfe über dem Jahresband.

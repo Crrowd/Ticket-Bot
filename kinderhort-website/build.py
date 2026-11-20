@@ -592,9 +592,9 @@ def ferienplan_section(cls="alt", kurz=False):
     if kurz:
         return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
                        "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
-                       '<div class="yearline reveal" data-yearline></div>'
-                       f'<div class="btn-row no-print"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
-                       f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>', cls=cls)
+                       f'<div class="btn-row no-print plan-knoepfe"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
+                       f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>'
+                       '<div class="yearline reveal" data-yearline></div>', cls=cls)
     return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                    '<div class="yearline reveal" data-yearline></div>' + plan_table(), cls=cls)
@@ -720,8 +720,8 @@ home = f'''
       <figure class="c1">{img("img/p2170270.jpg", "Heller Gruppenraum im Kindergarten", lazy=False)}</figure>
       <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", lazy=False)}</figure>
       <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", lazy=False)}</figure>
-      <figure class="c4">{img("img/p2160031.jpg", "Der Weiße Raum mit Wassersäulen", lazy=False)}</figure>
-      <div class="hero-badge"><span><b>3</b>Bereiche unter einem Dach</span></div>
+      <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", lazy=False)}</figure>
+      <div class="hero-badge"><span><b>3</b><span class="visually-hidden">Bereiche unter einem Dach</span></span></div>
     </div>
   </div>
 </section>
@@ -730,7 +730,7 @@ home = f'''
 
 <section class="section alt" id="bereiche">
   <div class="container">
-    <div class="section-head center"><span class="kicker">Krippe · Kindergarten · Hort</span><h2>Ein Haus für jedes Alter</h2>
+    <div class="section-head"><span class="kicker">Krippe · Kindergarten · Hort</span><h2>Ein Haus für jedes Alter</h2>
       <p>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und Familien ein einheitliches Konzept und einen nahtlosen Wechsel gewährleisten.</p></div>
     <div class="areas">
       <a class="area-card theme-krippe reveal" href="kinderkrippe.html">
