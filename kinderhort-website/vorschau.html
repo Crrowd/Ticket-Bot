@@ -2272,6 +2272,21 @@ a[href^="tel:"]:hover svg { animation: none; }
 /* 4 Abschnitte und Seitentitel nicht mehr an das Scrollen gekoppelt (einmaliges Einblenden bleibt) */
 .section > .container, .page-hero .page-hero-content { animation: none; }
 
+/* ===== Design-Review mit Taste Skill (20.11.2026) ===== */
+/* 3 Ein Knopf-System: gefüllt (rosé) = die eine Hauptaktion, sonst Rand. „Kontakt“ in der Kopfleiste bekommt den Rand */
+.main-nav .nav-cta { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .55); }
+.main-nav .nav-cta[aria-current="page"] { background: rgb(var(--ink-rgb) / .1); }
+@media (hover: hover) and (pointer: fine) { .main-nav > ul > li > .nav-cta:hover { background: rgb(var(--ink-rgb) / .08); color: var(--ink); } }
+/* 4 Begrüßung: Porträt und Text oben auf einer Linie */
+.welcome { align-items: start; }
+/* 5 „Jetzt geöffnet“-Karte: dunkler, Text heller (Fließtext 8,6 : 1 statt 4,85 : 1) */
+.status-card { background: #1F4A52; }
+.status-card .status-sub, .status-card p { color: #EAF3F1; }
+/* 6 Zwischenüberschriften in einer Größe, klar unter den Abschnittsüberschriften */
+.teaser h3, .area-card h3, .wo-kopf h3 { font-size: 1.25rem; }
+/* 7 Fokus-Ring sofort sichtbar, ohne Einblenden */
+.focus-ring, .focus-ring.jump { transition: none; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -2384,7 +2399,6 @@ a[href^="tel:"]:hover svg { animation: none; }
 <div class="spa-page " id="seite-index" data-page="index" data-title="Kath. Kinder- und Jugendhort Grombühl e. V. – Weil Qualität zählt!">
 
 <section class="hero">
-  <canvas class="season-fx" aria-hidden="true"></canvas>
   <div class="container hero-grid">
     <div>
       <span class="eyebrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Lindleinstraße 20 · Würzburg-Grombühl</span>
@@ -2448,8 +2462,8 @@ a[href^="tel:"]:hover svg { animation: none; }
       <div class="stat reveal"><b>2</b><span>Köchinnen kochen täglich frisch mit regionalen Zutaten</span></div>
     </div>
     <div class="teasers">
-      <a class="teaser reveal" href="#" data-full="" data-full-img="i29" data-group="home" data-title="Weißer Raum" data-text="Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hier können die Kinder auf dem Wasserbett träumen, unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i29" alt="Weißer Raum" width="1600" height="1200" class="ph lq-p2160031" decoding="async"><div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
-      <a class="teaser reveal" href="#" data-full="" data-full-img="i33" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i33" alt="Hauseigene Küche" width="1600" height="1200" class="ph lq-p2160054" decoding="async"><div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
+      <a class="teaser reveal" href="#" data-href-img="i29" data-full="" data-full-img="i29" data-group="home" data-title="Weißer Raum" data-text="Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hier können die Kinder auf dem Wasserbett träumen, unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i29" alt="Weißer Raum" width="1600" height="1200" class="ph lq-p2160031" decoding="async"><div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
+      <a class="teaser reveal" href="#" data-href-img="i33" data-full="" data-full-img="i33" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i33" alt="Hauseigene Küche" width="1600" height="1200" class="ph lq-p2160054" decoding="async"><div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
     </div>
   </div>
 </section>
@@ -5367,33 +5381,7 @@ window.KITA = {
     update(); wrap.hidden = false; setInterval(update, 60000);
   })();
 
-  /* ---------- Jahreszeiten im Auftakt (höchstens 18 Teilchen, 8 Sekunden) ---------- */
-  (function () {
-    var cv = $(".season-fx"); if (!cv || reduced || !cv.getContext) return;
-    var box = cv.parentNode, ctx = cv.getContext("2d"), W = 0, H = 0, parts = [], t0 = 0, run = false;
-    var mo = new Date().getMonth(), kind = mo < 2 || mo === 11 ? "winter" : mo < 5 ? "fruehling" : mo < 8 ? "sommer" : "herbst";
-    function size() { var r = box.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
-    function make() { parts = []; for (var i = 0; i < 18; i++) parts.push({ x: Math.random() * W, y: kind === "sommer" ? H * (.3 + Math.random() * .7) : -20 - Math.random() * H * .8, s: 4 + Math.random() * 5, v: .4 + Math.random() * .6, a: Math.random() * 6.28, w: .01 + Math.random() * .02, c: i % 3 }); }
-    function draw(p) {
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
-      if (kind === "winter") { ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.beginPath(); ctx.arc(0, 0, p.s * .45, 0, 6.28); ctx.fill(); }
-      else if (kind === "fruehling") { ctx.fillStyle = ["#F1E5E3", "#D4B5B0", "#FFFFFF"][p.c]; ctx.beginPath(); ctx.ellipse(0, 0, p.s * .5, p.s * .9, 0, 0, 6.28); ctx.fill(); }
-      else if (kind === "herbst") { ctx.fillStyle = ["#C98F7E", "#D4B5B0", "#B9876F"][p.c]; ctx.beginPath(); ctx.moveTo(0, -p.s); ctx.quadraticCurveTo(p.s, 0, 0, p.s); ctx.quadraticCurveTo(-p.s, 0, 0, -p.s); ctx.fill(); }
-      else { var g = ctx.createRadialGradient(0, 0, 0, 0, 0, p.s); g.addColorStop(0, "rgba(255,248,230,.95)"); g.addColorStop(1, "rgba(255,248,230,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, p.s, 0, 6.28); ctx.fill(); }
-      ctx.restore();
-    }
-    function frame(t) {
-      var age = (t - t0) / 1000, fade = age > 7 ? Math.max(0, 1 - (age - 7)) : Math.min(1, age * 2);
-      ctx.clearRect(0, 0, W, H); ctx.globalAlpha = fade;
-      parts.forEach(function (p) {
-        p.a += p.w;
-        if (kind === "sommer") { p.y -= p.v * .4; p.x += Math.sin(p.a) * .4; } else { p.y += p.v * (kind === "winter" ? .9 : 1.15); p.x += Math.sin(p.a) * (kind === "winter" ? .4 : .9); }
-        draw(p);
-      });
-      if (fade > 0 && run && !document.hidden) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, W, H); run = false; }
-    }
-    setTimeout(function () { size(); make(); t0 = performance.now(); run = true; requestAnimationFrame(frame); }, 900);
-  })();
+  /* Jahreszeiten-Teilchen im Auftakt: entfernt (Design-Review 20.11.2026) */
 
   /* ---------- Handgezeichnete Markierungen zeichnen sich beim Erscheinen ---------- */
   (function () {

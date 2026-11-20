@@ -1703,33 +1703,7 @@
     update(); wrap.hidden = false; setInterval(update, 60000);
   })();
 
-  /* ---------- Jahreszeiten im Auftakt (höchstens 18 Teilchen, 8 Sekunden) ---------- */
-  (function () {
-    var cv = $(".season-fx"); if (!cv || reduced || !cv.getContext) return;
-    var box = cv.parentNode, ctx = cv.getContext("2d"), W = 0, H = 0, parts = [], t0 = 0, run = false;
-    var mo = new Date().getMonth(), kind = mo < 2 || mo === 11 ? "winter" : mo < 5 ? "fruehling" : mo < 8 ? "sommer" : "herbst";
-    function size() { var r = box.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
-    function make() { parts = []; for (var i = 0; i < 18; i++) parts.push({ x: Math.random() * W, y: kind === "sommer" ? H * (.3 + Math.random() * .7) : -20 - Math.random() * H * .8, s: 4 + Math.random() * 5, v: .4 + Math.random() * .6, a: Math.random() * 6.28, w: .01 + Math.random() * .02, c: i % 3 }); }
-    function draw(p) {
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
-      if (kind === "winter") { ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.beginPath(); ctx.arc(0, 0, p.s * .45, 0, 6.28); ctx.fill(); }
-      else if (kind === "fruehling") { ctx.fillStyle = ["#F1E5E3", "#D4B5B0", "#FFFFFF"][p.c]; ctx.beginPath(); ctx.ellipse(0, 0, p.s * .5, p.s * .9, 0, 0, 6.28); ctx.fill(); }
-      else if (kind === "herbst") { ctx.fillStyle = ["#C98F7E", "#D4B5B0", "#B9876F"][p.c]; ctx.beginPath(); ctx.moveTo(0, -p.s); ctx.quadraticCurveTo(p.s, 0, 0, p.s); ctx.quadraticCurveTo(-p.s, 0, 0, -p.s); ctx.fill(); }
-      else { var g = ctx.createRadialGradient(0, 0, 0, 0, 0, p.s); g.addColorStop(0, "rgba(255,248,230,.95)"); g.addColorStop(1, "rgba(255,248,230,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, p.s, 0, 6.28); ctx.fill(); }
-      ctx.restore();
-    }
-    function frame(t) {
-      var age = (t - t0) / 1000, fade = age > 7 ? Math.max(0, 1 - (age - 7)) : Math.min(1, age * 2);
-      ctx.clearRect(0, 0, W, H); ctx.globalAlpha = fade;
-      parts.forEach(function (p) {
-        p.a += p.w;
-        if (kind === "sommer") { p.y -= p.v * .4; p.x += Math.sin(p.a) * .4; } else { p.y += p.v * (kind === "winter" ? .9 : 1.15); p.x += Math.sin(p.a) * (kind === "winter" ? .4 : .9); }
-        draw(p);
-      });
-      if (fade > 0 && run && !document.hidden) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, W, H); run = false; }
-    }
-    setTimeout(function () { size(); make(); t0 = performance.now(); run = true; requestAnimationFrame(frame); }, 900);
-  })();
+  /* Jahreszeiten-Teilchen im Auftakt: entfernt (Design-Review 20.11.2026) */
 
   /* ---------- Handgezeichnete Markierungen zeichnen sich beim Erscheinen ---------- */
   (function () {

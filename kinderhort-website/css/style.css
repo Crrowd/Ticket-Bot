@@ -2264,3 +2264,18 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 a[href^="tel:"]:hover svg { animation: none; }
 /* 4 Abschnitte und Seitentitel nicht mehr an das Scrollen gekoppelt (einmaliges Einblenden bleibt) */
 .section > .container, .page-hero .page-hero-content { animation: none; }
+
+/* ===== Design-Review mit Taste Skill (20.11.2026) ===== */
+/* 3 Ein Knopf-System: gefüllt (rosé) = die eine Hauptaktion, sonst Rand. „Kontakt“ in der Kopfleiste bekommt den Rand */
+.main-nav .nav-cta { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .55); }
+.main-nav .nav-cta[aria-current="page"] { background: rgb(var(--ink-rgb) / .1); }
+@media (hover: hover) and (pointer: fine) { .main-nav > ul > li > .nav-cta:hover { background: rgb(var(--ink-rgb) / .08); color: var(--ink); } }
+/* 4 Begrüßung: Porträt und Text oben auf einer Linie */
+.welcome { align-items: start; }
+/* 5 „Jetzt geöffnet“-Karte: dunkler, Text heller (Fließtext 8,6 : 1 statt 4,85 : 1) */
+.status-card { background: #1F4A52; }
+.status-card .status-sub, .status-card p { color: #EAF3F1; }
+/* 6 Zwischenüberschriften in einer Größe, klar unter den Abschnittsüberschriften */
+.teaser h3, .area-card h3, .wo-kopf h3 { font-size: 1.25rem; }
+/* 7 Fokus-Ring sofort sichtbar, ohne Einblenden */
+.focus-ring, .focus-ring.jump { transition: none; }

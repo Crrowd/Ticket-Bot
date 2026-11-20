@@ -543,3 +543,11 @@ Entscheidung offen.
 - Telefon-Symbole (Gruppen-Knöpfe bei „Kind krankmelden“, Handy-Menü) wackeln nicht mehr beim Darüberfahren.
 - Abschnitte gleiten nicht mehr an das Scrollen gekoppelt heran, Seitentitel schrumpft nicht mehr; einmaliges Einblenden bleibt.
 - Aufgeräumt: tote Regeln von Tiefen-Effekt und Karten-Kippen entfernt. Handy-Menü: Einträge 300 ms mit abnehmendem Versatz (0/30/55/75/90/100 ms).
+
+## Design-Review mit Taste Skill umgesetzt (20.11.2026)
+- „Kontakt“ in der Kopfleiste/im Handy-Menü mit Rand statt gefüllt (gefüllt nur die Hauptaktion).
+- Foto-Karten „Weißer Raum“/„Hauseigene Küche“ verlinken auf das Foto statt auf „#“ (Bildansicht öffnet weiter per Skript).
+- Begrüßung oben bündig. „Jetzt geöffnet“-Karte #1F4A52, Text #EAF3F1 (8,6 : 1).
+- Zwischenüberschriften (Foto-Karten, Bereichskarten, Wochenleiste) einheitlich 1,25rem.
+- Fokus-Ring ohne Einblenden. Jahreszeiten-Teilchen im Startbereich entfernt.
+- Offen zur Entscheidung: Text auf Fotos (1), Startbereich-Collage (2).
