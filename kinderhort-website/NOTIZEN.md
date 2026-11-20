@@ -576,3 +576,8 @@ Entscheidung offen.
 - Bestätigt vom Hort: Streberclub gibt es, Ferienfreizeit Österreich, zwei Köchinnen.
 - Fotos: Hortgebäude (img/hortgebaeude.jpg, Galerie-Pfeil abgeschnitten) als 1. Foto der Collage; Berghütte (img/berghuette.jpg, rechter Ausschnitt ohne Personen) im Ferien-Thema. Gebäudefoto ist vom Hort selbst gemacht (Bildrechte geklärt).
 - Sticker „3 Bereiche unter einem Dach“ wieder mit Text in der Mitte der Collage.
+
+## Leiste „Auf dieser Seite“ (21.11.2026)
+- Leiste auf allen Bereichsseiten mittig statt linksbündig.
+- Kinderhort (10 Punkte): etwas enger gesetzt, damit „Schließtage“ ab 1180 px Breite wieder ganz sichtbar ist. „Zusammenarbeit mit Schulen“ bleibt ausgeschrieben.
+- Schmaler als 1180 px (Tablet, Handy) lässt sich die Hort-Leiste wie bisher seitlich wischen.

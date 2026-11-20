@@ -2380,3 +2380,8 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .hero-badge { left: 50%; top: 50%; right: auto; bottom: auto; translate: -50% -50%; width: 112px; height: 112px; padding: 10px; font: 600 .86rem/1.15 var(--font-body); }
 .hero-badge b { font-size: 1.9rem; margin-bottom: 2px; }
 @media (max-width: 700px) { .hero-badge { width: 96px; height: 96px; font-size: .76rem; } .hero-badge b { font-size: 1.6rem; } }
+
+/* Leiste „Auf dieser Seite“: zentriert; bei 10 Punkten (Kinderhort) etwas enger, damit nichts abgeschnitten wird (21.11.2026) */
+.subnav ul { margin-inline: auto; }
+.subnav ul:has(> li:nth-child(10)) a { padding: 8px 7px; font-size: .86rem; }
+@media (max-width: 1240px) { .subnav ul:has(> li:nth-child(10)) a { padding: 8px 6px; font-size: .82rem; } }
