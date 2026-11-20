@@ -1705,6 +1705,23 @@
 
   /* Jahreszeiten-Teilchen im Auftakt: entfernt (Design-Review 20.11.2026) */
 
+  /* Nach-oben-Knopf: halbdurchsichtig, solange er über Text liegt (Design-Review 20.11.2026) */
+  (function () {
+    var b = $(".to-top"); if (!b || !document.elementsFromPoint) return;
+    var q = false;
+    function pruefe() {
+      q = false; if (!b.classList.contains("show")) { b.classList.remove("ueber"); return; }
+      var r = b.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, drauf = false;
+      document.elementsFromPoint(x, y).some(function (el) {
+        if (el === b || b.contains(el)) return false;
+        if (/^(P|LI|H[1-6]|A|SPAN|B|STRONG|SMALL|TD|DT|DD|LABEL|BUTTON|FIGCAPTION)$/.test(el.tagName) && el.textContent.trim()) { drauf = true; return true; }
+        return /^(SECTION|MAIN|BODY|HTML|FOOTER)$/.test(el.tagName);
+      });
+      b.classList.toggle("ueber", drauf);
+    }
+    addEventListener("scroll", function () { if (!q) { q = true; requestAnimationFrame(pruefe); } }, { passive: true });
+  })();
+
   /* ---------- Handgezeichnete Markierungen zeichnen sich beim Erscheinen ---------- */
   (function () {
     var ms = $$(".mark"); if (!ms.length) return;

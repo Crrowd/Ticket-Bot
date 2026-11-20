@@ -554,3 +554,5 @@ Entscheidung offen.
 - Foto-Karten der Startseite: ganzes Foto (4 : 3), Text darunter (große Karten Petrol, Rundgang hell).
 - Startbereich Mittelweg: Fotos leicht gekippt im 2×2-Raster ohne Überlappung, kleiner „3“-Sticker, oben bündig; Weißer-Raum-Foto in der Collage durch Leseecke ersetzt.
 - „Ein Haus für jedes Alter“ linksbündig; „Alle Termine“ im Band als Rand-Knopf (Handy: eigene Zeile); Textlinks halbfett mit feiner Linie; Fußzeilen-Links am Handy 44 px; Schließtage-Knöpfe über dem Jahresband.
+- Nach-oben-Knopf: am Handy 44 px, halbdurchsichtig solange er über Text liegt.
+- Korrektur: „Kontakt“ in der Kopfleiste auf der Kontakt-Seite war nach der Rand-Umstellung fast unlesbar (1,74 : 1), jetzt 6,5 : 1.
