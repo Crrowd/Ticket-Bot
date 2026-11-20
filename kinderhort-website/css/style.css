@@ -2362,3 +2362,21 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 @media (hover: hover) and (pointer: fine) { .sugg button:hover { background: rgb(var(--ink-rgb) / .08); } }
 /* 6 Fehlerseite: Text unter der Überschrift in Petrol wie die Einleitungstexte */
 .e404-card p { color: var(--ink); }
+
+/* ===== Kinderhort: Abschnitt „Pädagogik“ (21.11.2026) ===== */
+.paed-lern { margin: 0 0 24px; }
+.paed-lern-t, .paed-sub { margin: 0 0 10px; font: 600 .9rem/1.4 var(--font-body); color: var(--ink); }
+.paed-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.paed-chips li { padding: 6px 12px; border-radius: 999px; background: var(--paper); color: var(--ink); font-size: .9rem; font-weight: 500; box-shadow: inset 0 0 0 1px rgb(var(--ink-rgb) / .12); }
+.paed-liste { margin: 0 0 14px; padding-left: 1.2em; display: grid; gap: 6px; }
+.paed-liste li { line-height: 1.5; }
+.paed-item > div > p { max-width: 70ch; }
+.paed-bild { margin: 4px 0 8px; max-width: 320px; border-radius: 14px; overflow: hidden; }
+.paed-bild img { display: block; width: 100%; height: auto; }
+.paed-zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 8px; }
+@media (max-width: 700px) { .paed-zwei { grid-template-columns: minmax(0, 1fr); } }
+
+/* Startbereich: „3 Bereiche unter einem Dach“ wieder als Sticker in der Mitte der Collage (21.11.2026) */
+.hero-badge { left: 50%; top: 50%; right: auto; bottom: auto; translate: -50% -50%; width: 112px; height: 112px; padding: 10px; font: 600 .86rem/1.15 var(--font-body); }
+.hero-badge b { font-size: 1.9rem; margin-bottom: 2px; }
+@media (max-width: 700px) { .hero-badge { width: 96px; height: 96px; font-size: .76rem; } .hero-badge b { font-size: 1.6rem; } }

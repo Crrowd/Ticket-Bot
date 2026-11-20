@@ -717,11 +717,11 @@ home = f'''
       {krank_block("in-hero")}
     </div>
     <div class="hero-collage">
-      <figure class="c1">{img("img/p2170270.jpg", "Heller Gruppenraum im Kindergarten", lazy=False)}</figure>
+      <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False)}</figure>
       <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", lazy=False)}</figure>
       <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", lazy=False)}</figure>
       <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", lazy=False)}</figure>
-      <div class="hero-badge"><span><b>3</b><span class="visually-hidden">Bereiche unter einem Dach</span></span></div>
+      <div class="hero-badge"><span><b>3</b>Bereiche unter einem Dach</span></div>
     </div>
   </div>
 </section>
@@ -1062,9 +1062,95 @@ hort_tour = [
     ("img/img_2423.jpg", "Unser Kreativraum", "Ein Werk unserer Kinder"),
     ("img/img_8912.jpg", "Ein Kunstwerk unserer Kinder", "Gestaltet im Kinderhort"),
 ]
+
+def paed_item(titel, html):
+    return f'<details class="lotse-item paed-item" name="paed"><summary>{titel}</summary><div>{html}</div></details>'
+
+def liste(punkte, nummeriert=False):
+    tag = "ol" if nummeriert else "ul"
+    return f'<{tag} class="paed-liste">' + "".join(f"<li>{p}</li>" for p in punkte) + f"</{tag}>"
+
+LERNBEREICHE = ["Ethik und Religion", "Sprache und Literacy", "Mathematik", "Naturwissenschaft und Technik", "Umwelt und Natur", "Medien und IT",
+                "Ästhetik und Kunst", "Musik", "Bewegung", "Gesundheit", "Demokratie", "Mitbestimmung und Partizipation"]
+
+PAED_HORT = (
+  '<div class="paed-lern reveal"><p class="paed-lern-t">Wir orientieren uns an diesen Lernbereichen:</p><ul class="paed-chips">'
+  + "".join(f"<li>{x}</li>" for x in LERNBEREICHE) + '</ul></div>'
+  + '<div class="lotse paed reveal">'
+  + paed_item("Lernen durch Handeln",
+      "<p>Ganzheitliche Bildung bedeutet für uns, dass Lernen über das Handeln geschieht. Nach Pestalozzi ist die Anschauung das Fundament aller Erkenntnis. "
+      "Nach diesem Prinzip arbeiten wir: Zu einem Thema veranstalten wir mit den Kindern zum Beispiel eine Exkursion, betrachten ein Bilderbuch, recherchieren im Internet, "
+      "befragen Experten, studieren einen Tanz ein oder gestalten eine künstlerische Gemeinschaftsarbeit.</p>"
+      "<p>Unsere Angebote richten sich an der Motivation der Kinder aus. Sie sind freiwillig, damit die Kinder wissbegierig teilnehmen, Fragen stellen und das Gelernte auf ihr Leben übertragen.</p>")
+  + paed_item("Hausaufgaben",
+      "<p>Von Montag bis Donnerstag erledigt jedes Kind seine Hausaufgaben im Hort. Nach Alter, Reife und Klasse sind die Kinder in zwei Hausaufgabengruppen eingeteilt. "
+      "Von 14:00 bis 15:00 Uhr arbeiten alle Kinder leise an ihrem Platz. Wer um 15:00 Uhr noch nicht fertig ist, kann in der Resthausaufgabenzeit bis 15:30 Uhr weiterarbeiten.</p>"
+      "<p>Die pädagogischen Fachkräfte helfen bei Bedarf und erklären, wenn nötig. Fertige Hausaufgaben werden auf Vollständigkeit und Richtigkeit korrigiert: "
+      "Fehler bekommen einen <strong>grünen Punkt</strong>, das Kind verbessert sie und lässt die Verbesserung erneut korrigieren. Ist alles richtig, stempelt die Erzieherin die Aufgabe ab und unterschreibt.</p>"
+      "<p>Wird ein Kind auch in der Resthausaufgabenzeit nicht fertig, kleben wir einen <strong>roten Zettel</strong> ins Heft. Er zeigt Eltern und Lehrkräften, dass die Aufgabe nicht fertig wurde, obwohl das Kind 90 Minuten gearbeitet hat. "
+      "Ob die Aufgabe zu Hause noch fertig gemacht wird, entscheiden die Eltern.</p>"
+      '<div class="paed-zwei"><div><p class="paed-sub">Die drei Regeln der Hausaufgabenzeit</p>' + liste(["Ruhig arbeiten", "Am Platz sitzen", "Bei Fragen melden"], True) + "</div>"
+      '<div><p class="paed-sub">Das hat jedes Kind an seinem Platz</p>' + liste(["einen eigenen Schreibtisch und Stuhl", "Hilfsmittel und Anschauungsmaterial wie Hundertertafel, Rechenschieber, Spielgeld oder Uhr", "Arbeitsblätter, Lernspiele und Bücher zur Unterstützung"]) + "</div></div>")
+  + paed_item("Freizeit und offene Arbeit",
+      "<p>Die Freizeitgestaltung ist ein wesentlicher Schwerpunkt unserer Arbeit und ein wichtiger Ausgleich zum schulischen Lernen. Wir arbeiten nach einem offenen Konzept: "
+      "Außerhalb der Hausaufgabenzeit bewegen sich die Kinder frei in allen Räumen und wählen ihren Spielort nach ihren eigenen Interessen. "
+      "Sie spielen allein, in kleinen und großen Gruppen, malen, basteln, konstruieren oder schlüpfen ins Rollenspiel. "
+      "Zum Ausruhen gibt es den Weißen Raum mit Lichtdusche, Wasserbett und Wassersäulen, ein Bällebad und eine gemütliche Leseecke, für Bewegung die Turnhalle und ein großzügiges Außengelände.</p>"
+      + liste(["Die Kinder entscheiden selbst, welche Spielbereiche sie nutzen, und wählen ihre Spielpartner.",
+               "Es entstehen altersübergreifende Kontakte zu allen Kindern des Hortes.",
+               "Montag bis Donnerstag bietet jeden Tag eine Erzieherin oder ein Erzieher ein anderes Angebot an, z. B. Fußballspiel, Kuchen backen, Yoga oder Malen auf Leinwand. Die Teilnahme ist freiwillig.",
+               "Freitag ist Freizeittag ohne Hausaufgaben, mit einem Ausflug, z. B. in die Bücherei, zur Schnitzeljagd oder auf den Abenteuerspielplatz.",
+               "Einmal im Jahr gibt es ein größeres Projekt, dessen Thema die Kinder selbst wählen, außerdem längere Projekte in Kleingruppen, z. B. Foto, Theater oder Entspannung."]))
+  + paed_item("Streberclub",
+      "<p>Von Montag bis Donnerstag findet von 16:30 bis 17:00 Uhr der Streberclub statt. Jedes Hortkind kann ihn mit seiner eigenen Mitgliedskarte besuchen. "
+      "Hier begleiten wir das Lernen zusätzlich und spielerisch, zum Beispiel mit:</p>"
+      + liste(["Knobelspielen", "Internetrecherche", "Mathematik-Tricks und -Rätseln", "Lesetraining", "Sprachspielen", "der Geschichtenwerkstatt"]))
+  + paed_item("Kinderkonferenz und Mitbestimmung",
+      "<p>Jeden Freitag treffen sich alle Hortkinder und Erzieher im Turnraum zur Kinderkonferenz. Sie beginnt immer mit der „Lobhudelei“: "
+      "Besondere Leistungen einzelner oder mehrerer Kinder aus der Woche werden vor allen gelobt. Danach werden aktuelle Themen besprochen, Informationen weitergegeben und die Ausflüge für den Nachmittag vorgestellt. "
+      "Die Kinder gestalten ihren Hortalltag aktiv mit, zum Beispiel stimmen sie über den Ferienplan oder das Projektthema ab.</p>"
+      + liste(["Kinderkonferenz jeden Freitag", "Abstimmung des Ferienprogramms", "Schriftliche Kinderbefragung", "Einmal im Monat ein „feines“ Mittagessen mit Wunschessen der Kinder und besonders schön gedecktem Tisch"]))
+  + paed_item("Ferien und Ferienfreizeit",
+      "<p>In den Schulferien wird die gemeinsame Freizeit noch wichtiger: Die Kinder bauen Schulstress ab und gehen ihren eigenen Interessen nach. "
+      "Das Ferienprogramm schlagen die Hortkinder selbst vor und wählen es in der Kinderkonferenz gemeinsam aus. Oft beginnt der Ferientag mit einem Frühstücksbuffet, zu dem jedes Kind etwas beisteuert.</p>"
+      + liste(["Verlässlich geöffnet in den Schulferien von 6:45 bis 18:00 Uhr, höchstens 30 Schließtage im Jahr",
+               "Tägliche Aktionen, z. B. Schwimmbad, Eisbahn, Zoo, Kegeln, Kinderkino oder Fußballturnier",
+               "Gemeinsames Frühstück und Mittagessen"])
+      + "<p><strong>Ferienfreizeit in Österreich:</strong> Ein Höhepunkt im Hortjahr ist die einwöchige Ferienfreizeit am Ende der Sommerferien. "
+      "Für viele Kinder ist es die erste Reise ohne Eltern. Am Fuße des Wilden Kaisers steht unsere Berghütte. Von dort aus wandern wir in den Bergen, erkunden das Landleben und kochen jeden Abend selbst. "
+      "Zur Hütte gehören ein Hüttenhund, zwei Esel und sogar ein kleiner Swimmingpool.</p>"
+      + '<figure class="paed-bild">' + img("img/berghuette.jpg", "Unsere Berghütte am Wilden Kaiser mit Blumenbalkonen", sizes="320px") + "</figure>")
+  + paed_item("Mittagessen aus der eigenen Küche",
+      "<p>Als eine der wenigen Kitas in Bayern haben wir eine hauseigene Küche: Zwei Köchinnen kochen täglich frisch und kindgerecht, überwiegend mit regionalen Lebensmitteln. "
+      "Was morgens gekocht wird, steht mittags auf dem Tisch. Die Kinder essen in gemütlicher Runde im Bistro.</p>"
+      '<p class="paed-sub">Unsere Qualitätskriterien</p>'
+      + liste(["Lebensmittel überwiegend aus regionalem Anbau, keine Fertigprodukte",
+               "20-mal im Monat Gemüse oder Salat",
+               "8-mal im Monat Speisen mit Fleisch",
+               "Mehrmals im Monat kindgerechte Fischgerichte, kein Pressfisch",
+               "Auch Vollkornprodukte und Hülsenfrüchte",
+               "Rücksicht auf die Besonderheiten anderer Religionen",
+               "Viele Nachspeisen aus frischem Obst",
+               "Butter und hochwertige Speiseöle, kein Palmöl",
+               "Keine Geschmacksverstärker",
+               "Rücksicht auf ärztlich nachgewiesene Lebensmittelunverträglichkeiten",
+               "Aktuelle Speisepläne hängen an mehreren Stellen in der Kita aus",
+               "Einhaltung der HACCP-Richtlinien, Allergene werden ausgewiesen"], True))
+  + paed_item("Zusammenarbeit mit den Eltern",
+      "<p>Schon vor dem ersten Schultag laden wir die Eltern der künftigen Hortkinder zu einem Schnuppertag ein, mit wichtigen Informationen zum Hortalltag und zur Einschulung. "
+      "Kurz nach der Einschulung gibt es einen Elternabend für die Eltern der neuen Erstklässler zum Schuleinstieg und zum ersten Lesen, Schreiben und Rechnen. "
+      "Im Laufe des Hortjahres folgen zwei Elternabende mit Einzelgesprächen über den schulischen Stand und die Freizeit Ihres Kindes im Hort.</p>"
+      + liste(["Gespräche zwischen Tür und Angel jederzeit, feste Sprechstunden nach Absprache",
+               "Auf Wunsch begleiten wir Sie zu Gesprächen mit der Lehrkraft in die Schule",
+               "Elternbeirat, jedes Jahr neu gewählt: Er vertritt alle Eltern, berät und wird in wichtige Entscheidungen einbezogen",
+               "Elternbriefe mit Terminen und Neuigkeiten, Handzettel zu Ausflügen",
+               "Feste und Feiern gestalten wir gemeinsam, Ihre Mithilfe ist dabei herzlich willkommen"]))
+  + "</div>"
+)
+
 hort = page_hero("Kinderhort", "Nach der Schule ankommen, Hausaufgaben mit Unterstützung erledigen und Freizeit selbst gestalten – von 6:45 bis 18:00 Uhr.",
                  "img/kreatviraum-5-1.jpg", "Für alle Schulformen",
-                 [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
+                 [("ueberblick", "Überblick"), ("paedagogik", "Pädagogik"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
                  alt="Kreativraum im Kinderhort")
 hort += kurz([
     ("clock", "6:45 – 18:00 Uhr", "geöffnet, auch in den Schulferien"),
@@ -1077,6 +1163,7 @@ hort += section("ueberblick", "Auf einen Blick", "Der Kinderhort", "", info_card
     ("clock", "Öffnungszeiten", "6:45 – 18:00 Uhr", "<p>Während der Schulzeit von 6:45 bis 8:00 Uhr und vom jeweiligen Unterrichtsende bis 18:00 Uhr. Während der Schulferien, in denen der Hort geöffnet ist, können die Kinder ganztags durchgängig von 6:45 bis 18:00 Uhr betreut werden. Eltern buchen die Zeiten, die sie für die Betreuung ihres Kindes benötigen.</p>"),
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
+hort += section("paedagogik", "Pädagogik", "So arbeiten wir im Hort", "Unser Ziel ist es, jedem Kind eine ganzheitliche Handlungs-, Leistungs- und Lernfähigkeit zu vermitteln. Bildung ist für uns nicht nur Förderung, sondern etwas ganz Alltägliches: Wie erfolgreich Kinder in der Schule lernen, hängt entscheidend davon ab, wie neugierig und motiviert sie sind und wie viel Spaß sie am Lernen haben.", PAED_HORT)
 hort += section("raeume", "Räumlichkeiten", "Räume für Hausaufgaben, Kreativität und Erholung", "", rooms([
     ("Kreativraum", "Freizeitbereich der Hortkinder, in dem eine Puppenecke, eine Bauecke, ein Piratenausguck, mehrere Spielteppiche, ein Billardtisch und ein Kreativbereich mit unterschiedlichsten Materialien zur Verfügung stehen.", "img/kreatviraum-4.jpg"),
     ("Hausaufgabenräume", "Nach Alter und Klassenstufen getrennt fertigt jedes Kind hier eigenständig seine Hausaufgaben an. Jedes Kind erhält die Hilfe und Unterstützung, die es für seine Aufgaben benötigt. Hier werden die Hausaufgaben jedes Kindes von den Erziehern korrigiert und auf Vollständigkeit überprüft.", "img/img_1222.jpg"),
@@ -1096,12 +1183,13 @@ hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts",
     "Montag bis Donnerstag",
     ("13:45 – 14:00 Uhr", "Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern."),
     ("14:00 – 15:30 Uhr", "In dieser Zeit erledigt jedes Kind seine Hausaufgaben in seiner Hausaufgabengruppe. Ab 15:00 Uhr dürfen die Kinder, die bereits fertig sind, schon zum Spielen gehen."),
-    ("15:00 – 16:00 Uhr", "Freizeit für alle Hortkinder. Die Kinder können sich entscheiden, wo und mit wem sie spielen. Ab 15:30 Uhr findet ein angekündigtes Angebot statt, an dem sich die Kinder freiwillig beteiligen können."),
+    ("15:30 – 16:30 Uhr", "Freispiel und Angebotszeit: Alle Bereiche stehen den Kindern offen. Zusätzlich gibt es jeden Tag ein anderes Angebot, z. B. Werken, Häkeln oder Bewegungsspiele, an dem die Kinder freiwillig teilnehmen können."),
+    ("16:30 – 17:00 Uhr", "Streberclub: spielerische Lerngruppe für interessierte Hortkinder, z. B. Knobelspiele, Mathe-Rätsel, Lesetraining oder Geschichtenwerkstatt."),
     "Freitags",
-    ("14:00 Uhr", "In der wöchentlichen Kinderkonferenz besprechen die Kinder wichtige Informationen und aktuelle Themen, wie z. B. Freitagsausflüge. Ferienpläne werden von den Kindern abgestimmt."),
-    ("14:30 – 16:30 Uhr", "Immer freitags findet ein Ausflug im Stadtgebiet von Würzburg statt. Die Teilnahme am Ausflug ist für die Kinder freiwillig. Freitags findet keine Hausaufgabenbetreuung im Hort statt."),
+    ("14:00 – 14:15 Uhr", "In der Kinderkonferenz treffen sich alle Hortkinder und Erzieher: Lob für die Woche, wichtige Informationen und gemeinsame Entscheidungen, z. B. über den Ferienplan oder das „feine Mittagessen“."),
+    ("14:30 – 16:30 Uhr", "Freitagsausflug und Freispielzeit: Je nach Interessen, Jahreszeit oder Gruppenthema geht es in die Stadt, in die Natur, zu Veranstaltungen, zum Spielen oder zum Sport. Die Teilnahme ist freiwillig, wer nicht mitkommt, wird im Hort betreut. Freitags gibt es keine Hausaufgaben."),
     "Täglich",
-    ("16:30 – 18:00 Uhr", "Je nach gebuchter Zeit können die Kinder bis 18:00 Uhr im Hort bleiben."),
+    ("17:00 – 18:00 Uhr", "Die allgemeine Hortzeit endet um 17:00 Uhr. Kinder, deren Eltern mehr Zeit gebucht haben, besuchen bis 18:00 Uhr den Spätdienst."),
 ]), cls="alt")
 hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …", "", f'''
 <div class="split split-top">
@@ -1131,6 +1219,8 @@ hort += section("schulen", "Zusammenarbeit mit den Schulen", "Gemeinsam mit den 
   <figure class="reveal"><a href="img/zusammenarbeit.jpg" data-full="img/zusammenarbeit.jpg" data-group="schule" data-title="Zusammenarbeit mit den Schulen" data-text="Besuch des Hortes auf dem Adventszauber der Josefschule">{img("img/zusammenarbeit.jpg", "Besuch des Hortes auf dem Adventszauber der Josefschule")}</a>
   <figcaption>Besuch des Hortes auf dem Adventszauber der Josefschule</figcaption></figure>
   <div class="reveal"><p>Wir pflegen eine enge Zusammenarbeit mit den Schulen unserer Hortkinder – zum Beispiel beim Besuch des Hortes auf dem Adventszauber der Josefschule.</p>
+  <p>In den ersten sechs Wochen des Schuljahres holt die zuständige Erzieherin die Erstklässler täglich direkt vor dem Klassenzimmer ab. So sind in der Anfangszeit jeden Tag kurze Absprachen mit der Lehrkraft möglich.</p>
+  <p>Danach besuchen unsere Fachkräfte zweimal im Jahr die Lehrersprechstunden und sprechen über jedes Hortkind: Wie können wir es noch besser fördern und begleiten? Bei Bedarf tauschen wir uns jederzeit mit den Lehrkräften aus oder begleiten Sie in die Sprechstunde.</p>
   <p>Wir sind offen für alle Schulformen: Grundschulen, Mittelschulen, Realschulen, Gymnasien sowie Förderschulen.</p></div>
 </div>''', cls="alt")
 hort += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kinderhort", "", faq([

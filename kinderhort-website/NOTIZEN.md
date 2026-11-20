@@ -567,3 +567,12 @@ Entscheidung offen.
 - Rosé Hauptknöpfe mit feinem Petrol-Rand (auf Salbei sonst fast gleich hell). Einleitungstexte unter Abschnittsüberschriften in Vordergrundfarbe (Petrol, 6,5 : 1). Fehlerseite ebenso.
 - Suchfelder (Fragen-Suche, Frage-Feld Kontakt) mit sichtbarer Beschriftung. Vorschlags-Knöpfe auf Kontakt mit Rand statt weiß.
 - Impressum, Datenschutz, 404 mit Taste Skill geprüft: nur Hausregeln, außer dem 404-Text.
+
+## Kinderhort: Pädagogik-Inhalte eingebaut (21.11.2026)
+- Quelle: Text vom Hort (bisher auf der Seite der Josef-Grundschule), leicht bearbeitet, keine Bilder übernommen.
+- Neuer Abschnitt „Pädagogik – So arbeiten wir im Hort“ (12 Lernbereiche + 8 aufklappbare Themen), in der Leiste „Auf dieser Seite“.
+- Tagesablauf: Mo–Do 15:30–16:30 Freispiel/Angebot, 16:30–17:00 Streberclub; Hortzeit endet 17:00, Spätdienst bis 18:00; Fr 14:00–14:15 Kinderkonferenz, 14:30–16:30 Ausflug.
+- Zusammenarbeit mit Schulen: Erstklässler-Abholung (6 Wochen), Lehrersprechstunden 2× jährlich.
+- Bestätigt vom Hort: Streberclub gibt es, Ferienfreizeit Österreich, zwei Köchinnen.
+- Fotos: Hortgebäude (img/hortgebaeude.jpg, Galerie-Pfeil abgeschnitten) als 1. Foto der Collage; Berghütte (img/berghuette.jpg, rechter Ausschnitt ohne Personen) im Ferien-Thema. Bildrechte Gebäudefoto bitte klären.
+- Sticker „3 Bereiche unter einem Dach“ wieder mit Text in der Mitte der Collage.
