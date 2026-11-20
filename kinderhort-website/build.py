@@ -1119,7 +1119,7 @@ PAED_HORT = (
       + "<p><strong>Ferienfreizeit in Österreich:</strong> Ein Höhepunkt im Hortjahr ist die einwöchige Ferienfreizeit am Ende der Sommerferien. "
       "Für viele Kinder ist es die erste Reise ohne Eltern. Am Fuße des Wilden Kaisers steht unsere Berghütte. Von dort aus wandern wir in den Bergen, erkunden das Landleben und kochen jeden Abend selbst. "
       "Zur Hütte gehören ein Hüttenhund, zwei Esel und sogar ein kleiner Swimmingpool.</p>"
-      + '<figure class="paed-bild">' + img("img/berghuette.jpg", "Unsere Berghütte am Wilden Kaiser mit Blumenbalkonen", sizes="320px") + "</figure>")
+      + '<figure class="paed-bild">' + img("img/berghuette.jpg", "Unsere Berghütte in Österreich: Holzhaus mit Blumenbalkonen und Sitzbänken auf der Wiese", sizes="(max-width: 520px) 90vw, 460px") + "</figure>")
   + paed_item("Mittagessen aus der eigenen Küche",
       "<p>Als eine der wenigen Kitas in Bayern haben wir eine hauseigene Küche: Zwei Köchinnen kochen täglich frisch und kindgerecht, überwiegend mit regionalen Lebensmitteln. "
       "Was morgens gekocht wird, steht mittags auf dem Tisch. Die Kinder essen in gemütlicher Runde im Bistro.</p>"

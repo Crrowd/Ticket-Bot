@@ -581,3 +581,6 @@ Entscheidung offen.
 - Leiste auf allen Bereichsseiten mittig statt linksbündig.
 - Kinderhort (10 Punkte): etwas enger gesetzt, damit „Schließtage“ ab 1180 px Breite wieder ganz sichtbar ist. „Zusammenarbeit mit Schulen“ bleibt ausgeschrieben.
 - Schmaler als 1180 px (Tablet, Handy) lässt sich die Hort-Leiste wie bisher seitlich wischen.
+
+## Foto Ferienfreizeit Österreich (21.11.2026)
+- Neues Foto der Berghütte (von der Leitung geschickt) unter „Ferien und Ferienfreizeit“. Links zugeschnitten, damit keine Personen zu sehen sind. Etwas größer angezeigt (bis 460 px).

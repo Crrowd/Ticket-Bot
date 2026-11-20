@@ -2371,7 +2371,7 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .paed-liste { margin: 0 0 14px; padding-left: 1.2em; display: grid; gap: 6px; }
 .paed-liste li { line-height: 1.5; }
 .paed-item > div > p { max-width: 70ch; }
-.paed-bild { margin: 4px 0 8px; max-width: 320px; border-radius: 14px; overflow: hidden; }
+.paed-bild { margin: 4px 0 8px; max-width: 460px; border-radius: 14px; overflow: hidden; }
 .paed-bild img { display: block; width: 100%; height: auto; }
 .paed-zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 8px; }
 @media (max-width: 700px) { .paed-zwei { grid-template-columns: minmax(0, 1fr); } }
