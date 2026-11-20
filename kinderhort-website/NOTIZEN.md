@@ -547,7 +547,7 @@ Entscheidung offen.
 ## Design-Review mit Taste Skill umgesetzt (20.11.2026)
 - „Kontakt“ in der Kopfleiste/im Handy-Menü mit Rand statt gefüllt (gefüllt nur die Hauptaktion).
 - Foto-Karten „Weißer Raum“/„Hauseigene Küche“ verlinken auf das Foto statt auf „#“ (Bildansicht öffnet weiter per Skript).
-- Begrüßung oben bündig. „Jetzt geöffnet“-Karte #1F4A52, Text #EAF3F1 (8,6 : 1).
+- Begrüßung oben bündig. „Jetzt geöffnet“-Karte: Farbe unverändert (neues Dunkeltürkis zurückgenommen, passte nicht zur Palette), Text in Papierweiß (5,9 : 1).
 - Zwischenüberschriften (Foto-Karten, Bereichskarten, Wochenleiste) einheitlich 1,25rem.
 - Fokus-Ring ohne Einblenden. Jahreszeiten-Teilchen im Startbereich entfernt.
 - Offen zur Entscheidung: Text auf Fotos (1), Startbereich-Collage (2).
