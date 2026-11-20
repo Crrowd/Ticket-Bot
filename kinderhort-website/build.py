@@ -1113,7 +1113,7 @@ PAED_HORT = (
                "Tägliche Aktionen, z. B. Schwimmbad, Eisbahn, Zoo, Kegeln, Kinderkino oder Fußballturnier",
                "Gemeinsames Frühstück und Mittagessen"])
       + "<p><strong>Ferienfreizeit in Österreich:</strong> Ein Höhepunkt im Hortjahr ist die einwöchige Ferienfreizeit am Ende der Sommerferien. "
-      "Für viele Kinder ist es die erste Reise ohne Eltern. Am Fuße des Wilden Kaisers steht unsere Berghütte. Von dort aus wandern wir in den Bergen, erkunden das Landleben und kochen jeden Abend selbst. "
+      "Für viele Kinder ist es die erste Reise ohne Eltern. Wir wohnen in einer Berghütte in Österreich. Von dort aus wandern wir in den Bergen, erkunden das Landleben und kochen jeden Abend selbst. "
       "Zur Hütte gehören ein Hüttenhund, zwei Esel und sogar ein kleiner Swimmingpool.</p>"
       + '<figure class="paed-bild">' + img("img/berghuette.jpg", "Unsere Berghütte in Österreich: Holzhaus mit Blumenbalkonen, Sitzbänken und großer Wiese", sizes="(max-width: 520px) 90vw, 460px") + "</figure>")
   + paed_item("Mittagessen aus der eigenen Küche",
@@ -1179,7 +1179,7 @@ hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts",
     "Montag bis Donnerstag",
     ("13:45 – 14:00 Uhr", "Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern."),
     ("14:00 – 15:30 Uhr", "In dieser Zeit erledigt jedes Kind seine Hausaufgaben in seiner Hausaufgabengruppe. Ab 15:00 Uhr dürfen die Kinder, die bereits fertig sind, schon zum Spielen gehen."),
-    ("15:30 – 17:00 Uhr", "Freispiel und Angebotszeit: Alle Bereiche stehen den Kindern offen. Zusätzlich gibt es jeden Tag ein anderes Angebot, z. B. Werken, Häkeln oder Bewegungsspiele, an dem die Kinder freiwillig teilnehmen können."),
+    ("15:30 – 16:30 Uhr", "Freispiel und Angebotszeit: Alle Bereiche stehen den Kindern offen. Zusätzlich gibt es jeden Tag ein anderes Angebot, z. B. Werken, Häkeln oder Bewegungsspiele, an dem die Kinder freiwillig teilnehmen können."),
     "Freitags",
     ("14:00 – 14:15 Uhr", "In der Kinderkonferenz treffen sich alle Hortkinder und Erzieher: Lob für die Woche, wichtige Informationen und gemeinsame Entscheidungen, z. B. über den Ferienplan oder das „feine Mittagessen“."),
     ("14:30 – 16:30 Uhr", "Freitagsausflug und Freispielzeit: Je nach Interessen, Jahreszeit oder Gruppenthema geht es in die Stadt, in die Natur, zu Veranstaltungen, zum Spielen oder zum Sport. Die Teilnahme ist freiwillig, wer nicht mitkommt, wird im Hort betreut. Freitags gibt es keine Hausaufgaben."),
