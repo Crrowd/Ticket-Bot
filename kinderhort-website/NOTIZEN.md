@@ -574,5 +574,5 @@ Entscheidung offen.
 - Tagesablauf: Mo–Do 15:30–16:30 Freispiel/Angebot, 16:30–17:00 Streberclub; Hortzeit endet 17:00, Spätdienst bis 18:00; Fr 14:00–14:15 Kinderkonferenz, 14:30–16:30 Ausflug.
 - Zusammenarbeit mit Schulen: Erstklässler-Abholung (6 Wochen), Lehrersprechstunden 2× jährlich.
 - Bestätigt vom Hort: Streberclub gibt es, Ferienfreizeit Österreich, zwei Köchinnen.
-- Fotos: Hortgebäude (img/hortgebaeude.jpg, Galerie-Pfeil abgeschnitten) als 1. Foto der Collage; Berghütte (img/berghuette.jpg, rechter Ausschnitt ohne Personen) im Ferien-Thema. Bildrechte Gebäudefoto bitte klären.
+- Fotos: Hortgebäude (img/hortgebaeude.jpg, Galerie-Pfeil abgeschnitten) als 1. Foto der Collage; Berghütte (img/berghuette.jpg, rechter Ausschnitt ohne Personen) im Ferien-Thema. Gebäudefoto ist vom Hort selbst gemacht (Bildrechte geklärt).
 - Sticker „3 Bereiche unter einem Dach“ wieder mit Text in der Mitte der Collage.
