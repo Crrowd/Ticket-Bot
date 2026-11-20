@@ -470,7 +470,7 @@ def info_cards(cards):
     out = []
     for ic, title, big, text in cards:
         b = f'<span class="big">{big}</span>' if big else ""
-        out.append(f'<div class="info-card reveal"><div class="icon">{icon(ic, 28)}</div><h3>{title}</h3>{b}{text}</div>')
+        out.append(f'<div class="info-card reveal"><div class="icon">{icon(ic, 28)}</div><p class="ic-t">{title}</p>{b}{text}</div>')
     return '<div class="info-grid">' + "".join(out) + "</div>"
 
 def rooms(items):
@@ -543,7 +543,7 @@ def kurz(items):
     """Kasten „Das Wichtigste in Kürze“ oben auf den Bereichsseiten (Symbole statt Emojis)."""
     li = "".join(f'<li><span class="kurz-ic">{icon(ic, 20)}</span><span><b>{b}</b> {t}</span></li>' for i, (ic, b, t) in enumerate(items))
     return f'''<section class="section kurz-sec">
-  <div class="container"><div class="kurz reveal"><h2 class="kurz-t">Das Wichtigste in Kürze</h2><ul>{li}</ul></div></div>
+  <div class="container"><div class="kurz reveal"><p class="kurz-t">Das Wichtigste in Kürze</p><ul>{li}</ul></div></div>
 </section>'''
 
 def section(id_, kicker, title, intro, content, cls="", center=False):

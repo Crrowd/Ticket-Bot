@@ -2320,3 +2320,31 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 @media (max-width: 700px) { .to-top { width: 44px; height: 44px; } }
 .to-top { transition-property: opacity, scale, translate, bottom, background-color; }
 .to-top.ueber { background: rgb(var(--ink-rgb) / .5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+
+/* ===== Unterseiten-Prüfung mit Taste Skill (20.11.2026) ===== */
+/* 1 A Titelbild der Unterseiten: kräftigerer Verlauf, damit der Text überall lesbar ist */
+.page-hero-card::after { background: linear-gradient(180deg, rgb(var(--deep-rgb) / 0) 10%, rgb(var(--deep-rgb) / .7) 45%, rgb(var(--deep-rgb) / .94) 100%); }
+@supports (background: linear-gradient(in oklab, red, blue)) {
+  .page-hero-card::after { background: linear-gradient(in oklab 180deg, oklch(26% .03 215 / 0) 10%, oklch(26% .03 215 / .7) 45%, oklch(26% .03 215 / .94) 100%); }
+}
+@media (max-width: 700px) {
+  .page-hero-card::after { background: linear-gradient(180deg, rgb(var(--deep-rgb) / .15) 0%, rgb(var(--deep-rgb) / .7) 35%, rgb(var(--deep-rgb) / .95) 100%); }
+  @supports (background: linear-gradient(in oklab, red, blue)) {
+    .page-hero-card::after { background: linear-gradient(in oklab 180deg, oklch(26% .03 215 / .15) 0%, oklch(26% .03 215 / .7) 35%, oklch(26% .03 215 / .95) 100%); }
+  }
+}
+/* 2 Bildtext im Rundgang auf ruhiger Petrol-Fläche */
+@media (hover: hover) and (pointer: fine) {
+  .tour-item figcaption, .tour-item:hover figcaption { padding-top: 14px; background: rgb(var(--ink-rgb) / .92); }
+}
+/* 3 Türkis-Karten: Text in Papierweiß (Farbe der Karte bleibt) */
+.info-card p, .info-card .ic-t, .note-card p { color: var(--on-surface); }
+/* 4 Knopf-System: „Zum Downloadbereich“ im rosé Band mit Rand statt dunkel gefüllt */
+.cta-band .btn-accent { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .55); }
+@media (hover: hover) and (pointer: fine) { .cta-band .btn-accent:hover { background: rgb(var(--ink-rgb) / .08); } }
+/* 6 Geöffnete Seite im Menü in Rosé statt sehr hellem Rosé (Computer) */
+@media (min-width: 1181px) { .main-nav > ul > li > a[aria-current="page"], .drop-toggle.current { background: var(--rose); } }
+/* 7 „Alle Termine“ im Hinweisband am Handy über die volle Breite */
+@media (max-width: 700px) { .announce-inner > a { grid-column: 1 / -1; justify-self: stretch; justify-content: center; min-height: 44px; } }
+/* 8 Karten-Beschriftung (vorher h3) */
+.info-card .ic-t { margin: 0 0 6px; font: 600 .84rem/1.4 var(--font-body); letter-spacing: .01em; font-kerning: none; }

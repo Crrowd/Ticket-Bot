@@ -556,3 +556,11 @@ Entscheidung offen.
 - „Ein Haus für jedes Alter“ linksbündig; „Alle Termine“ im Band als Rand-Knopf (Handy: eigene Zeile); Textlinks halbfett mit feiner Linie; Fußzeilen-Links am Handy 44 px; Schließtage-Knöpfe über dem Jahresband.
 - Nach-oben-Knopf: am Handy 44 px, halbdurchsichtig solange er über Text liegt.
 - Korrektur: „Kontakt“ in der Kopfleiste auf der Kontakt-Seite war nach der Rand-Umstellung fast unlesbar (1,74 : 1), jetzt 6,5 : 1.
+
+## Unterseiten-Prüfung umgesetzt (20.11.2026)
+- Titelbild der Unterseiten: kräftigerer Verlauf (Variante A).
+- Rundgang-Bildtext auf Petrol-Fläche. Türkis-Karten (Info/Hinweis) Text in Papierweiß.
+- „Zum Downloadbereich“ im rosé Band mit Rand. Geöffnete Seite im Menü (Computer) in Rosé.
+- Tagesablauf: Linie steht fest (kein Zeichnen beim Scrollen mehr).
+- „Alle Termine“ im Hinweisband am Handy über die volle Breite.
+- „Das Wichtigste in Kürze“ und Karten-Titel (Zielgruppe …) als Beschriftung statt Überschrift ausgezeichnet.

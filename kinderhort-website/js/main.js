@@ -1739,23 +1739,7 @@
     show(0);
   })();
 
-  /* ---------- Weg durch den Tag: der Tagesablauf zeichnet sich beim Scrollen ---------- */
-  (function () {
-    var tls = $$(".timeline"); if (!tls.length || reduced) return;
-    tls.forEach(function (t) { t.classList.add("tl-draw"); });
-    var ticking = false;
-    function upd() {
-      ticking = false; var mid = innerHeight * .6;
-      tls.forEach(function (t) {
-        var r = t.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) return;
-        var p = Math.max(0, Math.min(1, (mid - r.top - 14) / Math.max(1, r.height - 28)));
-        t.style.setProperty("--tl", p.toFixed(3));
-        $$("li", t).forEach(function (li) { var lr = li.getBoundingClientRect(); li.classList.toggle("on", lr.top + 24 <= mid); });
-      });
-    }
-    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-    addEventListener("resize", upd); upd();
-  })();
+  /* Tagesablauf zeichnet sich beim Scrollen: entfernt (Unterseiten-Prüfung 20.11.2026) – die Linie steht fest */
 
   /* ---------- Gleitender Fokus-Rahmen für die Tastatur ---------- */
   (function () {
