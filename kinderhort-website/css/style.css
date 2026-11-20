@@ -2348,3 +2348,17 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 @media (max-width: 700px) { .announce-inner > a { grid-column: 1 / -1; justify-self: stretch; justify-content: center; min-height: 44px; } }
 /* 8 Karten-Beschriftung (vorher h3) */
 .info-card .ic-t { margin: 0 0 6px; font: 600 .84rem/1.4 var(--font-body); letter-spacing: .01em; font-kerning: none; }
+
+/* ===== Kleinere Punkte der Unterseiten (20.11.2026) ===== */
+/* 1 Rosé Hauptknöpfe mit feinem Petrol-Rand: auf Salbei sonst fast gleich hell (1,02 : 1) */
+.btn-primary { box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .45), 0 10px 20px -12px rgb(var(--deep-rgb) / .55); }
+.cta-band .btn-primary { box-shadow: none; }
+/* 2 Einleitungstext unter Abschnittsüberschriften in Petrol statt Grau */
+.section-head p { color: var(--fg, var(--ink)); }
+/* 3 Sichtbare Beschriftung der Suchfelder */
+.feld-label { display: block; margin: 0 0 8px 4px; font: 600 .9rem/1.3 var(--font-body); color: var(--ink); }
+/* 5 Vorschlags-Knöpfe auf der Kontakt-Seite mit Rand statt weiß gefüllt (wie alle Nebenaktionen) */
+.sugg button { background: transparent; border-color: rgb(var(--ink-rgb) / .55); }
+@media (hover: hover) and (pointer: fine) { .sugg button:hover { background: rgb(var(--ink-rgb) / .08); } }
+/* 6 Fehlerseite: Text unter der Überschrift in Petrol wie die Einleitungstexte */
+.e404-card p { color: var(--ink); }

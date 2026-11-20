@@ -564,3 +564,6 @@ Entscheidung offen.
 - Tagesablauf: Linie steht fest (kein Zeichnen beim Scrollen mehr).
 - „Alle Termine“ im Hinweisband am Handy über die volle Breite.
 - „Das Wichtigste in Kürze“ und Karten-Titel (Zielgruppe …) als Beschriftung statt Überschrift ausgezeichnet.
+- Rosé Hauptknöpfe mit feinem Petrol-Rand (auf Salbei sonst fast gleich hell). Einleitungstexte unter Abschnittsüberschriften in Vordergrundfarbe (Petrol, 6,5 : 1). Fehlerseite ebenso.
+- Suchfelder (Fragen-Suche, Frage-Feld Kontakt) mit sichtbarer Beschriftung. Vorschlags-Knöpfe auf Kontakt mit Rand statt weiß.
+- Impressum, Datenschutz, 404 mit Taste Skill geprüft: nur Hausregeln, außer dem 404-Text.

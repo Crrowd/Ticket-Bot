@@ -533,7 +533,7 @@ def faq(items):
     out = []
     for q, a in items:
         out.append(f'<details class="reveal"><summary>{q}</summary><div><p>{a}</p></div></details>')
-    search = ('<div class="faq-search reveal"><label class="visually-hidden" for="faq-suche">Fragen durchsuchen</label>'
+    search = ('<label class="feld-label reveal" for="faq-suche">Fragen durchsuchen</label><div class="faq-search reveal">'
               f'{icon("search", 20)}<input type="search" id="faq-suche" name="frage" placeholder="Frage suchen, z. B. Brotzeit, Ferien, Windeln …" autocomplete="off" enterkeyhint="search">'
               '<span class="faq-count" aria-live="polite"></span></div>'
               '<p class="faq-empty muted" hidden>Keine passende Frage gefunden. Rufen Sie uns gern an: 0931 2789892 0.</p>')
@@ -1309,7 +1309,7 @@ kon += f'''<section class="section tight" id="schnell">
 kon += section("frag", "Schnelle Antwort", "Fragen Sie einfach", "Tippen Sie Ihre Frage ein – die Antwort kommt aus unseren häufigen Fragen. Findet sich nichts, rufen Sie uns gern an.", f'''
 <div class="ask reveal">
   <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
-  <form class="ask-form"><label class="visually-hidden" for="ask-in">Ihre Frage</label><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
+  <label class="feld-label" for="ask-in">Ihre Frage</label><form class="ask-form"><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
 </div>''', cls="tight alt")
 kon += f'''<section class="section">
   <div class="container contact-grid">
