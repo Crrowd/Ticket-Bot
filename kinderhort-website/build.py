@@ -1101,10 +1101,6 @@ PAED_HORT = (
                "Montag bis Donnerstag bietet jeden Tag eine Erzieherin oder ein Erzieher ein anderes Angebot an, z. B. Fußballspiel, Kuchen backen, Yoga oder Malen auf Leinwand. Die Teilnahme ist freiwillig.",
                "Freitag ist Freizeittag ohne Hausaufgaben, mit einem Ausflug, z. B. in die Bücherei, zur Schnitzeljagd oder auf den Abenteuerspielplatz.",
                "Einmal im Jahr gibt es ein größeres Projekt, dessen Thema die Kinder selbst wählen, außerdem längere Projekte in Kleingruppen, z. B. Foto, Theater oder Entspannung."]))
-  + paed_item("Streberclub",
-      "<p>Von Montag bis Donnerstag findet von 16:30 bis 17:00 Uhr der Streberclub statt. Jedes Hortkind kann ihn mit seiner eigenen Mitgliedskarte besuchen. "
-      "Hier begleiten wir das Lernen zusätzlich und spielerisch, zum Beispiel mit:</p>"
-      + liste(["Knobelspielen", "Internetrecherche", "Mathematik-Tricks und -Rätseln", "Lesetraining", "Sprachspielen", "der Geschichtenwerkstatt"]))
   + paed_item("Kinderkonferenz und Mitbestimmung",
       "<p>Jeden Freitag treffen sich alle Hortkinder und Erzieher im Turnraum zur Kinderkonferenz. Sie beginnt immer mit der „Lobhudelei“: "
       "Besondere Leistungen einzelner oder mehrerer Kinder aus der Woche werden vor allen gelobt. Danach werden aktuelle Themen besprochen, Informationen weitergegeben und die Ausflüge für den Nachmittag vorgestellt. "
@@ -1183,8 +1179,7 @@ hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts",
     "Montag bis Donnerstag",
     ("13:45 – 14:00 Uhr", "Für jede Hausaufgabengruppe findet in dieser Zeit ein Spiel- und Gesprächskreis statt. Jedes Kind darf in diesem Kreis auch seinen eigenen Geburtstag feiern."),
     ("14:00 – 15:30 Uhr", "In dieser Zeit erledigt jedes Kind seine Hausaufgaben in seiner Hausaufgabengruppe. Ab 15:00 Uhr dürfen die Kinder, die bereits fertig sind, schon zum Spielen gehen."),
-    ("15:30 – 16:30 Uhr", "Freispiel und Angebotszeit: Alle Bereiche stehen den Kindern offen. Zusätzlich gibt es jeden Tag ein anderes Angebot, z. B. Werken, Häkeln oder Bewegungsspiele, an dem die Kinder freiwillig teilnehmen können."),
-    ("16:30 – 17:00 Uhr", "Streberclub: spielerische Lerngruppe für interessierte Hortkinder, z. B. Knobelspiele, Mathe-Rätsel, Lesetraining oder Geschichtenwerkstatt."),
+    ("15:30 – 17:00 Uhr", "Freispiel und Angebotszeit: Alle Bereiche stehen den Kindern offen. Zusätzlich gibt es jeden Tag ein anderes Angebot, z. B. Werken, Häkeln oder Bewegungsspiele, an dem die Kinder freiwillig teilnehmen können."),
     "Freitags",
     ("14:00 – 14:15 Uhr", "In der Kinderkonferenz treffen sich alle Hortkinder und Erzieher: Lob für die Woche, wichtige Informationen und gemeinsame Entscheidungen, z. B. über den Ferienplan oder das „feine Mittagessen“."),
     ("14:30 – 16:30 Uhr", "Freitagsausflug und Freispielzeit: Je nach Interessen, Jahreszeit oder Gruppenthema geht es in die Stadt, in die Natur, zu Veranstaltungen, zum Spielen oder zum Sport. Die Teilnahme ist freiwillig, wer nicht mitkommt, wird im Hort betreut. Freitags gibt es keine Hausaufgaben."),

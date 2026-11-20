@@ -571,9 +571,9 @@ Entscheidung offen.
 ## Kinderhort: Pädagogik-Inhalte eingebaut (21.11.2026)
 - Quelle: Text vom Hort (bisher auf der Seite der Josef-Grundschule), leicht bearbeitet, keine Bilder übernommen.
 - Neuer Abschnitt „Pädagogik – So arbeiten wir im Hort“ (12 Lernbereiche + 8 aufklappbare Themen), in der Leiste „Auf dieser Seite“.
-- Tagesablauf: Mo–Do 15:30–16:30 Freispiel/Angebot, 16:30–17:00 Streberclub; Hortzeit endet 17:00, Spätdienst bis 18:00; Fr 14:00–14:15 Kinderkonferenz, 14:30–16:30 Ausflug.
+- Tagesablauf: Mo–Do 15:30–17:00 Freispiel/Angebot; Hortzeit endet 17:00, Spätdienst bis 18:00; Fr 14:00–14:15 Kinderkonferenz, 14:30–16:30 Ausflug.
 - Zusammenarbeit mit Schulen: Erstklässler-Abholung (6 Wochen), Lehrersprechstunden 2× jährlich.
-- Bestätigt vom Hort: Streberclub gibt es, Ferienfreizeit Österreich, zwei Köchinnen.
+- Bestätigt vom Hort: Ferienfreizeit Österreich, zwei Köchinnen.
 - Fotos: Hortgebäude (img/hortgebaeude.jpg, Galerie-Pfeil abgeschnitten) als 1. Foto der Collage; Berghütte (img/berghuette.jpg, rechter Ausschnitt ohne Personen) im Ferien-Thema. Gebäudefoto ist vom Hort selbst gemacht (Bildrechte geklärt).
 - Sticker „3 Bereiche unter einem Dach“ wieder mit Text in der Mitte der Collage.
 
@@ -584,3 +584,6 @@ Entscheidung offen.
 
 ## Foto Ferienfreizeit Österreich (21.11.2026)
 - Neues Foto der Berghütte (von der Leitung geschickt) unter „Ferien und Ferienfreizeit“. Ganzes Foto, ohne Zuschnitt. Etwas größer angezeigt (bis 460 px).
+
+## Streberclub entfernt (21.11.2026)
+- Den Streberclub gibt es nicht mehr: Abschnitt unter „Pädagogik“ und Eintrag im Tagesablauf entfernt. Freispiel- und Angebotszeit Mo–Do jetzt 15:30–17:00 Uhr.
