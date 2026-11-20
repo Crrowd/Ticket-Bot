@@ -1,0 +1,5 @@
+
+# Lokal installierte Skills (npx skills add), nicht Teil der Webseite
+.agents/
+skills-lock.json
+.claude/skills/design-taste-frontend
