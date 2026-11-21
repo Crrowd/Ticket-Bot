@@ -1,0 +1,24 @@
+/* ===== Vorschau „Verbesserungen“ (21.11.2026) ===== */
+
+/* 1 Kurzer Weg zur Krankmeldung im Startbereich */
+.hero-krank { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; min-height: 44px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: rgb(var(--ink-rgb) / .35); text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
+.hero-krank:hover { text-decoration-color: var(--ink); }
+.hero-krank span[aria-hidden] { transition: translate .25s var(--ease-out); }
+.hero-krank:hover span[aria-hidden] { translate: 4px 0; }
+
+/* 2 Status-Karte und Krankmeldung im gleichen Stil (hell wie die Krankmeldung), gleich hoch */
+.heute { align-items: stretch; }
+.heute .status-card { --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14); background: var(--paper); color: var(--ink); }
+.heute .status-card :is(.status-sub, p) { color: var(--ink-soft); }
+.heute .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
+.heute .status-card .status-q button:hover { background: rgb(var(--ink-rgb) / .07); }
+.heute .status-card :focus-visible { outline-color: var(--ink); }
+.heute .krank.in-hero { display: flex; flex-direction: column; }
+.heute .krank.in-hero > summary { flex: 1; align-items: center; }
+.heute .krank.in-hero[open] > summary { flex: none; }
+
+/* 6 Kinderhort-Leiste „Auf dieser Seite“ auf Tablets zweizeilig statt seitlich wischen */
+@media (min-width: 700px) and (max-width: 1179px) {
+  .subnav ul:has(> li:nth-child(10)) { flex-wrap: wrap; justify-content: center; overflow: visible; width: auto; }
+}
+.heute:has(.krank[open]) { align-items: start; }
