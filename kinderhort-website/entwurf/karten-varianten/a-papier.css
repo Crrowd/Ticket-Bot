@@ -1,0 +1,7 @@
+/* A Papier-Karten: helle Karten mit feinem Rand und weichem Schatten */
+html body :is(.info-card, .room, .tour-item, .note-card, .event, .area-card, .stat, .status-card, .quick-card, .teaser) { box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .1), 0 18px 40px -24px rgb(var(--deep-rgb) / .35); border-radius: 20px; }
+html body .teaser { background: var(--paper); padding: 10px; display: grid; grid-template-rows: auto 1fr; min-height: 0; }
+html body .teaser::after { display: none; }
+html body .teaser img, html body .teasers .teaser > img { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 10; border-radius: 14px; }
+html body .teaser div { padding: 16px 12px 10px; }
+html body .area-card .thumb { margin: 10px 10px 0; border-radius: 14px; }

@@ -1,0 +1,7 @@
+/* D Gemischt: Foto-Karten bleiben Türkis (wie heute), nur Text-Karten (Termine, Infos, Zahlen, Status) werden hell */
+html body .area-card { background: #2D6A6A; --fg: #F3FAF8; --fg-soft: #D5E7E4; color: var(--fg); }
+html body .area-card .more, html body .area-card .more svg { color: var(--rose); }
+html body .area-card .bar { display: block; }
+html body .teaser div { background: var(--ink); color: #F3FAF8; }
+html body .teaser p { color: #F3FAF8; }
+html body :is(.info-card, .note-card, .event, .stat, .status-card) { box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .1), 0 14px 32px -22px rgb(var(--deep-rgb) / .35); }

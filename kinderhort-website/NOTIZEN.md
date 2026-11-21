@@ -605,3 +605,4 @@ Entscheidung offen.
 - Hinweisband „Nächster Termin“ nur, wenn der Termin in höchstens 3 Tagen ist.
 - Kinderhort-Leiste „Auf dieser Seite“ zwischen 700 und 1180 px zweizeilig.
 - „Hort“-Schildchen in der Terminliste mit dunklerem Grund (Kontrast).
+- Punkt 5 (hellere Karten): vier Entwürfe in `entwurf/karten-varianten/` (A Papier, B Offen, C Rahmen, D Gemischt), Vergleich als Vorschau.

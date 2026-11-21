@@ -1,0 +1,18 @@
+/* Grundlage für helle Karten (aus „Design neu“): Papier statt Türkis, Petrol-Schrift, Texte und Knöpfe passend */
+html body :is(.info-card, .room, .tour-item, .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group,
+  .phone-card, .address-card, .area-card, .pill-list > div, .features li, .stat, .group-chip, .status-card, .quick-card) {
+  --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14);
+  background: var(--paper); color: var(--fg);
+}
+html body :is(.info-card, .room, .tour-item, .note-card, .event, .area-card, .stat, .status-card, .quick-card) :focus-visible { outline-color: var(--ink); }
+html body .status-card :is(.status-sub, p), html body .info-card p, html body .info-card .ic-t, html body .note-card p { color: var(--ink-soft); }
+html body .info-card .big { color: #2D6A6A; }
+html body .event .save { background: var(--ink); color: var(--paper); }
+html body .event .share { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .3); }
+html body .ev-bereich { background: var(--rose); color: var(--ink); }
+html body .teaser div { background: none; color: var(--ink); }
+html body .teaser p { color: var(--ink-soft); }
+html body .area-card .bar { display: none; }
+html body .area-card .more, html body .area-card .more svg { color: #2D6A6A; }
+html body .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
+html body .stat b { color: #2D6A6A; }

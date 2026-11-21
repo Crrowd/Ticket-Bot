@@ -1,0 +1,15 @@
+/* B Offen: keine Kästen. Fotos mit runden Ecken, Text direkt auf dem Grund, Linien als Trenner */
+html body :is(.areas .area-card, .stats .stat, .notes-grid .note-card, .teasers .teaser) { background: transparent; box-shadow: none; border-radius: 0; }
+html body .area-card .thumb { border-radius: 22px; overflow: hidden; }
+html body .area-card .body { padding: 20px 4px 0; }
+html body .area-card .more { padding-top: 14px; border-top: 1.5px solid var(--ink); }
+html body .stat { padding: 18px 0 0; border-top: 1.5px solid var(--ink); }
+html body .stat b { font-size: clamp(2.4rem, 1.8rem + 2vw, 3.2rem); font-weight: 500; }
+html body .teaser { display: grid; grid-template-rows: auto 1fr; min-height: 0; overflow: visible; }
+html body .teaser::after { display: none; }
+html body .teaser img, html body .teasers .teaser > img { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 10; border-radius: 22px; }
+html body .teaser div { padding: 16px 4px 0; }
+html body .event-list .event { background: transparent; box-shadow: none; border-radius: 0; border-bottom: 1.5px solid rgb(var(--ink-rgb) / .2); padding: 14px 0; }
+html body .event-list .event:first-child { border-top: 1.5px solid rgb(var(--ink-rgb) / .2); }
+html body .note-card { padding: 0 0 0 0; }
+html body .status-card, html body .info-card, html body .room { box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .12); }
