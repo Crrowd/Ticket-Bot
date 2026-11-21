@@ -1,0 +1,147 @@
+/* ===== Entwurf „Design neu“ (21.11.2026) =====
+   Gleicher Aufbau, gleiche Schrift (Plus Jakarta Sans), gleiche Farben:
+   Salbei #A8C5C0, Petrol #1E3B44, Rosé #D4B5B0, Türkis #2D6A6A, Papier #F3F8F7.
+   Wird nach css/style.css geladen und ändert nur das Aussehen:
+   - Abschnitte wechseln zwischen Salbei und Papier statt Salbei und hellerem Salbei
+   - Karten hell (Papier) mit Petrol-Schrift statt dunkles Türkis, feiner Rand statt schwerem Schatten
+   - mehr Luft, größere Überschriften, ruhigere Fotos ohne Schräglage, Linien statt Kästen */
+
+:root {
+  --bg: #A8C5C0;
+  --bg-alt: #F3F8F7;
+  --tuerkis: #2D6A6A;
+  --surface: #F3F8F7;
+  --r-lg: 22px;
+  --r: 18px;
+  --r-sm: 14px;
+  --hair: rgb(var(--ink-rgb) / .12);
+  --shadow: 0 1px 1px rgb(var(--deep-rgb) / .04), 0 2px 6px rgb(var(--deep-rgb) / .05), 0 18px 40px -24px rgb(var(--deep-rgb) / .28);
+  --shadow-lg: 0 1px 2px rgb(var(--deep-rgb) / .06), 0 24px 60px -28px rgb(var(--deep-rgb) / .4);
+  --step-2: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  --step-3: clamp(2.5rem, 1.6rem + 3.8vw, 4.4rem);
+}
+
+/* ---------- Flächen: hell statt dunkel ---------- */
+html body :is(.info-card, .room, .tour-item, .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group,
+  .phone-card, .address-card, .area-card, .pill-list > div, .features li, .stat, .group-chip, .status-card, .quick-card) {
+  --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: var(--hair);
+  background: var(--paper); color: var(--fg);
+  box-shadow: 0 0 0 1px var(--hair), var(--shadow);
+}
+html body :is(.info-card, .room, .tour-item, .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group, .phone-card,
+  .address-card, .area-card, .pill-list > div, .features li, .stat, .status-card, .quick-card) :focus-visible { outline-color: var(--ink); }
+/* auf Papier-Abschnitten heben sich Karten nur durch Rand und Schatten ab */
+html body .section.alt :is(.info-card, .room, .tour-item, .note-card, .event, .area-card, .stat, .quick-card, .dl-group) {
+  background: #fff0; box-shadow: 0 0 0 1px var(--hair);
+}
+
+/* ---------- Abschnitte ---------- */
+html body .section { padding: clamp(80px, 9vw, 128px) 0; }
+html body .section.tight { padding: clamp(56px, 6vw, 88px) 0; }
+html body .section.green { background: var(--rose-soft); }
+html body .section-head { margin-bottom: clamp(40px, 4.5vw, 64px); max-width: 760px; }
+html body .section-head::after, html body .section-head hr { display: none; }
+html body .section-head h2 { margin-bottom: .35em; }
+html body .section-head p { font-size: 1.15rem; line-height: 1.6; }
+html body h2 { font-weight: 600; letter-spacing: -.032em; line-height: 1.08; }
+html body h1 { letter-spacing: -.042em; line-height: 1.02; }
+
+/* Rosé-Etiketten bleiben, nur feiner */
+html body .kicker { background: var(--rose); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: .8rem; font-weight: 600; letter-spacing: .01em; box-shadow: none; margin-bottom: 20px; }
+html body .eyebrow { background: rgb(var(--paper-rgb) / .7); border-radius: 999px; padding: 6px 14px; box-shadow: 0 0 0 1px var(--hair); }
+
+/* ---------- Knöpfe: Petrol gefüllt, Rosé als Rand-Akzent ---------- */
+html body .btn { border-radius: 999px; font-weight: 600; letter-spacing: -.005em; }
+html body .btn-primary, html body .btn-accent { background: var(--ink); color: var(--paper); box-shadow: 0 1px 2px rgb(var(--deep-rgb) / .2), 0 10px 24px -14px rgb(var(--deep-rgb) / .6); }
+html body .btn-primary:hover, html body .btn-accent:hover { background: var(--tuerkis); }
+html body .btn-primary svg, html body .btn-accent svg { color: var(--rose); }
+html body .btn-ghost { border: 1.5px solid rgb(var(--ink-rgb) / .35); box-shadow: none; }
+html body .btn-ghost:hover { background: rgb(var(--paper-rgb) / .6); border-color: var(--ink); }
+
+/* ---------- Kopfleiste ---------- */
+html body .header-inner { background: rgb(var(--paper-rgb) / .86); box-shadow: 0 0 0 1px var(--hair), 0 12px 32px -20px rgb(var(--deep-rgb) / .45); }
+html body .main-nav a[aria-current="page"]:not(.nav-cta) { background: var(--rose); }
+
+/* ---------- Startbereich ---------- */
+html body .hero { padding: 56px 0 112px; }
+html body .hero h1 .hl { background-size: 100% .16em; background-position: 0 90%; }
+html body .hero .lead { font-weight: 400; color: var(--ink-soft); }
+html body .hero .lead .leitsatz { color: var(--ink); font-weight: 600; }
+/* Collage gerade und ruhig, mit schmalem Papier-Rand */
+html body .hero-collage :is(.c1, .c2, .c3, .c4) { rotate: 0deg; border: 0; border-radius: var(--r-lg); box-shadow: var(--shadow-lg); }
+html body .hero-collage figure { border: 0; }
+html body .hero-collage { gap: 16px; }
+html body .hero-badge { background: var(--paper); color: var(--ink); box-shadow: 0 0 0 6px rgb(var(--paper-rgb) / .5), var(--shadow-lg); }
+html body .hero-badge b { color: var(--tuerkis); }
+/* Status-Karte im Start: Papier, Türkis nur am Punkt */
+html body .status-card { border-radius: var(--r); }
+html body .status-card .status-q button { background: #fff0; color: var(--ink); box-shadow: inset 0 0 0 1px rgb(var(--ink-rgb) / .3); }
+html body .status-card .status-q button:hover { background: rgb(var(--ink-rgb) / .06); }
+html body .krank.in-hero { box-shadow: 0 0 0 1px var(--hair), var(--shadow); }
+
+/* Hinweis-Band unter dem Start: Türkis bleibt */
+html body .announce { background: var(--tuerkis); }
+
+/* ---------- Bereiche: offene Karten, großes Foto ---------- */
+html body .areas { gap: clamp(20px, 2.4vw, 32px); }
+html body .area-card { border-radius: var(--r-lg); background: var(--paper); }
+html body .section.alt .area-card { background: var(--paper); box-shadow: 0 0 0 1px var(--hair), var(--shadow); }
+html body .area-card .thumb { aspect-ratio: 5 / 4; margin: 10px 10px 0; border-radius: calc(var(--r-lg) - 8px); overflow: hidden; }
+html body .area-card .bar { display: none; }
+html body .area-card .age { border-radius: 999px; background: rgb(var(--paper-rgb) / .92); padding: 5px 12px; font-size: .8rem; }
+html body .area-card .body { padding: 22px 24px 26px; }
+html body .area-card h3 { font-size: 1.45rem; letter-spacing: -.02em; }
+html body .area-card .more { color: var(--tuerkis); }
+html body .area-card .more svg { color: var(--tuerkis); }
+@media (hover: hover) and (pointer: fine) { html body .area-card:hover { translate: 0 -4px; box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .2), var(--shadow-lg); } }
+
+/* ---------- Zahlen: ohne Kästen, mit Linie darüber ---------- */
+html body .stats { gap: clamp(20px, 3vw, 48px); margin-bottom: clamp(40px, 5vw, 64px); }
+html body .stats .stat, html body .stats.three .stat, html body .section.alt .stat { background: #fff0; box-shadow: none; border-radius: 0; padding: 20px 0 0; border-top: 1.5px solid var(--ink); }
+html body .stat b { color: var(--ink); font-size: clamp(2.4rem, 1.8rem + 2vw, 3.4rem); font-weight: 500; letter-spacing: -.04em; margin-bottom: 10px; }
+html body .stat span { font-size: 1.02rem; }
+
+/* ---------- Fotos mit Text: Text unter dem Bild statt auf dunklem Verlauf ---------- */
+html body .teaser { background: var(--paper); color: var(--ink); border-radius: var(--r-lg); box-shadow: 0 0 0 1px var(--hair), var(--shadow); padding: 10px; display: grid; grid-template-rows: auto 1fr; min-height: 0; }
+html body .teaser::after { display: none; }
+html body .teaser img, html body .teasers .teaser > img { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 10; border-radius: calc(var(--r-lg) - 8px); }
+html body .teasers.three .teaser img { aspect-ratio: 4 / 3; }
+html body .teaser div { padding: 18px 14px 12px; background: none; }
+html body .teaser h3 { font-size: 1.35rem; color: var(--ink); letter-spacing: -.02em; }
+html body .teaser p { color: var(--ink-soft); }
+html body .teaser p svg { color: var(--tuerkis); }
+@media (hover: hover) and (pointer: fine) { html body .teaser:hover { box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .2), var(--shadow-lg); } html body .teaser:hover img { scale: 1.03; } }
+
+/* ---------- Begrüßung ---------- */
+html body .welcome-photo::before { border-style: solid; border-width: 1.5px; opacity: .25; }
+html body .welcome blockquote { font-size: 1.1rem; line-height: 1.75; }
+
+/* ---------- Termine & Unterlagen ---------- */
+html body .event { border-radius: var(--r); padding: 14px; gap: 18px; }
+html body .event .date { background: var(--bg); border-radius: 12px; }
+html body .note-card { border-radius: var(--r-lg); padding: 32px 34px; }
+html body .woche { border-radius: var(--r-lg); box-shadow: 0 0 0 1px var(--hair), var(--shadow); }
+
+/* ---------- Schließtage-Leiste: Türkis bleibt die Fläche der Zeitleiste ---------- */
+html body .yearline { background: var(--paper); color: var(--ink); --fg-soft: var(--ink-soft); box-shadow: 0 0 0 1px var(--hair), var(--shadow); border-radius: var(--r-lg); }
+
+/* ---------- Kontakt-Band ---------- */
+html body .cta-band { border-radius: var(--r-lg); box-shadow: none; }
+
+/* ---------- Tabellen im Ferienplan ---------- */
+html body table.plan tbody tr { background: var(--paper); color: var(--ink); }
+
+/* ---------- Texte, die bisher fest „hell auf dunkel“ waren ---------- */
+html body .status-card .status-sub, html body .status-card p, html body .info-card p, html body .info-card .ic-t, html body .note-card p { color: var(--ink-soft); }
+html body .wo-e.wo-t { background: var(--ink); color: var(--paper); }
+html body .event .save { background: var(--ink); color: var(--paper); }
+html body .event .save:hover { background: var(--tuerkis); }
+html body .event .share { background: #fff0; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .3); }
+html body .yearline .yl-legend, html body .yearline .yl-months, html body .yearline .yl-info span { color: var(--ink-soft); }
+html body .yearline .yl-bar { background: var(--bg); }
+html body .yearline .yl-pin, html body .yearline .yl-pin::after { background: var(--ink); }
+html body .cta-band .btn-primary, html body .cta-band .btn-accent { background: var(--ink); color: var(--paper); }
+html body .announce { --fg: var(--on-surface); --fg-soft: var(--on-surface-soft); color: var(--fg); }
+
+/* Kennzahlen in den Info-Karten: Rosé war auf Türkis lesbar, auf Papier nicht */
+html body .info-card .big { color: var(--tuerkis); }
