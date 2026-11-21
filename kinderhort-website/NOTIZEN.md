@@ -612,3 +612,4 @@ Entscheidung offen.
 - Türkis bleibt für Hinweisband, Schließtage-Leiste und Fußbereich.
 - Ferienplan-Tabelle angepasst: vergangene Zeilen gedämpft in Petrol, auf dem Handy helle Zeilen.
 - Startseiten-Varianten (`entwurf/landing-varianten/`): 1 Bühne (Startbereich Petrol), 2 Papier (heller Start, Fotos auf Salbei-Fläche), 3 Zentriert (Text mittig, Fotos in einer Reihe); Einblendung beim Laden per GSAP-Timeline (GSAP-Skills), nichts am Scrollen; Umschalter nur in der Vorschau.
+  - Entscheidung 21.11.2026: keine der drei Varianten, die jetzige Startseite bleibt.
