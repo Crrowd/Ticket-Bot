@@ -592,3 +592,4 @@ Entscheidung offen.
 - Wunsch: gleicher Aufbau, gleiche Schrift (Plus Jakarta Sans), gleiche Farbpalette, nur schöner und hochwertiger. Liegt in `entwurf/design-neu/design-neu.css` und wird nach `css/style.css` geladen; Vorschau mit `entwurf/design-neu/build_vorschau_neu.py`.
 - Abschnitte wechseln Salbei/Papier, Karten hell (Papier) mit Petrol-Schrift und feinem Rand, Zahlen ohne Kästen, Fotos mit Text darunter, gerade Collage, Hauptknöpfe Petrol.
 - Gilt als gemerkte Richtung für weitere Gestaltung. Noch nicht in die echte Seite eingebaut.
+- Zweiter Entwurf „Design neu 2“ (`entwurf/design-neu-2/`): Startbereich nur Text und großes Foto-Mosaik; Status-Karte und „Kind krankmelden“ stehen unter „Termine & Unterlagen“ (Verschiebung im HTML über `umbau.py`).
