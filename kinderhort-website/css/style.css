@@ -2458,3 +2458,11 @@ html body .area-card .thumb { margin: 10px 10px 0; border-radius: 14px; }
 table.plan tr.past > * { color: rgb(var(--ink-rgb) / .78); }
 table.plan tbody tr:hover { background: rgb(var(--ink-rgb) / .04); }
 @media (max-width: 700px) { html body table.plan tbody tr:not(.now, .next) { background: var(--paper); color: var(--ink); box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .1); } }
+
+/* ===== Web Interface Guidelines (21.11.2026) ===== */
+/* Suchfenster: sichtbarer Fokus für das Suchfeld (vorher outline: 0 ohne Ersatz) */
+.search-head:focus-within { box-shadow: inset 0 -3px 0 var(--on-surface); }
+/* Frage-Feld auf der Kontaktseite: deutlicher Fokusrahmen statt nur dunklerem Rand */
+.ask-form input:focus-visible { border-color: var(--ink); box-shadow: 0 0 0 3px rgb(var(--ink-rgb) / .35); }
+/* Seiten ohne Leiste „Auf dieser Seite“: Sprungziele nur um die Kopfleiste versetzt, nicht um 152 px */
+html:not(:has(.subnav)) { scroll-padding-top: 96px; }

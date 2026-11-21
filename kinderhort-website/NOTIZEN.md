@@ -613,3 +613,7 @@ Entscheidung offen.
 - Ferienplan-Tabelle angepasst: vergangene Zeilen gedämpft in Petrol, auf dem Handy helle Zeilen.
 - Startseiten-Varianten (`entwurf/landing-varianten/`): 1 Bühne (Startbereich Petrol), 2 Papier (heller Start, Fotos auf Salbei-Fläche), 3 Zentriert (Text mittig, Fotos in einer Reihe); Einblendung beim Laden per GSAP-Timeline (GSAP-Skills), nichts am Scrollen; Umschalter nur in der Vorschau.
   - Entscheidung 21.11.2026: keine der drei Varianten, die jetzige Startseite bleibt.
+
+## Web Interface Guidelines umgesetzt (21.11.2026)
+- Sichtbarer Fokus im Suchfenster und im Frage-Feld (Kontakt), Sprungziele auf Seiten ohne Leiste nur 96 px versetzt, Suchfeld ohne Rechtschreibprüfung, „Grombühl“ mit translate="no", Tage bis zum Termin mit einem einzigen „jetzt“ berechnet.
+- Vorschau „Weniger Vorlage“ (`entwurf/muster/`): redundante Etiketten weg, Rundgang als offene Fotoreihe, nur noch Kreis um „Qualität“, Zahlen als Satz, Kontakt mit großer Krankmeldung und Liste, Abschluss ohne Kasten, genauere Linktexte. Noch nicht eingebaut.

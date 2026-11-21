@@ -483,7 +483,7 @@
     dlg.innerHTML =
       '<span class="search-grip" aria-hidden="true"></span>' +
       '<div class="search-head">' + svg(ICON.search, 20) +
-      '<input type="text" id="suche" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" name="suche" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
+      '<input type="text" id="suche" spellcheck="false" role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list" aria-controls="suchliste" aria-label="Suchbegriff" name="suche" placeholder="Wonach suchen Sie? z. B. Ferien, krank, Telefon …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
       "<kbd>Esc</kbd></div>" +
       '<ul class="search-list" id="suchliste" role="listbox" aria-label="Treffer"></ul>' +
       '<div class="search-foot" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> auswählen</span><span><kbd>↵</kbd> öffnen</span><span><kbd>Esc</kbd> schließen</span></div>';
@@ -752,7 +752,8 @@
         '<button type="button" class="icon-btn" aria-label="Hinweis ausblenden">' + svg(ICON.x, 18) + "</button></div>";
       $("strong", note).textContent = "Nächster Termin:";
       $("p span", note).textContent = nextEv.titel + " – " + (nextEv.von === nextEv.bis ? fmtLong(a) : fmt(a) + " bis " + fmt(b2));
-      var dleft = Math.round((Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()) - Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 864e5);
+      var jetzt = new Date();
+      var dleft = Math.round((Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()) - Date.UTC(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate())) / 864e5);
       if (dleft > 0) {
         var when = document.createElement("span"); when.className = "announce-in";
         when.innerHTML = 'in <span class="roll"></span> ' + (dleft === 1 ? "Tag" : "Tagen");

@@ -274,7 +274,7 @@ def header(active):
   <div class="container header-inner">
     <a class="brand" href="index.html">
       {BRAND_MARK}
-      <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name">Grombühl e. V.</span></span>
+      <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name" translate="no">Grombühl e. V.</span></span>
     </a>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
@@ -707,7 +707,7 @@ home = f'''
   <div class="container hero-grid">
     <div>
       <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
-      <h1>Kath. Kinder- und Jugendhort <span class="hl">Grombühl</span></h1>
+      <h1>Kath. Kinder- und Jugendhort <span class="hl" translate="no">Grombühl</span></h1>
       <p class="lead"><span class="leitsatz">Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt!</span> Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
       <div class="hero-actions">
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>

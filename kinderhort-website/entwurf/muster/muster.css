@@ -1,0 +1,33 @@
+/* ===== Vorschau „Weniger Vorlage“ (21.11.2026) ===== */
+
+/* 3 Nur eine Hervorhebung im Startbereich: der Kreis um „Qualität“. Unterstrich bei „Grombühl“ und Welle bei „kennen“ entfallen */
+#seite-index .hero h1 .hl { background: none; }
+#seite-index .mark.under .mark-svg { display: none; }
+
+/* 4 Die drei Zahlen als ein Satz */
+#seite-index .fakten { max-width: 62ch; margin: 0 0 clamp(32px, 4vw, 48px); font: 500 clamp(1.2rem, 1rem + .7vw, 1.5rem)/1.55 var(--font-body); color: var(--ink); text-wrap: pretty; }
+#seite-index .fakten b { font-weight: 700; color: var(--surface); }
+
+/* 2 Rundgang anders als die Bereiche: offene Fotoreihe im Hochformat, ohne Karten */
+#seite-index #rundgang .teasers.three { gap: clamp(16px, 2.4vw, 32px); }
+#seite-index #rundgang .teaser { background: none; box-shadow: none; padding: 0; border-radius: 0; overflow: visible; }
+#seite-index #rundgang .teaser img { aspect-ratio: 4 / 5; border-radius: var(--r-lg); box-shadow: var(--shadow); }
+#seite-index #rundgang .teaser div { padding: 16px 2px 0; }
+#seite-index #rundgang .teaser h3 { font-size: 1.3rem; }
+@media (hover: hover) and (pointer: fine) { #seite-index #rundgang .teaser:hover { translate: none; box-shadow: none; } }
+@media (max-width: 700px) { #seite-index #rundgang .teasers.three { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } #seite-index #rundgang .teaser h3 { font-size: 1rem; } #seite-index #rundgang .teaser p { font-size: .84rem; } }
+
+/* 6 Abschluss ohne farbigen Kasten: offene Zeile auf dem Grund, mit Linie darüber */
+#seite-index .cta-band { background: none; box-shadow: none; border-radius: 0; padding: 40px 0 0; border-top: 1.5px solid var(--ink); }
+#seite-index .cta-band h2 { font-size: var(--step-2); }
+
+/* 5 Kontakt: „Kind krankmelden“ groß und abgesetzt, die übrigen als schlichte Liste */
+#seite-kontakt .quick-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 32px; }
+#seite-kontakt .quick-grid > .quick-card:first-child { grid-column: 1 / -1; padding: 32px; margin-bottom: 24px; background: var(--rose); box-shadow: none; }
+#seite-kontakt .quick-grid > .quick-card:first-child strong { font-size: 1.5rem; }
+#seite-kontakt .quick-grid > .quick-card:first-child .quick-icon { background: var(--paper); width: 60px; height: 60px; }
+#seite-kontakt .quick-grid > .quick-card:not(:first-child) { background: none; box-shadow: none; border-radius: 0; padding: 18px 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
+#seite-kontakt .quick-grid > .quick-card:not(:first-child) .quick-icon { width: 40px; height: 40px; border-radius: 12px; }
+@media (hover: hover) and (pointer: fine) { #seite-kontakt .quick-grid > a.quick-card:not(:first-child):hover { translate: none; box-shadow: none; } #seite-kontakt .quick-grid > a.quick-card:not(:first-child):hover strong { text-decoration: underline; text-underline-offset: 4px; } }
+@media (max-width: 900px) { #seite-kontakt .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+#seite-index #rundgang .teaser, #seite-index #rundgang .teaser > div { background: transparent; }
