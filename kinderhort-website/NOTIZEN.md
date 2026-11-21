@@ -598,3 +598,10 @@ Entscheidung offen.
 - Nur auf der Startseite und nur zwei Dinge übernommen, sonst bleibt alles im bisherigen Design:
   - Fotos im Startbereich: Haus groß und quer oben, drei Raumfotos darunter, gerade; „3 Bereiche“-Kreis rosé oben rechts.
   - Status-Karte und „Kind krankmelden“ aus dem Startbereich unter „Termine & Unterlagen“ (über der Wochenübersicht) verschoben. Sprungmarke `#krankmelden` bleibt.
+
+## Verbesserungen eingebaut (21.11.2026)
+- Link „Kind krankmelden →“ im Startbereich unter den Knöpfen; öffnet den Kasten unter „Termine & Unterlagen“ (auch beim zweiten Klick).
+- Status-Karte und Krankmeldung dort hell und gleich hoch.
+- Hinweisband „Nächster Termin“ nur, wenn der Termin in höchstens 3 Tagen ist.
+- Kinderhort-Leiste „Auf dieser Seite“ zwischen 700 und 1180 px zweizeilig.
+- „Hort“-Schildchen in der Terminliste mit dunklerem Grund (Kontrast).

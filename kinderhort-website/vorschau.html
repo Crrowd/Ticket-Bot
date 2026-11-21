@@ -2409,6 +2409,31 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .heute:has(.status-card[hidden]) { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 860px) { .heute { grid-template-columns: minmax(0, 1fr); } }
 
+/* ===== Verbesserungen (21.11.2026) ===== */
+/* 1 Kurzer Weg zur Krankmeldung im Startbereich */
+.hero-krank { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; min-height: 44px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: rgb(var(--ink-rgb) / .35); text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
+.hero-krank:hover { text-decoration-color: var(--ink); }
+.hero-krank span[aria-hidden] { transition: translate .25s var(--ease-out); }
+.hero-krank:hover span[aria-hidden] { translate: 4px 0; }
+@media (prefers-reduced-motion: reduce) { .hero-krank span[aria-hidden] { transition: none; } }
+/* 2 Status-Karte und Krankmeldung im gleichen Stil (hell wie die Krankmeldung), gleich hoch */
+.heute { align-items: stretch; }
+.heute:has(.krank[open]) { align-items: start; }
+.heute .status-card { --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14); background: var(--paper); color: var(--ink); }
+.heute .status-card :is(.status-sub, p) { color: var(--ink-soft); }
+.heute .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
+.heute .status-card .status-q button:hover { background: rgb(var(--ink-rgb) / .07); }
+.heute .status-card :focus-visible { outline-color: var(--ink); }
+.heute .krank.in-hero { display: flex; flex-direction: column; }
+.heute .krank.in-hero > summary { flex: 1; align-items: center; }
+.heute .krank.in-hero[open] > summary { flex: none; }
+/* 6 Kinderhort-Leiste „Auf dieser Seite“ auf Tablets zweizeilig statt seitlich wischen */
+@media (min-width: 700px) and (max-width: 1179px) {
+  .subnav ul:has(> li:nth-child(10)) { flex-wrap: wrap; justify-content: center; overflow: visible; width: auto; }
+}
+/* „Hort“-Schildchen in der Terminliste: dunkler Grund, damit die helle Schrift lesbar ist (vorher 3,4 : 1) */
+.ev-bereich { background: rgb(var(--deep-rgb) / .55); color: var(--on-surface); }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -2532,6 +2557,7 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
         <a class="btn btn-primary js-magnet" href="#index:bereiche">Unsere Bereiche <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-ghost" href="#kontakt">Kontakt aufnehmen</a>
       </div>
+      <a class="hero-krank" href="#index:krankmelden"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
       <figure class="c1"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i11" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche" width="682" height="380" class="ph lq-hortgebaeude" fetchpriority="high"></figure>
@@ -4550,6 +4576,8 @@ window.KITA = {
   var note = document.getElementById("hinweis");
   if (note && K && K.termine) {
     var nextEv = K.termine.filter(function (t) { return t.bis >= heute; })[0];
+    /* das Band nur, wenn der nächste Termin in höchstens 3 Tagen ist; sonst steht er schon unter „Termine & Unterlagen“ */
+    if (nextEv && (parse(nextEv.von) - new Date()) / 864e5 > 3) nextEv = null;
     if (nextEv) {
       var key = "hinweis-aus", id = nextEv.von + nextEv.titel;
       var a = parse(nextEv.von), b2 = parse(nextEv.bis);
@@ -6041,7 +6069,9 @@ window.KITA = {
   /* 3 Kurzbefehl „Kind krankmelden“: Abschnitt öffnen und zeigen */
   (function () { var k = $("#krankmelden"); if (!k) return;
     function go() { if (location.hash === "#krankmelden") { k.open = true; k.scrollIntoView({ block: "center" }); $("summary", k).focus({ preventScroll: true }); } }
-    go(); addEventListener("hashchange", go); })();
+    go(); addEventListener("hashchange", go);
+    /* Link „Kind krankmelden“ im Startbereich: auch beim zweiten Klick (Sprungmarke schon gesetzt) aufklappen */
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest(".hero-krank"); if (a) k.open = true; }); })();
 
   /* 4 Neu seit Ihrem letzten Besuch (nur im eigenen Browser) */
   (function () {

@@ -713,6 +713,7 @@ home = f'''
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
+      <a class="hero-krank" href="#krankmelden"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False)}</figure>

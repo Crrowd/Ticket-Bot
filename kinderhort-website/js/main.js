@@ -742,6 +742,8 @@
   var note = document.getElementById("hinweis");
   if (note && K && K.termine) {
     var nextEv = K.termine.filter(function (t) { return t.bis >= heute; })[0];
+    /* das Band nur, wenn der nächste Termin in höchstens 3 Tagen ist; sonst steht er schon unter „Termine & Unterlagen“ */
+    if (nextEv && (parse(nextEv.von) - new Date()) / 864e5 > 3) nextEv = null;
     if (nextEv) {
       var key = "hinweis-aus", id = nextEv.von + nextEv.titel;
       var a = parse(nextEv.von), b2 = parse(nextEv.bis);
@@ -2233,7 +2235,9 @@
   /* 3 Kurzbefehl „Kind krankmelden“: Abschnitt öffnen und zeigen */
   (function () { var k = $("#krankmelden"); if (!k) return;
     function go() { if (location.hash === "#krankmelden") { k.open = true; k.scrollIntoView({ block: "center" }); $("summary", k).focus({ preventScroll: true }); } }
-    go(); addEventListener("hashchange", go); })();
+    go(); addEventListener("hashchange", go);
+    /* Link „Kind krankmelden“ im Startbereich: auch beim zweiten Klick (Sprungmarke schon gesetzt) aufklappen */
+    document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest(".hero-krank"); if (a) k.open = true; }); })();
 
   /* 4 Neu seit Ihrem letzten Besuch (nur im eigenen Browser) */
   (function () {
