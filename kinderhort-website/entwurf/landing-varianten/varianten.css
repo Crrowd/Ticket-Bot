@@ -1,0 +1,56 @@
+/* ===== Startseiten-Varianten (21.11.2026): drei Looks für den Startbereich, umschaltbar in der Vorschau =====
+   Aufbau, Schrift (Plus Jakarta Sans) und die fünf Farben bleiben. Gilt nur für die Startseite (#seite-index).
+   Die Einblendung beim Laden übernimmt GSAP (varianten.js); die CSS-Einblendung ist dann aus. */
+
+html[data-variante] #seite-index .hero :is(.hero-grid > div:first-child > *, .hero-collage figure, .hero-badge) { animation: none !important; }
+
+/* ---------- 1 Bühne: Startbereich in Petrol, helle Schrift, Rosé als Akzent ---------- */
+html[data-variante="1"] #seite-index .hero { background: var(--ink); color: var(--paper); --fg: var(--paper); --fg-soft: #D5E7E4; padding-top: 72px; }
+html[data-variante="1"] #seite-index .hero h1 { color: var(--paper); }
+html[data-variante="1"] #seite-index .hero .lead { color: #D5E7E4; }
+html[data-variante="1"] #seite-index .hero .lead .leitsatz { color: var(--paper); }
+html[data-variante="1"] #seite-index .hero .eyebrow { background: rgb(var(--paper-rgb) / .1); color: var(--paper); box-shadow: inset 0 0 0 1px rgb(var(--paper-rgb) / .2); }
+html[data-variante="1"] #seite-index .hero .btn-ghost { color: var(--paper); border-color: rgb(var(--paper-rgb) / .55); }
+html[data-variante="1"] #seite-index .hero .btn-ghost:hover { background: rgb(var(--paper-rgb) / .1); }
+html[data-variante="1"] #seite-index .hero .hero-krank { color: var(--paper); text-decoration-color: rgb(var(--paper-rgb) / .45); }
+html[data-variante="1"] #seite-index .hero :focus-visible { outline-color: var(--rose); }
+html[data-variante="1"] #seite-index .hero-collage :is(.c1, .c2, .c3, .c4) { box-shadow: 0 24px 48px -24px rgb(0 0 0 / .6); }
+html[data-variante="1"] #seite-index .hero-badge { box-shadow: 0 0 0 6px var(--ink), 0 18px 36px -18px rgb(0 0 0 / .6); }
+
+/* ---------- 2 Papier: heller Startbereich, Fotos auf einer Salbei-Fläche ---------- */
+html[data-variante="2"] #seite-index .hero { background: var(--paper); padding-top: 72px; }
+html[data-variante="2"] #seite-index .hero-collage { isolation: isolate; }
+html[data-variante="2"] #seite-index .hero-collage::before { content: ""; position: absolute; inset: 28px -28px -28px 28px; border-radius: 32px; background: var(--bg); z-index: -1; }
+html[data-variante="2"] #seite-index .hero-badge { box-shadow: 0 0 0 6px var(--paper), var(--shadow-lg); }
+html[data-variante="2"] #seite-index .hero .eyebrow { background: var(--rose-soft); }
+@media (max-width: 700px) { html[data-variante="2"] #seite-index .hero-collage::before { inset: 18px -10px -14px 14px; border-radius: 24px; } }
+
+/* ---------- 3 Zentriert: Text mittig, darunter alle Fotos in einer Reihe ---------- */
+html[data-variante="3"] #seite-index .hero { padding: 72px 0 96px; }
+html[data-variante="3"] #seite-index .hero-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 56px; }
+html[data-variante="3"] #seite-index .hero-grid > div:first-child { display: flex; flex-direction: column; align-items: center; max-width: 820px; }
+html[data-variante="3"] #seite-index .hero h1 { font-size: clamp(2.6rem, 1.6rem + 3.6vw, 4.6rem); text-wrap: balance; }
+html[data-variante="3"] #seite-index .hero .lead { max-width: 40ch; margin-inline: auto; }
+html[data-variante="3"] #seite-index .hero-actions { justify-content: center; }
+html[data-variante="3"] #seite-index .hero-collage { width: 100%; max-width: none; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: stretch; }
+html[data-variante="3"] #seite-index .hero-collage .c1 { grid-column: auto; aspect-ratio: auto; }
+html[data-variante="3"] #seite-index .hero-collage :is(.c2, .c3, .c4) { aspect-ratio: 3 / 4; }
+html[data-variante="3"] #seite-index .hero-collage :is(.c1, .c2, .c3, .c4) img { height: 100%; }
+html[data-variante="3"] #seite-index .hero-badge { right: auto; left: 50%; top: -40px; translate: -50% 0; }
+@media (max-width: 760px) {
+  html[data-variante="3"] #seite-index .hero-collage { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html[data-variante="3"] #seite-index .hero-collage .c1 { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+  html[data-variante="3"] #seite-index .hero-collage :is(.c2, .c3, .c4) { aspect-ratio: 1; }
+  html[data-variante="3"] #seite-index .hero-badge { left: auto; right: 8px; translate: none; top: -24px; }
+}
+
+/* ---------- Umschalter (nur in der Vorschau) ---------- */
+.v-schalter { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 900; display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: var(--ink); box-shadow: 0 16px 40px -16px rgb(0 0 0 / .6); max-width: calc(100% - 32px); }
+.v-schalter span { color: #D5E7E4; font: 600 .8rem var(--font-body); padding: 0 10px 0 12px; white-space: nowrap; }
+.v-schalter button { border: 0; border-radius: 999px; min-height: 44px; padding: 0 16px; background: transparent; color: var(--paper); font: 600 .9rem var(--font-body); cursor: pointer; white-space: nowrap; }
+.v-schalter button[aria-pressed="true"] { background: var(--rose); color: var(--ink); }
+.v-schalter button:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
+@media (max-width: 560px) { .v-schalter span { display: none; } .v-schalter button { padding: 0 12px; font-size: .84rem; } }
+
+/* 1 und 2: die Fläche des Startbereichs läuft hinter der schwebenden Kopfleiste (74 px) bis nach oben */
+html:is([data-variante="1"], [data-variante="2"]) #seite-index .hero { margin-top: -74px; padding-top: calc(74px + 64px); }
