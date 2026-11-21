@@ -2385,3 +2385,19 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .subnav ul { margin-inline: auto; }
 .subnav ul:has(> li:nth-child(10)) a { padding: 8px 7px; font-size: .86rem; }
 @media (max-width: 1240px) { .subnav ul:has(> li:nth-child(10)) a { padding: 8px 6px; font-size: .82rem; } }
+
+/* ===== Startseite nach Entwurf „Design neu 2“ (21.11.2026): nur die Fotos und die zwei Kästen =====
+   Fotos im Startbereich: das Haus groß und quer oben, drei Raumfotos darunter, gerade statt schräg;
+   der „3 Bereiche“-Kreis rosé an der oberen rechten Ecke.
+   Status-Karte und „Kind krankmelden“ stehen jetzt unter „Termine & Unterlagen“ über der Wochenübersicht. */
+.hero-collage { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 0; position: relative; }
+.hero-collage :is(.c1, .c2, .c3, .c4) { aspect-ratio: 1; rotate: 0deg; border: 0; border-radius: var(--r); box-shadow: var(--shadow-lg); }
+.hero-collage .c1 { grid-column: 1 / -1; aspect-ratio: 16 / 9; border-radius: var(--r-lg); }
+.hero-badge { left: auto; right: -14px; top: -18px; bottom: auto; translate: none; width: 118px; height: 118px; background: var(--rose); color: var(--ink); box-shadow: 0 0 0 6px var(--bg), var(--shadow-lg); }
+.hero-badge b { color: var(--ink); }
+@media (max-width: 700px) { .hero-badge { right: 8px; top: -22px; width: 96px; height: 96px; } .hero-collage { gap: 10px; } }
+.heute { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 20px; }
+.heute .status-card { margin: 0; max-width: none; align-self: stretch; }
+.heute .krank.in-hero { margin: 0; max-width: none; }
+.heute:has(.status-card[hidden]) { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 860px) { .heute { grid-template-columns: minmax(0, 1fr); } }

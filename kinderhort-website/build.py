@@ -713,8 +713,6 @@ home = f'''
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
-      {STATUS_CARD}
-      {krank_block("in-hero")}
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False)}</figure>
@@ -803,6 +801,7 @@ home = f'''
   <div class="container">
     <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
       <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
+    <div class="heute">{STATUS_CARD}{krank_block("in-hero")}</div>
     <div class="woche reveal" data-woche aria-label="Diese Woche: Termine, Schließtage und Feiertage"></div>
     <div class="notes-grid">
       <div>

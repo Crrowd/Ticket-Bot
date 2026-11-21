@@ -593,3 +593,8 @@ Entscheidung offen.
 - Abschnitte wechseln Salbei/Papier, Karten hell (Papier) mit Petrol-Schrift und feinem Rand, Zahlen ohne Kästen, Fotos mit Text darunter, gerade Collage, Hauptknöpfe Petrol.
 - Gilt als gemerkte Richtung für weitere Gestaltung. Noch nicht in die echte Seite eingebaut.
 - Zweiter Entwurf „Design neu 2“ (`entwurf/design-neu-2/`): Startbereich nur Text, Fotos wie im ersten Entwurf (Haus quer oben, drei Raumfotos darunter); Status-Karte und „Kind krankmelden“ stehen unter „Termine & Unterlagen“ (Verschiebung im HTML über `umbau.py`).
+
+## Startseite: Fotos und Kästen nach Entwurf „Design neu 2“ (21.11.2026)
+- Nur auf der Startseite und nur zwei Dinge übernommen, sonst bleibt alles im bisherigen Design:
+  - Fotos im Startbereich: Haus groß und quer oben, drei Raumfotos darunter, gerade; „3 Bereiche“-Kreis rosé oben rechts.
+  - Status-Karte und „Kind krankmelden“ aus dem Startbereich unter „Termine & Unterlagen“ (über der Wochenübersicht) verschoben. Sprungmarke `#krankmelden` bleibt.
