@@ -168,13 +168,12 @@ html body .info-card .big { color: var(--tuerkis); }
 :is(#seite-index, #inhalt:has(> .hero)) .area-card .more { padding-top: 14px; margin-top: 4px; border-top: 1px solid var(--hair); width: 100%; justify-content: space-between; }
 
 /* Mehr als Betreuung: Zahlen in Türkis, Linie in Rosé */
-:is(#seite-index, #inhalt:has(> .hero)) .stats .stat { border-top: 3px solid var(--rose); }
+:is(#seite-index, #inhalt:has(> .hero)) .stats .stat { border-top: 2px solid var(--rose); border-radius: 0; }
 :is(#seite-index, #inhalt:has(> .hero)) .stats .stat b { color: var(--tuerkis); }
 
-/* Begrüßung: Foto auf einem Rosé-Kreis, Zitat mit Linie */
+/* Begrüßung: Foto auf einem Rosé-Kreis */
 :is(#seite-index, #inhalt:has(> .hero)) .welcome-photo::before { inset: -18px; border: 0; background: var(--rose); opacity: 1; z-index: -1; }
 :is(#seite-index, #inhalt:has(> .hero)) .welcome-photo { isolation: isolate; }
-:is(#seite-index, #inhalt:has(> .hero)) .welcome blockquote { border-left: 3px solid var(--rose); padding-left: clamp(18px, 2vw, 28px); margin-left: 0; }
 
 /* Termine: Datum wieder in Rosé */
 :is(#seite-index, #inhalt:has(> .hero)) .event .date { background: var(--rose); }
