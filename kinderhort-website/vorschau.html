@@ -2434,6 +2434,38 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 /* „Hort“-Schildchen in der Terminliste: dunkler Grund, damit die helle Schrift lesbar ist (vorher 3,4 : 1) */
 .ev-bereich { background: rgb(var(--deep-rgb) / .55); color: var(--on-surface); }
 
+/* ===== Kartenstil A „Papier-Karten“ (21.11.2026): helle Karten statt Türkis, aus entwurf/karten-varianten ===== */
+/* Grundlage für helle Karten (aus „Design neu“): Papier statt Türkis, Petrol-Schrift, Texte und Knöpfe passend */
+html body :is(.info-card, .room, .tour-item, .tl-body, .faq details, .table-wrap, .note-card, .event, .dl-group,
+  .phone-card, .address-card, .area-card, .pill-list > div, .features li, .stat, .group-chip, .status-card, .quick-card) {
+  --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14);
+  background: var(--paper); color: var(--fg);
+}
+html body :is(.info-card, .room, .tour-item, .note-card, .event, .area-card, .stat, .status-card, .quick-card) :focus-visible { outline-color: var(--ink); }
+html body .status-card :is(.status-sub, p), html body .info-card p, html body .info-card .ic-t, html body .note-card p { color: var(--ink-soft); }
+html body .info-card .big { color: #2D6A6A; }
+html body .event .save { background: var(--ink); color: var(--paper); }
+html body .event .share { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .3); }
+html body .ev-bereich { background: var(--rose); color: var(--ink); }
+html body .teaser div { background: none; color: var(--ink); }
+html body .teaser p { color: var(--ink-soft); }
+html body .area-card .bar { display: none; }
+html body .area-card .more, html body .area-card .more svg { color: #2D6A6A; }
+html body .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
+html body .stat b { color: #2D6A6A; }
+
+/* A Papier-Karten: helle Karten mit feinem Rand und weichem Schatten */
+html body :is(.info-card, .room, .tour-item, .note-card, .event, .area-card, .stat, .status-card, .quick-card, .teaser) { box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .1), 0 18px 40px -24px rgb(var(--deep-rgb) / .35); border-radius: 20px; }
+html body .teaser { background: var(--paper); padding: 10px; display: grid; grid-template-rows: auto 1fr; min-height: 0; }
+html body .teaser::after { display: none; }
+html body .teaser img, html body .teasers .teaser > img { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 10; border-radius: 14px; }
+html body .teaser div { padding: 16px 12px 10px; }
+html body .area-card .thumb { margin: 10px 10px 0; border-radius: 14px; }
+/* Ferienplan-Tabelle zu den hellen Karten: vergangene Zeilen gedämpft in Petrol, Zeilen auf dem Handy hell */
+table.plan tr.past > * { color: rgb(var(--ink-rgb) / .78); }
+table.plan tbody tr:hover { background: rgb(var(--ink-rgb) / .04); }
+@media (max-width: 700px) { html body table.plan tbody tr:not(.now, .next) { background: var(--paper); color: var(--ink); box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .1); } }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }

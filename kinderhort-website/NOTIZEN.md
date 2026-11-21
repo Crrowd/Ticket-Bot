@@ -606,3 +606,8 @@ Entscheidung offen.
 - Kinderhort-Leiste „Auf dieser Seite“ zwischen 700 und 1180 px zweizeilig.
 - „Hort“-Schildchen in der Terminliste mit dunklerem Grund (Kontrast).
 - Punkt 5 (hellere Karten): vier Entwürfe in `entwurf/karten-varianten/` (A Papier, B Offen, C Rahmen, D Gemischt), Vergleich als Vorschau.
+
+## Kartenstil A „Papier-Karten“ eingebaut (21.11.2026)
+- Alle Karten der Website hell (Papier) mit Petrol-Schrift, feinem Rand und weichem Schatten statt dunklem Türkis; Fotos sitzen mit schmalem Rand in der Karte, Text darunter. Aus `entwurf/karten-varianten/` (hell-basis + a-papier).
+- Türkis bleibt für Hinweisband, Schließtage-Leiste und Fußbereich.
+- Ferienplan-Tabelle angepasst: vergangene Zeilen gedämpft in Petrol, auf dem Handy helle Zeilen.
