@@ -1,0 +1,17 @@
+/.taste-skill/
+/shots/
+/assets/**
+!/assets/**/
+!/assets/system.css
+!/assets/system.js
+!/assets/icons/icon.css
+!/assets/layout/layout.css
+!/assets/layout/layout.js
+!/assets/moments/lib.js
+!/assets/moments/moments.js
+!/assets/moments/picture-develops/moment.css
+!/assets/moments/picture-develops/moment.js
+!/assets/motion/motion.css
+!/assets/motion/motion.js
+!/assets/ui/cards.css
+!/assets/ui/ui.js
