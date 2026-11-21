@@ -1,25 +1,15 @@
 /* ===== Entwurf „Design neu 2“ (21.11.2026): baut auf design-neu.css auf, nur die Startseite =====
    Gleicher Aufbau, gleiche Schrift, gleiche fünf Farben. Unterschiede zu „Design neu“:
    - Status-Karte und „Kind krankmelden“ stehen unter „Termine & Unterlagen“ statt im Startbereich
-   - Startbereich: Text links, großes Foto-Mosaik rechts, alles auf einer Höhe */
+   - Startbereich: Text links, rechts die Fotos wie in „Design neu“ (Haus quer oben, drei Raumfotos darunter) */
 
 /* ---------- Startbereich ---------- */
 :is(#seite-index, #inhalt:has(> .hero)) .hero { padding: clamp(40px, 6vw, 88px) 0 clamp(72px, 9vw, 128px); }
 :is(#seite-index, #inhalt:has(> .hero)) .hero-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(32px, 5vw, 72px); }
 :is(#seite-index, #inhalt:has(> .hero)) .hero h1 { font-size: clamp(2.5rem, 1.5rem + 3vw, 4rem); text-wrap: balance; }
 :is(#seite-index, #inhalt:has(> .hero)) .hero .lead { max-width: 30ch; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); aspect-ratio: 7 / 5; gap: 12px; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage :is(.c1, .c2, .c3, .c4) { aspect-ratio: auto; height: 100%; border-radius: var(--r); }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage .c1 { grid-column: 1 / 3; grid-row: 1 / 3; border-radius: var(--r-lg); }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage .c2 { grid-column: 3; grid-row: 1; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage .c3 { grid-column: 4; grid-row: 1; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage .c4 { grid-column: 3 / 5; grid-row: 2; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-collage img { height: 100%; }
-:is(#seite-index, #inhalt:has(> .hero)) .hero-badge { left: -22px; right: auto; top: auto; bottom: -22px; }
 @media (max-width: 900px) {
   :is(#seite-index, #inhalt:has(> .hero)) .hero-grid { grid-template-columns: minmax(0, 1fr); }
-  :is(#seite-index, #inhalt:has(> .hero)) .hero-collage { aspect-ratio: 6 / 5; gap: 8px; }
-  :is(#seite-index, #inhalt:has(> .hero)) .hero-badge { left: auto; right: 10px; bottom: -24px; }
 }
 
 /* ---------- Heute: Status und Krankmeldung über der Wochenübersicht ---------- */
