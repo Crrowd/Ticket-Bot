@@ -587,3 +587,8 @@ Entscheidung offen.
 
 ## Streberclub entfernt (21.11.2026)
 - Den Streberclub gibt es nicht mehr: Abschnitt unter „Pädagogik“ und Eintrag im Tagesablauf entfernt. Freispiel- und Angebotszeit Mo–Do bleibt 15:30–16:30 Uhr. Hütte: „am Fuße des Wilden Kaisers“ war falsch, jetzt nur „in Österreich“.
+
+## Entwurf „Design neu“ (21.11.2026)
+- Wunsch: gleicher Aufbau, gleiche Schrift (Plus Jakarta Sans), gleiche Farbpalette, nur schöner und hochwertiger. Liegt in `entwurf/design-neu/design-neu.css` und wird nach `css/style.css` geladen; Vorschau mit `entwurf/design-neu/build_vorschau_neu.py`.
+- Abschnitte wechseln Salbei/Papier, Karten hell (Papier) mit Petrol-Schrift und feinem Rand, Zahlen ohne Kästen, Fotos mit Text darunter, gerade Collage, Hauptknöpfe Petrol.
+- Gilt als gemerkte Richtung für weitere Gestaltung. Noch nicht in die echte Seite eingebaut.

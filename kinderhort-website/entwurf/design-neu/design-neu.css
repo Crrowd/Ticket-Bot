@@ -145,3 +145,47 @@ html body .announce { --fg: var(--on-surface); --fg-soft: var(--on-surface-soft)
 
 /* Kennzahlen in den Info-Karten: Rosé war auf Türkis lesbar, auf Papier nicht */
 html body .info-card .big { color: var(--tuerkis); }
+
+/* =====================================================================
+   Startseite ansprechender (21.11.2026, zweite Runde)
+   Nur die Startseite: in der echten Seite main#inhalt mit .hero als Kind, in der Vorschau #seite-index.
+   ===================================================================== */
+
+/* Startbereich: ein großes Querbild oben (das Haus), darunter drei kleine Fotos */
+:is(#seite-index, #inhalt:has(> .hero)) .hero h1 .hl { background-size: 100% .3em; background-position: 0 92%; }
+:is(#seite-index, #inhalt:has(> .hero)) .hero-collage { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 0; position: relative; }
+:is(#seite-index, #inhalt:has(> .hero)) .hero-collage :is(.c1, .c2, .c3, .c4) { aspect-ratio: 1; border-radius: var(--r); }
+:is(#seite-index, #inhalt:has(> .hero)) .hero-collage .c1 { grid-column: 1 / -1; aspect-ratio: 16 / 9; border-radius: var(--r-lg); }
+:is(#seite-index, #inhalt:has(> .hero)) .hero-badge { left: auto; right: -14px; top: -18px; bottom: auto; translate: none; width: 118px; height: 118px; background: var(--rose); color: var(--ink); box-shadow: 0 0 0 6px var(--bg), var(--shadow-lg); }
+:is(#seite-index, #inhalt:has(> .hero)) .hero-badge b { color: var(--ink); }
+@media (max-width: 700px) { :is(#seite-index, #inhalt:has(> .hero)) .hero-badge { right: 8px; top: -22px; width: 96px; height: 96px; } :is(#seite-index, #inhalt:has(> .hero)) .hero-collage { gap: 10px; } }
+
+/* Bereiche: jede Altersangabe in der Farbe ihres Bereichs */
+:is(#seite-index, #inhalt:has(> .hero)) .area-card .age { box-shadow: 0 2px 8px -2px rgb(var(--deep-rgb) / .35); }
+:is(#seite-index, #inhalt:has(> .hero)) .area-card.theme-krippe .age { background: var(--rose); color: var(--ink); }
+:is(#seite-index, #inhalt:has(> .hero)) .area-card.theme-kiga .age { background: var(--bg); color: var(--ink); }
+:is(#seite-index, #inhalt:has(> .hero)) .area-card.theme-hort .age { background: var(--tuerkis); color: var(--paper); }
+:is(#seite-index, #inhalt:has(> .hero)) .area-card .more { padding-top: 14px; margin-top: 4px; border-top: 1px solid var(--hair); width: 100%; justify-content: space-between; }
+
+/* Mehr als Betreuung: Zahlen in Türkis, Linie in Rosé */
+:is(#seite-index, #inhalt:has(> .hero)) .stats .stat { border-top: 3px solid var(--rose); }
+:is(#seite-index, #inhalt:has(> .hero)) .stats .stat b { color: var(--tuerkis); }
+
+/* Begrüßung: Foto auf einem Rosé-Kreis, Zitat mit Linie */
+:is(#seite-index, #inhalt:has(> .hero)) .welcome-photo::before { inset: -18px; border: 0; background: var(--rose); opacity: 1; z-index: -1; }
+:is(#seite-index, #inhalt:has(> .hero)) .welcome-photo { isolation: isolate; }
+:is(#seite-index, #inhalt:has(> .hero)) .welcome blockquote { border-left: 3px solid var(--rose); padding-left: clamp(18px, 2vw, 28px); margin-left: 0; }
+
+/* Termine: Datum wieder in Rosé */
+:is(#seite-index, #inhalt:has(> .hero)) .event .date { background: var(--rose); }
+
+/* Kontakt-Band am Ende: Petrol mit heller Schrift statt Rosé-Fläche */
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band { background: var(--ink); --fg: var(--paper); --fg-soft: #D5E7E4; color: var(--paper); padding: clamp(36px, 5vw, 64px); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band h2 { color: var(--paper); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band p { color: #D5E7E4; }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band .btn-primary { background: var(--rose); color: var(--ink); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band .btn-primary:hover { background: var(--paper); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band .btn-primary svg { color: var(--ink); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band .btn-ghost { color: var(--paper); border-color: rgb(var(--paper-rgb) / .5); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band .btn-ghost:hover { background: rgb(var(--paper-rgb) / .1); border-color: var(--paper); }
+:is(#seite-index, #inhalt:has(> .hero)) .cta-band :focus-visible { outline-color: var(--rose); }
