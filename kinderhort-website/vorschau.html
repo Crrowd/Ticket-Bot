@@ -2474,6 +2474,33 @@ table.plan tbody tr:hover { background: rgb(var(--ink-rgb) / .04); }
 /* Seiten ohne Leiste „Auf dieser Seite“: Sprungziele nur um die Kopfleiste versetzt, nicht um 152 px */
 html:not(:has(.subnav)) { scroll-padding-top: 96px; }
 
+/* ===== Weniger Vorlage (22.11.2026), aus entwurf/muster ===== */
+/* Nur eine Hervorhebung im Startbereich: der Kreis um „Qualität“ */
+.hero h1 .hl { background: none; }
+/* Zahlen der Startseite als ein Satz */
+.fakten { max-width: 62ch; margin: 0 0 clamp(32px, 4vw, 48px); font: 500 clamp(1.2rem, 1rem + .7vw, 1.5rem)/1.55 var(--font-body); color: var(--ink); text-wrap: pretty; }
+.fakten b { font-weight: 700; color: var(--surface); }
+/* Rundgang auf der Startseite: offene Fotoreihe im Hochformat statt Karten */
+.rundgang-reihe { gap: clamp(16px, 2.4vw, 32px); }
+html body .rundgang-reihe .teaser { background: transparent; box-shadow: none; padding: 0; border-radius: 0; overflow: visible; }
+html body .teasers.three.rundgang-reihe .teaser > div { background: transparent; padding: 16px 2px 0; }
+html body .rundgang-reihe .teaser img { aspect-ratio: 4 / 5; border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.rundgang-reihe .teaser h3 { font-size: 1.3rem; }
+@media (hover: hover) and (pointer: fine) { html body .rundgang-reihe .teaser:hover { translate: none; box-shadow: none; } }
+@media (max-width: 700px) { .rundgang-reihe { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .rundgang-reihe .teaser h3 { font-size: 1rem; } .rundgang-reihe .teaser p { font-size: .84rem; } }
+/* Abschluss der Startseite ohne farbigen Kasten */
+.cta-band.cta-offen { background: none; box-shadow: none; border-radius: 0; padding: 40px 0 0; border-top: 1.5px solid var(--ink); }
+.cta-band.cta-offen h2 { font-size: var(--step-2); }
+/* Kontakt: „Kind krankmelden“ groß und abgesetzt, die übrigen Wege als schlichte Liste */
+.quick-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 32px; }
+html body .quick-grid > .quick-card:first-child { grid-column: 1 / -1; padding: 32px; margin-bottom: 24px; background: var(--rose); box-shadow: none; }
+.quick-grid > .quick-card:first-child strong { font-size: 1.5rem; }
+.quick-grid > .quick-card:first-child .quick-icon { background: var(--paper); width: 60px; height: 60px; }
+html body .quick-grid > .quick-card:not(:first-child) { background: none; box-shadow: none; border-radius: 0; padding: 18px 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
+.quick-grid > .quick-card:not(:first-child) .quick-icon { width: 40px; height: 40px; border-radius: 12px; }
+@media (hover: hover) and (pointer: fine) { html body .quick-grid > a.quick-card:not(:first-child):hover { translate: none; box-shadow: none; } .quick-grid > a.quick-card:not(:first-child):hover strong { text-decoration: underline; text-underline-offset: 4px; } }
+@media (max-width: 900px) { .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -2619,17 +2646,17 @@ html:not(:has(.subnav)) { scroll-padding-top: 96px; }
       <a class="area-card theme-krippe reveal" href="#kinderkrippe">
         <div class="thumb"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i36" alt="Gruppenraum der Kinderkrippe" width="1600" height="1200" class="ph lq-p2160110" decoding="async"><span class="age">ab 11 Monaten</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten – vom 11. Monat bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p><span class="more">Mehr erfahren <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        <div class="body"><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten – vom 11. Monat bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p><span class="more">Zur Kinderkrippe <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
       <a class="area-card theme-kiga reveal" href="#kindergarten">
         <div class="thumb"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i6" alt="Gruppenraum im Kindergarten" width="1600" height="1200" class="ph lq-blick-vom-fenster-in-den-raum" decoding="async"><span class="age">3 Jahre bis Einschulung</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="more">Mehr erfahren <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        <div class="body"><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="more">Zum Kindergarten <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
       <a class="area-card theme-hort reveal" href="#kinderhort">
         <div class="thumb"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i24" alt="Kreativraum im Kinderhort" width="1600" height="1164" class="ph lq-kreatviraum-5-1" decoding="async"><span class="age">ab der Einschulung</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kinderhort</h3><p>Für alle Schulformen – mit begleiteten, korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung bis 18:00 Uhr.</p><span class="more">Mehr erfahren <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        <div class="body"><h3>Kinderhort</h3><p>Für alle Schulformen – mit begleiteten, korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung bis 18:00 Uhr.</p><span class="more">Zum Kinderhort <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
     </div>
   </div>
@@ -2637,13 +2664,9 @@ html:not(:has(.subnav)) { scroll-padding-top: 96px; }
 
 <section class="section green">
   <div class="container">
-    <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Mehr als Betreuung</h2>
+    <div class="section-head"><h2>Mehr als Betreuung</h2>
       <p>Lange Öffnungszeiten, eine hauseigene Küche und viel Raum zum Spielen, Lernen und Entspannen – mitten in der Stadt.</p></div>
-    <div class="stats three">
-      <div class="stat reveal"><b>6:45</b><span>Uhr öffnen wir – der Hort betreut bis 18:00 Uhr, auch in den Ferien</span></div>
-      <div class="stat reveal"><b>max. 30</b><span>Schließtage im Jahr – gleich in allen Abteilungen</span></div>
-      <div class="stat reveal"><b>2</b><span>Köchinnen kochen täglich frisch mit regionalen Zutaten</span></div>
-    </div>
+    <p class="fakten reveal">Wir öffnen um <b>6:45 Uhr</b>, der Hort betreut bis <b>18:00 Uhr</b>, auch in den Ferien. Geschlossen ist an <b>höchstens 30 Tagen</b> im Jahr, gleich in allen Abteilungen. Und <b>zwei Köchinnen</b> kochen jeden Tag frisch mit regionalen Zutaten.</p>
     <div class="teasers">
       <a class="teaser reveal" href="#" data-href-img="i31" data-full="" data-full-img="i31" data-group="home" data-title="Weißer Raum" data-text="Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hier können die Kinder auf dem Wasserbett träumen, unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i31" alt="Weißer Raum" width="1600" height="1200" class="ph lq-p2160031" decoding="async"><div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
       <a class="teaser reveal" href="#" data-href-img="i35" data-full="" data-full-img="i35" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht."><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i35" alt="Hauseigene Küche" width="1600" height="1200" class="ph lq-p2160054" decoding="async"><div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
@@ -2672,9 +2695,9 @@ html:not(:has(.subnav)) { scroll-padding-top: 96px; }
 
 <section class="section alt" id="rundgang">
   <div class="container">
-    <div class="section-head"><span class="kicker">Virtueller Rundgang</span><h2>Schauen Sie sich bei uns um</h2>
+    <div class="section-head"><h2>Schauen Sie sich bei uns um</h2>
       <p>Fotos aus allen drei Bereichen zeigen Gruppenräume, Turnraum, Weißen Raum, Bistro und Küche – ganz ohne Termin.</p></div>
-    <div class="teasers three">
+    <div class="teasers three rundgang-reihe">
       <a class="teaser reveal" href="#kinderkrippe:rundgang"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i50" alt="Puppenecke der Kinderkrippe" width="1600" height="1200" class="ph lq-puppenecke3" decoding="async"><div><h3>Kinderkrippe</h3><p>16 Bilder ansehen <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p></div></a>
       <a class="teaser reveal" href="#kindergarten:rundgang"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i7" alt="Gruppenraum im Kindergarten" width="1600" height="1200" class="ph lq-blick-vom-nebenraum-in-den-gruppenraum" decoding="async"><div><h3>Kindergarten</h3><p>16 Bilder ansehen <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p></div></a>
       <a class="teaser reveal" href="#kinderhort:rundgang"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i23" alt="Kreativraum im Kinderhort" width="1200" height="1600" class="ph lq-kreatviraum-4" decoding="async"><div><h3>Kinderhort</h3><p>24 Bilder ansehen <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p></div></a>
@@ -2684,7 +2707,7 @@ html:not(:has(.subnav)) { scroll-padding-top: 96px; }
 
 <section class="section" id="aktuell">
   <div class="container">
-    <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
+    <div class="section-head"><h2>Termine &amp; Unterlagen</h2>
       <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
     <div class="heute"><div class="status-card" id="status" aria-live="polite" hidden>
         <div class="status-row"><span class="status-dot"></span><strong class="status-today"></strong></div>
@@ -2714,15 +2737,15 @@ html:not(:has(.subnav)) { scroll-padding-top: 96px; }
 
 <section class="section alt" id="ferienplan">
   <div class="container">
-    <div class="section-head"><span class="kicker">Schließtage</span><h2>Schließtage 2026/2027</h2><p>In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.</p></div>
+    <div class="section-head"><h2>Schließtage 2026/2027</h2><p>In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.</p></div>
     <div class="btn-row no-print plan-knoepfe"><a class="btn btn-primary" href="#aktuelles:ferienplan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> Ganzen Ferienplan ansehen</a><a class="btn btn-ghost" href="#" data-hinweis="Kalenderdatei auf der veröffentlichten Seite"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> Schließtage in meinen Kalender</a></div><div class="yearline reveal" data-yearline></div>
   </div>
 </section>
 
 <section class="section tight">
   <div class="container">
-    <div class="cta-band reveal">
-      <div><h2>Lernen Sie uns <span class="mark under">kennen<svg class="mark-svg" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 12 C 25 6 55 4 97 9 M12 17 C 40 13 70 13 90 15"/></svg></span></h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
+    <div class="cta-band cta-offen reveal">
+      <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> 0931&nbsp;2789892&nbsp;0</a>
         <a class="btn btn-ghost js-magnet" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Platz anfragen</a>

@@ -552,7 +552,7 @@ def section(id_, kicker, title, intro, content, cls="", center=False):
     idattr = f' id="{id_}"' if id_ else ""
     return f'''<section class="section {cls}"{idattr}>
   <div class="container">
-    <div class="section-head{c}"><span class="kicker">{kicker}</span><h2>{title}</h2>{i}</div>
+    <div class="section-head{c}">{f'<span class="kicker">{kicker}</span>' if kicker else ""}<h2>{title}</h2>{i}</div>
     {content}
   </div>
 </section>'''
@@ -586,11 +586,11 @@ def plan_table():
   <button class="btn btn-ghost js-poster" type="button">{icon("poster", 20)} Jahresposter drucken</button>
 </div>'''
 
-def ferienplan_section(cls="alt", kurz=False):
+def ferienplan_section(cls="alt", kurz=False, kicker="Schließtage"):
     if not PLAN:
         return section("ferienplan", "Schließtage", "Schließtage", "Der Ferienplan für das nächste Kita-Jahr folgt in Kürze.", "", cls=cls)
     if kurz:
-        return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
+        return section("ferienplan", kicker, f"Schließtage {PLAN_JAHR}",
                        "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                        f'<div class="btn-row no-print plan-knoepfe"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
                        f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>'
@@ -735,17 +735,17 @@ home = f'''
       <a class="area-card theme-krippe reveal" href="kinderkrippe.html">
         <div class="thumb">{img("img/p2160110.jpg", "Gruppenraum der Kinderkrippe")}<span class="age">ab 11 Monaten</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten – vom 11. Monat bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p><span class="more">Mehr erfahren {icon("arrow", 18)}</span></div>
+        <div class="body"><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten – vom 11. Monat bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p><span class="more">Zur Kinderkrippe {icon("arrow", 18)}</span></div>
       </a>
       <a class="area-card theme-kiga reveal" href="kindergarten.html">
         <div class="thumb">{img("img/blick-vom-fenster-in-den-raum.jpg", "Gruppenraum im Kindergarten")}<span class="age">3 Jahre bis Einschulung</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="more">Mehr erfahren {icon("arrow", 18)}</span></div>
+        <div class="body"><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="more">Zum Kindergarten {icon("arrow", 18)}</span></div>
       </a>
       <a class="area-card theme-hort reveal" href="kinderhort.html">
         <div class="thumb">{img("img/kreatviraum-5-1.jpg", "Kreativraum im Kinderhort")}<span class="age">ab der Einschulung</span></div>
         <div class="bar"></div>
-        <div class="body"><h3>Kinderhort</h3><p>Für alle Schulformen – mit begleiteten, korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung bis 18:00 Uhr.</p><span class="more">Mehr erfahren {icon("arrow", 18)}</span></div>
+        <div class="body"><h3>Kinderhort</h3><p>Für alle Schulformen – mit begleiteten, korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung bis 18:00 Uhr.</p><span class="more">Zum Kinderhort {icon("arrow", 18)}</span></div>
       </a>
     </div>
   </div>
@@ -753,13 +753,9 @@ home = f'''
 
 <section class="section green">
   <div class="container">
-    <div class="section-head"><span class="kicker">Das zeichnet uns aus</span><h2>Mehr als Betreuung</h2>
+    <div class="section-head"><h2>Mehr als Betreuung</h2>
       <p>Lange Öffnungszeiten, eine hauseigene Küche und viel Raum zum Spielen, Lernen und Entspannen – mitten in der Stadt.</p></div>
-    <div class="stats three">
-      <div class="stat reveal"><b>6:45</b><span>Uhr öffnen wir – der Hort betreut bis 18:00 Uhr, auch in den Ferien</span></div>
-      <div class="stat reveal"><b>max. 30</b><span>Schließtage im Jahr – gleich in allen Abteilungen</span></div>
-      <div class="stat reveal"><b>2</b><span>Köchinnen kochen täglich frisch mit regionalen Zutaten</span></div>
-    </div>
+    <p class="fakten reveal">Wir öffnen um <b>6:45 Uhr</b>, der Hort betreut bis <b>18:00 Uhr</b>, auch in den Ferien. Geschlossen ist an <b>höchstens 30 Tagen</b> im Jahr, gleich in allen Abteilungen. Und <b>zwei Köchinnen</b> kochen jeden Tag frisch mit regionalen Zutaten.</p>
     <div class="teasers">
       <a class="teaser reveal" href="img/p2160031.jpg" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}">{img("img/p2160031.jpg", "Weißer Raum")}<div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
       <a class="teaser reveal" href="img/p2160054.jpg" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht.">{img("img/p2160054.jpg", "Hauseigene Küche")}<div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
@@ -788,9 +784,9 @@ home = f'''
 
 <section class="section alt" id="rundgang">
   <div class="container">
-    <div class="section-head"><span class="kicker">Virtueller Rundgang</span><h2>Schauen Sie sich bei uns um</h2>
+    <div class="section-head"><h2>Schauen Sie sich bei uns um</h2>
       <p>Fotos aus allen drei Bereichen zeigen Gruppenräume, Turnraum, Weißen Raum, Bistro und Küche – ganz ohne Termin.</p></div>
-    <div class="teasers three">
+    <div class="teasers three rundgang-reihe">
       <a class="teaser reveal" href="kinderkrippe.html#rundgang">{img("img/puppenecke3.jpg", "Puppenecke der Kinderkrippe")}<div><h3>Kinderkrippe</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
       <a class="teaser reveal" href="kindergarten.html#rundgang">{img("img/blick-vom-nebenraum-in-den-gruppenraum.jpg", "Gruppenraum im Kindergarten")}<div><h3>Kindergarten</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
       <a class="teaser reveal" href="kinderhort.html#rundgang">{img("img/kreatviraum-4.jpg", "Kreativraum im Kinderhort")}<div><h3>Kinderhort</h3><p>24 Bilder ansehen {icon("arrow", 18)}</p></div></a>
@@ -800,7 +796,7 @@ home = f'''
 
 <section class="section" id="aktuell">
   <div class="container">
-    <div class="section-head"><span class="kicker">Aktuelles</span><h2>Termine &amp; Unterlagen</h2>
+    <div class="section-head"><h2>Termine &amp; Unterlagen</h2>
       <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
     <div class="heute">{STATUS_CARD}{krank_block("in-hero")}</div>
     <div class="woche reveal" data-woche aria-label="Diese Woche: Termine, Schließtage und Feiertage"></div>
@@ -823,12 +819,12 @@ home = f'''
   </div>
 </section>
 
-{ferienplan_section(kurz=True)}
+{ferienplan_section(kurz=True, kicker="")}
 {STIMMEN}
 <section class="section tight">
   <div class="container">
-    <div class="cta-band reveal">
-      <div><h2>Lernen Sie uns <span class="mark under">kennen{MARK_UNDER}</span></h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
+    <div class="cta-band cta-offen reveal">
+      <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
       <div class="actions">
         <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931&nbsp;2789892&nbsp;0</a>
         <a class="btn btn-ghost js-magnet" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>

@@ -2466,3 +2466,30 @@ table.plan tbody tr:hover { background: rgb(var(--ink-rgb) / .04); }
 .ask-form input:focus-visible { border-color: var(--ink); box-shadow: 0 0 0 3px rgb(var(--ink-rgb) / .35); }
 /* Seiten ohne Leiste „Auf dieser Seite“: Sprungziele nur um die Kopfleiste versetzt, nicht um 152 px */
 html:not(:has(.subnav)) { scroll-padding-top: 96px; }
+
+/* ===== Weniger Vorlage (22.11.2026), aus entwurf/muster ===== */
+/* Nur eine Hervorhebung im Startbereich: der Kreis um „Qualität“ */
+.hero h1 .hl { background: none; }
+/* Zahlen der Startseite als ein Satz */
+.fakten { max-width: 62ch; margin: 0 0 clamp(32px, 4vw, 48px); font: 500 clamp(1.2rem, 1rem + .7vw, 1.5rem)/1.55 var(--font-body); color: var(--ink); text-wrap: pretty; }
+.fakten b { font-weight: 700; color: var(--surface); }
+/* Rundgang auf der Startseite: offene Fotoreihe im Hochformat statt Karten */
+.rundgang-reihe { gap: clamp(16px, 2.4vw, 32px); }
+html body .rundgang-reihe .teaser { background: transparent; box-shadow: none; padding: 0; border-radius: 0; overflow: visible; }
+html body .teasers.three.rundgang-reihe .teaser > div { background: transparent; padding: 16px 2px 0; }
+html body .rundgang-reihe .teaser img { aspect-ratio: 4 / 5; border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.rundgang-reihe .teaser h3 { font-size: 1.3rem; }
+@media (hover: hover) and (pointer: fine) { html body .rundgang-reihe .teaser:hover { translate: none; box-shadow: none; } }
+@media (max-width: 700px) { .rundgang-reihe { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .rundgang-reihe .teaser h3 { font-size: 1rem; } .rundgang-reihe .teaser p { font-size: .84rem; } }
+/* Abschluss der Startseite ohne farbigen Kasten */
+.cta-band.cta-offen { background: none; box-shadow: none; border-radius: 0; padding: 40px 0 0; border-top: 1.5px solid var(--ink); }
+.cta-band.cta-offen h2 { font-size: var(--step-2); }
+/* Kontakt: „Kind krankmelden“ groß und abgesetzt, die übrigen Wege als schlichte Liste */
+.quick-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 32px; }
+html body .quick-grid > .quick-card:first-child { grid-column: 1 / -1; padding: 32px; margin-bottom: 24px; background: var(--rose); box-shadow: none; }
+.quick-grid > .quick-card:first-child strong { font-size: 1.5rem; }
+.quick-grid > .quick-card:first-child .quick-icon { background: var(--paper); width: 60px; height: 60px; }
+html body .quick-grid > .quick-card:not(:first-child) { background: none; box-shadow: none; border-radius: 0; padding: 18px 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
+.quick-grid > .quick-card:not(:first-child) .quick-icon { width: 40px; height: 40px; border-radius: 12px; }
+@media (hover: hover) and (pointer: fine) { html body .quick-grid > a.quick-card:not(:first-child):hover { translate: none; box-shadow: none; } .quick-grid > a.quick-card:not(:first-child):hover strong { text-decoration: underline; text-underline-offset: 4px; } }
+@media (max-width: 900px) { .quick-grid { grid-template-columns: minmax(0, 1fr); } }

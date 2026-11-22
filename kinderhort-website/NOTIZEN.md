@@ -617,3 +617,8 @@ Entscheidung offen.
 ## Web Interface Guidelines umgesetzt (21.11.2026)
 - Sichtbarer Fokus im Suchfenster und im Frage-Feld (Kontakt), Sprungziele auf Seiten ohne Leiste nur 96 px versetzt, Suchfeld ohne Rechtschreibprüfung, „Grombühl“ mit translate="no", Tage bis zum Termin mit einem einzigen „jetzt“ berechnet.
 - Vorschau „Weniger Vorlage“ (`entwurf/muster/`): redundante Etiketten weg, Rundgang als offene Fotoreihe, nur noch Kreis um „Qualität“, Zahlen als Satz, Kontakt mit großer Krankmeldung und Liste, Abschluss ohne Kasten, genauere Linktexte. Noch nicht eingebaut.
+
+## Weniger Vorlage eingebaut (22.11.2026)
+- Startseite: Etiketten „Das zeichnet uns aus“, „Virtueller Rundgang“, „Aktuelles“, „Schließtage“ entfernt (section() lässt leeres Etikett weg); Zahlen als Satz (`.fakten`); Rundgang als offene Fotoreihe (`.rundgang-reihe`); nur Kreis um „Qualität“; Abschluss ohne Kasten (`.cta-offen`); Linktexte „Zur Kinderkrippe“ usw.
+- Kontakt: „Kind krankmelden“ groß in Rosé, übrige Wege als Liste.
+- Vorschau Kinderhort-Etiketten (`entwurf/hort-etiketten/`): 6 von 10 entfallen (Räumlichkeiten, Tagesablauf, Das zeichnet uns aus, Zusammenarbeit mit den Schulen, Meistgestellte Fragen, Schließtage).
