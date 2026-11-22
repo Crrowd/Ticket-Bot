@@ -622,3 +622,4 @@ Entscheidung offen.
 - Startseite: Etiketten „Das zeichnet uns aus“, „Virtueller Rundgang“, „Aktuelles“, „Schließtage“ entfernt (section() lässt leeres Etikett weg); Zahlen als Satz (`.fakten`); Rundgang als offene Fotoreihe (`.rundgang-reihe`); nur Kreis um „Qualität“; Abschluss ohne Kasten (`.cta-offen`); Linktexte „Zur Kinderkrippe“ usw.
 - Kontakt: „Kind krankmelden“ groß in Rosé, übrige Wege als Liste.
 - Vorschau Kinderhort-Etiketten (`entwurf/hort-etiketten/`): 6 von 10 entfallen (Räumlichkeiten, Tagesablauf, Das zeichnet uns aus, Zusammenarbeit mit den Schulen, Meistgestellte Fragen, Schließtage).
+- Etiketten auf den Bereichsseiten aufgeräumt (22.11.2026): entfallen sind Tagesablauf, Das zeichnet uns aus, Meistgestellte Fragen, Schließtage (alle drei), Räumlichkeiten (Kindergarten, Kinderhort) und Zusammenarbeit mit den Schulen (Kinderhort). Bei der Krippe bleibt „Räumlichkeiten“, weil die Überschrift „Viel Platz für die Kleinsten“ die Räume nicht nennt.

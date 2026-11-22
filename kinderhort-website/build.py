@@ -897,7 +897,7 @@ krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", 
 ]), cls="alt")
 krippe += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von der Kinderkrippe sehen?",
                   "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("krippe", krippe_tour))
-krippe += section("tagesablauf", "Tagesablauf", "Der Tagesablauf der Kinderkrippe", "", timeline([
+krippe += section("tagesablauf", "", "Der Tagesablauf der Kinderkrippe", "", timeline([
     ("6:45 – 9:00 Uhr", "Bringzeit, die Kinder kommen in der Kita an."),
     ("9:00 Uhr", "Freispiel"),
     ("9:30 – 10:00 Uhr", "Gemeinsames Frühstück – zubereitet durch die hauseigene Küche"),
@@ -911,7 +911,7 @@ krippe += section("tagesablauf", "Tagesablauf", "Der Tagesablauf der Kinderkripp
     ("ab 15:00 Uhr", "Freispiel am Nachmittag mit gruppenübergreifendem Spielen – meist im Freien"),
     ("16:30 Uhr", "Die Kinderkrippe schließt"),
 ]), cls="alt")
-krippe += section("auszeichnung", "Das zeichnet uns aus", "Was unsere Krippe besonders macht", "", features([
+krippe += section("auszeichnung", "", "Was unsere Krippe besonders macht", "", features([
     "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung etwa vier Wochen",
     "Behutsame Begleitung der Kinder in Pflegesituationen, bei Mahlzeiten, Ruhen und Schlafen",
     "Portfolio als Instrument der Dokumentation über den Entwicklungsverlauf des Kindes",
@@ -922,7 +922,7 @@ krippe += section("auszeichnung", "Das zeichnet uns aus", "Was unsere Krippe bes
     "Hauseigene Küche mit zwei Köchinnen, die täglich abwechslungsreiches und saisonales Essen frisch zubereiten",
     "Das Waschen von Bettwäsche wird von der Kita übernommen",
 ], [("Begleitung &amp; Team", [0, 1, 2, 3]), ("Haus &amp; Garten", [4, 5, 7]), ("Alltag", [6, 8])]))
-krippe += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zur Kinderkrippe", "", faq([
+krippe += section("fragen", "", "Häufige Fragen zur Kinderkrippe", "", faq([
     ("Müssen wir Windeln usw. für unser Kind mitbringen?", "Ja, jede Familie bringt fürs eigene Kind Windeln, Feuchttücher und ggf. Wundschutzcreme etc. mit, damit jedes Kind mit seinen eigenen Produkten gewickelt werden kann. Bei Bedarf bekommen Sie beim Abholen einen Notizzettel mit der Bitte, neue Produkte mitzubringen, mit nach Hause."),
     ("Gibt es die Möglichkeit für mein Kind zum Schlafen?", "Der Tagesablauf ist speziell auf die Bedürfnisse von Kleinstkindern abgestimmt und sieht somit täglich eine Ruhezeit nach dem Mittagessen vor. In heimeliger Atmosphäre werden die Kinder in ihr Bett gelegt und zum Einschlafen begleitet."),
     ("Ist die Zugehörigkeit zur katholischen Kirche notwendig?", "Wir sind eine katholische Einrichtung, feiern die Feste des christlichen Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen."),
@@ -930,7 +930,7 @@ krippe += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zur Kinder
 ]), cls="alt")
 krippe += abc_section("KrippenABC", "Zum Downloadbereich")
 krippe += anmeldung_section("Kinderkrippe")
-krippe += ferienplan_section(kurz=True)
+krippe += ferienplan_section(kurz=True, kicker="")
 page("kinderkrippe.html", "Kinderkrippe", "Kinderkrippe im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Sonnen- und Sternengruppe für Kinder ab 11 Monaten – mit virtuellem Rundgang, Tagesablauf und FAQ.", "kinderkrippe.html", krippe, "theme-krippe")
 
 # =====================================================================
@@ -969,7 +969,7 @@ kiga += section("ueberblick", "Auf einen Blick", "Der Kindergarten", "", info_ca
     ("clock", "Öffnungszeiten", "6:45 – 16:30 Uhr", "<p>Der Kindergarten öffnet um 6:45 Uhr. Bis 8:00 Uhr wird die gruppenübergreifende Frühbetreuung angeboten. Um 16:30 Uhr schließt der Kindergarten. Es kann nach Bedarf der Spätdienst im Hort bis 17:30 Uhr dazugebucht werden.</p>"),
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
-kiga += section("raeume", "Räumlichkeiten", "Große, helle Räume zum Spielen und Lernen", "", '''<div class="groups"><span class="muted">Es gibt drei Kindergartengruppen:</span>
+kiga += section("raeume", "", "Große, helle Räume zum Spielen und Lernen", "", '''<div class="groups"><span class="muted">Es gibt drei Kindergartengruppen:</span>
 <span class="group-chip"><span class="group-ic gi-baer" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="12" cy="13.5" r="7"/><path d="M10.2 15.8c1 .8 2.6.8 3.6 0M9.5 12h.01M14.5 12h.01"/></svg></span>Bärengruppe</span>
 <span class="group-chip"><span class="group-ic gi-biene" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14.5" rx="5" ry="6"/><path d="M7.4 12.5h9.2M7.4 16.5h9.2M10.5 8.8 9 6M13.5 8.8 15 6"/><path d="M7.6 11.2C5 10.3 3.6 8 4.6 6.6S8 6.8 9 9M16.4 11.2c2.6-.9 4-3.2 3-4.6S16 6.8 15 9"/></svg></span>Bienengruppe</span>
 <span class="group-chip"><span class="group-ic gi-spatz" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
@@ -981,7 +981,7 @@ kiga += section("raeume", "Räumlichkeiten", "Große, helle Räume zum Spielen u
 ]), cls="alt")
 kiga += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von unserem Kindergarten sehen?",
                 "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("kiga", kiga_tour))
-kiga += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kindergartens", "", timeline([
+kiga += section("tagesablauf", "", "Der Tagesablauf des Kindergartens", "", timeline([
     ("6:45 – 8:00 Uhr", "Gruppenübergreifende Frühbetreuung in wechselnden Gruppen"),
     ("8:00 – 9:00 Uhr", "Bringzeit, Ankommen in der eigenen Gruppe, Freispiel, begleitendes Frühstück; jedes Kind darf entscheiden, wann es in dieser Zeit frühstücken möchte"),
     ("9:00 Uhr", "Bringzeit Ende"),
@@ -996,7 +996,7 @@ kiga += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kindergartens
     ("16:00 – 16:30 Uhr", "Freispiel, Abholzeit"),
     ("16:30 – 17:30 Uhr", "Spätdienst – gruppenübergreifende Betreuung von Hort und Kindergarten"),
 ]), cls="alt")
-kiga += section("auszeichnung", "Das zeichnet uns aus", "Was unseren Kindergarten besonders macht", "", features([
+kiga += section("auszeichnung", "", "Was unseren Kindergarten besonders macht", "", features([
     "Mit langen Öffnungszeiten entlasten wir vor allem berufstätige Eltern, auch in den Ferien",
     "Nur max. 30 Schließtage im Jahr",
     "Hohe Fachkraftquote",
@@ -1016,7 +1016,7 @@ kiga += section("auszeichnung", "Das zeichnet uns aus", "Was unseren Kindergarte
   <div class="reveal"><h3>Englisch</h3><p>Hier lernen die Kinder spielerisch die Farben, die Körperteile des Menschen, verschiedene Tiere und singen englische Lieder. Ziel ist es, den Kindern eine Grundlage und einen vertrauten Umgang mit der englischen Sprache zu vermitteln.</p></div>
   <div class="reveal"><h3>Vorkurs Deutsch</h3><p>Der Vorkurs Deutsch ist für Vorschulkinder, die im sprachlichen Bereich eine zusätzliche schulvorbereitende Förderung benötigen. Die Förderung bezieht sich auf die Grammatik, das Sprachverständnis und die Erweiterung des Wortschatzes.</p></div>
 </div>''')
-kiga += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kindergarten", "", faq([
+kiga += section("fragen", "", "Häufige Fragen zum Kindergarten", "", faq([
     ("Arbeitet der Kindergarten nach dem offenen Konzept?", "Wir haben feste Gruppen mit festen Bezugspersonen. Bei verschiedenen Aktionen und Aktivitäten arbeiten wir gruppenübergreifend."),
     ("Muss mein Kind für den Kindergarten sauber sein?", "Falls Ihr Kind noch eine Windel benötigt, unterstützen wir es auf dem Weg zum Sauberwerden."),
     ("Wie verläuft die Eingewöhnung im Kindergarten?", "Die Eingewöhnungsphase verläuft für jedes Kind unterschiedlich. Das pädagogische Personal geht auf jedes Kind bedürfnisorientiert ein, um diese Phase in Absprache mit den Eltern bestmöglich zu gestalten. Bitte nehmen Sie sich am Anfang Zeit, Ihr Kind gemeinsam mit dem Fachpersonal in den Kindergartenalltag einzugewöhnen."),
@@ -1026,7 +1026,7 @@ kiga += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kinderga
 ]), cls="alt")
 kiga += abc_section("KindergartenABC", "Zum Downloadbereich")
 kiga += anmeldung_section("Kindergarten")
-kiga += ferienplan_section(kurz=True)
+kiga += ferienplan_section(kurz=True, kicker="")
 page("kindergarten.html", "Kindergarten", "Kindergarten im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Bären-, Bienen- und Spatzengruppe für Kinder von 3 Jahren bis zur Einschulung.", "kindergarten.html", kiga, "theme-kiga")
 
 # =====================================================================
@@ -1156,7 +1156,7 @@ hort += section("ueberblick", "Auf einen Blick", "Der Kinderhort", "", info_card
     ("pot", "Küche", "frisch &amp; regional", f"<p>{KUECHE}</p>"),
 ]))
 hort += section("paedagogik", "Pädagogik", "So arbeiten wir im Hort", "Unser Ziel ist es, jedem Kind eine ganzheitliche Handlungs-, Leistungs- und Lernfähigkeit zu vermitteln. Bildung ist für uns nicht nur Förderung, sondern etwas ganz Alltägliches: Wie erfolgreich Kinder in der Schule lernen, hängt entscheidend davon ab, wie neugierig und motiviert sie sind und wie viel Spaß sie am Lernen haben.", PAED_HORT)
-hort += section("raeume", "Räumlichkeiten", "Räume für Hausaufgaben, Kreativität und Erholung", "", rooms([
+hort += section("raeume", "", "Räume für Hausaufgaben, Kreativität und Erholung", "", rooms([
     ("Kreativraum", "Freizeitbereich der Hortkinder, in dem eine Puppenecke, eine Bauecke, ein Piratenausguck, mehrere Spielteppiche, ein Billardtisch und ein Kreativbereich mit unterschiedlichsten Materialien zur Verfügung stehen.", "img/kreatviraum-4.jpg"),
     ("Hausaufgabenräume", "Nach Alter und Klassenstufen getrennt fertigt jedes Kind hier eigenständig seine Hausaufgaben an. Jedes Kind erhält die Hilfe und Unterstützung, die es für seine Aufgaben benötigt. Hier werden die Hausaufgaben jedes Kindes von den Erziehern korrigiert und auf Vollständigkeit überprüft.", "img/img_1222.jpg"),
     ("Spielflur", "Hier hat jedes Kind seinen eigenen Spind für Büchertasche und persönliches Eigentum. Im Spielflur gibt es eine Bibliothek mit Büchern für jedes Lesealter, eine gemütliche Lesetreppe, einen Spielbereich mit Spieltischen und einen Tischkicker.", "img/p2160035.jpg"),
@@ -1168,7 +1168,7 @@ hort += section("raeume", "Räumlichkeiten", "Räume für Hausaufgaben, Kreativi
 ]), cls="alt")
 hort += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr vom Kinderhort sehen?",
                 "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("hort", hort_tour))
-hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts", "", timeline([
+hort += section("tagesablauf", "", "Der Tagesablauf des Kinderhorts", "", timeline([
     ("6:45 – 8:00 Uhr", "In der Frühbetreuung können die Kinder vor der Schule schon spielen oder sich noch ein wenig ausruhen. Gemeinsam gehen die Schulkinder dann zu Unterrichtsbeginn in die Schule."),
     ("11:15 Uhr", "Jetzt haben die ersten Kinder bereits Schulschluss und im Hort die Möglichkeit, draußen zu spielen, das Gespräch mit den Erzieherinnen und Erziehern zu suchen oder sich nach dem anstrengenden Schultag erst einmal auszuruhen und zu entspannen."),
     ("12:00 – 13:45 Uhr", "Gleitendes Mittagessen in gemütlicher Runde. Gleichzeitig stehen den Kindern in dieser Zeit alle Bereiche des Hortes zum Spielen zur Verfügung."),
@@ -1182,7 +1182,7 @@ hort += section("tagesablauf", "Tagesablauf", "Der Tagesablauf des Kinderhorts",
     "Täglich",
     ("17:00 – 18:00 Uhr", "Die allgemeine Hortzeit endet um 17:00 Uhr. Kinder, deren Eltern mehr Zeit gebucht haben, besuchen bis 18:00 Uhr den Spätdienst."),
 ]), cls="alt")
-hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …", "", f'''
+hort += section("auszeichnung", "", "Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …", "", f'''
 <div class="split split-top">
   <div class="reveal"><p>Wir betrachten jedes Kind stärkenorientiert. Wir fördern die Selbstständigkeit der Schulkinder durch unser gruppenübergreifendes Konzept, das den Kindern die Möglichkeit gibt, selbst zu bestimmen, wo und mit wem sie spielen oder wie sie ihre Freizeit gestalten. Altersübergreifende Kontakte zu Jüngeren und Älteren stärken die Kinder in Verantwortungsübernahme, Rücksicht und Eigenverantwortlichkeit. Zahlreiche Partizipationsmöglichkeiten zeigen den Kindern, wie sie Einfluss auf ihren Alltag im Kinderhort nehmen und diesen selbst mitbestimmen können, z. B. in Kinderkonferenzen, Kinderbefragungen und Gruppengesprächen mit den Erziehern.</p></div>
   <div class="reveal"><p>Unsere Fachkraftquote beträgt <strong>100 Prozent</strong>, das heißt, dass die Hortkinder ausschließlich von ausgebildeten, staatlich anerkannten Erziehern betreut werden. Wir sind Ausbildungsstätte und beschäftigen regelmäßig Studierende, die sich in der Ausbildung zum Erzieher befinden.</p>
@@ -1205,7 +1205,7 @@ hort += section("auszeichnung", "Das zeichnet uns aus", "Der Kath. Kinder- und J
     "Ausflug an jedem Freitag, z. B. Stadtbücherei, Museum …",
     "Hohe Elternzufriedenheit mit dem Hort (Quelle: Elternbefragung, Zufriedenheitsnote 1,4)",
 ], [("Räume &amp; Küche", [0, 1, 3, 7]), ("Zeiten &amp; Ferien", [2, 4, 9, 10]), ("Lernen &amp; Qualität", [5, 6, 8, 11])]))
-hort += section("schulen", "Zusammenarbeit mit den Schulen", "Gemeinsam mit den Schulen", "", f'''
+hort += section("schulen", "", "Gemeinsam mit den Schulen", "", f'''
 <div class="split">
   <figure class="reveal"><a href="img/zusammenarbeit.jpg" data-full="img/zusammenarbeit.jpg" data-group="schule" data-title="Zusammenarbeit mit den Schulen" data-text="Besuch des Hortes auf dem Adventszauber der Josefschule">{img("img/zusammenarbeit.jpg", "Besuch des Hortes auf dem Adventszauber der Josefschule")}</a>
   <figcaption>Besuch des Hortes auf dem Adventszauber der Josefschule</figcaption></figure>
@@ -1214,7 +1214,7 @@ hort += section("schulen", "Zusammenarbeit mit den Schulen", "Gemeinsam mit den 
   <p>Danach besuchen unsere Fachkräfte zweimal im Jahr die Lehrersprechstunden und sprechen über jedes Hortkind: Wie können wir es noch besser fördern und begleiten? Bei Bedarf tauschen wir uns jederzeit mit den Lehrkräften aus oder begleiten Sie in die Sprechstunde.</p>
   <p>Wir sind offen für alle Schulformen: Grundschulen, Mittelschulen, Realschulen, Gymnasien sowie Förderschulen.</p></div>
 </div>''', cls="alt")
-hort += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kinderhort", "", faq([
+hort += section("fragen", "", "Häufige Fragen zum Kinderhort", "", faq([
     ("Hat der Hort auch in den Schulferien geöffnet?", "In den Schulferien hat der Hort von 6:45 bis 18:00 Uhr geöffnet. Die Kinder können entsprechend der von den Eltern gebuchten Ferientage und Ferienstunden den Hort besuchen. Die Schließtage des Hortes betragen maximal 30 pro Jahr."),
     ("Ich habe mehrere Kinder in dieser Kita – ist die Kita in den Ferien für alle Kinder geöffnet?", "Kinderkrippe, Kindergarten und Kinderhort haben gleiche Ferientage."),
     ("Braucht mein Kind im Hort eine Brotzeit?", "Im Hort erhält jedes Kind ein Mittagessen. Falls Ihr Kind am Nachmittag noch einmal Hunger bekommt, ist es ratsam, eine Brotzeit und eine Trinkflasche mit Wasser mitzuschicken."),
@@ -1226,7 +1226,7 @@ hort += section("fragen", "Meistgestellte Fragen", "Häufige Fragen zum Kinderho
 ]))
 hort += abc_section("KinderhortABC", "KinderhortABC herunterladen")
 hort += anmeldung_section("Kinderhort")
-hort += ferienplan_section(kurz=True)
+hort += ferienplan_section(kurz=True, kicker="")
 page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Betreuung für Schulkinder aller Schulformen von 6:45 bis 18:00 Uhr – mit Hausaufgabenbetreuung, Ferienprogramm und Freitagsausflügen.", "kinderhort.html", hort, "theme-hort")
 
 # =====================================================================
