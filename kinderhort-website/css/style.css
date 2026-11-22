@@ -2493,3 +2493,15 @@ html body .quick-grid > .quick-card:not(:first-child) { background: none; box-sh
 .quick-grid > .quick-card:not(:first-child) .quick-icon { width: 40px; height: 40px; border-radius: 12px; }
 @media (hover: hover) and (pointer: fine) { html body .quick-grid > a.quick-card:not(:first-child):hover { translate: none; box-shadow: none; } .quick-grid > a.quick-card:not(:first-child):hover strong { text-decoration: underline; text-underline-offset: 4px; } }
 @media (max-width: 900px) { .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ===== Handy-Menü und Rundgang (22.11.2026) ===== */
+/* Kontakt-Knopf im Handy-Menü hervorgehoben: Petrol gefüllt statt nur umrandet */
+@media (max-width: 1180px) {
+  html body .main-nav .nav-cta, html body .main-nav .nav-cta[aria-current="page"] { background: var(--ink); color: var(--paper); box-shadow: 0 10px 24px -14px rgb(var(--deep-rgb) / .7); }
+  html body .main-nav .nav-cta:focus-visible { outline-color: var(--rose); }
+}
+/* Rundgang auf Touch-Geräten: Bildtext ruhig auf der hellen Karte, ohne dunklen Verlauf (der gehört nur zur Maus-Ansicht) */
+@media not ((hover: hover) and (pointer: fine)) {
+  html body .tour-item figcaption { background: none; color: var(--ink); }
+  html body .tour-item figcaption span { color: var(--ink-soft); }
+}

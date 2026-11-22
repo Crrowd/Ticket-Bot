@@ -279,7 +279,6 @@ def header(active):
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
       <ul>
         {"".join(items)}
-        {NAV_EXTRA}
       </ul>
     </nav>
     <button class="search-btn js-search" type="button" aria-keyshortcuts="Control+K">{icon("search", 18)}<span>Suche</span></button>

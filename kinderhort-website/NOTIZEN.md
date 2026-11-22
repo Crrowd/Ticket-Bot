@@ -623,3 +623,8 @@ Entscheidung offen.
 - Kontakt: „Kind krankmelden“ groß in Rosé, übrige Wege als Liste.
 - Vorschau Kinderhort-Etiketten (`entwurf/hort-etiketten/`): 6 von 10 entfallen (Räumlichkeiten, Tagesablauf, Das zeichnet uns aus, Zusammenarbeit mit den Schulen, Meistgestellte Fragen, Schließtage).
 - Etiketten auf den Bereichsseiten aufgeräumt (22.11.2026): entfallen sind Tagesablauf, Das zeichnet uns aus, Meistgestellte Fragen, Schließtage (alle drei), Räumlichkeiten (Kindergarten, Kinderhort) und Zusammenarbeit mit den Schulen (Kinderhort). Bei der Krippe bleibt „Räumlichkeiten“, weil die Überschrift „Viel Platz für die Kleinsten“ die Räume nicht nennt.
+
+## Handy-Menü und Rundgang (22.11.2026)
+- Kasten „Wir sind für Sie da“ (Telefon, E-Mail, Anschrift) aus dem Handy-Menü entfernt (NAV_EXTRA wird nicht mehr eingesetzt).
+- Kontakt-Knopf im Handy-Menü Petrol gefüllt.
+- Rundgang auf Touch-Geräten: kein dunkler Verlauf mehr hinter dem Bildtext; weiche Kanten der Fotoreihe 16 statt 32 px.

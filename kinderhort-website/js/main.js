@@ -1969,8 +1969,8 @@
       var max = el.scrollWidth - el.clientWidth;
       if (max < 2) { el.classList.remove("edge-mask"); return; }
       el.classList.add("edge-mask");
-      el.style.setProperty("--ml", el.scrollLeft > 2 ? "32px" : "0px");
-      el.style.setProperty("--mr", el.scrollLeft < max - 2 ? "32px" : "0px");
+      el.style.setProperty("--ml", el.scrollLeft > 2 ? "16px" : "0px");
+      el.style.setProperty("--mr", el.scrollLeft < max - 2 ? "16px" : "0px");
     }
     els.forEach(function (el) { el.addEventListener("scroll", function () { upd(el); }, { passive: true }); upd(el); });
     addEventListener("resize", function () { els.forEach(upd); });
