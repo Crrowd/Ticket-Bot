@@ -23,6 +23,8 @@ elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von
                     Solange die Datei leer ist, erscheint der Abschnitt nicht.
 
 Datumsformat immer TT.MM.JJJJ, z. B. 04.12.2026.
+Kein Semikolon (;) im Text verwenden – es trennt die Spalten. Lieber Komma oder Punkt.
+(Passiert es doch, meldet die Daten-Prüfung die Zeile.)
 
 Danach im Ordner kinderhort-website einmal ausführen:   python3 build.py
 

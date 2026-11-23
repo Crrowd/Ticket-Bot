@@ -13,7 +13,19 @@ e = html.escape
 # ---------- Daten aus daten/*.csv ----------
 def read_csv(name):
     with open(os.path.join(W, "daten", name), encoding="utf-8-sig", newline="") as f:
-        return [r for r in csv.DictReader(f, delimiter=";") if any((v or "").strip() for v in r.values())]
+        rd = csv.DictReader(f, delimiter=";")
+        rows = []
+        for n, r in enumerate(rd, start=2):
+            rest = r.pop(None, None)
+            if rest and any((x or "").strip() for x in rest):
+                # ein Semikolon im Text teilt die Zeile: den Rest wieder an die letzte Spalte hängen und melden
+                letzte = rd.fieldnames[-1]
+                r[letzte] = ";".join([r.get(letzte) or ""] + rest)
+                (_melde if "_melde" in globals() else lambda *x: CSV_HINWEISE.append(x))("!", name, n, f"Semikolon im Text der Spalte „{letzte}“ – die Zeile wurde zusammengefügt. Bitte Semikolon im Text durch Komma oder Punkt ersetzen.")
+            if any((v or "").strip() for v in r.values() if isinstance(v, str)):
+                rows.append(r)
+        return rows
+CSV_HINWEISE = []
 
 def d(s):
     return dt.datetime.strptime(s.strip(), "%d.%m.%Y").date()
@@ -21,6 +33,7 @@ def d(s):
 # ---------- Daten-Wächter: prüft die Tabellen und meldet Fehler in Klartext ----------
 PRUEFUNG = []
 def _melde(art, datei, zeile, text): PRUEFUNG.append((art, datei, zeile, text))
+PRUEFUNG.extend(CSV_HINWEISE)
 def gueltig(datei, rows, felder, pflicht=()):
     """Behält nur Zeilen, deren Datumsfelder lesbar sind; alles andere wird gemeldet."""
     ok = []
@@ -54,6 +67,9 @@ FEIERTAGE = gueltig("feiertage.csv", read_csv("feiertage.csv"), ["Datum"], ["Dat
 HINWEISE = gueltig("hinweise.csv", read_csv("hinweise.csv"), ["Datum"], ["Datum", "Titel"])
 # Wichtiger Hinweis (kurzfristige Schließung, Streik …): erscheint von–bis oben auf allen Seiten und in der Status-Anzeige
 DRINGEND = gueltig("dringend.csv", read_csv("dringend.csv"), ["von", "bis"], ["von", "Text"]) if os.path.exists(os.path.join(W, "daten/dringend.csv")) else []
+for _n, _r in enumerate(DRINGEND, start=2):
+    if len(_r["Text"]) > 220:
+        _melde("!", "dringend.csv", _n, f"Hinweis ist {len(_r['Text'])} Zeichen lang – auf dem Handy erscheinen nur die ersten drei Zeilen, der Rest hinter „Weiterlesen“. Kürzer ist besser (bis etwa 200 Zeichen).")
 _heute = dt.date.today()
 for n, r in enumerate(TERMINE, start=2):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
@@ -680,12 +696,13 @@ def hinweise_html():
 
 def ev(r):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
-    day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if a.month == b.month else f"{a.day:02d}.{a.month:02d}.–")
-    mon = f"{MONATE[b.month - 1]} {b.year}"
+    lang = a.month != b.month or a.year != b.year
+    day = f"{a.day:02d}" if a == b else (f"{a.day:02d}.–{b.day:02d}." if not lang else f"{a.day:02d}.{a.month:02d}.")
+    mon = f"{MONATE[b.month - 1]} {b.year}" if not lang else (f"bis {b:%d.%m.}" if a.year == b.year else f"bis {b:%d.%m.%y}")
     key = f'{a.isoformat()}|{r["Titel"]}'
     tag = "".join(f'<span class="ev-bereich">{BEREICH_LABEL[b]}</span>' for b in r.get("_b", []))
     return (f'<li class="event reveal" data-bereich="{" ".join(r.get("_b", []))}" data-neu="{erstmals("t|" + key)}" data-ende="{b.isoformat()}" data-von="{a.isoformat()}" data-titel="{e(r["Titel"])}" data-text="{e(r["Beschreibung"])}">'
-            f'<div class="date"><b>{day}</b><span>{mon}</span></div>'
+            f'<div class="date{" lang" if lang else ""}"><b>{day}</b><span>{mon}</span></div>'
             f'<p><strong>{e(r["Titel"])}{gruppen_zeichen(r["Titel"] + " " + r["Beschreibung"])}</strong>{tag}{rich(r["Beschreibung"])}</p>'
             f'<div class="ev-acts"><button class="save" type="button" aria-pressed="false" data-key="{e(key)}" aria-label="{e(r["Titel"])} merken">'
             f'<span class="a">Merken</span><span class="b" aria-hidden="true">{icon("check", 16)} Gemerkt</span></button>'

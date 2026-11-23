@@ -745,6 +745,14 @@
     dBand.innerHTML = '<div class="container dringend-in"><span class="dringend-ic" aria-hidden="true">!</span><p><strong>Wichtiger Hinweis:</strong> <span></span></p></div>';
     $("p span", dBand).textContent = dringend.text;
     var mainEl = document.querySelector("main"); if (mainEl) mainEl.prepend(dBand);
+    /* langer Hinweis: auf schmalen Bildschirmen drei Zeilen, Rest hinter „Weiterlesen“ */
+    var dP = $("p", dBand);
+    requestAnimationFrame(function () {
+      if (dP.scrollHeight <= dP.clientHeight + 2) return;
+      var mehr = document.createElement("button"); mehr.type = "button"; mehr.className = "dringend-mehr"; mehr.textContent = "Weiterlesen"; mehr.setAttribute("aria-expanded", "false");
+      mehr.addEventListener("click", function () { var auf = dBand.classList.toggle("offen"); mehr.textContent = auf ? "Weniger" : "Weiterlesen"; mehr.setAttribute("aria-expanded", String(auf)); });
+      $(".dringend-in", dBand).appendChild(mehr);
+    });
     ["status", "status-kontakt"].forEach(function (id) { var bx = document.getElementById(id); if (!bx) return; var sub = $(".status-sub", bx); if (sub) { sub.textContent = dringend.text; sub.classList.add("ist-dringend"); } });
   }
 
