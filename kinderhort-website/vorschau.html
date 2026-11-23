@@ -2619,6 +2619,12 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
   .quick-grid > .quick-card:target { box-shadow: inset 3px 0 0 var(--rose-deep); }
 }
 
+/* ===== Bewegung reduzieren: letzte Lücken (23.11.2026) ===== */
+@media (prefers-reduced-motion: reduce) {
+  .read-more::details-content { transition: none; }
+  .yl-pin { transition: none; }
+}
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -6466,7 +6472,7 @@ window.KITA = {
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.open = true; var bis = d.getBoundingClientRect().height;
       d.style.height = von + "px"; void d.offsetHeight; d.style.height = "";
-      fade([{ opacity: 0 }, { opacity: 1 }], { duration: o.ms * .75, delay: o.ms * (o.spaet || .15), easing: "ease-out", fill: "backwards" });
+      fade([{ opacity: 0 }, { opacity: 1 }], { duration: o.ms * .75, delay: o.ms * (o.spaet || .15), easing: EASE_OUT, fill: "backwards" });
       d.style.overflow = "hidden";
       lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; };
