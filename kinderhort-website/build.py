@@ -605,7 +605,7 @@ def ferienplan_section(cls="alt", kurz=False, kicker="Schließtage"):
                        f'<div class="btn-row no-print plan-knoepfe"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
                        f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>'
                        '<div class="yearline reveal" data-yearline></div>', cls=cls)
-    return section("ferienplan", "Schließtage", f"Schließtage {PLAN_JAHR}",
+    return section("ferienplan", kicker, f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                    '<div class="yearline reveal" data-yearline></div>' + plan_table(), cls=cls)
 
@@ -1246,7 +1246,7 @@ akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen
                 [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Schließtage")], alt="Bauecke im Kinderhort")
 EV_FILTER = ('<div class="ev-filter no-print" role="group" aria-label="Termine nach Bereich">' + "".join(
     f'<button type="button" data-b="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{t}</button>' for k, t in [("alle", "Alle"), ("krippe", "Krippe"), ("kiga", "Kindergarten"), ("hort", "Hort")]) + "</div>") if any(r.get("_b") for r in TERMINE) else ""
-akt += section("termine", "Vormerktermine", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
+akt += section("termine", "", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
 <div class="ev-tools">
 <div class="view-switch no-print" role="group" aria-label="Ansicht der Termine"><span class="vs-knob" aria-hidden="true"></span>
     <button type="button" data-view="list" aria-pressed="true">{icon("list", 18)} Liste</button><button type="button" data-view="cal" aria-pressed="false">{icon("grid", 18)} Kalender</button></div>
@@ -1285,7 +1285,7 @@ if BRIEFE: akt += section("elternbrief", "Elternbriefe", "Liebe Eltern!", "Alle 
   {"".join(brief(i, r) for i, r in enumerate(BRIEFE))}
   <p class="brief-empty muted" hidden>Kein Elternbrief gefunden.</p>
 </div>''', cls="alt")
-akt += ferienplan_section(cls="")
+akt += ferienplan_section(cls="", kicker="")
 page("aktuelles.html", "Aktuelles", "Aktuelle Termine, Vormerktermine und Schließtage des Kath. Kinder- und Jugendhorts Grombühl in Würzburg.", "aktuelles.html", akt)
 
 # =====================================================================
@@ -1333,17 +1333,14 @@ downl += section("lotse", "Schnell zum Ziel", "Was möchten Sie tun?", "Eine Fra
     lotse("Mein Kind ist ein paar Tage nicht da", "Urlaub, Besuch bei den Großeltern oder Kur: Sagen Sie uns kurz Bescheid, dann können wir Personal und Essen planen.", [(URLAUB_MAIL, "mail", "Abwesenheit melden")]),
     lotse("Ich möchte einen Platz anfragen", "Die vorbereitete E-Mail enthält alle Angaben, die wir für Ihre Anfrage brauchen.", [(PLATZ_MAIL, "mail", "Platz anfragen")]),
 ]) + "</div>", cls="tight")
-downl += section("dateien", "Downloads", "Informationsblätter zum Herunterladen", "", f'''
-<div class="downloads">
-  <div class="dl-group theme-krippe reveal"><h3>Kinderkrippe</h3><ul>{plan_dl}{medi_dl}</ul></div>
-  <div class="dl-group theme-kiga reveal"><h3>Kindergarten</h3><ul>{plan_dl}{medi_dl}</ul></div>
-  <div class="dl-group theme-hort reveal"><h3>Kinderhort</h3><ul>{plan_dl}
-    {dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z")}
-    {medi_dl}</ul></div>
+downl += section("dateien", "", "Informationsblätter zum Herunterladen", "", f'''
+<div class="downloads two">
+  <div class="dl-group reveal"><h3>Für alle Bereiche</h3><ul>{plan_dl}{medi_dl}</ul></div>
+  <div class="dl-group theme-hort reveal"><h3>Nur Kinderhort</h3><ul>{dl("downloads/HortABC.pdf", "KinderhortABC", "Alles Wichtige von A bis Z")}</ul></div>
 </div>''')
 def ics_dl(href, title, sub):
     return f'<li><a class="dl-link" href="{href}" download><span class="ficon">ICS</span><span>{title}<small>{sub}</small></span></a></li>'
-downl += section("kalender", "Kalender", "Termine direkt ins Handy übernehmen", "Die Kalenderdateien lassen sich mit einem Tipp in den Kalender von iPhone, Android oder Outlook übernehmen.", f'''
+downl += section("kalender", "", "Termine direkt ins Handy übernehmen", "Die Kalenderdateien lassen sich mit einem Tipp in den Kalender von iPhone, Android oder Outlook übernehmen.", f'''
 <div class="downloads two">
   <div class="dl-group reveal"><h3>Schließtage</h3><ul>{ics_dl("downloads/schliesstage.ics", f"Schließtage {PLAN_JAHR}", "Kalenderdatei für alle Bereiche")}</ul></div>
   <div class="dl-group reveal"><h3>Termine</h3><ul>{ics_dl("downloads/termine.ics", "Termine &amp; Veranstaltungen", "Kalenderdatei")}</ul></div>
@@ -1360,8 +1357,6 @@ downl += section("kalender", "Kalender", "Termine direkt ins Handy übernehmen",
     <a class="btn btn-ghost" href="webcal://{SITE.split("//", 1)[1].rstrip("/")}/downloads/schliesstage.ics">{icon("calendar", 20)} Schließtage abonnieren</a>{copy_btn(SITE + "downloads/schliesstage.ics", "Abo-Adresse Schließtage")}
   </div>
 </div>''', cls="alt")
-downl += section("", "Aktuelles", "Hier finden Sie alle aktuellen Termine", "",
-                 f'<a class="btn btn-primary" href="aktuelles.html">Zu den Terminen {icon("arrow", 20)}</a>', cls="tight")
 page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts Grombühl: Ferienplan, KinderhortABC und Medikamentenvereinbarung.", "downloads.html", downl)
 
 # =====================================================================
@@ -1398,11 +1393,12 @@ kon += f'''<section class="section tight" id="schnell">
     </div>
   </div>
 </section>'''
-kon += section("frag", "Schnelle Antwort", "Fragen Sie einfach", "Tippen Sie Ihre Frage ein – die Antwort kommt aus unseren häufigen Fragen. Findet sich nichts, rufen Sie uns gern an.", f'''
+kon += section("frag", "Schnelle Antwort", "Fragen Sie einfach", "Tippen Sie Ihre Frage ein, zum Beispiel „Haben Sie am 24.12. offen?“, „Darf die Oma mein Kind abholen?“ oder „Nummer der Spatzengruppe“. Findet sich nichts, rufen Sie uns gern an.", f'''
 <div class="ask reveal">
   <div class="ask-log" aria-live="polite"><div class="msg bot">Hallo! Was möchten Sie wissen?<div class="sugg"><button type="button">Brotzeit</button><button type="button">Eingewöhnung</button><button type="button">Schulferien</button><button type="button">Windeln</button></div></div></div>
   <label class="feld-label" for="ask-in">Ihre Frage</label><form class="ask-form"><input id="ask-in" name="frage" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ihre Frage, z. B. „Braucht mein Kind eine Brotzeit?“ …"><button class="btn btn-primary" type="submit">Fragen</button></form>
-</div>''', cls="tight alt")
+</div>
+<p class="frag-weiter">Ausführliche Antworten nach Bereich: <a href="kinderkrippe.html#fragen">Kinderkrippe</a> · <a href="kindergarten.html#fragen">Kindergarten</a> · <a href="kinderhort.html#fragen">Kinderhort</a></p>''', cls="tight alt")
 kon += f'''<section class="section">
   <div class="container contact-grid">
     <div>

@@ -639,3 +639,7 @@ Entscheidung offen.
 - Offen: Zeitangaben – die Leitung schickt die richtigen Uhrzeiten (drei Rückfragen in der Liste).
 - Vorschau „Verbesserungen 3“ (`entwurf/verbesserungen-3/`): Aktuelles ohne „Vormerktermine“/„Schließtage“-Etikett, Kontakt mit Links zu den Fragen je Bereich, Downloads: Dateien nur einmal („Für alle Bereiche“, „Nur Kinderhort“), ruhigere Dateizeilen, ohne Etiketten „Downloads“/„Kalender“ und ohne Schlussabschnitt. Noch nicht eingebaut.
 - Start-Checkliste für die Leitung erstellt (Uhrzeiten, 4 Kreativraum-Fotos benennen, Impressum, Datenschutz, Foto-Einverständnis, PDF-Autor, Domain/Umzug, HTTPS, Handy-Test, spätere Wünsche).
+
+## Verbesserungen 3 eingebaut, Fragefeld schlauer (23.11.2026)
+- Aktuelles ohne Etiketten „Vormerktermine“/„Schließtage“; Kontakt mit Links zu den Fragen je Bereich; Downloads: „Für alle Bereiche“ + „Nur Kinderhort“, helle Dateizeilen, ohne Etiketten „Downloads“/„Kalender“ und ohne Schlussabschnitt.
+- „Fragen Sie einfach“: versteht jetzt Wochentage und Daten („Haben Sie am 24.12. offen?“), Medikamente, Abholung durch andere Personen, Abwesenheit/Urlaub des Kindes, Fragen nach Kosten (Verweis auf persönliches Gespräch), Telefonnummer je Bereich; Synonyme (Essen/Mittagessen/Brotzeit, Schlaf/Ruhezeit, Windel/Wickeln …); bevorzugt Antworten aus dem genannten Bereich. Bereichswörter allein („Krippe“) lösen keine Durchwahl mehr aus.

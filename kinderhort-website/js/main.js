@@ -1586,12 +1586,22 @@
     var box = $(".ask"); if (!box || !K || !K.faq) return;
     var log = $(".ask-log", box), inp = $("#ask-in", box), F = K.faq, dir = durchwahlen();
     var STOP = " der die das und ist ein eine einen mein meine meinem kind kinder wir ich sie es zu in im fuer mit auch noch wie was gibt muss muessen kann koennen hat haben den dem des von auf an bei oder ihr ihre unser unsere wann wo wer sind bitte mir mich man ";
-    function stems(t) { return normDe(t).split(" ").filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }).map(function (w) { return w.length > 5 ? w.slice(0, -2) : w; }); }
+    function stems0(t) { return normDe(t).split(" ").filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; }).map(function (w) { return w.length > 5 ? w.slice(0, -2) : w; }); }
+    /* Wörter, die Eltern oft anders sagen als die Fragen: jedes Wort einer Gruppe findet auch die anderen */
+    var SYN = [["essen", "mittagess", "brotzeit", "fruehstue", "verpflegu", "kueche", "mahlzeit", "snack"], ["schlaf", "mittagssch", "ruhezeit", "ausruh", "muede"],
+      ["kost", "gebueh", "beitra", "preis", "bezahl", "geld"], ["windel", "wickel", "toilett", "topf"], ["abhol", "abholzei", "holen"], ["bring", "bringzei", "morgens"],
+      ["hausaufga", "lernen", "schule"], ["eingewoeh", "anfang", "erste tag", "start"], ["medikame", "medizin", "tablett", "arznei"], ["allergi", "unvertraeg", "vegetar", "schweine"]];
+    function stems(t) {
+      var st = stems0(t), plus = [];
+      st.forEach(function (w) { SYN.forEach(function (g) { if (g.some(function (x) { return w.indexOf(x) === 0 || x.indexOf(w) === 0; })) g.forEach(function (x) { if (st.indexOf(x) < 0 && plus.indexOf(x) < 0) plus.push(x); }); }); });
+      return st.concat(plus);
+    }
     function trifft(s, text) { if (text.indexOf(s) >= 0) return 1; if (s.length < 5) return 0; return text.split(" ").some(function (w) { return nah(s, w.slice(0, s.length)); }) ? .7 : 0; }
     function rang(q) {
       var st = stems(q);
       var idf = st.map(function (s) { var df = F.filter(function (f) { return trifft(s, normDe(f.q + " " + f.a)); }).length; return df ? Math.log(1 + F.length / df) : 0; });
-      return F.map(function (f) { var q2 = normDe(f.q), a2 = normDe(f.a), v = 0; st.forEach(function (s, k) { v += idf[k] * (2 * trifft(s, q2) + trifft(s, a2)); }); return { f: f, v: v }; })
+      var nq = normDe(q), ber = /krippe/.test(nq) ? "Kinderkrippe" : /garten|kiga/.test(nq) ? "Kindergarten" : /hort|schulkind/.test(nq) ? "Kinderhort" : "";
+      return F.map(function (f) { var q2 = normDe(f.q), a2 = normDe(f.a), v = 0; st.forEach(function (s, k) { v += idf[k] * (2 * trifft(s, q2) + trifft(s, a2)); }); if (ber && v && f.b === ber) v *= 1.6; return { f: f, v: v }; })
         .filter(function (x) { return x.v >= 1; }).sort(function (a, b) { return b.v - a.v; })
         .filter(function (x, i, all) { return all.findIndex(function (y) { return y.f.q === x.f.q; }) === i; });
     }
@@ -1604,13 +1614,38 @@
       function line(t) { f.appendChild(document.createTextNode(t)); }
       function br() { f.appendChild(el("br")); }
       /* Gruppen im Satz finden: jedes Wort einzeln, Füllwörter zählen nicht */
-      var gruppen = dir.filter(function (d) { return !/allgemein/i.test(d.label) && normDe(q).split(" ").some(function (w) { var a = DW_ALIAS[w]; if (a) return d.keys.some(function (k) { return k.indexOf(a) === 0; }); var gi = w.indexOf("gru"), w2 = gi >= 4 ? w.slice(0, gi) : w; return w2.length >= 4 && d.keys.some(function (k) { return /gruppe$/.test(k) && passt(w2, k.replace(/gruppe$/, "")); }); }); });
+      var gruppen = dir.filter(function (d) { return !/allgemein/i.test(d.label) && normDe(q).split(" ").some(function (w) { var a = DW_ALIAS[w]; if (a) return /gruppe$/.test(a) && d.keys.some(function (k) { return k.indexOf(a) === 0; }); var gi = w.indexOf("gru"), w2 = gi >= 4 ? w.slice(0, gi) : w; return w2.length >= 4 && d.keys.some(function (k) { return /gruppe$/.test(k) && passt(w2, k.replace(/gruppe$/, "")); }); }); });
       if (/krank|fieber|abmeld| fehlt| nicht kommen|ausfall/.test(n)) {
         line("Bitte melden Sie Ihr Kind möglichst früh am Morgen ab – am schnellsten telefonisch direkt in der Gruppe oder per E-Mail mit unserer Vorlage."); br();
         f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "index.html#krankmelden")); return f;
       }
+      if (/medikament|medizin|tablette|arznei|salbe|zaepfchen|notfallmedi/.test(n)) {
+        line("Medikamente dürfen wir nur geben, wenn eine unterschriebene Medikamentenvereinbarung vorliegt."); br();
+        f.appendChild(link("Medikamentenvereinbarung (PDF)", "downloads/Medikamentenvereinbarung.pdf")); return f;
+      }
+      if (/(oma|opa|nachbar|freund|tante|onkel|babysitter|andere person|jemand anders|jemand anderes|abholperson)/.test(n) && /abhol|holt|holen/.test(n)) {
+        line("Das geht – schicken Sie uns vorher eine kurze E-Mail mit dem Namen der Person. Sie bringt bitte einen Ausweis mit."); br();
+        f.appendChild(link("Abholung ankündigen (E-Mail-Vorlage)", "kontakt.html#schnell")); return f;
+      }
+      if (/ abwesen| verreis| (im|in den|in) urlaub (ist|sind|fahren|faehrt)| (nicht da|fehlt) (ist|von|vom|bis)| (kind|tochter|sohn) .*(urlaub|verreis|nicht da)/.test(n)) {
+        line("Sagen Sie uns kurz Bescheid, von wann bis wann Ihr Kind nicht da ist – dann können wir Personal und Essen planen."); br();
+        f.appendChild(link("Abwesenheit melden (E-Mail-Vorlage)", "kontakt.html#schnell")); return f;
+      }
+      var tagM = n.match(/ (montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag) /), datM = String(q).match(/(\d{1,2})\.\s?(\d{1,2})\.?(\d{2,4})?/);
+      if ((tagM || datM) && / offen| geoeffnet| geschlossen| zu | auf | betreu| auf hat| zu hat| kommen/.test(n)) {
+        var d = new Date(); d.setHours(12, 0, 0, 0);
+        if (datM) { var jj = datM[3] ? +datM[3] : d.getFullYear(); if (jj < 100) jj += 2000; var d2 = new Date(jj, +datM[2] - 1, +datM[1], 12); if (!datM[3] && d2 < d) d2.setFullYear(jj + 1); d = d2; }
+        else { var ziel = TAGE.map(normDe).indexOf(tagM[1]); var plus1 = (ziel - d.getDay() + 7) % 7; if (plus1 === 0 && / naechst/.test(n)) plus1 = 7; d.setDate(d.getDate() + plus1); }
+        var grund = closedReason(d), wann = TAGE[d.getDay()] + ", " + fmt(d);
+        line(grund ? wann + ": geschlossen – " + grund + "." : wann + ": ganz normal geöffnet, ab " + K.oeffnung + " Uhr; Krippe und Kindergarten bis 16:30 Uhr, Hort bis 18:00 Uhr."); return f;
+      }
+      if (/ kost| gebuehr| beitra| preis| bezahl/.test(n)) {
+        line("Zu den Elternbeiträgen beraten wir Sie gern persönlich – rufen Sie uns an oder schreiben Sie uns."); br();
+        f.appendChild(link("0931 2789892 0", "tel:+4993127898920")); line(" · "); f.appendChild(link("E-Mail schreiben", "mailto:kinderhort.grombuehl@t-online.de")); return f;
+      }
       if (gruppen.length || / telefon| nummer| anruf| durchwahl| erreich/.test(n)) {
-        var hs = gruppen.length ? gruppen : dir.filter(function (d) { return /allgemein/i.test(d.label); });
+        var bArea = /krippe/.test(n) ? "Kinderkrippe" : /garten|kiga/.test(n) ? "Kindergarten" : /hort/.test(n) ? "Kinderhort" : "";
+        var hs = gruppen.length ? gruppen : bArea ? dir.filter(function (d) { return d.area === bArea; }) : dir.filter(function (d) { return /allgemein/i.test(d.label); });
         hs.slice(0, 4).forEach(function (d, i) { if (i) br(); line(d.label + " (" + d.area + "): "); f.appendChild(link(d.num, d.href)); });
         if (!gruppen.length) { br(); f.appendChild(link("Alle Durchwahlen", "kontakt.html#durchwahl-finden")); }
         return f;
