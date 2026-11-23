@@ -2554,6 +2554,10 @@ html body .dl-link { background: rgb(var(--ink-rgb) / .05); }
 .dringend-ic { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 700 1rem/1 var(--font-body); }
 .status-sub.ist-dringend { font-weight: 600; color: var(--ink); }
 html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6px; }
+.dringend-in strong { font-weight: 700; }
+/* Downloads: lange Dateinamen („Medikamentenvereinbarung“) brechen auf sehr schmalen Handys um statt über den Rand zu ragen */
+.dl-link > span:not(.ficon) { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+.dl-group, .dl-group ul, .dl-group li { min-width: 0; }
 
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }

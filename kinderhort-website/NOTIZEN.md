@@ -647,3 +647,7 @@ Entscheidung offen.
 - Aushang A4 mit QR-Codes (Website, Kind krankmelden, Termine abonnieren): `entwurf/aushang/aushang.pdf`, erzeugt mit `aushang.py` (Paket qrcode). QR-Codes vor dem Aushängen mit einem Handy testen, sobald die Domain läuft.
 - Fehlerseite und Weiterleitungen alter WordPress-Adressen gab es schon (404.html, .htaccess).
 - Team-Anleitung aktualisiert (23.11.2026): neuer Schritt 6 „Wichtiger Hinweis“ (dringend.csv), Übersicht ergänzt, neue Bildschirmfotos im hellen Kartenstil; PDF neu: Anleitung-Webseite-pflegen.pdf (8 Seiten).
+
+## Generalprobe (23.11.2026)
+- Alle 10 Seiten × 5 Breiten (320, 390, 768, 1280, 1920): keine Skriptfehler, keine fehlenden Dateien oder Bilder, alle Bilder mit Alt-Text, 306 interne Links und alle Sprungziele vorhanden, Telefon- und E-Mail-Links korrekt, Druck des Ferienplans ohne Kopfleiste, offline erreichbar (Service Worker), Fragefeld 16 Beispielfragen.
+- Behoben: Downloads ragten bei 320 px über den Rand („Medikamentenvereinbarung“); Kalenderdateien falten lange Zeilen jetzt nach RFC 5545 (für Outlook).

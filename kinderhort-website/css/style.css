@@ -2548,3 +2548,6 @@ html body .dl-link { background: rgb(var(--ink-rgb) / .05); }
 .status-sub.ist-dringend { font-weight: 600; color: var(--ink); }
 html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6px; }
 .dringend-in strong { font-weight: 700; }
+/* Downloads: lange Dateinamen („Medikamentenvereinbarung“) brechen auf sehr schmalen Handys um statt über den Rand zu ragen */
+.dl-link > span:not(.ficon) { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+.dl-group, .dl-group ul, .dl-group li { min-width: 0; }

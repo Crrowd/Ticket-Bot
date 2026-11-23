@@ -1637,7 +1637,18 @@ def ics(events, name, slug):
                 f"SUMMARY:{esc(title)}", f"DESCRIPTION:{esc(desc)}", "TRANSP:TRANSPARENT",
                 "BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:Morgen: {esc(title)}", "TRIGGER:-PT6H", "END:VALARM", "END:VEVENT"]
     out.append("END:VCALENDAR")
-    return "\r\n".join(out) + "\r\n"
+    def falten(z):
+        """Zeilen über 75 Bytes nach RFC 5545 umbrechen (Fortsetzung beginnt mit einem Leerzeichen)."""
+        teile, akt = [], ""
+        for ch in z:
+            grenze = 75 if not teile else 74
+            if len((akt + ch).encode("utf-8")) > grenze:
+                teile.append(akt); akt = ch
+            else:
+                akt += ch
+        teile.append(akt)
+        return "\r\n ".join(teile)
+    return "\r\n".join(falten(z) for z in out) + "\r\n"
 
 with open(os.path.join(W, "downloads/schliesstage.ics"), "w", encoding="utf-8", newline="") as f:
     f.write(ics([(d(r["erster Schließtag"]), d(r["letzter Schließtag"]), f"Kita geschlossen ({r['Anlass']})",
