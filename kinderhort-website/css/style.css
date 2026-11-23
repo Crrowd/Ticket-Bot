@@ -2576,3 +2576,8 @@ button, .btn, .round-btn, .copy-btn, .icon-btn, .subnav a, .nav-toggle, [role="t
 @media (min-width: 701px) { .dringend-mehr { display: none; } }
 /* 3 Rückmeldung beim Antippen statt hängendem Hover */
 @media (hover: none) { .btn:active, .round-btn:active, a.quick-card:active, .dl-link:active { opacity: .82; } }
+
+/* Räume ohne Foto (Krippe: Eingangs- und Außenbereich): offene Textzeilen statt halb leerer Kästen */
+html body .rooms-text .room.no-img { background: transparent; box-shadow: none; border-radius: 0; border-top: 1.5px solid rgb(var(--ink-rgb) / .2); align-self: start; }
+html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
+.rooms-text { align-items: start; margin-top: 32px; }

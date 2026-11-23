@@ -653,8 +653,8 @@ def abc_section(name, link_text):
   </div>
 </section>'''
 
-KUECHE = ("Zwei Köchinnen bereiten täglich in der hauseigenen Küche des Hortes frisch und aus regionalen Zutaten "
-          "ein kindgerechtes warmes Mittagessen nach den neuesten ernährungswissenschaftlichen Grundsätzen zu.")
+KUECHE = ("Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten – "
+          "nach aktuellen ernährungswissenschaftlichen Grundsätzen.")
 WEISSER_RAUM = ("Dieser Raum steht ganz im Zeichen der Ruhe und Entspannung. Hier können die Kinder auf dem Wasserbett träumen, "
                 "unter dem Lichtwasserfall entspannen und auf einer Sofalandschaft die Farbreflexe der Wassersäulen beobachten. "
                 "Regelmäßig können Kinder in diesem Raum bei Traumreisen und autogenem Training mitmachen.")
