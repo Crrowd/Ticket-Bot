@@ -2601,3 +2601,13 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
   html body .areas .area-card .body p { font-size: .98rem; line-height: 1.5; margin-bottom: 10px; }
   html body .areas .area-card .more { padding-top: 0; border-top: 0; }
 }
+
+/* Kontakt: wer über einen Link („Kind krankmelden“ …) ankommt, sieht kurz, welcher Eintrag gemeint ist */
+.quick-grid > .quick-card { position: relative; isolation: isolate; }
+.quick-grid > .quick-card::before { content: ""; position: absolute; inset: 0 -10px; z-index: -1; border-radius: 14px; background: var(--rose); opacity: 0; pointer-events: none; }
+.quick-grid > .quick-card:target::before { animation: ziel-hinweis 1s var(--ease-out) .45s both; }   /* wartet den Seitenwechsel ab */
+@keyframes ziel-hinweis { 0% { opacity: 0; } 18% { opacity: .75; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .quick-grid > .quick-card:target::before { animation: none; opacity: 0; }
+  .quick-grid > .quick-card:target { box-shadow: inset 3px 0 0 var(--rose-deep); }
+}

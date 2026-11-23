@@ -742,7 +742,7 @@ home = f'''
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
-      <a class="hero-krank" href="kontakt.html#schnell"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
+      <a class="hero-krank" href="kontakt.html#krank"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</figure>
@@ -1393,19 +1393,19 @@ kon += f'''<section class="section tight" id="schnell">
         <a class="btn btn-ghost" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 21)} E-Mail schreiben</a>
         <p class="kz-status" id="status-kontakt" hidden><span class="status-today"></span><span class="status-sub"></span></p>
       </div>
-      <a class="quick-card reveal" href="{KRANK_MAIL}">
+      <a class="quick-card reveal" id="krank" href="{KRANK_MAIL}">
         <span class="quick-icon">{icon("mail", 26)}</span>
         <span><strong>Kind krankmelden</strong><span>Öffnet eine vorbereitete E-Mail – nur noch Name, Gruppe und Zeitraum eintragen. Gerne auch telefonisch in der Gruppe.</span></span>
       </a>
-      <a class="quick-card reveal" href="{PLATZ_MAIL}">
+      <a class="quick-card reveal" id="platz" href="{PLATZ_MAIL}">
         <span class="quick-icon">{icon("users", 26)}</span>
         <span><strong>Platz anfragen</strong><span>Öffnet eine vorbereitete E-Mail mit allen Angaben, die wir für Ihre Anfrage brauchen.</span></span>
       </a>
-      <a class="quick-card reveal" href="{ABHOL_MAIL}">
+      <a class="quick-card reveal" id="abholung" href="{ABHOL_MAIL}">
         <span class="quick-icon">{icon("users", 26)}</span>
         <span><strong>Abholung ankündigen</strong><span>Wenn eine andere Person Ihr Kind abholt: vorbereitete E-Mail mit allen nötigen Angaben.</span></span>
       </a>
-      <a class="quick-card reveal" href="{URLAUB_MAIL}">
+      <a class="quick-card reveal" id="abwesenheit" href="{URLAUB_MAIL}">
         <span class="quick-icon">{icon("calendar", 26)}</span>
         <span><strong>Abwesenheit melden</strong><span>Urlaub oder ein paar freie Tage: kurze E-Mail mit Zeitraum, damit wir planen können.</span></span>
       </a>
@@ -1581,7 +1581,7 @@ with open(os.path.join(W, "manifest.webmanifest"), "w", encoding="utf-8") as f:
                "lang": "de", "start_url": "./index.html", "scope": "./", "display": "standalone", "background_color": "#A8C5C0", "theme_color": "#A8C5C0",
                "icons": [{"src": "img/app-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "img/app-512.png", "sizes": "512x512", "type": "image/png"},
                          {"src": "img/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
-               "shortcuts": [{"name": "Kind krankmelden", "short_name": "Krankmelden", "url": "./kontakt.html#schnell", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
+               "shortcuts": [{"name": "Kind krankmelden", "short_name": "Krankmelden", "url": "./kontakt.html#krank", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
                              {"name": "Termine", "url": "./aktuelles.html#termine", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
                              {"name": "Durchwahlen", "url": "./kontakt.html#durchwahl-finden", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]}]},
               f, ensure_ascii=False, indent=1)
@@ -1619,8 +1619,8 @@ SUCHE += [
     ("Kalenderdateien", "Downloads", "downloads.html#kalender", "ics kalender handy termine schließtage"),
     ("Kontakt aufs Handy speichern", "Kontakt · Adressbuch", "kontakt.html#anschrift", "adressbuch kontakt speichern vcard visitenkarte handy telefonbuch"),
     ("Kontakt & Durchwahlen", "Telefon, E-Mail, Anschrift", "kontakt.html", "telefon telefonnummer anrufen email mail adresse anschrift anfahrt lindleinstraße sternengruppe sonnengruppe bienengruppe spatzengruppe bärengruppe"),
-    ("Kind krankmelden", "Vorbereitete E-Mail", "kontakt.html#schnell", "krank krankmeldung abwesend fehlt entschuldigen"),
-    ("Platz anfragen", "Vorbereitete E-Mail", "kontakt.html#schnell", "anmeldung anmelden platz kitaplatz bewerbung aufnahme"),
+    ("Kind krankmelden", "Vorbereitete E-Mail", "kontakt.html#krank", "krank krankmeldung abwesend fehlt entschuldigen"),
+    ("Platz anfragen", "Vorbereitete E-Mail", "kontakt.html#platz", "anmeldung anmelden platz kitaplatz bewerbung aufnahme"),
     ("Impressum", "Rechtliches", "impressum.html", "impressum verein vorstand"),
     ("Datenschutz", "Rechtliches", "datenschutz.html", "datenschutz dsgvo kdg cookies"),
 ]

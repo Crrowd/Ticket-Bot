@@ -2609,6 +2609,16 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
   html body .areas .area-card .more { padding-top: 0; border-top: 0; }
 }
 
+/* Kontakt: wer über einen Link („Kind krankmelden“ …) ankommt, sieht kurz, welcher Eintrag gemeint ist */
+.quick-grid > .quick-card { position: relative; isolation: isolate; }
+.quick-grid > .quick-card::before { content: ""; position: absolute; inset: 0 -10px; z-index: -1; border-radius: 14px; background: var(--rose); opacity: 0; pointer-events: none; }
+.quick-grid > .quick-card:target::before { animation: ziel-hinweis 1s var(--ease-out) .45s both; }   /* wartet den Seitenwechsel ab */
+@keyframes ziel-hinweis { 0% { opacity: 0; } 18% { opacity: .75; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .quick-grid > .quick-card:target::before { animation: none; opacity: 0; }
+  .quick-grid > .quick-card:target { box-shadow: inset 3px 0 0 var(--rose-deep); }
+}
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -2731,7 +2741,7 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
         <a class="btn btn-primary js-magnet" href="#index:bereiche">Unsere Bereiche <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-ghost" href="#kontakt">Kontakt aufnehmen</a>
       </div>
-      <a class="hero-krank" href="#kontakt:schnell"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
+      <a class="hero-krank" href="#kontakt:krank"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
       <figure class="c1"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i11" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche" width="682" height="380" class="ph lq-hortgebaeude" fetchpriority="high"></figure>
@@ -3262,19 +3272,19 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
         <a class="btn btn-ghost" href="mailto:kinderhort.grombuehl@t-online.de"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> E-Mail schreiben</a>
         <p class="kz-status" id="status-kontakt" hidden><span class="status-today"></span><span class="status-sub"></span></p>
       </div>
-      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
+      <a class="quick-card reveal" id="krank" href="mailto:kinderhort.grombuehl@t-online.de?subject=Krankmeldung%20/%20Abwesenheit&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20kann%20leider%20nicht%20in%20die%20Einrichtung%20kommen.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
         <span class="quick-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
         <span><strong>Kind krankmelden</strong><span>Öffnet eine vorbereitete E-Mail – nur noch Name, Gruppe und Zeitraum eintragen. Gerne auch telefonisch in der Gruppe.</span></span>
       </a>
-      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
+      <a class="quick-card reveal" id="platz" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
         <span class="quick-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 14.6c2.6.2 4.4 1.9 5 4.9"/></svg></span>
         <span><strong>Platz anfragen</strong><span>Öffnet eine vorbereitete E-Mail mit allen Angaben, die wir für Ihre Anfrage brauchen.</span></span>
       </a>
-      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de?subject=Abholung%20durch%20eine%20andere%20Person&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20wird%20an%20folgendem%20Tag%20von%20einer%20anderen%20Person%20abgeholt.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbholung%20am%3A%20%0AAbholende%20Person%20%28Name%29%3A%20%0ABeziehung%20zum%20Kind%20%28z.%20B.%20Oma%2C%20Nachbarin%29%3A%20%0ADie%20Person%20bringt%20einen%20Ausweis%20mit.%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
+      <a class="quick-card reveal" id="abholung" href="mailto:kinderhort.grombuehl@t-online.de?subject=Abholung%20durch%20eine%20andere%20Person&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20wird%20an%20folgendem%20Tag%20von%20einer%20anderen%20Person%20abgeholt.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbholung%20am%3A%20%0AAbholende%20Person%20%28Name%29%3A%20%0ABeziehung%20zum%20Kind%20%28z.%20B.%20Oma%2C%20Nachbarin%29%3A%20%0ADie%20Person%20bringt%20einen%20Ausweis%20mit.%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
         <span class="quick-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 14.6c2.6.2 4.4 1.9 5 4.9"/></svg></span>
         <span><strong>Abholung ankündigen</strong><span>Wenn eine andere Person Ihr Kind abholt: vorbereitete E-Mail mit allen nötigen Angaben.</span></span>
       </a>
-      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de?subject=Abwesenheit%20/%20Urlaub&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20ist%20in%20folgendem%20Zeitraum%20nicht%20in%20der%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%2C%20z.%20B.%20Urlaub%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
+      <a class="quick-card reveal" id="abwesenheit" href="mailto:kinderhort.grombuehl@t-online.de?subject=Abwesenheit%20/%20Urlaub&body=Liebes%20Team%2C%0A%0Aunser%20Kind%20ist%20in%20folgendem%20Zeitraum%20nicht%20in%20der%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGruppe%20/%20Bereich%3A%20%0AAbwesend%20von%20%E2%80%93%20bis%3A%20%0AGrund%20%28freiwillig%2C%20z.%20B.%20Urlaub%29%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">
         <span class="quick-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
         <span><strong>Abwesenheit melden</strong><span>Urlaub oder ein paar freie Tage: kurze E-Mail mit Zeitraum, damit wir planen können.</span></span>
       </a>
@@ -3848,13 +3858,13 @@ window.KITA = {
   {
    "t": "Kind krankmelden",
    "s": "Vorbereitete E-Mail",
-   "u": "#kontakt:schnell",
+   "u": "#kontakt:krank",
    "k": "krank krankmeldung abwesend fehlt entschuldigen"
   },
   {
    "t": "Platz anfragen",
    "s": "Vorbereitete E-Mail",
-   "u": "#kontakt:schnell",
+   "u": "#kontakt:platz",
    "k": "anmeldung anmelden platz kitaplatz bewerbung aufnahme"
   },
   {
@@ -5632,7 +5642,7 @@ window.KITA = {
       var gruppen = dir.filter(function (d) { return !/allgemein/i.test(d.label) && normDe(q).split(" ").some(function (w) { var a = DW_ALIAS[w]; if (a) return /gruppe$/.test(a) && d.keys.some(function (k) { return k.indexOf(a) === 0; }); var gi = w.indexOf("gru"), w2 = gi >= 4 ? w.slice(0, gi) : w; return w2.length >= 4 && d.keys.some(function (k) { return /gruppe$/.test(k) && passt(w2, k.replace(/gruppe$/, "")); }); }); });
       if (/krank|fieber|abmeld| fehlt| nicht kommen|ausfall/.test(n)) {
         line("Bitte melden Sie Ihr Kind möglichst früh am Morgen ab – am schnellsten telefonisch direkt in der Gruppe oder per E-Mail mit unserer Vorlage."); br();
-        f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "kontakt.html#schnell")); return f;
+        f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "kontakt.html#krank")); return f;
       }
       if (/medikament|medizin|tablette|arznei|salbe|zaepfchen|notfallmedi/.test(n)) {
         line("Medikamente dürfen wir nur geben, wenn eine unterschriebene Medikamentenvereinbarung vorliegt."); br();
@@ -5640,11 +5650,11 @@ window.KITA = {
       }
       if (/(oma|opa|nachbar|freund|tante|onkel|babysitter|andere person|jemand anders|jemand anderes|abholperson)/.test(n) && /abhol|holt|holen/.test(n)) {
         line("Das geht – schicken Sie uns vorher eine kurze E-Mail mit dem Namen der Person. Sie bringt bitte einen Ausweis mit."); br();
-        f.appendChild(link("Abholung ankündigen (E-Mail-Vorlage)", "kontakt.html#schnell")); return f;
+        f.appendChild(link("Abholung ankündigen (E-Mail-Vorlage)", "kontakt.html#abholung")); return f;
       }
       if (/ abwesen| verreis| (im|in den|in) urlaub (ist|sind|fahren|faehrt)| (nicht da|fehlt) (ist|von|vom|bis)| (kind|tochter|sohn) .*(urlaub|verreis|nicht da)/.test(n)) {
         line("Sagen Sie uns kurz Bescheid, von wann bis wann Ihr Kind nicht da ist – dann können wir Personal und Essen planen."); br();
-        f.appendChild(link("Abwesenheit melden (E-Mail-Vorlage)", "kontakt.html#schnell")); return f;
+        f.appendChild(link("Abwesenheit melden (E-Mail-Vorlage)", "kontakt.html#abwesenheit")); return f;
       }
       var tagM = n.match(/ (montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag) /), datM = String(q).match(/(\d{1,2})\.\s?(\d{1,2})\.?(\d{2,4})?/);
       if ((tagM || datM) && / offen| geoeffnet| geschlossen| zu | auf | betreu| auf hat| zu hat| kommen/.test(n)) {
@@ -6286,7 +6296,7 @@ window.KITA = {
   /* 3 Kurzbefehl „Kind krankmelden“: Abschnitt öffnen und zeigen */
   (function () { var k = $("#krankmelden");
     /* alte Links „…#krankmelden“ (Startseite, App-Verknüpfung) führen jetzt zur Kontaktseite */
-    if (!k) { if (location.hash === "#krankmelden") location.replace("kontakt.html#schnell"); return; }
+    if (!k) { if (location.hash === "#krankmelden") location.replace("kontakt.html#krank"); return; }
     function go() { if (location.hash === "#krankmelden") { k.open = true; k.scrollIntoView({ block: "center" }); $("summary", k).focus({ preventScroll: true }); } }
     go(); addEventListener("hashchange", go);
     /* Link „Kind krankmelden“ im Startbereich: auch beim zweiten Klick (Sprungmarke schon gesetzt) aufklappen */

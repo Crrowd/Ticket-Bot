@@ -393,13 +393,13 @@ window.KITA = {
   {
    "t": "Kind krankmelden",
    "s": "Vorbereitete E-Mail",
-   "u": "kontakt.html#schnell",
+   "u": "kontakt.html#krank",
    "k": "krank krankmeldung abwesend fehlt entschuldigen"
   },
   {
    "t": "Platz anfragen",
    "s": "Vorbereitete E-Mail",
-   "u": "kontakt.html#schnell",
+   "u": "kontakt.html#platz",
    "k": "anmeldung anmelden platz kitaplatz bewerbung aufnahme"
   },
   {
