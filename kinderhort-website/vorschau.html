@@ -2589,6 +2589,24 @@ html body .rooms-text .room.no-img { background: transparent; box-shadow: none; 
 html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
 .rooms-text { align-items: start; margin-top: 32px; }
 
+/* ===== Handy: Bereichskarten kompakt (A) und Knöpfe oben (B), 23.11.2026 ===== */
+/* B Startbereich auf dem Handy: beide Knöpfe gleich breit, nur so breit wie der längere Text */
+@media (max-width: 560px) {
+  .hero-actions { display: grid; grid-template-columns: max-content; justify-content: start; }
+  .hero-actions .btn { justify-content: center; }
+}
+/* A Bereiche auf dem Handy: Foto links (gut ein Drittel), Text rechts, ganzer Text sichtbar */
+@media (max-width: 700px) {
+  .areas { max-width: none; gap: 14px; }
+  html body .areas .area-card { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); align-items: stretch; }
+  html body .areas .area-card .thumb { aspect-ratio: auto; height: auto; min-height: 150px; margin: 10px 0 10px 10px; border-radius: 14px; }
+  html body .areas .area-card .age { left: 8px; top: 8px; right: auto; max-width: calc(100% - 16px); padding: 4px 9px; font-size: .74rem; }
+  html body .areas .area-card .body { padding: 16px 16px 16px 18px; }
+  html body .areas .area-card h3 { font-size: 1.25rem; margin-bottom: 6px; }
+  html body .areas .area-card .body p { font-size: .98rem; line-height: 1.5; margin-bottom: 10px; }
+  html body .areas .area-card .more { padding-top: 0; border-top: 0; }
+}
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
