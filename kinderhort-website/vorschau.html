@@ -2558,6 +2558,10 @@ html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6p
 /* Downloads: lange Dateinamen („Medikamentenvereinbarung“) brechen auf sehr schmalen Handys um statt über den Rand zu ragen */
 .dl-link > span:not(.ficon) { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
 .dl-group, .dl-group ul, .dl-group li { min-width: 0; }
+/* Krankmelde-Kasten neben der Status-Karte nicht mehr auf deren Höhe strecken (sah leer aus) */
+.heute { align-items: start; }
+.heute .status-card { align-self: start; }
+.heute .krank.in-hero > summary { flex: none; }
 
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
