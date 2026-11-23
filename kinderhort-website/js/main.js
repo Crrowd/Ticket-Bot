@@ -750,7 +750,8 @@
     requestAnimationFrame(function () {
       if (dP.scrollHeight <= dP.clientHeight + 2) return;
       var mehr = document.createElement("button"); mehr.type = "button"; mehr.className = "dringend-mehr"; mehr.textContent = "Weiterlesen"; mehr.setAttribute("aria-expanded", "false");
-      mehr.addEventListener("click", function () { var auf = dBand.classList.toggle("offen"); mehr.textContent = auf ? "Weniger" : "Weiterlesen"; mehr.setAttribute("aria-expanded", String(auf)); });
+      mehr.addEventListener("click", function () { var von = dP.offsetHeight, auf = dBand.classList.toggle("offen"); mehr.textContent = auf ? "Weniger" : "Weiterlesen"; mehr.setAttribute("aria-expanded", String(auf));
+        if (!reduced) dP.animate([{ height: von + "px" }, { height: dP.offsetHeight + "px" }], { duration: auf ? 220 : 190, easing: EIO_ }); });
       $(".dringend-in", dBand).appendChild(mehr);
     });
     ["status", "status-kontakt"].forEach(function (id) { var bx = document.getElementById(id); if (!bx) return; var sub = $(".status-sub", bx); if (sub) { sub.textContent = dringend.text; sub.classList.add("ist-dringend"); } });
@@ -2451,7 +2452,7 @@
       var von = d.getBoundingClientRect().height;
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.style.overflow = "hidden";
-      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
+      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.zu || o.ms, easing: o.ease });
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; if (fertig) fertig(); };
     }
     d.sanftAuf = function () {
@@ -2466,7 +2467,7 @@
     };
     d.sanftZu = function () {
       zu = true;
-      fade([{ opacity: 1 }, { opacity: 0 }], { duration: o.ms * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
+      fade([{ opacity: 1 }, { opacity: 0 }], { duration: (o.zu || o.ms) * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
       fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
         zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
       });
@@ -2482,9 +2483,9 @@
   var EIO = EIO_;
   $$(".krank").forEach(function (d) { sanft(d, { ms: 250, ease: EIO }); });
   /* Lotse: ruhiger – etwas länger, weichere Kurve, Inhalt geht zuerst und kommt zuletzt */
-  $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 480, ease: "cubic-bezier(.45,0,.25,1)", spaet: .3, ausblenden: .4 }); });
-  $$(".brief").forEach(function (d) { sanft(d, { ms: 350, ease: EIO }); });
-  $$(".faq details").forEach(function (d) { sanft(d, { ms: 380, ease: EIO }); });
+  $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO, spaet: .3, ausblenden: .4 }); });
+  $$(".brief").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO }); });
+  $$(".faq details").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO }); });
 
   /* ---------- Termine nach Bereich: Termine fürs ganze Haus bleiben immer sichtbar ---------- */
   var BEREICH = "alle";

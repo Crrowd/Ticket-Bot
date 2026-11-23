@@ -950,7 +950,7 @@ li, figcaption, summary, td, .signature, address, blockquote { text-wrap: pretty
 .read-more summary span { text-decoration: underline; text-decoration-color: var(--rose-deep); text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .read-more summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid; border-bottom: 2px solid; rotate: 45deg; translate: 0 -3px; transition: rotate .3s var(--ease), translate .3s var(--ease); }
 .read-more[open] summary { display: none; }
-.read-more::details-content { block-size: 0; overflow: clip; transition: block-size .45s var(--ease), content-visibility .45s allow-discrete; }
+.read-more::details-content { block-size: 0; overflow: clip; transition: block-size .3s var(--ease), content-visibility .3s allow-discrete; }
 .read-more[open]::details-content { block-size: auto; }
 .read-more p:last-child { margin-bottom: 0; }
 
@@ -4746,7 +4746,8 @@ window.KITA = {
     requestAnimationFrame(function () {
       if (dP.scrollHeight <= dP.clientHeight + 2) return;
       var mehr = document.createElement("button"); mehr.type = "button"; mehr.className = "dringend-mehr"; mehr.textContent = "Weiterlesen"; mehr.setAttribute("aria-expanded", "false");
-      mehr.addEventListener("click", function () { var auf = dBand.classList.toggle("offen"); mehr.textContent = auf ? "Weniger" : "Weiterlesen"; mehr.setAttribute("aria-expanded", String(auf)); });
+      mehr.addEventListener("click", function () { var von = dP.offsetHeight, auf = dBand.classList.toggle("offen"); mehr.textContent = auf ? "Weniger" : "Weiterlesen"; mehr.setAttribute("aria-expanded", String(auf));
+        if (!reduced) dP.animate([{ height: von + "px" }, { height: dP.offsetHeight + "px" }], { duration: auf ? 220 : 190, easing: EIO_ }); });
       $(".dringend-in", dBand).appendChild(mehr);
     });
     ["status", "status-kontakt"].forEach(function (id) { var bx = document.getElementById(id); if (!bx) return; var sub = $(".status-sub", bx); if (sub) { sub.textContent = dringend.text; sub.classList.add("ist-dringend"); } });
@@ -6447,7 +6448,7 @@ window.KITA = {
       var von = d.getBoundingClientRect().height;
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.style.overflow = "hidden";
-      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
+      lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.zu || o.ms, easing: o.ease });
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; if (fertig) fertig(); };
     }
     d.sanftAuf = function () {
@@ -6462,7 +6463,7 @@ window.KITA = {
     };
     d.sanftZu = function () {
       zu = true;
-      fade([{ opacity: 1 }, { opacity: 0 }], { duration: o.ms * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
+      fade([{ opacity: 1 }, { opacity: 0 }], { duration: (o.zu || o.ms) * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
       fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
         zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
       });
@@ -6478,9 +6479,9 @@ window.KITA = {
   var EIO = EIO_;
   $$(".krank").forEach(function (d) { sanft(d, { ms: 250, ease: EIO }); });
   /* Lotse: ruhiger – etwas länger, weichere Kurve, Inhalt geht zuerst und kommt zuletzt */
-  $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 480, ease: "cubic-bezier(.45,0,.25,1)", spaet: .3, ausblenden: .4 }); });
-  $$(".brief").forEach(function (d) { sanft(d, { ms: 350, ease: EIO }); });
-  $$(".faq details").forEach(function (d) { sanft(d, { ms: 380, ease: EIO }); });
+  $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO, spaet: .3, ausblenden: .4 }); });
+  $$(".brief").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO }); });
+  $$(".faq details").forEach(function (d) { sanft(d, { ms: 250, zu: 200, ease: EIO }); });
 
   /* ---------- Termine nach Bereich: Termine fürs ganze Haus bleiben immer sichtbar ---------- */
   var BEREICH = "alle";
