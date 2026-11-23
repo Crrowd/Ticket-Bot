@@ -36,8 +36,13 @@ html body #seite-kontakt .kontakt-zeile .btn-primary:hover { background: var(--s
 html body #seite-kontakt .quick-grid > .quick-card:first-child { grid-column: auto; padding: 18px 0; margin: 0; background: none; box-shadow: none; border-radius: 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
 #seite-kontakt .quick-grid > .quick-card:first-child strong { font-size: inherit; }
 html body #seite-kontakt .quick-grid > .quick-card:first-child .quick-icon { background: var(--rose); width: 40px; height: 40px; border-radius: 12px; }
-#seite-kontakt .kontakt-zeile .btn { min-height: 64px; padding: 0 30px; font-size: 1.2rem; gap: 12px; }
-#seite-kontakt .kontakt-zeile .btn svg { width: 24px; height: 24px; }
+#seite-kontakt .kontakt-zeile .btn { min-height: 54px; padding: 0 24px; font-size: 1.06rem; gap: 10px; }
+#seite-kontakt .kontakt-zeile .btn svg { width: 21px; height: 21px; }
+/* kein Hüpfen beim Darüberfahren, auch nicht bei „Kind krankmelden“; stattdessen Unterstrich am Titel */
+@media (hover: hover) and (pointer: fine) {
+  html body #seite-kontakt .quick-grid > a.quick-card:hover { translate: none; box-shadow: none; }
+  #seite-kontakt .quick-grid > a.quick-card:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+}
 #seite-kontakt .kz-status { margin: 0 0 0 auto; display: flex; align-items: center; gap: 8px; font: 600 .95rem var(--font-body); color: var(--ink); }
 #seite-kontakt .kz-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--state-open); }
 #seite-kontakt .kz-status.is-closed::before { background: var(--state-closed); }
