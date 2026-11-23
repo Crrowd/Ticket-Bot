@@ -729,7 +729,7 @@ home = f'''
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</figure>
-      <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", sizes="(max-width: 900px) 33vw, 190px")}</figure>
+      <figure class="c2">{img("img/img_4956.jpg", "Der Piratenausguck im Kreativraum des Kinderhorts", sizes="(max-width: 900px) 33vw, 190px")}</figure>
       <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 33vw, 190px")}</figure>
       <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", sizes="(max-width: 900px) 33vw, 190px")}</figure>
       <div class="hero-badge"><span><b>3</b>Bereiche unter einem Dach</span></div>
@@ -1045,10 +1045,10 @@ page("kindergarten.html", "Kindergarten", "Kindergarten im Kath. Kinder- und Jug
 # KINDERHORT
 # =====================================================================
 hort_tour = [
-    ("img/kreatviraum-5-1.jpg", "Unser Kreativraum", "Freizeitbereich der Hortkinder"),
+    ("img/kreatviraum-5-1.jpg", "Blick aus der Bauecke", "in den Kreativraum"),
     ("img/kreatviraum-4.jpg", "Unser Kreativraum", "Freizeitbereich der Hortkinder"),
-    ("img/img_4956.jpg", "Unser Kreativraum", "Freizeitbereich der Hortkinder"),
-    ("img/krativraum-2-1.jpg", "Unser Kreativraum", "Freizeitbereich der Hortkinder"),
+    ("img/img_4956.jpg", "Piratenausguck", "im Kreativraum"),
+    ("img/krativraum-2-1.jpg", "Unser Kreativraum", "Blick über den ganzen Raum"),
     ("img/bauecke-2.jpg", "Unser Kreativraum", "die Bauecke"),
     ("img/baueckenstadion.jpg", "Unser Kreativraum", "ein Bauwerk unserer Kinder"),
     ("img/img_1378.jpg", "Unser Kreativraum", "ein Werk unserer Kinder"),

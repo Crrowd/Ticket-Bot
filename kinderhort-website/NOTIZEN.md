@@ -651,3 +651,4 @@ Entscheidung offen.
 ## Generalprobe (23.11.2026)
 - Alle 10 Seiten × 5 Breiten (320, 390, 768, 1280, 1920): keine Skriptfehler, keine fehlenden Dateien oder Bilder, alle Bilder mit Alt-Text, 306 interne Links und alle Sprungziele vorhanden, Telefon- und E-Mail-Links korrekt, Druck des Ferienplans ohne Kopfleiste, offline erreichbar (Service Worker), Fragefeld 16 Beispielfragen.
 - Behoben: Downloads ragten bei 320 px über den Rand („Medikamentenvereinbarung“); Kalenderdateien falten lange Zeilen jetzt nach RFC 5545 (für Outlook).
+- Kreativraum-Fotos benannt (23.11.2026): „Blick aus der Bauecke – in den Kreativraum“, „Unser Kreativraum – Freizeitbereich der Hortkinder“, „Piratenausguck – im Kreativraum“, „Blick über den ganzen Raum – im Kreativraum“. Alt-Text des Piratenausguck-Fotos auf der Startseite korrigiert (hieß fälschlich „Kind an der Weltkarte“).
