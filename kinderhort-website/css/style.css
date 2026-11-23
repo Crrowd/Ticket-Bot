@@ -64,6 +64,8 @@
   /* Bewegung */
   --ease-out: cubic-bezier(.23, 1, .32, 1);           /* Auftritte: schnell los, sanft landen */
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);        /* Bewegungen von A nach B */
+  --ease-in-out-stark: cubic-bezier(.77, 0, .175, 1);  /* Auf- und Zuklappen */
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);         /* Handy-Menü, Blätter von unten */
   --ease: var(--ease-out);
   --spring: var(--ease-out);                          /* bewusst ohne Überschwingen: kein Federn im Alltag */
   --fast: .15s;
@@ -242,8 +244,8 @@ strong, b { font-weight: 600; }
     clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .24s var(--ease-out), visibility 0s .24s;   /* schließt sofort weich */
   }
   .main-nav > ul { translate: 100% 0; transition: translate .24s var(--ease-out); }
-  .nav-open .main-nav { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .42s cubic-bezier(.32,.72,0,1), visibility 0s; }
-  .nav-open .main-nav > ul { translate: 0 0; transition: translate .42s cubic-bezier(.32,.72,0,1); }
+  .nav-open .main-nav { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .42s var(--ease-drawer), visibility 0s; }
+  .nav-open .main-nav > ul { translate: 0 0; transition: translate .42s var(--ease-drawer); }
   .main-nav > ul { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; max-width: 1000px; margin: 0 auto; }
   .main-nav > ul > li:not(.nav-extra, :has(.nav-cta)) { border-bottom: 1px solid var(--rule); }
   .main-nav > ul > li:not(.nav-extra) > a, .drop-toggle { width: 100%; justify-content: flex-start; gap: 12px; min-height: 64px; padding: 16px 16px; border-radius: var(--r-sm); font: 600 clamp(1.3rem, 1rem + 1.4vw, 1.7rem)/1.2 var(--font-head); letter-spacing: -.02em; }
@@ -1086,7 +1088,7 @@ body:has(.site-header.hide) .subnav { top: calc(8px + env(safe-area-inset-top, 0
 .yl-bar:focus-visible { outline-color: var(--rose); }
 .yl-closed { position: absolute; top: 0; bottom: 0; background: var(--rose); border-radius: 3px; }
 .yl-today { position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; background: var(--ok); }
-.yl-pin { position: absolute; top: -8px; bottom: -8px; width: 3px; margin-left: -1.5px; background: var(--on-surface); border-radius: 3px; pointer-events: none; transition: left .3s var(--ease-out); }
+.yl-pin { position: absolute; top: -8px; bottom: -8px; width: 3px; margin-left: -1.5px; background: var(--on-surface); border-radius: 3px; pointer-events: none; transition: translate .3s var(--ease-out); }
 .yl-pin::after { content: ""; position: absolute; top: -7px; left: -7px; width: 17px; height: 17px; border-radius: 50%; background: var(--on-surface); box-shadow: 0 0 0 4px rgb(var(--white-rgb) / .22); }
 .yl-months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font-size: .75rem; color: var(--on-surface-soft); text-align: center; }
 .yl-info { margin: 0; min-height: 3.2em; }
@@ -1997,7 +1999,7 @@ html.revisit .hero-grid > div:first-child > *, html.revisit .hero-collage figure
 
 /* 22 Merkliste als Blatt von unten */
 .saved-sheet { border: 0; padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px)); margin: auto auto 0; width: min(560px, 100%); max-height: 80dvh; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--paper); color: var(--ink); box-shadow: var(--shadow-lg); overscroll-behavior: contain;
-  translate: 0 0; transition: translate .35s cubic-bezier(.32, .72, 0, 1), opacity .2s; }
+  translate: 0 0; transition: translate .35s var(--ease-drawer), opacity .2s; }
 @starting-style { .saved-sheet[open] { translate: 0 100%; } }
 .saved-sheet.closing { translate: 0 100%; transition-duration: .2s; }
 .saved-sheet::backdrop { background: rgb(var(--night-rgb) / .45); }

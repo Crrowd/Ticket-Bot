@@ -122,7 +122,7 @@
     a.onfinish = function () { el._hoehe = null; el.style.overflow = ""; if (fertig) fertig(); };
     return a;
   }
-  var EIO_ = "cubic-bezier(.77,0,.175,1)";
+  var EIO_ = CSSV.getPropertyValue("--ease-in-out-stark").trim() || "cubic-bezier(.77,0,.175,1)";
   $$(".has-drop").forEach(function (li) {
     var btn = $(".drop-toggle", li), mega = $(".mega", li);
     function origin() {
@@ -2479,7 +2479,7 @@
       d.sanftAuf();
     });
   }
-  var EIO = "cubic-bezier(.77,0,.175,1)";
+  var EIO = EIO_;
   $$(".krank").forEach(function (d) { sanft(d, { ms: 250, ease: EIO }); });
   /* Lotse: ruhiger – etwas länger, weichere Kurve, Inhalt geht zuerst und kommt zuletzt */
   $$(".lotse-item").forEach(function (d) { sanft(d, { ms: 480, ease: "cubic-bezier(.45,0,.25,1)", spaet: .3, ausblenden: .4 }); });
