@@ -738,6 +738,16 @@
     });
   }
 
+  /* ---------- Wichtiger Hinweis (daten/dringend.csv): oben auf jeder Seite und in der Status-Anzeige ---------- */
+  var dringend = K && K.dringend ? K.dringend.filter(function (x) { return x.von <= heute && x.bis >= heute; })[0] : null;
+  if (dringend) {
+    var dBand = document.createElement("div"); dBand.className = "dringend"; dBand.setAttribute("role", "status");
+    dBand.innerHTML = '<div class="container dringend-in"><span class="dringend-ic" aria-hidden="true">!</span><p><strong>Wichtiger Hinweis:</strong> <span></span></p></div>';
+    $("p span", dBand).textContent = dringend.text;
+    var mainEl = document.querySelector("main"); if (mainEl) mainEl.prepend(dBand);
+    ["status", "status-kontakt"].forEach(function (id) { var bx = document.getElementById(id); if (!bx) return; var sub = $(".status-sub", bx); if (sub) { sub.textContent = dringend.text; sub.classList.add("ist-dringend"); } });
+  }
+
   /* ---------- Hinweis auf den nächsten Termin, ausblendbar mit „Rückgängig“ ---------- */
   var note = document.getElementById("hinweis");
   if (note && K && K.termine) {

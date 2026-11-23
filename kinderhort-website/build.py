@@ -52,6 +52,8 @@ def bereiche(r, n=None):
 for _n, _r in enumerate(TERMINE, start=2): _r["_b"] = bereiche(_r, _n)
 FEIERTAGE = gueltig("feiertage.csv", read_csv("feiertage.csv"), ["Datum"], ["Datum", "Feiertag"])
 HINWEISE = gueltig("hinweise.csv", read_csv("hinweise.csv"), ["Datum"], ["Datum", "Titel"])
+# Wichtiger Hinweis (kurzfristige Schließung, Streik …): erscheint von–bis oben auf allen Seiten und in der Status-Anzeige
+DRINGEND = gueltig("dringend.csv", read_csv("dringend.csv"), ["von", "bis"], ["von", "Text"]) if os.path.exists(os.path.join(W, "daten/dringend.csv")) else []
 _heute = dt.date.today()
 for n, r in enumerate(TERMINE, start=2):
     a, b = d(r["von"]), d(r["bis"] or r["von"])
@@ -1617,6 +1619,7 @@ kita = {
     "suche": [{"t": t, "s": sub, "u": u, "k": k} for t, sub, u, k in SUCHE],
     "glossar": GLOSSAR,
     "faq": FAQ_ALLE,
+    "dringend": [{"von": d(r["von"]).isoformat(), "bis": d(r["bis"] or r["von"]).isoformat(), "text": r["Text"]} for r in DRINGEND],
 }
 with open(os.path.join(W, "js/daten.js"), "w", encoding="utf-8") as f:
     f.write("/* Automatisch erzeugt aus daten/*.csv – nicht von Hand ändern, sondern build.py ausführen. */\n")

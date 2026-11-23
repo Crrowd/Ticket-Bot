@@ -2547,6 +2547,14 @@ html body .quick-grid > .quick-card:first-of-type .quick-icon { background: var(
 html body .dl-link { background: rgb(var(--ink-rgb) / .05); }
 @media (hover: hover) and (pointer: fine) { html body .dl-link:hover { background: rgb(var(--ink-rgb) / .1); translate: none; } }
 
+/* ===== Wichtiger Hinweis (daten/dringend.csv) ===== */
+.dringend { background: var(--rose); color: var(--ink); }
+.dringend-in { display: flex; align-items: center; gap: 14px; padding-block: 14px; }
+.dringend-in p { margin: 0; font-weight: 500; line-height: 1.45; }
+.dringend-ic { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 700 1rem/1 var(--font-body); }
+.status-sub.ist-dringend { font-weight: 600; color: var(--ink); }
+html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6px; }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -3929,7 +3937,8 @@ window.KITA = {
    "u": "#kinderhort:fragen",
    "b": "Kinderhort"
   }
- ]
+ ],
+ "dringend": []
 };
 </script>
 <script>/* Kath. Kinder- und Jugendhort Grombühl – Interaktionen */
@@ -4670,6 +4679,16 @@ window.KITA = {
       box.classList.toggle("is-closed", !st.open);
       box.hidden = false;
     });
+  }
+
+  /* ---------- Wichtiger Hinweis (daten/dringend.csv): oben auf jeder Seite und in der Status-Anzeige ---------- */
+  var dringend = K && K.dringend ? K.dringend.filter(function (x) { return x.von <= heute && x.bis >= heute; })[0] : null;
+  if (dringend) {
+    var dBand = document.createElement("div"); dBand.className = "dringend"; dBand.setAttribute("role", "status");
+    dBand.innerHTML = '<div class="container dringend-in"><span class="dringend-ic" aria-hidden="true">!</span><p><strong>Wichtiger Hinweis:</strong> <span></span></p></div>';
+    $("p span", dBand).textContent = dringend.text;
+    var mainEl = document.querySelector("main"); if (mainEl) mainEl.prepend(dBand);
+    ["status", "status-kontakt"].forEach(function (id) { var bx = document.getElementById(id); if (!bx) return; var sub = $(".status-sub", bx); if (sub) { sub.textContent = dringend.text; sub.classList.add("ist-dringend"); } });
   }
 
   /* ---------- Hinweis auf den nächsten Termin, ausblendbar mit „Rückgängig“ ---------- */

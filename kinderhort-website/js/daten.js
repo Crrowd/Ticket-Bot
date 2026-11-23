@@ -535,5 +535,6 @@ window.KITA = {
    "u": "kinderhort.html#fragen",
    "b": "Kinderhort"
   }
- ]
+ ],
+ "dringend": []
 };

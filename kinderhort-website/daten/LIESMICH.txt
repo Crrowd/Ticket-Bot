@@ -14,6 +14,10 @@ elternbriefe.csv  – Elternbriefe auf der Seite "Aktuelles". Neueste Zeile ganz
                     Fett mit zwei Sternchen: **Petra Lachnit**. Internet-Adressen (https://…) und
                     E-Mail-Adressen werden automatisch anklickbar – auch in termine.csv.
 hinweise.csv      – Hinweise auf „Aktuelles“ (Spalten: Datum; Titel; Text). Am Tag nach dem Datum verschwinden sie.
+dringend.csv      – Wichtiger Hinweis bei kurzfristigen Änderungen (Streik, Krankheitswelle, Wasserschaden …).
+                    Spalten: von; bis; Text. Erscheint vom ersten bis zum letzten Tag oben auf allen Seiten
+                    und in der Anzeige „Heute geöffnet/geschlossen“. Danach verschwindet er von selbst.
+                    Beispiel: 25.11.2026;25.11.2026;Wegen eines Wasserschadens bleibt die Krippe heute geschlossen.
 elternstimmen.csv – Zitate von Eltern für die Startseite (Spalten: Zitat; Von, z. B. "Mutter, Kindergarten").
                     Nur echte Zitate mit Einverständnis der Eltern, ohne Namen.
                     Solange die Datei leer ist, erscheint der Abschnitt nicht.

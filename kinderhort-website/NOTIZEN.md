@@ -643,3 +643,6 @@ Entscheidung offen.
 ## Verbesserungen 3 eingebaut, Fragefeld schlauer (23.11.2026)
 - Aktuelles ohne Etiketten „Vormerktermine“/„Schließtage“; Kontakt mit Links zu den Fragen je Bereich; Downloads: „Für alle Bereiche“ + „Nur Kinderhort“, helle Dateizeilen, ohne Etiketten „Downloads“/„Kalender“ und ohne Schlussabschnitt.
 - „Fragen Sie einfach“: versteht jetzt Wochentage und Daten („Haben Sie am 24.12. offen?“), Medikamente, Abholung durch andere Personen, Abwesenheit/Urlaub des Kindes, Fragen nach Kosten (Verweis auf persönliches Gespräch), Telefonnummer je Bereich; Synonyme (Essen/Mittagessen/Brotzeit, Schlaf/Ruhezeit, Windel/Wickeln …); bevorzugt Antworten aus dem genannten Bereich. Bereichswörter allein („Krippe“) lösen keine Durchwahl mehr aus.
+- Wichtiger Hinweis (`daten/dringend.csv`, Spalten von;bis;Text): eingebaut, aber leer – ohne Eintrag ändert sich nichts. Erscheint oben auf allen Seiten und in der Status-Anzeige. Vorschau mit Beispiel: `entwurf/dringend/`.
+- Aushang A4 mit QR-Codes (Website, Kind krankmelden, Termine abonnieren): `entwurf/aushang/aushang.pdf`, erzeugt mit `aushang.py` (Paket qrcode). QR-Codes vor dem Aushängen mit einem Handy testen, sobald die Domain läuft.
+- Fehlerseite und Weiterleitungen alter WordPress-Adressen gab es schon (404.html, .htaccess).

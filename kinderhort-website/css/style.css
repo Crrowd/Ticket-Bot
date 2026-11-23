@@ -2539,3 +2539,11 @@ html body .quick-grid > .quick-card:first-of-type .quick-icon { background: var(
 /* Dateizeilen ruhiger: hell statt grau, kein Seitwärtsrücken */
 html body .dl-link { background: rgb(var(--ink-rgb) / .05); }
 @media (hover: hover) and (pointer: fine) { html body .dl-link:hover { background: rgb(var(--ink-rgb) / .1); translate: none; } }
+
+/* ===== Wichtiger Hinweis (daten/dringend.csv) ===== */
+.dringend { background: var(--rose); color: var(--ink); }
+.dringend-in { display: flex; align-items: center; gap: 14px; padding-block: 14px; }
+.dringend-in p { margin: 0; font-weight: 500; line-height: 1.45; }
+.dringend-ic { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 700 1rem/1 var(--font-body); }
+.status-sub.ist-dringend { font-weight: 600; color: var(--ink); }
+html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6px; }
