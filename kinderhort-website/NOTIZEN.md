@@ -630,3 +630,4 @@ Entscheidung offen.
 - Rundgang auf Touch-Geräten: kein dunkler Verlauf mehr hinter dem Bildtext; weiche Kanten der Fotoreihe 16 statt 32 px.
 - Kontakt (23.11.2026): Telefon der Zentrale und allgemeine E-Mail als erste Einträge der Liste unter „Kind krankmelden“.
 - Vorschau „Kontakt kompakt“ (`entwurf/kontakt-kompakt/`): Telefon/E-Mail als große Knopfzeile ganz oben, Status klein daneben, darunter vier gleiche Einträge (Kind krankmelden, Platz anfragen, Abholung, Abwesenheit) in einer Reihe. Noch nicht eingebaut.
+- Vorschau „Verbesserungen 2“ (`entwurf/verbesserungen-2/`): Kontakt kompakt + Anschrift ohne Telefon/E-Mail; Rundgang-Titel aus den Bildtexten („die Puppenecke“ → „Puppenecke“ / „im Gruppenraum“, 20 Bilder). Zeitangaben-Liste (55 Angaben) und Ladezeitmessung erstellt. Hausfoto: es gibt kein größeres Original.
