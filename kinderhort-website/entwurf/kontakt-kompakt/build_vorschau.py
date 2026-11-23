@@ -28,8 +28,16 @@ css = '''
 #seite-kontakt .kontakt-zeile .btn svg { width: 20px; height: 20px; }
 html body #seite-kontakt .kontakt-zeile .btn-primary { background: var(--ink); color: var(--paper); }
 html body #seite-kontakt .kontakt-zeile .btn-primary:hover { background: var(--surface); }
-#seite-kontakt .quick-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 900px) { #seite-kontakt .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+#seite-kontakt .quick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { #seite-kontakt .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { #seite-kontakt .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+/* „Kind krankmelden“ wie die anderen Einträge, Telefon und E-Mail als große Zeile ganz oben */
+#seite-kontakt .kontakt-zeile { order: -1; margin: 0 0 28px; }
+html body #seite-kontakt .quick-grid > .quick-card:first-child { grid-column: auto; padding: 18px 0; margin: 0; background: none; box-shadow: none; border-radius: 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
+#seite-kontakt .quick-grid > .quick-card:first-child strong { font-size: inherit; }
+html body #seite-kontakt .quick-grid > .quick-card:first-child .quick-icon { background: var(--rose); width: 40px; height: 40px; border-radius: 12px; }
+#seite-kontakt .kontakt-zeile .btn { min-height: 64px; padding: 0 30px; font-size: 1.2rem; gap: 12px; }
+#seite-kontakt .kontakt-zeile .btn svg { width: 24px; height: 24px; }
 #seite-kontakt .kz-status { margin: 0 0 0 auto; display: flex; align-items: center; gap: 8px; font: 600 .95rem var(--font-body); color: var(--ink); }
 #seite-kontakt .kz-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--state-open); }
 #seite-kontakt .kz-status.is-closed::before { background: var(--state-closed); }
