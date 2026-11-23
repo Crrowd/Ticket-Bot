@@ -637,3 +637,5 @@ Entscheidung offen.
 - Rundgang: `tour_titel()` macht aus kurzen Bildtexten den Titel („Puppenecke“ – „im Gruppenraum“).
 - Startseite: nur das Hausfoto lädt sofort (fetchpriority high), die drei kleinen Fotos verzögert und in passender Größe. Gemessen auf schwachem 3G: größtes Element 10,6 → 7,4 s (ohne Komprimierung), gutes 4G 2,1 → 1,8 s.
 - Offen: Zeitangaben – die Leitung schickt die richtigen Uhrzeiten (drei Rückfragen in der Liste).
+- Vorschau „Verbesserungen 3“ (`entwurf/verbesserungen-3/`): Aktuelles ohne „Vormerktermine“/„Schließtage“-Etikett, Kontakt mit Links zu den Fragen je Bereich, Downloads: Dateien nur einmal („Für alle Bereiche“, „Nur Kinderhort“), ruhigere Dateizeilen, ohne Etiketten „Downloads“/„Kalender“ und ohne Schlussabschnitt. Noch nicht eingebaut.
+- Start-Checkliste für die Leitung erstellt (Uhrzeiten, 4 Kreativraum-Fotos benennen, Impressum, Datenschutz, Foto-Einverständnis, PDF-Autor, Domain/Umzug, HTTPS, Handy-Test, spätere Wünsche).
