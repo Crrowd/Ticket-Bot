@@ -2505,3 +2505,6 @@ html body .quick-grid > .quick-card:not(:first-child) { background: none; box-sh
   html body .tour-item figcaption { background: none; color: var(--ink); }
   html body .tour-item figcaption span { color: var(--ink-soft); }
 }
+
+/* Kontakt: Telefon und E-Mail als erste Einträge der Liste; lange Adresse darf umbrechen */
+.quick-card .quick-mail { overflow-wrap: break-word; }

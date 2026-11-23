@@ -1367,6 +1367,14 @@ kon += f'''<section class="section tight" id="schnell">
         <span class="quick-icon">{icon("mail", 26)}</span>
         <span><strong>Kind krankmelden</strong><span>Öffnet eine vorbereitete E-Mail – nur noch Name, Gruppe und Zeitraum eintragen. Gerne auch telefonisch in der Gruppe.</span></span>
       </a>
+      <a class="quick-card reveal" href="tel:+4993127898920">
+        <span class="quick-icon">{icon("phone", 26)}</span>
+        <span><strong>0931&nbsp;2789892&nbsp;0</strong><span>Anrufen in der Zentrale, Montag bis Freitag ab 6:45&nbsp;Uhr. Die Durchwahlen der Gruppen stehen weiter unten.</span></span>
+      </a>
+      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de">
+        <span class="quick-icon">{icon("mail", 26)}</span>
+        <span><strong class="quick-mail">kinderhort.grombuehl<wbr>@t&#8209;online.de</strong><span>E-Mail für alle allgemeinen Fragen.</span></span>
+      </a>
       <a class="quick-card reveal" href="{PLATZ_MAIL}">
         <span class="quick-icon">{icon("users", 26)}</span>
         <span><strong>Platz anfragen</strong><span>Öffnet eine vorbereitete E-Mail mit allen Angaben, die wir für Ihre Anfrage brauchen.</span></span>

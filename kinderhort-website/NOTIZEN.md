@@ -628,3 +628,4 @@ Entscheidung offen.
 - Kasten „Wir sind für Sie da“ (Telefon, E-Mail, Anschrift) aus dem Handy-Menü entfernt (NAV_EXTRA wird nicht mehr eingesetzt).
 - Kontakt-Knopf im Handy-Menü Petrol gefüllt.
 - Rundgang auf Touch-Geräten: kein dunkler Verlauf mehr hinter dem Bildtext; weiche Kanten der Fotoreihe 16 statt 32 px.
+- Kontakt (23.11.2026): Telefon der Zentrale und allgemeine E-Mail als erste Einträge der Liste unter „Kind krankmelden“.
