@@ -646,3 +646,4 @@ Entscheidung offen.
 - Wichtiger Hinweis (`daten/dringend.csv`, Spalten von;bis;Text): eingebaut, aber leer – ohne Eintrag ändert sich nichts. Erscheint oben auf allen Seiten und in der Status-Anzeige. Vorschau mit Beispiel: `entwurf/dringend/`.
 - Aushang A4 mit QR-Codes (Website, Kind krankmelden, Termine abonnieren): `entwurf/aushang/aushang.pdf`, erzeugt mit `aushang.py` (Paket qrcode). QR-Codes vor dem Aushängen mit einem Handy testen, sobald die Domain läuft.
 - Fehlerseite und Weiterleitungen alter WordPress-Adressen gab es schon (404.html, .htaccess).
+- Team-Anleitung aktualisiert (23.11.2026): neuer Schritt 6 „Wichtiger Hinweis“ (dringend.csv), Übersicht ergänzt, neue Bildschirmfotos im hellen Kartenstil; PDF neu: Anleitung-Webseite-pflegen.pdf (8 Seiten).

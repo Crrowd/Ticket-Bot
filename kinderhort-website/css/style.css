@@ -2547,3 +2547,4 @@ html body .dl-link { background: rgb(var(--ink-rgb) / .05); }
 .dringend-ic { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 700 1rem/1 var(--font-body); }
 .status-sub.ist-dringend { font-weight: 600; color: var(--ink); }
 html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6px; }
+.dringend-in strong { font-weight: 700; }

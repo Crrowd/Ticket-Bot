@@ -61,11 +61,12 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
     <tr><td><span class="datei">schliesstage.csv</span></td><td>Ferien und Schließtage des Kita-Jahres</td><td>Tabelle „Schließtage“, Anzeige „Jetzt geöffnet“, Kalenderdatei</td></tr>
     <tr><td><span class="datei">elternbriefe.csv</span></td><td>Elternbriefe (neuester oben)</td><td>„Aktuelles“ → „Liebe Eltern“</td></tr>
     <tr><td><span class="datei">hinweise.csv</span></td><td>Kurze Hinweise mit Datum (z. B. Sankt Martin)</td><td>„Aktuelles“, verschwinden am Tag danach von selbst</td></tr>
+    <tr><td><span class="datei">dringend.csv</span></td><td>Wichtiger Hinweis bei kurzfristigen Änderungen (Streik, Krankheitswelle, Schließung)</td><td>Oben auf allen Seiten und in der Anzeige „Jetzt geöffnet“, verschwindet nach dem Enddatum von selbst</td></tr>
     <tr><td><span class="datei">feiertage.csv</span></td><td>Gesetzliche Feiertage in Bayern</td><td>Anzeige „heute geöffnet/geschlossen“, Kalender</td></tr>
     <tr><td><span class="datei">elternstimmen.csv</span></td><td>Zitate von Eltern (nur mit Einverständnis, ohne Namen)</td><td>Startseite (erscheint erst, wenn etwas drinsteht)</td></tr>
   </table>
   <div class="tipp"><b>Mit welchem Programm?</b>Mit Excel oder LibreOffice öffnen. Beim Speichern immer <b style="display:inline">„CSV UTF-8 (durch Trennzeichen getrennt)“</b> wählen – in LibreOffice „Text CSV“, Zeichensatz UTF-8, Feldtrenner Semikolon. Sonst gehen Umlaute wie „ä“ oder „ß“ verloren.</div>
-  <div class="achtung"><b>Datum immer so schreiben: TT.MM.JJJJ</b>Also <code>04.12.2026</code> – nicht „4.12.26“ und nicht „4. Dezember“. Excel ändert Datumsangaben manchmal von selbst; die Prüfung beim Bauen (Schritt 6) meldet das sofort.</div>
+  <div class="achtung"><b>Datum immer so schreiben: TT.MM.JJJJ</b>Also <code>04.12.2026</code> – nicht „4.12.26“ und nicht „4. Dezember“. Excel ändert Datumsangaben manchmal von selbst; die Prüfung beim Bauen (Schritt 7) meldet das sofort.</div>
 </section>
 
 <section class="neu-seite">
@@ -141,8 +142,22 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
   <p class="unter">So ungefähr erscheint der Hinweis auf „Aktuelles“.</p>
 </section>
 
+<section class="neu-seite">
+  <h2><span class="n">6</span>Ein wichtiger Hinweis bei kurzfristigen Änderungen</h2>
+  <p>Wenn sich kurzfristig etwas ändert – Streik, Krankheitswelle, Wasserschaden, eine Gruppe bleibt geschlossen –, tragen Sie es in <span class="datei">dringend.csv</span> ein. Der Hinweis erscheint dann oben auf <b>jeder</b> Seite und in der Anzeige „Jetzt geöffnet / geschlossen“. Nach dem Datum in „bis“ verschwindet er von selbst.</p>
+  <table class="tabelle">
+    <caption>dringend.csv – die gelb markierte Zeile ist neu</caption>
+    <tr><th>von</th><th>bis</th><th>Text</th></tr>
+    <tr><td class="neu">25.11.2026</td><td class="neu">25.11.2026</td><td class="neu">Wegen eines Wasserschadens bleibt die Kinderkrippe heute geschlossen. Kindergarten und Hort haben normal geöffnet.</td></tr>
+  </table>
+  <img class="foto" src="f-dringend.png" alt="">
+  <p class="unter">So erscheint der Hinweis oben auf der Webseite.</p>
+  <div class="tipp"><b>Kurz und eindeutig schreiben</b>Ein, zwei Sätze: was passiert, wann, welche Gruppen betroffen sind. Für Termine und Feste bitte weiter <span class="datei">termine.csv</span> nutzen – der wichtige Hinweis ist nur für Ausnahmen gedacht.</div>
+  <div class="achtung"><b>Nicht vergessen: bauen und hochladen</b>Der Hinweis erscheint erst, wenn die Webseite neu gebaut und hochgeladen ist (Schritte 7 und 8). Bei einer Schließung am selben Morgen zusätzlich die Eltern direkt informieren.</div>
+</section>
+
 <section>
-  <h2><span class="n">6</span>Die Webseite bauen</h2>
+  <h2><span class="n">7</span>Die Webseite bauen</h2>
   <p>Nach jeder Änderung an den Tabellen wird die Webseite einmal neu gebaut. Das dauert wenige Sekunden.</p>
   <h3>Einmalig vorbereiten (nur beim ersten Mal)</h3>
   <ol class="schritte">
@@ -165,7 +180,7 @@ Upload-Paket: 196 Dateien in kinderhort-webseite.zip (ohne Notizen, Tabellen, En
 </section>
 
 <section class="neu-seite">
-  <h2><span class="n">7</span>Hochladen</h2>
+  <h2><span class="n">8</span>Hochladen</h2>
   <p>Nach dem Bauen liegt <b>neben</b> dem Ordner die Datei <span class="datei">kinderhort-webseite.zip</span>. Sie enthält nur das, was öffentlich sein darf.</p>
   <ol class="schritte">
     <li><span class="datei">kinderhort-webseite.zip</span> entpacken.</li>
@@ -177,13 +192,13 @@ Upload-Paket: 196 Dateien in kinderhort-webseite.zip (ohne Notizen, Tabellen, En
 </section>
 
 <section>
-  <h2><span class="n">8</span>Wenn etwas nicht klappt</h2>
+  <h2><span class="n">9</span>Wenn etwas nicht klappt</h2>
   <table class="uebersicht">
     <tr><th>Problem</th><th>Lösung</th></tr>
     <tr><td>Umlaute erscheinen als „Ã¤“ o. Ä.</td><td>Die Tabelle wurde nicht als UTF-8 gespeichert. Noch einmal als „CSV UTF-8“ speichern.</td></tr>
     <tr><td>Alles steht in einer einzigen Spalte</td><td>Trennzeichen war Komma statt Semikolon. In LibreOffice beim Öffnen „Semikolon“ wählen.</td></tr>
     <tr><td>„python“ wird nicht gefunden</td><td>Python ist nicht installiert oder „Add Python to PATH“ fehlte. Neu installieren. Unter Windows <code>py build.py</code> versuchen.</td></tr>
-    <tr><td>„No module named PIL“</td><td>Einmal <code>pip install pillow</code> eingeben (Schritt 6).</td></tr>
+    <tr><td>„No module named PIL“</td><td>Einmal <code>pip install pillow</code> eingeben (Schritt 7).</td></tr>
     <tr><td>Ein Termin fehlt auf der Seite</td><td>Liegt das Datum in der Vergangenheit? Meldet die Daten-Prüfung einen Fehler in dieser Zeile?</td></tr>
     <tr><td>Die Datei <span class="datei">erstmals.json</span></td><td>Bitte nicht von Hand ändern – sie merkt sich, seit wann ein Termin auf der Seite steht.</td></tr>
   </table>

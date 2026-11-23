@@ -16,6 +16,7 @@ const D = __dirname;
   await foto('aktuelles.html', '#ferienplan .table-wrap, #ferienplan table', 'f-schliesstage.png');
   await foto('aktuelles.html', '.brief', 'f-brief.png');
   await foto('aktuelles.html', '.note-card', 'f-hinweis.png');
-  await foto('index.html', '#status, .status-card', 'f-status.png');
+  await foto('index.html', '#status', 'f-status.png');
+  await foto('index.html', '.dringend', 'f-dringend.png');
   await b.close();
 })();
