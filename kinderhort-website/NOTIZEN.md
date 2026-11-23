@@ -631,3 +631,9 @@ Entscheidung offen.
 - Kontakt (23.11.2026): Telefon der Zentrale und allgemeine E-Mail als erste Einträge der Liste unter „Kind krankmelden“.
 - Vorschau „Kontakt kompakt“ (`entwurf/kontakt-kompakt/`): Telefon/E-Mail als große Knopfzeile ganz oben, Status klein daneben, darunter vier gleiche Einträge (Kind krankmelden, Platz anfragen, Abholung, Abwesenheit) in einer Reihe. Noch nicht eingebaut.
 - Vorschau „Verbesserungen 2“ (`entwurf/verbesserungen-2/`): Kontakt kompakt + Anschrift ohne Telefon/E-Mail; Rundgang-Titel aus den Bildtexten („die Puppenecke“ → „Puppenecke“ / „im Gruppenraum“, 20 Bilder). Zeitangaben-Liste (55 Angaben) und Ladezeitmessung erstellt. Hausfoto: es gibt kein größeres Original.
+
+## Kontakt kompakt, Rundgang-Titel, schnellere Startseite eingebaut (23.11.2026)
+- Kontakt: Telefon/E-Mail als Knopfzeile mit Öffnungsstatus, darunter vier gleiche Einträge (Kind krankmelden, Platz anfragen, Abholung, Abwesenheit); Anschrift nur mit Adresse, Route und vCard.
+- Rundgang: `tour_titel()` macht aus kurzen Bildtexten den Titel („Puppenecke“ – „im Gruppenraum“).
+- Startseite: nur das Hausfoto lädt sofort (fetchpriority high), die drei kleinen Fotos verzögert und in passender Größe. Gemessen auf schwachem 3G: größtes Element 10,6 → 7,4 s (ohne Komprimierung), gutes 4G 2,1 → 1,8 s.
+- Offen: Zeitangaben – die Leitung schickt die richtigen Uhrzeiten (drei Rückfragen in der Liste).

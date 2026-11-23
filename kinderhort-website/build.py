@@ -487,9 +487,20 @@ def rooms(items):
             f'<article class="room no-img reveal"><div class="txt"><h3>{name}</h3><p>{text}</p></div></article>' for name, text, _ in texts) + "</div>"
     return html
 
+TOUR_ORT = {"Unser Gruppenraum": "im Gruppenraum", "Unser Kreativraum": "im Kreativraum", "Unser Spielflur": "im Spielflur", "Unser Flur": "im Flur"}
+def tour_titel(title, text):
+    """„Unser Gruppenraum – die Puppenecke“ → „Puppenecke – im Gruppenraum“ (nur bei kurzen Bildtexten, die ein Ding benennen)."""
+    if title not in TOUR_ORT or len(text) > 40:
+        return title, text
+    k = re.sub(r"^(die|der|das|ein|eine)\s+", "", text, flags=re.I)
+    if k == text and not text.startswith(("Frühstücks", "Blick ")):
+        return title, text
+    return k[0].upper() + k[1:], TOUR_ORT[title]
+
 def tour(group, items):
     figs = []
     for i, (image, title, text) in enumerate(items):
+        title, text = tour_titel(title, text)
         figs.append(
             f'<figure class="tour-item"><button type="button" data-full="{image}" data-group="{group}" '
             f'data-title="{e(title)}" data-text="{e(text)}" aria-label="{e(title)} – {e(text)} (Bild vergrößern)">'
@@ -715,10 +726,10 @@ home = f'''
       <a class="hero-krank" href="#krankmelden"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
-      <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False)}</figure>
-      <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", lazy=False)}</figure>
-      <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", lazy=False)}</figure>
-      <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", lazy=False)}</figure>
+      <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</figure>
+      <figure class="c2">{img("img/img_4956.jpg", "Ein Kind entdeckt die Weltkarte im Kinderhort", sizes="(max-width: 900px) 33vw, 190px")}</figure>
+      <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 33vw, 190px")}</figure>
+      <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", sizes="(max-width: 900px) 33vw, 190px")}</figure>
       <div class="hero-badge"><span><b>3</b>Bereiche unter einem Dach</span></div>
     </div>
   </div>
@@ -1363,17 +1374,14 @@ kon = simple_hero("Kontakt", "Wir freuen uns auf Sie und Ihr Kind – rufen Sie 
 kon += f'''<section class="section tight" id="schnell">
   <div class="container">
     <div class="quick-grid">
+      <div class="kontakt-zeile">
+        <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 21)} 0931&nbsp;2789892&nbsp;0</a>
+        <a class="btn btn-ghost" href="mailto:kinderhort.grombuehl@t-online.de">{icon("mail", 21)} E-Mail schreiben</a>
+        <p class="kz-status" id="status-kontakt" hidden><span class="status-today"></span><span class="status-sub"></span></p>
+      </div>
       <a class="quick-card reveal" href="{KRANK_MAIL}">
         <span class="quick-icon">{icon("mail", 26)}</span>
         <span><strong>Kind krankmelden</strong><span>Öffnet eine vorbereitete E-Mail – nur noch Name, Gruppe und Zeitraum eintragen. Gerne auch telefonisch in der Gruppe.</span></span>
-      </a>
-      <a class="quick-card reveal" href="tel:+4993127898920">
-        <span class="quick-icon">{icon("phone", 26)}</span>
-        <span><strong>0931&nbsp;2789892&nbsp;0</strong><span>Anrufen in der Zentrale, Montag bis Freitag ab 6:45&nbsp;Uhr. Die Durchwahlen der Gruppen stehen weiter unten.</span></span>
-      </a>
-      <a class="quick-card reveal" href="mailto:kinderhort.grombuehl@t-online.de">
-        <span class="quick-icon">{icon("mail", 26)}</span>
-        <span><strong class="quick-mail">kinderhort.grombuehl<wbr>@t&#8209;online.de</strong><span>E-Mail für alle allgemeinen Fragen.</span></span>
       </a>
       <a class="quick-card reveal" href="{PLATZ_MAIL}">
         <span class="quick-icon">{icon("users", 26)}</span>
@@ -1387,10 +1395,6 @@ kon += f'''<section class="section tight" id="schnell">
         <span class="quick-icon">{icon("calendar", 26)}</span>
         <span><strong>Abwesenheit melden</strong><span>Urlaub oder ein paar freie Tage: kurze E-Mail mit Zeitraum, damit wir planen können.</span></span>
       </a>
-      <div class="quick-card status-mini reveal" id="status-kontakt" hidden>
-        <span class="quick-icon">{icon("clock", 26)}</span>
-        <span><strong class="status-today"></strong><span class="status-sub"></span></span>
-      </div>
     </div>
   </div>
 </section>'''
@@ -1426,8 +1430,6 @@ kon += f'''<section class="section">
       <h2>Anschrift</h2>
       <address>
         <div class="contact-row">{icon("pin")}<span>{ORG}<br>Lindleinstraße 20<br>97080 Würzburg</span></div>
-        <div class="contact-row">{icon("phone")}<a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a>{copy_btn("0931 2789892 0", "Telefonnummer")}</div>
-        <div class="contact-row">{icon("mail")}<a href="mailto:kinderhort.grombuehl@t-online.de">kinderhort.grombuehl@t-online.de</a>{copy_btn(MAIL, "E-Mail-Adresse")}</div>
       </address>
       <div class="btn-row">
         <a class="btn btn-primary" href="downloads/kinderhort-grombuehl.vcf" download>{icon("users", 20)} Kontakt aufs Handy speichern</a>

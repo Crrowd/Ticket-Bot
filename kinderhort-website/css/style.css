@@ -2508,3 +2508,26 @@ html body .quick-grid > .quick-card:not(:first-child) { background: none; box-sh
 
 /* Kontakt: Telefon und E-Mail als erste Einträge der Liste; lange Adresse darf umbrechen */
 .quick-card .quick-mail { overflow-wrap: break-word; }
+
+/* ===== Kontakt kompakt (23.11.2026): Telefon und E-Mail als Knopfzeile, Status klein daneben, vier gleiche Einträge ===== */
+.quick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .quick-grid { grid-template-columns: minmax(0, 1fr); } }
+.kontakt-zeile { grid-column: 1 / -1; order: -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin: 0 0 28px; }
+.kontakt-zeile .btn { min-height: 54px; padding: 0 24px; font-size: 1.06rem; gap: 10px; }
+html body .kontakt-zeile .btn-primary { background: var(--ink); color: var(--paper); }
+html body .kontakt-zeile .btn-primary:hover { background: var(--surface); }
+.kz-status { margin: 0 0 0 auto; display: flex; align-items: center; gap: 8px; font: 600 .95rem var(--font-body); color: var(--ink); }
+.kz-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--state-open); }
+.kz-status.is-closed::before { background: var(--state-closed); }
+.kz-status .status-sub { display: none; }
+@media (max-width: 700px) { .kontakt-zeile .btn { flex: 1 1 100%; justify-content: center; } .kz-status { margin: 4px 0 0; } }
+/* „Kind krankmelden“ wie die anderen Einträge */
+html body .quick-grid > .quick-card:first-of-type { grid-column: auto; padding: 18px 0; margin: 0; background: none; box-shadow: none; border-radius: 0; border-top: 1px solid rgb(var(--ink-rgb) / .2); }
+.quick-grid > .quick-card:first-of-type strong { font-size: inherit; }
+html body .quick-grid > .quick-card:first-of-type .quick-icon { background: var(--rose); width: 40px; height: 40px; border-radius: 12px; }
+/* kein Hüpfen beim Darüberfahren; stattdessen Unterstrich am Titel */
+@media (hover: hover) and (pointer: fine) {
+  html body .quick-grid > a.quick-card:hover { translate: none; box-shadow: none; }
+  .quick-grid > a.quick-card:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+}
