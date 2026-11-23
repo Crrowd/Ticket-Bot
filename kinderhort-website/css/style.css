@@ -2396,11 +2396,11 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .hero-badge { left: auto; right: -14px; top: -18px; bottom: auto; translate: none; width: 118px; height: 118px; background: var(--rose); color: var(--ink); box-shadow: 0 0 0 6px var(--bg), var(--shadow-lg); }
 .hero-badge b { color: var(--ink); }
 @media (max-width: 700px) { .hero-badge { right: 8px; top: -22px; width: 96px; height: 96px; } .hero-collage { gap: 10px; } }
-.heute { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 20px; }
-.heute .status-card { margin: 0; max-width: none; align-self: stretch; }
-.heute .krank.in-hero { margin: 0; max-width: none; }
-.heute:has(.status-card[hidden]) { grid-template-columns: minmax(0, 1fr); }
-@media (max-width: 860px) { .heute { grid-template-columns: minmax(0, 1fr); } }
+.heute-zeile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 20px; }
+.heute-zeile .status-card { margin: 0; max-width: none; align-self: stretch; }
+.heute-zeile .krank.in-hero { margin: 0; max-width: none; }
+.heute-zeile:has(.status-card[hidden]) { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 860px) { .heute-zeile { grid-template-columns: minmax(0, 1fr); } }
 
 /* ===== Verbesserungen (21.11.2026) ===== */
 /* 1 Kurzer Weg zur Krankmeldung im Startbereich */
@@ -2410,16 +2410,16 @@ main p a:not([class]), .prose a:not([class]), .foot-route { font-weight: 500; te
 .hero-krank:hover span[aria-hidden] { translate: 4px 0; }
 @media (prefers-reduced-motion: reduce) { .hero-krank span[aria-hidden] { transition: none; } }
 /* 2 Status-Karte und Krankmeldung im gleichen Stil (hell wie die Krankmeldung), gleich hoch */
-.heute { align-items: stretch; }
-.heute:has(.krank[open]) { align-items: start; }
-.heute .status-card { --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14); background: var(--paper); color: var(--ink); }
-.heute .status-card :is(.status-sub, p) { color: var(--ink-soft); }
-.heute .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
-.heute .status-card .status-q button:hover { background: rgb(var(--ink-rgb) / .07); }
-.heute .status-card :focus-visible { outline-color: var(--ink); }
-.heute .krank.in-hero { display: flex; flex-direction: column; }
-.heute .krank.in-hero > summary { flex: 1; align-items: center; }
-.heute .krank.in-hero[open] > summary { flex: none; }
+.heute-zeile { align-items: stretch; }
+.heute-zeile:has(.krank[open]) { align-items: start; }
+.heute-zeile .status-card { --fg: var(--ink); --fg-soft: var(--ink-soft); --rule: rgb(var(--ink-rgb) / .14); background: var(--paper); color: var(--ink); }
+.heute-zeile .status-card :is(.status-sub, p) { color: var(--ink-soft); }
+.heute-zeile .status-card .status-q button { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); }
+.heute-zeile .status-card .status-q button:hover { background: rgb(var(--ink-rgb) / .07); }
+.heute-zeile .status-card :focus-visible { outline-color: var(--ink); }
+.heute-zeile .krank.in-hero { display: flex; flex-direction: column; }
+.heute-zeile .krank.in-hero > summary { flex: 1; align-items: center; }
+.heute-zeile .krank.in-hero[open] > summary { flex: none; }
 /* 6 Kinderhort-Leiste „Auf dieser Seite“ auf Tablets zweizeilig statt seitlich wischen */
 @media (min-width: 700px) and (max-width: 1179px) {
   .subnav ul:has(> li:nth-child(10)) { flex-wrap: wrap; justify-content: center; overflow: visible; width: auto; }
@@ -2552,6 +2552,9 @@ html body .kz-status .status-sub.ist-dringend { display: inline; margin-left: 6p
 .dl-link > span:not(.ficon) { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
 .dl-group, .dl-group ul, .dl-group li { min-width: 0; }
 /* Krankmelde-Kasten neben der Status-Karte nicht mehr auf deren Höhe strecken (sah leer aus) */
-.heute { align-items: start; }
-.heute .status-card { align-self: start; }
-.heute .krank.in-hero > summary { flex: none; }
+.heute-zeile { align-items: start; }
+.heute-zeile .status-card { align-self: start; }
+.heute-zeile .krank.in-hero > summary { flex: none; }
+/* Startseite: „Kind krankmelden“ steht nur noch auf der Kontaktseite; die Status-Karte allein, nicht über die volle Breite */
+.heute-zeile { grid-template-columns: minmax(0, 1fr); }
+.heute-zeile .status-card { max-width: 640px; }

@@ -725,7 +725,7 @@ home = f'''
         <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
         <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
-      <a class="hero-krank" href="#krankmelden"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
+      <a class="hero-krank" href="kontakt.html#schnell"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="hero-collage">
       <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</figure>
@@ -810,7 +810,7 @@ home = f'''
   <div class="container">
     <div class="section-head"><h2>Termine &amp; Unterlagen</h2>
       <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
-    <div class="heute">{STATUS_CARD}{krank_block("in-hero")}</div>
+    <div class="heute-zeile">{STATUS_CARD}</div>
     <div class="woche reveal" data-woche aria-label="Diese Woche: Termine, Schließtage und Feiertage"></div>
     <div class="notes-grid">
       <div>
@@ -1491,8 +1491,7 @@ dsg += f'''<section class="section"><div class="container"><div class="prose">
   <li>ob die ruhige Ansicht („Bewegung aus“) eingeschaltet ist,</li>
   <li>die zuletzt angesehenen Seiten (für die Suche),</li>
   <li>das Datum Ihres letzten Besuchs (damit neue Termine und Elternbriefe markiert werden können),</li>
-  <li>ob der Leitsatz auf der Startseite schon einmal eingeblendet wurde,</li>
-  <li>die Gruppe, die Sie zuletzt über „Kind krankmelden“ angerufen haben (damit sie beim nächsten Mal oben steht).</li>
+  <li>ob der Leitsatz auf der Startseite schon einmal eingeblendet wurde.</li>
 </ul>
 <p>Damit die Seite auch ohne Internetverbindung erreichbar bleibt, legt Ihr Browser außerdem eine Kopie der Seiten an. Sie können all das jederzeit in den Einstellungen Ihres Browsers löschen („Websitedaten löschen“). Das Speichern ist für die von Ihnen gewünschten Funktionen erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG).</p>
 <h2>6. Kontakt per E-Mail und Telefon</h2>
@@ -1565,7 +1564,7 @@ with open(os.path.join(W, "manifest.webmanifest"), "w", encoding="utf-8") as f:
                "lang": "de", "start_url": "./index.html", "scope": "./", "display": "standalone", "background_color": "#A8C5C0", "theme_color": "#A8C5C0",
                "icons": [{"src": "img/app-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "img/app-512.png", "sizes": "512x512", "type": "image/png"},
                          {"src": "img/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
-               "shortcuts": [{"name": "Kind krankmelden", "short_name": "Krankmelden", "url": "./index.html#krankmelden", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
+               "shortcuts": [{"name": "Kind krankmelden", "short_name": "Krankmelden", "url": "./kontakt.html#schnell", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
                              {"name": "Termine", "url": "./aktuelles.html#termine", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]},
                              {"name": "Durchwahlen", "url": "./kontakt.html#durchwahl-finden", "icons": [{"src": "img/app-192.png", "sizes": "192x192"}]}]},
               f, ensure_ascii=False, indent=1)

@@ -1627,7 +1627,7 @@
       var gruppen = dir.filter(function (d) { return !/allgemein/i.test(d.label) && normDe(q).split(" ").some(function (w) { var a = DW_ALIAS[w]; if (a) return /gruppe$/.test(a) && d.keys.some(function (k) { return k.indexOf(a) === 0; }); var gi = w.indexOf("gru"), w2 = gi >= 4 ? w.slice(0, gi) : w; return w2.length >= 4 && d.keys.some(function (k) { return /gruppe$/.test(k) && passt(w2, k.replace(/gruppe$/, "")); }); }); });
       if (/krank|fieber|abmeld| fehlt| nicht kommen|ausfall/.test(n)) {
         line("Bitte melden Sie Ihr Kind möglichst früh am Morgen ab – am schnellsten telefonisch direkt in der Gruppe oder per E-Mail mit unserer Vorlage."); br();
-        f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "index.html#krankmelden")); return f;
+        f.appendChild(link("Kind krankmelden: Gruppe anrufen oder E-Mail", "kontakt.html#schnell")); return f;
       }
       if (/medikament|medizin|tablette|arznei|salbe|zaepfchen|notfallmedi/.test(n)) {
         line("Medikamente dürfen wir nur geben, wenn eine unterschriebene Medikamentenvereinbarung vorliegt."); br();
@@ -2279,7 +2279,9 @@
      ========================================================== */
 
   /* 3 Kurzbefehl „Kind krankmelden“: Abschnitt öffnen und zeigen */
-  (function () { var k = $("#krankmelden"); if (!k) return;
+  (function () { var k = $("#krankmelden");
+    /* alte Links „…#krankmelden“ (Startseite, App-Verknüpfung) führen jetzt zur Kontaktseite */
+    if (!k) { if (location.hash === "#krankmelden") location.replace("kontakt.html#schnell"); return; }
     function go() { if (location.hash === "#krankmelden") { k.open = true; k.scrollIntoView({ block: "center" }); $("summary", k).focus({ preventScroll: true }); } }
     go(); addEventListener("hashchange", go);
     /* Link „Kind krankmelden“ im Startbereich: auch beim zweiten Klick (Sprungmarke schon gesetzt) aufklappen */

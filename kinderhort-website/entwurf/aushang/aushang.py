@@ -5,7 +5,7 @@ H = os.path.dirname(os.path.abspath(__file__)); W = os.path.dirname(os.path.dirn
 SITE = "https://kinderhort-grombuehl.de/"
 CODES = [
     ("Unsere Website", "Termine, Schließtage, Fragen und Kontakt", SITE, "kinderhort-grombuehl.de"),
-    ("Kind krankmelden", "Gruppe anrufen oder E-Mail mit Vorlage", SITE + "index.html#krankmelden", "kinderhort-grombuehl.de › Kind krankmelden"),
+    ("Kind krankmelden", "Gruppe anrufen oder E-Mail mit Vorlage", SITE + "kontakt.html#schnell", "kinderhort-grombuehl.de › Kind krankmelden"),
     ("Termine im Handy", "Kalender abonnieren – neue Termine kommen von selbst", "webcal://kinderhort-grombuehl.de/downloads/termine.ics", "Termine abonnieren"),
 ]
 def svg(data):
