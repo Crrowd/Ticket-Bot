@@ -2611,3 +2611,9 @@ html body .rooms-text .room.no-img .txt { padding: 16px 2px 0; }
   .quick-grid > .quick-card:target::before { animation: none; opacity: 0; }
   .quick-grid > .quick-card:target { box-shadow: inset 3px 0 0 var(--rose-deep); }
 }
+
+/* ===== Bewegung reduzieren: letzte Lücken (23.11.2026) ===== */
+@media (prefers-reduced-motion: reduce) {
+  .read-more::details-content { transition: none; }
+  .yl-pin { transition: none; }
+}

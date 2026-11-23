@@ -2460,7 +2460,7 @@
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.open = true; var bis = d.getBoundingClientRect().height;
       d.style.height = von + "px"; void d.offsetHeight; d.style.height = "";
-      fade([{ opacity: 0 }, { opacity: 1 }], { duration: o.ms * .75, delay: o.ms * (o.spaet || .15), easing: "ease-out", fill: "backwards" });
+      fade([{ opacity: 0 }, { opacity: 1 }], { duration: o.ms * .75, delay: o.ms * (o.spaet || .15), easing: EASE_OUT, fill: "backwards" });
       d.style.overflow = "hidden";
       lauf = d.animate([{ height: von + "px" }, { height: bis + "px" }], { duration: o.ms, easing: o.ease });
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; };
