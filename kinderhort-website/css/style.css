@@ -2835,3 +2835,21 @@ a.lp-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .lp-gross { position: relative; }
 .lp-lupe { position: absolute; right: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--paper-rgb) / .92); color: var(--ink); box-shadow: 0 6px 16px -8px rgb(var(--deep-rgb) / .5); transition: scale .25s var(--ease-out); pointer-events: none; }
 @media (hover: hover) and (pointer: fine) { .lp-gross:hover .lp-lupe { scale: 1.08; } }
+
+/* ===== Neu bei uns + Abo-Hinweis (25.11.2026) ===== */
+.nb-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.nb-karte { background: var(--paper); border-radius: 24px; padding: 28px; display: grid; gap: 14px; align-content: start; box-shadow: var(--shadow); }
+.nb-karte h3 { margin: 0; font: 600 24px/32px var(--font-head); }
+.nb-karte ul { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+.nb-links { display: grid; gap: 4px; justify-items: start; }
+.nb-links .lp-link, .anm-neu .lp-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.nb-alle { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.nb-alle a { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: 20px; background: var(--paper); color: var(--ink); text-decoration: none; box-shadow: var(--shadow); transition: translate .3s var(--ease-out); }
+.nb-alle a > svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 12px; background: var(--rose); box-sizing: border-box; }
+.nb-alle span { display: grid; gap: 2px; color: var(--ink-soft); }
+.nb-alle b { color: var(--ink); font-size: 18px; line-height: 26px; }
+.nb-alle a:focus-visible { outline: 3px solid var(--surface); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .nb-alle a:hover { translate: 0 -2px; } }
+.anm-neu { margin: 16px 0 0; font-size: 18px; line-height: 28px; }
+.abo-hinweis { margin: 18px 0 0; max-width: 70ch; }
+@media (max-width: 900px) { .nb-grid, .nb-alle { grid-template-columns: minmax(0, 1fr); } .nb-karte { padding: 22px; } }

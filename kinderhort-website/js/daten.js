@@ -331,6 +331,12 @@ window.KITA = {
    "k": "formular welches formular medikamente krank lotse hilfe"
   },
   {
+   "t": "Neu bei uns",
+   "s": "Die ersten Wochen",
+   "u": "neu-bei-uns.html",
+   "k": "neu erster tag eingewöhnung mitbringen platz bekommen anfang start"
+  },
+  {
    "t": "Kalender abonnieren",
    "s": "Downloads",
    "u": "downloads.html#abo",

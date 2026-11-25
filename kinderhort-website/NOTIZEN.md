@@ -681,3 +681,4 @@ Entscheidung offen.
 - 25.11.: Startseite: Gruppen als Schildchen auf den Bereichskarten (Sonne, Sterne / Bären, Bienen, Spatzen; Namen aus dem Text entfernt), „Ihre Frage ist nicht dabei? → Fragefeld“ statt „Weitere Fragen“-Links, Lupe auf den drei Fotos.
 - 25.11.: Bereichsseiten Anmeldung: Nummern 1/2 entfernt, „Kennenlernen vereinbaren“ jetzt rosé (btn-primary). Hort-Außenbereich-Text vom Team bestätigt.
 - 25.11.: Team-Anleitung angepasst (Startseite ohne Termine/Status, „Jetzt geöffnet“ auf Kontakt, Mehrmonats-Termine, Hinweis bis ~200 Zeichen, Semikolon-Meldung). PDF neu (8 Seiten). PDF per Playwright aus entwurf/anleitung/anleitung.html.
+- 25.11.: Neue Seite neu-bei-uns.html (verlinkt: Fußbereich „Seiten“, Bereichsseiten unter Anmeldung, Suche). Schließtage-Knopf jetzt „Schließtage abonnieren“ → downloads.html#abo mit Hinweis „Kostenlos und ohne Anmeldung“; Abo-Kasten auf Downloads: „Kalender abonnieren – kostenlos“.

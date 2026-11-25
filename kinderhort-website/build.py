@@ -338,6 +338,7 @@ FOOTER = f'''<footer class="site-footer">
           <li><a href="kinderhort.html">Kinderhort</a></li>
           <li><a href="aktuelles.html">Aktuelles</a></li>
           <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="neu-bei-uns.html">Neu bei uns</a></li>
           <li><button type="button" class="link-btn js-app">Als App aufs Handy</button></li>
           <li><button class="link-btn js-calm" type="button" role="switch" aria-checked="false">Bewegung aus</button></li>
         </ul>
@@ -610,8 +611,9 @@ def plan_table():
 <p class="plan-note">Damit Sie rechtzeitig Ihre Urlaubspläne schmieden können: Kinderkrippe, Kindergarten und Kinderhort haben die gleichen Schließtage.
 <a href="downloads/Ferienplan_2026_27.pdf">Schließtage als PDF herunterladen</a></p>
 <a class="aushang no-print" href="img/schliesstage-2026-2027.jpg" data-full="img/schliesstage-2026-2027.jpg" data-group="plan" data-title="Ferienplan 2026/2027" data-text="Original-Aushang mit Schließtagen und Vormerkterminen"><img src="img/schliesstage-2026-2027.jpg" alt="" width="593" height="714" loading="lazy" decoding="async"><span>Original-Aushang<small>Zum Vergrößern antippen</small></span></a>
+<p class="abo-hinweis no-print"><b>Kostenlos und ohne Anmeldung:</b> Mit dem Abo stehen alle Schließtage in Ihrem Handy-Kalender. Kommt ein Tag dazu oder ändert sich einer, passt sich Ihr Kalender von selbst an. Sie können das Abo jederzeit wieder löschen.</p>
 <div class="btn-row no-print">
-  <a class="btn btn-primary" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a>
+  <a class="btn btn-primary" href="downloads.html#abo">{icon("calendar", 20)} Schließtage abonnieren</a>
   <button class="btn btn-ghost js-print-plan" type="button">{icon("file", 20)} Ferienplan drucken</button>
   <button class="btn btn-ghost js-poster" type="button">{icon("poster", 20)} Jahresposter drucken</button>
 </div>'''
@@ -623,7 +625,7 @@ def ferienplan_section(cls="alt", kurz=False, kicker="Schließtage"):
         return section("ferienplan", kicker, f"Schließtage {PLAN_JAHR}",
                        "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
                        f'<div class="btn-row no-print plan-knoepfe"><a class="btn btn-primary" href="aktuelles.html#ferienplan">{icon("calendar", 20)} Ganzen Ferienplan ansehen</a>'
-                       f'<a class="btn btn-ghost" href="downloads/schliesstage.ics" download>{icon("calendar", 20)} Schließtage in meinen Kalender</a></div>'
+                       f'<a class="btn btn-ghost" href="downloads.html#abo">{icon("calendar", 20)} Schließtage abonnieren</a></div>'
                        '<div class="yearline reveal" data-yearline></div>', cls=cls)
     return section("ferienplan", kicker, f"Schließtage {PLAN_JAHR}",
                    "In allen Abteilungen des Hauses haben wir an maximal 30 gleichen Tagen im Jahr geschlossen.",
@@ -643,7 +645,8 @@ def anmeldung_section(bereich):
              '<p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p>'
              f'<a class="btn btn-primary" href="{kennen}">{icon("calendar", 20)} Kennenlernen vereinbaren</a></div>')
     return section("anmeldung", "Anmeldung", "So bekommen Sie einen Platz", "",
-                   f'<div class="anm-grid">{cards}</div><p class="anm-tel">Lieber telefonisch? <a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></p>')
+                   f'<div class="anm-grid">{cards}</div><p class="anm-tel">Lieber telefonisch? <a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></p>'
+                   f'<p class="anm-neu reveal"><b>Platz bekommen?</b> Was in den ersten Wochen wichtig ist: <a class="lp-link lp-weiter" href="neu-bei-uns.html">Neu bei uns {icon("right", 18)}</a></p>')
 
 def abc_section(name, link_text):
     return f'''<section class="section tight">
@@ -1328,7 +1331,7 @@ downl += section("kalender", "", "Termine direkt ins Handy übernehmen", "Die Ka
   <div class="dl-group reveal"><h3>Termine</h3><ul>{ics_dl("downloads/termine.ics", "Termine &amp; Veranstaltungen", "Kalenderdatei")}</ul></div>
 </div>
 <div class="abo reveal" id="abo">
-  <div class="abo-head"><h3>Noch einfacher: Kalender abonnieren</h3><p>Dann erscheinen neue Termine und Schließtage <strong>von selbst</strong> in Ihrem Kalender – ohne erneutes Herunterladen.</p></div>
+  <div class="abo-head"><h3>Kalender abonnieren – kostenlos</h3><p>Einmal einrichten, dann stehen alle Termine und Schließtage in Ihrem Handy-Kalender. Ändert sich etwas, aktualisiert sich Ihr Kalender <strong>von selbst</strong>. Es kostet nichts, Sie müssen sich nirgends anmelden und können das Abo jederzeit wieder löschen.</p></div>
   <div class="abo-tabs" role="tablist" aria-label="Gerät wählen"><span class="vs-knob" aria-hidden="true"></span>
     <button type="button" role="tab" id="abo-t1" aria-controls="abo-ios" aria-selected="true">iPhone / iPad</button><button type="button" role="tab" id="abo-t2" aria-controls="abo-android" aria-selected="false" tabindex="-1">Android</button><button type="button" role="tab" id="abo-t3" aria-controls="abo-pc" aria-selected="false" tabindex="-1">Outlook</button></div>
   <div class="abo-panel" role="tabpanel" id="abo-ios" aria-labelledby="abo-t1"><ol><li>Unten auf „Termine abonnieren“ oder „Schließtage abonnieren“ tippen.</li><li>„Abonnieren“ bestätigen.</li><li>Fertig – neue Einträge erscheinen automatisch im Kalender.</li></ol></div>
@@ -1340,6 +1343,36 @@ downl += section("kalender", "", "Termine direkt ins Handy übernehmen", "Die Ka
   </div>
 </div>''', cls="alt")
 page("downloads.html", "Downloads", "Downloads des Kath. Kinder- und Jugendhorts Grombühl: Ferienplan, KinderhortABC und Medikamentenvereinbarung.", "downloads.html", downl)
+# =====================================================================
+# NEU BEI UNS
+# =====================================================================
+def nb_karte(titel, punkte, links):
+    li = "".join(f"<li>{x}</li>" for x in punkte)
+    ln = "".join(f'<a class="lp-link lp-weiter" href="{h}">{t} {icon("right", 18)}</a>' for h, t in links)
+    return f'<article class="nb-karte reveal"><h3>{titel}</h3><ul>{li}</ul><div class="nb-links">{ln}</div></article>'
+neu = page_hero("Neu bei uns", "Ihr Kind hat einen Platz bekommen? Hier steht kurz, was in den ersten Wochen wichtig ist.",
+                "img/garten.jpg", "Die ersten Wochen", alt="Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus")
+neu += section("bereiche-neu", "", "Je nach Bereich", "", '<div class="nb-grid">' +
+    nb_karte("Kinderkrippe", ["Die Eingewöhnung planen wir gemeinsam mit Ihnen. Sie dauert etwa vier Wochen.",
+                              "Bitte Windeln, Feuchttücher und ggf. Wundschutzcreme für Ihr Kind mitbringen.",
+                              "Nach dem Mittagessen gibt es jeden Tag eine Ruhezeit."],
+             [("kinderkrippe.html#fragen", "Alle Fragen zur Kinderkrippe")]) +
+    nb_karte("Kindergarten", ["Die Eingewöhnung verläuft für jedes Kind anders. Bitte nehmen Sie sich am Anfang Zeit.",
+                              "Für Frühstück und Nachmittag: Brotzeit und eine Trinkflasche mit Wasser.",
+                              "Das warme Mittagessen kocht unsere hauseigene Küche."],
+             [("kindergarten.html#fragen", "Alle Fragen zum Kindergarten")]) +
+    nb_karte("Kinderhort", ["Das Wichtigste von A bis Z steht im KinderhortABC.",
+                            "Nach der Schule gibt es ein warmes Mittagessen im Bistro und Unterstützung bei den Hausaufgaben."],
+             [("downloads/HortABC.pdf", "KinderhortABC (PDF)"), ("kinderhort.html#fragen", "Alle Fragen zum Kinderhort")]) +
+    '</div>')
+neu += section("alle-neu", "", "Für alle Bereiche", "", f"""<div class="nb-alle reveal">
+  <a href="kontakt.html#krank">{icon("phone", 22)}<span><b>Kind krankmelden</b>Anrufen oder E-Mail an die Gruppe</span></a>
+  <a href="kontakt.html#abholung">{icon("users", 22)}<span><b>Jemand anderes holt ab</b>So sagen Sie uns Bescheid</span></a>
+  <a href="downloads/Medikamentenvereinbarung.pdf">{icon("file", 22)}<span><b>Medikamentenvereinbarung</b>Wenn Ihr Kind bei uns Medikamente braucht</span></a>
+  <a href="downloads.html#abo">{icon("calendar", 22)}<span><b>Schließtage abonnieren</b>Kostenlos, erscheinen von selbst in Ihrem Kalender</span></a>
+</div>""", cls="alt")
+page("neu-bei-uns.html", "Neu bei uns", "Neu im Kath. Kinder- und Jugendhort Grombühl: Eingewöhnung, was mitbringen, Krankmelden und mehr für die ersten Wochen.", "neu-bei-uns.html", neu)
+
 
 # =====================================================================
 # KONTAKT
@@ -1571,6 +1604,7 @@ SUCHE += [
     ("Aktuelle Termine", "Aktuelles", "aktuelles.html#termine", "termine veranstaltungen kalender weihnachtsmarkt nikolaus martin"),
     ("Elternbriefe", "Aktuelles", "aktuelles.html#elternbrief", "brief briefe eltern elternbrief archiv überstunden schließzeit"),
     ("Was möchten Sie tun?", "Downloads · Formular-Lotse", "downloads.html#lotse", "formular welches formular medikamente krank lotse hilfe"),
+    ("Neu bei uns", "Die ersten Wochen", "neu-bei-uns.html", "neu erster tag eingewöhnung mitbringen platz bekommen anfang start"),
     ("Kalender abonnieren", "Downloads", "downloads.html#abo", "abo abonnieren webcal kalender automatisch outlook google iphone"),
     ("Fragen Sie einfach", "Kontakt · Schnelle Antwort", "kontakt.html#frag", "frage antwort hilfe chat"),
     ("Schließtage", "Aktuelles", "aktuelles.html#ferienplan", "ferien ferienplan schließtage urlaub geschlossen weihnachten ostern pfingsten sommer"),
