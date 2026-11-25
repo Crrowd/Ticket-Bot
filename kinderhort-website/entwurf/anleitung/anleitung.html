@@ -57,7 +57,7 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
   <p>Alle Tabellen liegen im Ordner <span class="datei">kinderhort-website/daten/</span>.</p>
   <table class="uebersicht">
     <tr><th>Datei</th><th>Was steht darin?</th><th>Wo erscheint es?</th></tr>
-    <tr><td><span class="datei">termine.csv</span></td><td>Termine und Veranstaltungen</td><td>„Aktuelles“, Startseite, Kalenderdatei</td></tr>
+    <tr><td><span class="datei">termine.csv</span></td><td>Termine und Veranstaltungen</td><td>„Aktuelles“, Kalenderdatei</td></tr>
     <tr><td><span class="datei">schliesstage.csv</span></td><td>Ferien und Schließtage des Kita-Jahres</td><td>Tabelle „Schließtage“, Anzeige „Jetzt geöffnet“, Kalenderdatei</td></tr>
     <tr><td><span class="datei">elternbriefe.csv</span></td><td>Elternbriefe (neuester oben)</td><td>„Aktuelles“ → „Liebe Eltern“</td></tr>
     <tr><td><span class="datei">hinweise.csv</span></td><td>Kurze Hinweise mit Datum (z. B. Sankt Martin)</td><td>„Aktuelles“, verschwinden am Tag danach von selbst</td></tr>
@@ -81,7 +81,7 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
     <tr><td>06.09.2027</td><td>10.09.2027</td><td>Österreich-Ferienfreizeit</td><td>Die Ferienfreizeit der Hortkinder findet vom 06.09. bis 10.09.2027 statt.</td><td>Hort</td></tr>
   </table>
   <ul>
-    <li><b>von / bis:</b> Bei eintägigen Terminen zweimal dasselbe Datum.</li>
+    <li><b>von / bis:</b> Bei eintägigen Terminen zweimal dasselbe Datum. Geht ein Termin über mehrere Monate (z. B. 27.11. bis 15.01.), steht im Datumsfeld „27.11.“ und darunter „bis 15.01.27“.</li>
     <li><b>Beschreibung:</b> Mit <code>**zwei Sternchen**</code> wird ein Wort fett. Internet- und E-Mail-Adressen werden von selbst anklickbar.</li>
     <li><b>Bereich:</b> leer = für das ganze Haus. Sonst <code>Krippe</code>, <code>Kindergarten</code> oder <code>Hort</code> (mehrere mit Komma). Dann gibt es auf „Aktuelles“ die Knöpfe zum Filtern.</li>
   </ul>
@@ -107,7 +107,7 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
   <img class="foto" src="f-schliesstage.png" alt="">
   <p class="unter">Die Tabelle „Schließtage“ auf der Seite „Aktuelles“.</p>
   <div class="zwei">
-    <div><img class="foto" src="f-status.png" alt=""><p class="unter">Daraus berechnet die Startseite auch „Jetzt geöffnet / geschlossen“ und die nächste Schließzeit.</p></div>
+    <div><img class="foto" src="f-status.png" alt=""><p class="unter">Daraus berechnet die Kontaktseite auch „Jetzt geöffnet / geschlossen“, und die Leiste auf „Aktuelles“ zeigt die nächste Schließzeit.</p></div>
     <div class="tipp"><b>Neues Kita-Jahr – auch das PDF tauschen</b>Den Ferienplan als PDF legen Sie in den Ordner <span class="datei">downloads/</span>. Hat er einen neuen Dateinamen, bitte kurz Bescheid geben, damit die Links angepasst werden.<br><br><b>Feiertage</b> stehen in <span class="datei">feiertage.csv</span> (Spalten: Datum; Feiertag) – einmal im Jahr für das nächste Jahr ergänzen.</div>
   </div>
 </section>
@@ -152,7 +152,7 @@ ol.schritte { padding-left: 6mm; margin: 0 0 3mm; } ol.schritte li { margin-bott
   </table>
   <img class="foto" src="f-dringend.png" alt="">
   <p class="unter">So erscheint der Hinweis oben auf der Webseite.</p>
-  <div class="tipp"><b>Kurz und eindeutig schreiben</b>Ein, zwei Sätze: was passiert, wann, welche Gruppen betroffen sind. Für Termine und Feste bitte weiter <span class="datei">termine.csv</span> nutzen – der wichtige Hinweis ist nur für Ausnahmen gedacht.</div>
+  <div class="tipp"><b>Kurz und eindeutig schreiben</b>Ein, zwei Sätze: was passiert, wann, welche Gruppen betroffen sind. Für Termine und Feste bitte weiter <span class="datei">termine.csv</span> nutzen – der wichtige Hinweis ist nur für Ausnahmen gedacht. Am besten bis etwa 200 Zeichen: Auf dem Handy erscheinen nur die ersten drei Zeilen, der Rest hinter „Weiterlesen“. Die Daten-Prüfung warnt ab 220 Zeichen.</div>
   <div class="achtung"><b>Nicht vergessen: bauen und hochladen</b>Der Hinweis erscheint erst, wenn die Webseite neu gebaut und hochgeladen ist (Schritte 7 und 8). Bei einer Schließung am selben Morgen zusätzlich die Eltern direkt informieren.</div>
 </section>
 
@@ -199,6 +199,7 @@ Upload-Paket: 196 Dateien in kinderhort-webseite.zip (ohne Notizen, Tabellen, En
     <tr><td>Alles steht in einer einzigen Spalte</td><td>Trennzeichen war Komma statt Semikolon. In LibreOffice beim Öffnen „Semikolon“ wählen.</td></tr>
     <tr><td>„python“ wird nicht gefunden</td><td>Python ist nicht installiert oder „Add Python to PATH“ fehlte. Neu installieren. Unter Windows <code>py build.py</code> versuchen.</td></tr>
     <tr><td>„No module named PIL“</td><td>Einmal <code>pip install pillow</code> eingeben (Schritt 7).</td></tr>
+    <tr><td>Die Prüfung meldet „Semikolon im Text“</td><td>Im Text steht ein Semikolon (;). Die Zeile wird trotzdem richtig angezeigt. Bitte das Semikolon durch Komma oder Punkt ersetzen.</td></tr>
     <tr><td>Ein Termin fehlt auf der Seite</td><td>Liegt das Datum in der Vergangenheit? Meldet die Daten-Prüfung einen Fehler in dieser Zeile?</td></tr>
     <tr><td>Die Datei <span class="datei">erstmals.json</span></td><td>Bitte nicht von Hand ändern – sie merkt sich, seit wann ein Termin auf der Seite steht.</td></tr>
   </table>

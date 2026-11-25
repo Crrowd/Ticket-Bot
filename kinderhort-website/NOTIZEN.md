@@ -680,3 +680,4 @@ Entscheidung offen.
 - 25.11.: Startseite: „Platz anfragen“-Block mit zwei gleichen Knöpfen (Per E-Mail anfragen / Anrufen), Links unter den 3 Schritten (KENNEN_MAIL neu), Außenbereich als 3. Karte, Schluss mit zwei gleichen Knöpfen + Adresse + Route (js-route braucht <span>), Hausfoto oben groß ansehen. Wellenkante: nein.
 - 25.11.: Startseite: Gruppen als Schildchen auf den Bereichskarten (Sonne, Sterne / Bären, Bienen, Spatzen; Namen aus dem Text entfernt), „Ihre Frage ist nicht dabei? → Fragefeld“ statt „Weitere Fragen“-Links, Lupe auf den drei Fotos.
 - 25.11.: Bereichsseiten Anmeldung: Nummern 1/2 entfernt, „Kennenlernen vereinbaren“ jetzt rosé (btn-primary). Hort-Außenbereich-Text vom Team bestätigt.
+- 25.11.: Team-Anleitung angepasst (Startseite ohne Termine/Status, „Jetzt geöffnet“ auf Kontakt, Mehrmonats-Termine, Hinweis bis ~200 Zeichen, Semikolon-Meldung). PDF neu (8 Seiten). PDF per Playwright aus entwurf/anleitung/anleitung.html.
