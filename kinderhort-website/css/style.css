@@ -2732,3 +2732,29 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
 @media (prefers-reduced-motion: reduce) { .js .reveal > .lp-bf { clip-path: none; } .lp-leit.vor .lp-w { color: inherit; } }
 html.calm .js .reveal > .lp-bf, html.calm.js .reveal > .lp-bf { clip-path: none; }
 html.calm .lp-leit.vor .lp-w { color: inherit; }
+
+/* ===== Startseite: Fotos und mehr Bewegung (25.11.2026) ===== */
+/* d Rosé Rahmen schiebt sich beim Laden hervor */
+@keyframes lp-rahmen { from { box-shadow: 0 0 0 var(--rose); } }
+.lp-hero-bild img { animation: lp-bild .6s var(--ease-out) .1s backwards, lp-rahmen .5s var(--ease-out) .35s backwards; }
+/* b „Qualität“ im Leitsatz: heller Kringel auf Rosé */
+.lp-leit .mark-svg path { stroke: var(--paper); vector-effect: none; stroke-width: 1.7; }
+/* a Unterschrift: Schwung unter dem Namen */
+.lp-name .sig-name { display: inline-block; font-weight: 500; }
+.lp-gruss-txt .lp-rolle { margin-top: 0; }
+/* c Weißer Raum und Küche groß ansehen */
+.lp-gross { cursor: zoom-in; }
+.lp-gross:focus-visible { outline: 3px solid var(--surface); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .lp-gross:hover img { scale: 1.04; } }
+/* e Linie verbindet die drei Schritte (nur nebeneinander) */
+@media (min-width: 901px) {
+  .lp-schritte { position: relative; }
+  .lp-schritte::before { content: ""; position: absolute; z-index: 1; left: 52px; right: calc(33.333% - 68px); top: 51px; height: 2px; border-radius: 1px; background: var(--rose-deep); transform-origin: left center; pointer-events: none; }
+  .lp-schritte li::before { position: relative; z-index: 2; }
+  .js .lp-schritte::before { scale: 0 1; }
+  .js .lp-schritte:has(> li.visible)::before { scale: 1 1; transition: scale .8s var(--ease-out) .15s; }
+  @supports not selector(:has(*)) { .js .lp-schritte::before { scale: 1 1; } }
+}
+@media (prefers-reduced-motion: reduce) { .js .lp-schritte::before { scale: 1 1; } }
+html.calm .js .lp-schritte::before, html.calm.js .lp-schritte::before { scale: 1 1; }
+.lp-leit p > .mark { color: var(--ink); }

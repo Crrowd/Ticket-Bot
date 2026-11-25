@@ -740,7 +740,7 @@ home = f'''
       <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
       <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
     </div>
-    <figure class="lp-hero-bild">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
+    <figure class="lp-hero-bild">{img("img/garten.jpg", "Garten der Kita mit Holz-Tipi, Liegebank und großem Sitzkissen", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
   </div>
   <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><a href="kontakt.html#krank">Kind krankmelden</a><a href="aktuelles.html">Termine</a><a href="aktuelles.html#ferienplan">Schließtage</a><a href="downloads.html">Downloads</a></nav></div>
 </section>
@@ -758,7 +758,7 @@ home = f'''
   </div>
 </section>
 
-<section class="lp-leit" data-woerter><div class="container"><p>Weil Qualität zählt. <span><span class="lp-w">Vielfalt</span> <span class="lp-w">und</span> <span class="lp-w">Individualität</span> <span class="lp-w">sind</span> <span class="lp-w">uns</span> <span class="lp-w">wichtig,</span> <span class="lp-w">und</span> <span class="lp-w">das</span> <span class="lp-w">leben</span> <span class="lp-w">wir</span> <span class="lp-w">jeden</span> <span class="lp-w">Tag</span> <span class="lp-w">in</span> <span class="lp-w">unserer</span> <span class="lp-w">Pädagogik.</span></span></p></div></section>
+<section class="lp-leit" data-woerter><div class="container"><p>Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt. <span><span class="lp-w">Vielfalt</span> <span class="lp-w">und</span> <span class="lp-w">Individualität</span> <span class="lp-w">sind</span> <span class="lp-w">uns</span> <span class="lp-w">wichtig,</span> <span class="lp-w">und</span> <span class="lp-w">das</span> <span class="lp-w">leben</span> <span class="lp-w">wir</span> <span class="lp-w">jeden</span> <span class="lp-w">Tag</span> <span class="lp-w">in</span> <span class="lp-w">unserer</span> <span class="lp-w">Pädagogik.</span></span></p></div></section>
 
 <section class="lp-ab lp-papier" id="platz">
   <div class="container">
@@ -776,8 +776,8 @@ home = f'''
   <div class="container">
     <div class="lp-kopf reveal"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
     <div class="lp-zwei">
-      <article class="lp-karte reveal"><span class="lp-bf">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}</span><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
-      <article class="lp-karte reveal"><span class="lp-bf">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}</span><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
+      <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160031.jpg" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}" aria-label="Weißer Raum groß ansehen">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}</a><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+      <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160054.jpg" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten." aria-label="Hauseigene Küche groß ansehen">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}</a><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
     </div>
   </div>
 </section>
@@ -787,7 +787,7 @@ home = f'''
     {img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}
     <div class="lp-gruss-txt"><h2 class="lp-h3">Schön, dass Sie da sind</h2>
       <p class="lp-lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
-      <p class="lp-name">Petra Lachnit</p><p class="lp-rolle">Einrichtungsleitung</p></div>
+      <p class="lp-name"><strong class="sig-name">Petra Lachnit<svg class="sig-swash" viewBox="0 0 220 28" aria-hidden="true"><path pathLength="1" d="M4 20 C40 8 70 26 104 16 S168 4 216 12"/></svg></strong></p><p class="lp-rolle">Einrichtungsleitung</p></div>
   </div>
 </section>
 {STIMMEN}
