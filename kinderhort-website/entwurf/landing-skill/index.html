@@ -25,15 +25,24 @@ a { color: inherit; }
 .btn-g { box-shadow: inset 0 0 0 1.5px var(--petrol); }
 .btn-k { background: var(--petrol); color: var(--papier); }
 .pfeil { text-decoration: underline; text-decoration-color: #C9A49E; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 600; }
-/* Navigation */
-.nav { position: sticky; top: 12px; z-index: 5; margin: 12px auto 0; width: fit-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 24px; padding: 8px 8px 8px 16px; border-radius: 16px; background: rgb(243 248 247 / .72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
-.nav b { font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; }
-.nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-.nav ul a { display: block; padding: 8px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; font-weight: 500; text-decoration: none; }
-.nav ul a[aria-current] { background: var(--rose); }
-.nav .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; line-height: 20px; border-radius: 8px; }
+/* Kopfleiste wie auf der Website */
+.kopfl { position: sticky; top: 0; z-index: 5; padding-top: 12px; }
+.kopfl-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 62px; padding: 8px 8px 8px 16px; border-radius: 20px; background: rgb(243 248 247 / .5); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid rgb(255 255 255 / .55); box-shadow: 0 1px 2px rgb(20 42 49 / .06), 0 10px 30px -18px rgb(20 42 49 / .45); }
+.marke { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+.marke svg { width: 42px; height: 42px; flex: none; }
+.marke span { font-weight: 600; font-size: 16px; line-height: 19px; }
+.marke span i { font-style: normal; display: block; white-space: nowrap; }
+@media (max-width: 420px) { .marke span { font-size: 13px; line-height: 16px; } .marke { gap: 8px; } .marke svg { width: 38px; height: 38px; } }
+.menue { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.menue a, .menue button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px; border-radius: 12px; border: 0; background: none; font: 500 16px/24px "Plus Jakarta Sans", sans-serif; color: var(--petrol); text-decoration: none; cursor: pointer; }
+.menue a[aria-current] { background: var(--rose); }
+.menue .ktk { box-shadow: inset 0 0 0 1.5px rgb(30 59 68 / .55); margin-left: 8px; }
+.menue .such { background: rgb(243 248 247 / .7); box-shadow: inset 0 0 0 1px rgb(30 59 68 / .12); margin-left: 8px; }
+.handy { display: none; gap: 8px; }
+.handy button { width: 44px; height: 44px; border: 0; border-radius: 12px; background: rgb(30 59 68 / .08); display: grid; place-items: center; color: var(--petrol); }
+@media (max-width: 900px) { .menue { display: none; } .handy { display: flex; } }
 /* Hero */
-.hero { padding: 64px 0 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.hero { padding: 48px 0 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
 .hero-txt { display: grid; gap: 24px; justify-items: start; }
 .hero-txt .h1, .hero-txt .lead { max-width: 680px; }
 .kick { font-size: 14px; line-height: 20px; font-weight: 500; padding: 4px 12px; border-radius: 8px; background: var(--rose); margin: 0; }
@@ -43,6 +52,9 @@ a { color: inherit; }
 .hero-bild { position: relative; }
 .hero-bild img { box-shadow: 16px 16px 0 var(--rose); width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; display: block; }
 .hero-bild figcaption { position: absolute; left: 16px; bottom: 16px; padding: 8px 12px; border-radius: 12px; background: rgb(243 248 247 / .85); backdrop-filter: blur(8px); font-size: 14px; line-height: 20px; font-weight: 500; }
+.kreis { position: absolute; right: -20px; top: -24px; rotate: -8deg; width: 124px; height: 124px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; text-align: center; padding: 12px; font-weight: 600; font-size: 16px; line-height: 18px; box-shadow: 0 12px 28px -14px rgb(20 42 49 / .5); }
+.kreis b { display: block; font-size: 36px; line-height: 36px; font-weight: 600; margin-bottom: 2px; }
+@media (max-width: 900px) { .hero-bild img { box-shadow: 8px 8px 0 var(--rose); } .kreis { right: 8px; top: -28px; width: 104px; height: 104px; font-size: 14px; line-height: 16px; } .kreis b { font-size: 30px; line-height: 30px; } }
 /* Schon bei uns */
 .eltern { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 24px; border-radius: 16px; background: #F1E5E3; box-shadow: 0 0 0 1px rgb(212 181 176 / .9); }
 .eltern b { font-size: 14px; line-height: 20px; font-weight: 600; }
@@ -95,19 +107,20 @@ footer .w { display: flex; flex-wrap: wrap; justify-content: space-between; gap:
   .schritte li { padding: 24px; }
 }
 </style></head><body>
-<nav class="nav" aria-label="Hauptmenü"><b>Kinder- und Jugendhort Grombühl</b>
-<ul><li><a href="#" aria-current="page">Startseite</a></li><li><a href="#">Bereiche</a></li><li><a href="#">Aktuelles</a></li><li><a href="#">Downloads</a></li></ul>
-<a class="btn btn-k" href="#">Kontakt</a></nav>
+<header class="kopfl"><div class="w kopfl-in">
+<a class="marke" href="#"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1E3B44"/><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg><span><i>Kath. Kinder- und Jugendhort</i><i>Grombühl e. V.</i></span></a>
+<nav aria-label="Hauptmenü"><ul class="menue"><li><a href="#" aria-current="page">Startseite</a></li><li><button type="button">Bereiche <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></li><li><a href="#">Aktuelles</a></li><li><a href="#">Downloads</a></li><li><a class="ktk" href="#">Kontakt</a></li><li><button class="such" type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg> Suche</button></li></ul></nav>
+<div class="handy"><button type="button" aria-label="Suche"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button><button type="button" aria-label="Menü"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+</div></header>
 <main>
 <section class="w hero">
  <div class="hero-txt">
-  <p class="kick">Kath. Kinder- und Jugendhort Grombühl e. V. · Würzburg</p>
+  <p class="kick">Lindleinstraße 20 · Würzburg-Grombühl</p>
   <h1 class="h1">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
   <p class="lead">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
   <div class="aktion"><a class="btn btn-p" href="#">Platz anfragen</a><a class="pfeil" href="#">Unsere Bereiche ansehen</a></div>
-  <ul class="beleg"><li>3 Bereiche unter einem Dach</li><li>Hauseigene Küche</li><li>Ferienbetreuung im Hort</li></ul>
  </div>
- <figure class="hero-bild" style="margin:0"><img src="../../img/hortgebaeude.jpg" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche"><figcaption>Lindleinstraße 20, Würzburg-Grombühl</figcaption></figure>
+ <figure class="hero-bild" style="margin:0"><img src="../../img/hortgebaeude.jpg" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche"><div class="kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
 </section>
 <div class="w"><div class="eltern"><b>Schon bei uns?</b><a href="#">Kind krankmelden</a><a href="#">Termine</a><a href="#">Schließtage</a><a href="#">Downloads</a></div></div>
 
