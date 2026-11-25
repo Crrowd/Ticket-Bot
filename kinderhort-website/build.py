@@ -1256,14 +1256,14 @@ akt += section("termine", "", "Aktuelle Termine", "Vormerktermine für Sie, lieb
   </ul>
   <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
   <p class="ev-filter-empty muted" hidden>Für diesen Bereich stehen gerade keine eigenen Termine an. Termine für das ganze Haus sehen Sie unter „Alle“.</p>
-  <div class="btn-row"><a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
+  <div class="btn-row"><a class="btn btn-ghost js-ics-all" href="downloads.html#abo">{icon("calendar", 20)} Termine abonnieren</a></div>
   <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button> <button class="btn btn-ghost js-saved-sheet" type="button">Gemerkte ansehen</button></div>
   </div>
   <div class="note-card reveal">
     {hinweise_html()}
-    <h3 class="hint-end">Schließtage</h3>
-    <p>Die nächsten Schließtage und alle Ferienzeiten für 2026/2027 finden Sie unten bei den <a href="#ferienplan">Schließtagen</a>.</p>
-    <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
+    <h3 class="hint-end">Termine abonnieren – kostenlos</h3>
+    <p>Einmal einrichten, dann stehen alle Termine in Ihrem Handy-Kalender. Neue oder geänderte Termine kommen von selbst dazu. Ohne Anmeldung, jederzeit wieder löschbar.</p>
+    <a class="btn btn-primary" href="downloads.html#abo">{icon("calendar", 20)} So geht’s</a>
   </div>
 </div>''')
 BRIEFE = read_csv("elternbriefe.csv")
