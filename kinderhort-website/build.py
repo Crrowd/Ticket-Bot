@@ -740,7 +740,7 @@ home = f'''
       <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
       <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
     </div>
-    <figure class="lp-hero-bild">{img("img/garten.jpg", "Garten der Kita mit Holz-Tipi, Liegebank und großem Sitzkissen", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
+    <figure class="lp-hero-bild">{img("img/haus-panorama.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
   </div>
   <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><a href="kontakt.html#krank">Kind krankmelden</a><a href="aktuelles.html">Termine</a><a href="aktuelles.html#ferienplan">Schließtage</a><a href="downloads.html">Downloads</a></nav></div>
 </section>
@@ -873,7 +873,7 @@ krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", 
     ("Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Eingangsbereich", "Der Eingangsbereich bietet tagsüber Möglichkeit zum Abstellen des Kinderwagens.", None),
-    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", None),
+    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg"),
 ]), cls="alt")
 krippe += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von der Kinderkrippe sehen?",
                   "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("krippe", krippe_tour))

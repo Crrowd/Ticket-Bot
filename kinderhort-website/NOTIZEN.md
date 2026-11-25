@@ -672,3 +672,5 @@ Entscheidung offen.
 - 25.11.: Bewegung Startseite 1–7 eingebaut (Einstieg, Einblenden wie überall, Karten ganz klickbar, Kreis richtet sich auf, Plus→Minus, Knopf gibt nach, Leitsatz Wort für Wort). Klasse „schliesst“ beim Zuklappen in sanft().
 
 - 25.11.: Startseite: Gartenfoto oben (img/garten.jpg, Absperrband im Bild – Rückfrage offen), a Unterschrift-Schwung, b Kringel „Qualität“ (vector-effect none, sonst nur halb gezeichnet), c Großansicht Weißer Raum/Küche, d Rosé-Rahmen beim Laden, e Linie zwischen Schritten (nur Computer). F2 Haus-Panorama in voller Breite: nur Vorschau (Foto nur 730 px).
+
+- 25.11.: Startseite oben wieder Hausfoto (img/haus-panorama.jpg, neue Fassung ohne Pfeil-Knopf). Gartenfoto (img/garten.jpg) jetzt bei Kinderkrippe → Räumlichkeiten → Außenbereich. Neues Vorschaubild img/og-bild.jpg (gestaltet, Hausfoto, Vorlage entwurf/…/og.html im Scratchpad). Offen: F2 Hausfoto volle Breite (A/B/C), Idee 1 nächster Termin in Leiste.
