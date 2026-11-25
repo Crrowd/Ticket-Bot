@@ -496,13 +496,14 @@ def rooms(items):
     pics = [r for r in items if r[2]]
     texts = [r for r in items if not r[2]]
     out = []
-    for n, (name, text, image) in enumerate(pics):
+    for n, r in enumerate(pics):
+        name, text, image = r[:3]; alt = r[3] if len(r) > 3 else name
         wide = " wide" if len(pics) % 2 and n == len(pics) - 1 else ""
-        out.append(f'<article class="room{wide} reveal">{img(image, name)}<div class="txt"><h3>{name}</h3><p>{text}</p></div></article>')
+        out.append(f'<article class="room{wide} reveal">{img(image, alt)}<div class="txt"><h3>{name}</h3><p>{text}</p></div></article>')
     html = '<div class="rooms">' + "".join(out) + "</div>"
     if texts:
         html += f'<div class="rooms rooms-text n{len(texts)}">' + "".join(
-            f'<article class="room no-img reveal"><div class="txt"><h3>{name}</h3><p>{text}</p></div></article>' for name, text, _ in texts) + "</div>"
+            f'<article class="room no-img reveal"><div class="txt"><h3>{name}</h3><p>{text}</p></div></article>' for name, text, *_ in texts) + "</div>"
     return html
 
 TOUR_ORT = {"Unser Gruppenraum": "im Gruppenraum", "Unser Kreativraum": "im Kreativraum", "Unser Spielflur": "im Spielflur", "Unser Flur": "im Flur"}
@@ -738,11 +739,11 @@ home = f'''
       <span class="eyebrow lp-e">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
       <h1 class="lp-h1 lp-e">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
       <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
-      <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
+      <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-weiter" href="#bereiche">Unsere Bereiche ansehen {icon("right", 20)}</a></div>
     </div>
-    <figure class="lp-hero-bild">{img("img/haus-panorama.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
+    <figure class="lp-hero-bild">{img("img/haus-panorama.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<a class="lp-kreis" href="#bereiche"><span><b>3</b>Bereiche unter einem Dach</span></a></figure>
   </div>
-  <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><a href="kontakt.html#krank">Kind krankmelden</a><a href="aktuelles.html">Termine</a><a href="aktuelles.html#ferienplan">Schließtage</a><a href="downloads.html">Downloads</a></nav></div>
+  <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><div class="lp-eltern-links"><a href="kontakt.html#krank">{icon("phone", 22)}<span>Kind krank&shy;melden</span></a><a href="aktuelles.html">{icon("list", 22)}<span>Termine</span></a><a href="aktuelles.html#ferienplan">{icon("calendar", 22)}<span>Schließ&shy;tage</span></a><a href="downloads.html">{icon("file", 22)}<span>Down&shy;loads</span></a></div></nav></div>
 </section>
 
 <div class="announce" id="hinweis"></div>
@@ -768,7 +769,7 @@ home = f'''
       <li class="reveal"><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
       <li class="reveal"><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
     </ol>
-    <div class="lp-aktion lp-nach reveal"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-aktion lp-nach reveal"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-tel" href="tel:+4993127898920">{icon("phone", 18)} Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 
@@ -787,6 +788,11 @@ home = f'''
     {img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}
     <div class="lp-gruss-txt"><h2 class="lp-h3">Schön, dass Sie da sind</h2>
       <p class="lp-lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
+      <details class="read-more lp-gruss-mehr"><summary><span>Den ganzen Gruß lesen</span></summary>
+        <p>Herzlich willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
+        <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
+        <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
+      </details>
       <p class="lp-name"><strong class="sig-name">Petra Lachnit<svg class="sig-swash" viewBox="0 0 220 28" aria-hidden="true"><path pathLength="1" d="M4 20 C40 8 70 26 104 16 S168 4 216 12"/></svg></strong></p><p class="lp-rolle">Einrichtungsleitung</p></div>
   </div>
 </section>
@@ -802,6 +808,7 @@ home = f'''
       <details class="reveal"><summary>Muss mein Kind für den Kindergarten sauber sein?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
       <details class="reveal"><summary>Wer kocht das Mittagessen?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
     </div>
+    <p class="lp-mehrfragen reveal">Weitere Fragen: <a class="lp-link" href="kinderkrippe.html#fragen">Kinderkrippe</a> · <a class="lp-link" href="kindergarten.html#fragen">Kindergarten</a> · <a class="lp-link" href="kinderhort.html#fragen">Kinderhort</a></p>
   </div>
 </section>
 
@@ -809,7 +816,7 @@ home = f'''
   <div class="container lp-schluss reveal">
     <h2 class="lp-h2">Lernen Sie uns kennen</h2>
     <p class="lp-lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
-    <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-tel" href="tel:+4993127898920">{icon("phone", 18)} 0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 '''
@@ -873,7 +880,7 @@ krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", 
     ("Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Eingangsbereich", "Der Eingangsbereich bietet tagsüber Möglichkeit zum Abstellen des Kinderwagens.", None),
-    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg"),
+    ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
 ]), cls="alt")
 krippe += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von der Kinderkrippe sehen?",
                   "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("krippe", krippe_tour))
@@ -957,7 +964,7 @@ kiga += section("raeume", "", "Große, helle Räume zum Spielen und Lernen", "",
     ("Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt.", "img/turnraum.jpg"),
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Zimmer Kunterbunt", "Im Zimmer Kunterbunt findet für alle Mittelkinder (4- bis 5-Jährige) einmal wöchentlich am Vormittag eine Kleingruppenarbeit statt. Die Kinder starten mit dem Morgenkreis und einem gemeinsamen Frühstück. Hier werden verschiedene Beschäftigungen passend zur Jahreszeit oder zum Projektthema angeboten. Dies sind beispielsweise kreative Angebote, Bilderbuchbetrachtungen, Fingerspiele oder das Singen von Liedern.", "img/p2160149.jpg"),
-    ("Garten", "Am Schiff, im Tipi, im Sandkasten und auf dem Fußballhof kann sich das Kind täglich an der frischen Luft bewegen. Für den Sandkasten gibt es Spielsachen, die dem Kind täglich zur Verfügung gestellt werden, und es hat die Möglichkeit, mit dem Laufrad, Fahrrad oder anderen Fahrzeugen zu fahren.", None),
+    ("Außenbereich", "Am Schiff, im Tipi, im Sandkasten und auf dem Fußballhof kann sich das Kind täglich an der frischen Luft bewegen. Für den Sandkasten gibt es Spielsachen, die dem Kind täglich zur Verfügung gestellt werden, und es hat die Möglichkeit, mit dem Laufrad, Fahrrad oder anderen Fahrzeugen zu fahren. Das sehr große Außengelände mit altem Baumbestand nutzen alle Bereiche des Hauses.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
 ]), cls="alt")
 kiga += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr von unserem Kindergarten sehen?",
                 "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("kiga", kiga_tour))
@@ -1145,6 +1152,7 @@ hort += section("raeume", "", "Räume für Hausaufgaben, Kreativität und Erholu
     ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
     ("Werkraum", "Handwerkliche und gestalterische Aktionen finden regelmäßig im Werkraum statt.", "img/werkraum.jpg"),
     ("Bereich der ganz Großen", "Kinder ab der 6. Klasse haben hier einen eigenen gemütlichen Bereich zum Chillen.", "img/chilloutarea.jpg"),
+    ("Außenbereich", "Nach der Schule können die Kinder draußen spielen, toben und sich ausruhen. Das sehr große Außengelände mit altem Baumbestand nutzen alle Bereiche des Hauses: mit Rutsche, dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
 ]), cls="alt")
 hort += section("rundgang", "Virtueller Rundgang", "Möchten Sie mehr vom Kinderhort sehen?",
                 "Herzlich willkommen bei unserem virtuellen Rundgang! Klicken Sie auf ein Bild, um es groß anzusehen.", tour("hort", hort_tour))

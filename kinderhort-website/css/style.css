@@ -2758,3 +2758,43 @@ html.calm .lp-leit.vor .lp-w { color: inherit; }
 @media (prefers-reduced-motion: reduce) { .js .lp-schritte::before { scale: 1 1; } }
 html.calm .js .lp-schritte::before, html.calm.js .lp-schritte::before { scale: 1 1; }
 .lp-leit p > .mark { color: var(--ink); }
+
+/* ===== Startseite Runde 3 (25.11.2026) ===== */
+/* 1 Schritte: Nummern ploppen auf, wenn die Linie ankommt */
+@keyframes lp-nr { 0% { opacity: 0; scale: .6; } 60% { opacity: 1; scale: 1.08; } 100% { scale: 1; } }
+.js .lp-schritte:has(> li.visible) li::before { animation: lp-nr .35s var(--ease-out) backwards; }
+.js .lp-schritte:has(> li.visible) li:nth-child(1)::before { animation-delay: .12s; }
+.js .lp-schritte:has(> li.visible) li:nth-child(2)::before { animation-delay: .45s; }
+.js .lp-schritte:has(> li.visible) li:nth-child(3)::before { animation-delay: .8s; }
+/* 2 Symbole an Knopf und Links */
+.lp-btn, .lp-link.lp-weiter, .lp-link.lp-tel { gap: 8px; }
+.lp-btn svg, .lp-weiter svg, .lp-tel svg { flex: none; transition: translate .25s var(--ease-out); }
+.lp-link.lp-weiter, .lp-link.lp-tel { display: inline-flex; align-items: center; }
+@keyframes lp-klingeln { 25% { rotate: -12deg; } 50% { rotate: 10deg; } 75% { rotate: -6deg; } }
+@media (hover: hover) and (pointer: fine) {
+  .lp-btn:hover svg { translate: 0 -2px; }
+  .lp-weiter:hover svg { translate: 4px 0; }
+  .lp-tel:hover svg { animation: lp-klingeln .4s var(--ease-out); }
+}
+/* 3 Altersschildchen ploppen nach */
+.lp-karte-link .lp-alter { transition: opacity .35s var(--ease-out), scale .4s var(--ease-out); transition-delay: calc(var(--i, 0) * var(--stagger, 30ms) + 350ms); }
+.js .lp-karte-link.reveal:not(.visible) .lp-alter { opacity: 0; scale: .7; }
+/* 4 Kreis führt zu den Bereichen */
+a.lp-kreis { color: var(--ink); text-decoration: none; cursor: pointer; }
+a.lp-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4px; }
+/* 5 Gruß aufklappen */
+.lp-gruss-mehr summary { font-weight: 600; }
+.lp-gruss-mehr p { margin: 12px 0 0; max-width: 68ch; }
+/* 6 Weitere Fragen */
+.lp-mehrfragen { margin: 24px 0 0; font-size: 18px; line-height: 28px; }
+/* 7 Leiste „Schon bei uns?“ */
+.lp-eltern-links { display: contents; }
+.lp-eltern-links svg { display: none; }
+@media (max-width: 900px) {
+  .lp-eltern { display: grid; gap: 12px; padding: 14px 10px 10px; }
+  .lp-eltern-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .lp-eltern > b { padding-left: 6px; }
+  .lp-eltern-links a { display: grid; justify-items: center; align-content: center; gap: 6px; min-height: 76px; padding: 10px 2px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px rgb(212 181 176 / .9); text-decoration: none; text-align: center; font-size: 13px; line-height: 16px; font-weight: 600; hyphens: manual; }
+  .lp-eltern-links svg { display: block; color: var(--surface); }
+  .lp-eltern-links a:active { background: var(--rose-soft); }
+}
