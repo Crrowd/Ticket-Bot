@@ -675,3 +675,4 @@ Entscheidung offen.
 
 - 25.11.: Startseite oben wieder Hausfoto (img/haus-panorama.jpg, neue Fassung ohne Pfeil-Knopf). Gartenfoto (img/garten.jpg) jetzt bei Kinderkrippe → Räumlichkeiten → Außenbereich. Neues Vorschaubild img/og-bild.jpg (gestaltet, Hausfoto, Vorlage entwurf/…/og.html im Scratchpad). Offen: F2 Hausfoto volle Breite (A/B/C), Idee 1 nächster Termin in Leiste.
 - 25.11.: Entschieden: Hausfoto nur einmal (oben), kein zweites Mal in voller Breite. Nächster Termin in der Leiste: nicht einbauen.
+- 25.11.: Außenbereich Krippe: enger zugeschnittenes Gartenfoto (weniger Absperrband). Vorschaubild (4) bestätigt.
