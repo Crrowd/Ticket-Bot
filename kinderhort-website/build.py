@@ -454,13 +454,14 @@ def page(fname, title, desc, active, body, theme="", head=""):
 PAGES_WRITTEN = []
 
 # ---------- Bausteine ----------
-def page_hero(title, sub, image, kicker, links=None, alt=""):
+def page_hero(title, sub, image, kicker, links=None, alt="", kreis=None):
     sn = ""
     if links:
         sn = '\n<nav class="subnav no-print" aria-label="Auf dieser Seite"><div class="container"><ul>' + "".join(
             f'<li><a href="#{a}">{l}</a></li>' for a, l in links) + "</ul></div></nav>"
-    return f'''<section class="page-hero">
-  <div class="container">
+    kr = (f'<div class="ph-kreis" aria-hidden="true"><span>{kreis[0]}</span><b>{kreis[1]}</b><span>{kreis[2]}</span></div>') if kreis else ""
+    return f'''<section class="page-hero{" mit-kreis" if kreis else ""}">
+  <div class="container">{kr}
     <div class="page-hero-card">
       {img(image, alt or title, lazy=False, sizes="100vw")}
       <div class="page-hero-content">
@@ -864,7 +865,7 @@ krippe_tour = [
 krippe = page_hero("Kinderkrippe", "Herzlich willkommen beim Kath. Kinder- und Jugendhort Grombühl – geborgen ankommen, spielen, entdecken.",
                    "img/p2160110.jpg", "Sonnen- &amp; Sternengruppe",
                    [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
-                   alt="Gruppenraum der Kinderkrippe")
+                   alt="Gruppenraum der Kinderkrippe", kreis=("ab", "11", "Monaten"))
 krippe += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
     ("users", "ab 11 Monaten", "in der Sonnen- und Sternengruppe"),
@@ -951,7 +952,7 @@ kiga_tour = [
 kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in großen, hellen Räumen und einem riesigen Garten mitten in der Stadt.",
                  "img/blick-vom-fenster-in-den-raum.jpg", "Bären-, Bienen- &amp; Spatzengruppe",
                  [("ueberblick", "Überblick"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
-                 alt="Gruppenraum im Kindergarten")
+                 alt="Gruppenraum im Kindergarten", kreis=("ab", "3", "Jahren"))
 kiga += kurz([
     ("clock", "6:45 – 16:30 Uhr", "geöffnet, Bringzeit bis 9:00 Uhr"),
     ("users", "3 Jahre bis zur Einschulung", "in der Bären-, Bienen- und Spatzengruppe"),
@@ -1137,7 +1138,7 @@ PAED_HORT = (
 hort = page_hero("Kinderhort", "Nach der Schule ankommen, Hausaufgaben mit Unterstützung erledigen und Freizeit selbst gestalten – von 6:45 bis 18:00 Uhr.",
                  "img/kreatviraum-5-1.jpg", "Für alle Schulformen",
                  [("ueberblick", "Überblick"), ("paedagogik", "Pädagogik"), ("raeume", "Räumlichkeiten"), ("rundgang", "Virtueller Rundgang"), ("tagesablauf", "Tagesablauf"), ("auszeichnung", "Das zeichnet uns aus"), ("schulen", "Zusammenarbeit mit Schulen"), ("fragen", "Fragen"), ("anmeldung", "Anmeldung"), ("ferienplan", "Schließtage")],
-                 alt="Kreativraum im Kinderhort")
+                 alt="Kreativraum im Kinderhort", kreis=("ab der", "1.", "Klasse"))
 hort += kurz([
     ("clock", "6:45 – 18:00 Uhr", "geöffnet, auch in den Schulferien"),
     ("users", "ab der Einschulung", "für alle Schulformen"),
@@ -1351,8 +1352,8 @@ def nb_karte(titel, punkte, links):
     ln = "".join(f'<a class="lp-link lp-weiter" href="{h}">{t} {icon("right", 18)}</a>' for h, t in links)
     return f'<article class="nb-karte reveal"><h3>{titel}</h3><ul>{li}</ul><div class="nb-links">{ln}</div></article>'
 neu = page_hero("Neu bei uns", "Ihr Kind hat einen Platz bekommen? Hier steht kurz, was in den ersten Wochen wichtig ist.",
-                "img/garten.jpg", "Die ersten Wochen", alt="Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus")
-neu += section("bereiche-neu", "", "Je nach Bereich", "", '<div class="nb-grid">' +
+                "img/blick-vom-fenster-in-den-raum.jpg", "Die ersten Wochen", alt="Heller Gruppenraum im Kindergarten")
+neu += section("bereiche-neu", "", "Je nach Bereich", "", '<div class="nb-druck-kopf"><img src="img/favicon.svg" alt="" width="64" height="64"><div><h2>Neu bei uns</h2><p>Kath. Kinder- und Jugendhort Grombühl e. V. – was in den ersten Wochen wichtig ist.</p></div></div><div class="nb-grid">' +
     nb_karte("Kinderkrippe", ["Die Eingewöhnung planen wir gemeinsam mit Ihnen. Sie dauert etwa vier Wochen.",
                               "Bitte Windeln, Feuchttücher und ggf. Wundschutzcreme für Ihr Kind mitbringen.",
                               "Nach dem Mittagessen gibt es jeden Tag eine Ruhezeit."],
@@ -1370,8 +1371,10 @@ neu += section("alle-neu", "", "Für alle Bereiche", "", f"""<div class="nb-alle
   <a href="kontakt.html#abholung">{icon("users", 22)}<span><b>Jemand anderes holt ab</b>So sagen Sie uns Bescheid</span></a>
   <a href="downloads/Medikamentenvereinbarung.pdf">{icon("file", 22)}<span><b>Medikamentenvereinbarung</b>Wenn Ihr Kind bei uns Medikamente braucht</span></a>
   <a href="downloads.html#abo">{icon("calendar", 22)}<span><b>Schließtage abonnieren</b>Kostenlos, erscheinen von selbst in Ihrem Kalender</span></a>
-</div>""", cls="alt")
-page("neu-bei-uns.html", "Neu bei uns", "Neu im Kath. Kinder- und Jugendhort Grombühl: Eingewöhnung, was mitbringen, Krankmelden und mehr für die ersten Wochen.", "neu-bei-uns.html", neu)
+</div>
+<div class="nb-druck-knopf no-print reveal"><button class="btn btn-ghost js-druck-blatt" type="button">{icon("print", 20)} Als Blatt drucken</button><span>Eine A4-Seite zum Mitgeben, mit QR-Code zu dieser Seite.</span></div>
+<div class="nb-druck-fuss"><img src="img/qr-neu-bei-uns.svg" alt="" width="120" height="120"><p><b>Alles online:</b> kinderhort-grombuehl.de/neu-bei-uns.html<br><b>Telefon:</b> 0931 2789892 0 · <b>E-Mail:</b> kinderhort.grombuehl@t-online.de<br>Lindleinstraße 20, 97080 Würzburg</p></div>""", cls="alt")
+page("neu-bei-uns.html", "Neu bei uns", "Neu im Kath. Kinder- und Jugendhort Grombühl: Eingewöhnung, was mitbringen, Krankmelden und mehr für die ersten Wochen.", "neu-bei-uns.html", neu, theme="seite-neu")
 
 
 # =====================================================================
@@ -1524,12 +1527,11 @@ nf = f'''<section class="section e404">
   <div class="container">
     <div class="e404-card">
       <div class="num4" aria-label="404"><span>4</span><i aria-hidden="true"></i><span>4</span></div>
-      <h1>Hoppla, diese Seite gibt es nicht (mehr).</h1>
-      <p>Vielleicht hat sich die Adresse geändert – unsere Webseite ist neu. Eines davon hilft bestimmt weiter:</p>
+      <h1>Diese Seite gibt es leider nicht (mehr).</h1>
+      <p>Unsere Webseite ist neu, manche alten Adressen gibt es nicht mehr. Hier geht es weiter:</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="index.html">{icon("home", 20)} Startseite</a>
-        <a class="btn btn-ghost" href="aktuelles.html#termine">{icon("calendar", 20)} Termine</a>
-        <a class="btn btn-ghost" href="kontakt.html">{icon("phone", 20)} Kontakt</a>
+        <a class="btn btn-primary" href="index.html">{icon("home", 20)} Zur Startseite</a>
+        <a class="btn btn-primary" href="kontakt.html#krank">{icon("phone", 20)} Kind krankmelden</a>
         <button class="btn btn-ghost js-search" type="button">{icon("search", 20)} Suchen</button>
       </div>
     </div>

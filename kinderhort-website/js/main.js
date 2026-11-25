@@ -1394,6 +1394,13 @@
   })();
 
   /* ---------- Ferienplan drucken ---------- */
+  /* „Neu bei uns“ als Blatt drucken */
+  $$(".js-druck-blatt").forEach(function (b) {
+    b.addEventListener("click", function () {
+      $$(".reveal").forEach(function (el) { el.classList.add("visible"); });
+      window.print();
+    });
+  });
   $$(".js-print-plan").forEach(function (b) {
     b.addEventListener("click", function () {
       document.body.classList.add("print-plan");
