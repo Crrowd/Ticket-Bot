@@ -2822,3 +2822,16 @@ a.lp-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .lp-hero-gross { display: block; cursor: zoom-in; border-radius: 24px; }
 .lp-hero-gross:focus-visible { outline: 3px solid var(--surface); outline-offset: 6px; }
 @media (max-width: 560px) { .lp-aktion .lp-btn { width: 100%; justify-content: center; } }
+
+/* ===== Startseite Runde 5 (25.11.2026) ===== */
+/* F Gruppen als kleine Schildchen */
+.lp-gruppen { list-style: none; margin: -4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.lp-gruppen li { display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px 3px 3px; border-radius: 999px; background: var(--rose-soft); font-size: 14px; line-height: 20px; font-weight: 600; }
+.lp-gi { width: 24px; height: 24px; flex: none; display: grid; place-items: center; border-radius: 50%; background: #fff; color: var(--surface); }
+/* G Hinweis aufs Fragefeld */
+.lp-mehrfragen .lp-weiter svg { transition: translate .25s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .lp-mehrfragen .lp-weiter:hover svg { translate: 4px 0; } }
+/* H Lupe auf den Fotos */
+.lp-gross { position: relative; }
+.lp-lupe { position: absolute; right: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--paper-rgb) / .92); color: var(--ink); box-shadow: 0 6px 16px -8px rgb(var(--deep-rgb) / .5); transition: scale .25s var(--ease-out); pointer-events: none; }
+@media (hover: hover) and (pointer: fine) { .lp-gross:hover .lp-lupe { scale: 1.08; } }
