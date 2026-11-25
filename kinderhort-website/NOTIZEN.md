@@ -686,3 +686,4 @@ Entscheidung offen.
 - 25.11.: Rahmen auch bei Aktuelles/Downloads (page_hero rahmen=True), „Auch bei uns im Haus“ auf allen Bereichsseiten (Karten aus der Startseite übernommen, auch_bei_uns()), Alters-Kreis verlinkt #ueberblick + richtet sich auf, Kurz-Kasten-Symbole ploppen nacheinander.
 - 25.11.: Aktuelles: Kasten neben Terminen „Termine abonnieren – kostenlos“ (→ downloads.html#abo), Knopf „Termine abonnieren“ statt „Alle in den Kalender“.
 - 25.11.: Fragen-Knopf überall gleich (Plus wird Minus, halbe Drehung) – Bereichsseiten wie Startseite; Striche gezeichnet statt „+“-Zeichen.
+- 25.11.: Entschieden: Pfeil-Aufklapper („Was möchten Sie tun?“, „Den ganzen Gruß lesen“) bleiben mit Pfeil, kein runder Knopf.
