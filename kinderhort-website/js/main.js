@@ -631,6 +631,22 @@
     searchBtns.forEach(function (b) { b.hidden = true; });
   }
 
+  /* ---------- Startseite: Leitsatz wird Wort für Wort kräftiger (einmalig, nur Farbe) ---------- */
+  (function () {
+    var leit = $(".lp-leit[data-woerter]");
+    if (!leit || reduced || !("IntersectionObserver" in window)) return;
+    $$(".lp-w", leit).forEach(function (w, i) { w.style.setProperty("--w", i); });
+    var vorher = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; vorher.disconnect();
+      if (es[0].boundingClientRect.top > innerHeight * .6) leit.classList.add("vor");
+    }, { rootMargin: "0px 0px 30% 0px" });
+    var los = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; los.disconnect();
+      requestAnimationFrame(function () { requestAnimationFrame(function () { leit.classList.remove("vor"); }); });
+    }, { threshold: .45 });
+    vorher.observe(leit); los.observe(leit);
+  })();
+
   /* ---------- Sanftes Einblenden beim Scrollen ---------- */
   var reveals = $$(".reveal");
   function shown(el) {
@@ -2456,7 +2472,7 @@
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; if (fertig) fertig(); };
     }
     d.sanftAuf = function () {
-      var von = d.getBoundingClientRect().height; zu = false;
+      var von = d.getBoundingClientRect().height; zu = false; d.classList.remove("schliesst");
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.open = true; var bis = d.getBoundingClientRect().height;
       d.style.height = von + "px"; void d.offsetHeight; d.style.height = "";
@@ -2466,10 +2482,10 @@
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; };
     };
     d.sanftZu = function () {
-      zu = true;
+      zu = true; d.classList.add("schliesst");
       fade([{ opacity: 1 }, { opacity: 0 }], { duration: (o.zu || o.ms) * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
       fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
-        zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
+        zu = false; d.open = false; d.classList.remove("schliesst"); inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
       });
     };
     s.addEventListener("click", function (e) {

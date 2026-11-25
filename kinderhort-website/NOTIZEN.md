@@ -668,3 +668,5 @@ Entscheidung offen.
 - CSS-Block „Neue Startseite“ (Klassen lp-…). Entwurf: entwurf/landing-skill/.
 - Datenschutz: Punkt „Leitsatz eingeblendet“ entfernt (gibt es nicht mehr).
 - Offen: Team-Anleitung (PDF) erwähnt noch Termine/Status auf der Startseite → bei Punkt 7 mit anpassen. Bewegung auf der Startseite: Vorschläge folgen.
+
+- 25.11.: Bewegung Startseite 1–7 eingebaut (Einstieg, Einblenden wie überall, Karten ganz klickbar, Kreis richtet sich auf, Plus→Minus, Knopf gibt nach, Leitsatz Wort für Wort). Klasse „schliesst“ beim Zuklappen in sanft().

@@ -735,10 +735,10 @@ home = f'''
 <section class="lp-hero">
   <div class="container lp-hero-grid">
     <div class="lp-hero-txt">
-      <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
-      <h1 class="lp-h1">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
-      <p class="lp-lead">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
-      <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
+      <span class="eyebrow lp-e">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
+      <h1 class="lp-h1 lp-e">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
+      <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
+      <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
     </div>
     <figure class="lp-hero-bild">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
   </div>
@@ -749,41 +749,41 @@ home = f'''
 
 <section class="lp-ab" id="bereiche">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Ein Haus für jedes Alter</h2><p class="lp-lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Ein Haus für jedes Alter</h2><p class="lp-lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
     <div class="lp-karten">
-      <article class="lp-karte">{img("img/p2160110.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">ab 11 Monaten</span><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><a class="lp-link" href="kinderkrippe.html">Zur Kinderkrippe</a></div></article>
-      <article class="lp-karte">{img("img/blick-vom-fenster-in-den-raum.jpg", "Gruppenraum im Kindergarten", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">3 Jahre bis Einschulung</span><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><a class="lp-link" href="kindergarten.html">Zum Kindergarten</a></div></article>
-      <article class="lp-karte">{img("img/kreatviraum-5-1.jpg", "Kreativraum im Kinderhort", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">ab der Einschulung</span><h3>Kinderhort</h3><p>Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><a class="lp-link" href="kinderhort.html">Zum Kinderhort</a></div></article>
+      <a class="lp-karte lp-karte-link reveal" href="kinderkrippe.html"><span class="lp-bf">{img("img/p2160110.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 100vw, 380px")}</span><div class="lp-in"><span class="lp-alter">ab 11 Monaten</span><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><span class="lp-link">Zur Kinderkrippe</span></div></a>
+      <a class="lp-karte lp-karte-link reveal" href="kindergarten.html"><span class="lp-bf">{img("img/blick-vom-fenster-in-den-raum.jpg", "Gruppenraum im Kindergarten", sizes="(max-width: 900px) 100vw, 380px")}</span><div class="lp-in"><span class="lp-alter">3 Jahre bis Einschulung</span><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="lp-link">Zum Kindergarten</span></div></a>
+      <a class="lp-karte lp-karte-link reveal" href="kinderhort.html"><span class="lp-bf">{img("img/kreatviraum-5-1.jpg", "Kreativraum im Kinderhort", sizes="(max-width: 900px) 100vw, 380px")}</span><div class="lp-in"><span class="lp-alter">ab der Einschulung</span><h3>Kinderhort</h3><p>Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><span class="lp-link">Zum Kinderhort</span></div></a>
     </div>
   </div>
 </section>
 
-<section class="lp-leit"><div class="container"><p>Weil Qualität zählt. <span>Vielfalt und Individualität sind uns wichtig, und das leben wir jeden Tag in unserer Pädagogik.</span></p></div></section>
+<section class="lp-leit" data-woerter><div class="container"><p>Weil Qualität zählt. <span><span class="lp-w">Vielfalt</span> <span class="lp-w">und</span> <span class="lp-w">Individualität</span> <span class="lp-w">sind</span> <span class="lp-w">uns</span> <span class="lp-w">wichtig,</span> <span class="lp-w">und</span> <span class="lp-w">das</span> <span class="lp-w">leben</span> <span class="lp-w">wir</span> <span class="lp-w">jeden</span> <span class="lp-w">Tag</span> <span class="lp-w">in</span> <span class="lp-w">unserer</span> <span class="lp-w">Pädagogik.</span></span></p></div></section>
 
 <section class="lp-ab lp-papier" id="platz">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
     <ol class="lp-schritte">
-      <li><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
-      <li><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
-      <li><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
+      <li class="reveal"><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
+      <li class="reveal"><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
+      <li class="reveal"><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
     </ol>
-    <div class="lp-aktion lp-nach"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-aktion lp-nach reveal"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 
 <section class="lp-ab">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
     <div class="lp-zwei">
-      <article class="lp-karte">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
-      <article class="lp-karte">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
+      <article class="lp-karte reveal"><span class="lp-bf">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}</span><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+      <article class="lp-karte reveal"><span class="lp-bf">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}</span><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
     </div>
   </div>
 </section>
 
 <section class="lp-ab lp-papier">
-  <div class="container lp-gruss">
+  <div class="container lp-gruss reveal">
     {img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}
     <div class="lp-gruss-txt"><h2 class="lp-h3">Schön, dass Sie da sind</h2>
       <p class="lp-lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
@@ -793,20 +793,20 @@ home = f'''
 {STIMMEN}
 <section class="lp-ab" id="fragen">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Häufige Fragen</h2></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Häufige Fragen</h2></div>
     <div class="faq lp-fragen">
-      <details><summary>Muss unsere Familie katholisch sein?</summary><div><p>Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details>
-      <details><summary>Wie lange dauert die Eingewöhnung?</summary><div><p>In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></div></details>
-      <details><summary>Sind die Schließtage in allen Bereichen gleich?</summary><div><p>Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></div></details>
-      <details><summary>Müssen wir Windeln mitbringen?</summary><div><p>In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></div></details>
-      <details><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
-      <details><summary>Wer kocht das Mittagessen?</summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
+      <details class="reveal"><summary>Muss unsere Familie katholisch sein?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details>
+      <details class="reveal"><summary>Wie lange dauert die Eingewöhnung?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></div></details>
+      <details class="reveal"><summary>Sind die Schließtage in allen Bereichen gleich?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></div></details>
+      <details class="reveal"><summary>Müssen wir Windeln mitbringen?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></div></details>
+      <details class="reveal"><summary>Muss mein Kind für den Kindergarten sauber sein?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
+      <details class="reveal"><summary>Wer kocht das Mittagessen?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
     </div>
   </div>
 </section>
 
 <section class="lp-ab lp-rosehell">
-  <div class="container lp-schluss">
+  <div class="container lp-schluss reveal">
     <h2 class="lp-h2">Lernen Sie uns kennen</h2>
     <p class="lp-lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
     <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>

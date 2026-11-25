@@ -2635,8 +2635,8 @@ main .lp-h2 { margin: 0; font: 600 48px/52px var(--font-head); letter-spacing: -
 main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -.02em; text-wrap: balance; }
 .lp-lead { margin: 0; max-width: 680px; font-size: 18px; line-height: 28px; text-wrap: pretty; }
 .lp-aktion { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; }
-.lp-btn { display: inline-flex; align-items: center; min-height: 52px; padding: 12px 24px; border-radius: 12px; background: var(--rose); color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); font: 600 18px/28px var(--font-body); text-decoration: none; transition: background-color .3s var(--ease-out), translate .15s var(--ease-out); }
-.lp-btn:active { translate: 0 1px; }
+.lp-btn { display: inline-flex; align-items: center; min-height: 52px; padding: 12px 24px; border-radius: 12px; background: var(--rose); color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .35); font: 600 18px/28px var(--font-body); text-decoration: none; transition: background-color .3s var(--ease-out), scale .12s var(--ease-out); }
+.lp-btn:active { scale: .97; }
 .lp-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--rose-deep); text-decoration-thickness: 2px; text-underline-offset: 5px; }
 .lp-hero .lp-link { font-size: 18px; line-height: 28px; }
 .lp-btn:focus-visible, .lp-link:focus-visible, .lp-eltern a:focus-visible { outline: 3px solid var(--surface); outline-offset: 3px; border-radius: 6px; }
@@ -2678,10 +2678,8 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
 .lp-fragen details { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / .08); border: 0; margin: 0; }
 .lp-fragen summary { list-style: none; cursor: pointer; padding: 16px 24px; font-size: 18px; line-height: 28px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .lp-fragen summary::-webkit-details-marker { display: none; }
-.lp-fragen summary::after { content: "+"; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; font-weight: 600; }
-.lp-fragen details[open] summary::after { content: "–"; }
 .lp-fragen summary:focus-visible { outline: 3px solid var(--surface); outline-offset: -3px; border-radius: 16px; }
-.lp-fragen details > div { padding: 0 24px 24px; }
+.lp-fragen details > div { padding: 0 24px 24px; background: none; }
 .lp-fragen details p { margin: 0; }
 .lp-schluss { text-align: center; display: grid; gap: 24px; justify-items: center; }
 .lp-schluss .lp-aktion { justify-content: center; }
@@ -2699,6 +2697,48 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
   .lp-fragen summary { font-size: 16px; line-height: 24px; padding: 14px 18px; } .lp-fragen details > div { padding: 0 18px 18px; }
 }
 @media print { .lp-eltern, .lp-kreis { display: none; } .lp-h1 { color: var(--ink) !important; background: none !important; } }
+
+/* ===== Bewegung Startseite (25.11.2026) ===== */
+/* 1 Einstieg beim Laden: Text nacheinander, Foto weich, Kreis zuletzt */
+@keyframes lp-ein { from { opacity: 0; translate: 0 10px; } }
+@keyframes lp-bild { from { opacity: 0; scale: .97; } }
+@keyframes lp-pop { from { opacity: 0; scale: .6; rotate: -30deg; } }
+.lp-hero-txt > .lp-e { animation: lp-ein .5s var(--ease-out) backwards; }
+.lp-hero-txt > .lp-e:nth-child(2) { animation-delay: 70ms; }
+.lp-hero-txt > .lp-e:nth-child(3) { animation-delay: 140ms; }
+.lp-hero-txt > .lp-e:nth-child(4) { animation-delay: 210ms; }
+.lp-hero-bild img { animation: lp-bild .6s var(--ease-out) .1s backwards; }
+.lp-kreis { animation: lp-pop .45s var(--ease-out) .45s backwards; transition: rotate .3s var(--ease-out), scale .3s var(--ease-out); }
+/* 4 Kreis richtet sich mit der Maus auf */
+@media (hover: hover) and (pointer: fine) { .lp-kreis:hover { rotate: 0deg; scale: 1.04; } }
+/* 2 Fotos der Karten öffnen sich beim Einblenden von oben, wie auf den anderen Seiten */
+.lp-bf { display: block; border-radius: 16px; overflow: hidden; }
+.lp-bf img { transition: scale .5s var(--ease-out); }
+.js .reveal:not(.visible) > .lp-bf { clip-path: inset(0 0 100% 0); }
+.js .reveal > .lp-bf { clip-path: inset(0 0 0 0); transition: clip-path .8s var(--ease-out) calc(var(--i, 0) * var(--stagger, 30ms) + 60ms); }
+/* 3 Bereichskarten ganz anklickbar */
+.lp-karte-link { color: inherit; text-decoration: none; transition: translate .3s var(--ease-out), box-shadow .3s var(--ease-out); }
+.lp-karte-link .lp-link { transition: text-decoration-color .2s; }
+.lp-karte-link:focus-visible { outline: 3px solid var(--surface); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .lp-karte-link:hover { translate: 0 -3px; box-shadow: 0 14px 30px -18px rgb(var(--deep-rgb) / .55); }
+  .lp-karte-link:hover .lp-bf img { scale: 1.04; }
+  .lp-karte-link:hover .lp-link { text-decoration-color: var(--ink); }
+}
+@media (hover: none) { .lp-karte-link:active { opacity: .82; } }
+/* 5 Fragen: Plus dreht sich zum Minus */
+.lp-fragen summary::after { content: none; display: none; }
+.lp-pl { flex: none; position: relative; width: 28px; height: 28px; border-radius: 50%; background: var(--rose); transition: rotate .25s var(--ease-out); }
+.lp-pl::before, .lp-pl::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px; margin: -1px 0 0 -5.5px; border-radius: 1px; background: var(--ink); }
+.lp-pl::after { rotate: 90deg; transition: rotate .25s var(--ease-out); }
+.lp-fragen details[open]:not(.schliesst) .lp-pl { rotate: 180deg; }
+.lp-fragen details[open]:not(.schliesst) .lp-pl::after { rotate: 0deg; }
+/* 7 Leitsatz: Wörter werden einmalig nacheinander kräftiger (nur Farbe) */
+.lp-leit .lp-w { transition: color .5s var(--ease-out); transition-delay: calc(var(--w, 0) * 45ms); }
+.lp-leit.vor .lp-w { color: rgb(var(--ink-rgb) / .32); transition: none; }
+@media (prefers-reduced-motion: reduce) { .js .reveal > .lp-bf { clip-path: none; } .lp-leit.vor .lp-w { color: inherit; } }
+html.calm .js .reveal > .lp-bf, html.calm.js .reveal > .lp-bf { clip-path: none; }
+html.calm .lp-leit.vor .lp-w { color: inherit; }
 
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
@@ -2815,10 +2855,10 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
 <section class="lp-hero">
   <div class="container lp-hero-grid">
     <div class="lp-hero-txt">
-      <span class="eyebrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Lindleinstraße 20 · Würzburg-Grombühl</span>
-      <h1 class="lp-h1">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
-      <p class="lp-lead">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
-      <div class="lp-aktion"><a class="lp-btn" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">Platz anfragen</a><a class="lp-link" href="#index:bereiche">Unsere Bereiche ansehen</a></div>
+      <span class="eyebrow lp-e"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Lindleinstraße 20 · Würzburg-Grombühl</span>
+      <h1 class="lp-h1 lp-e">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
+      <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
+      <div class="lp-aktion lp-e"><a class="lp-btn" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">Platz anfragen</a><a class="lp-link" href="#index:bereiche">Unsere Bereiche ansehen</a></div>
     </div>
     <figure class="lp-hero-bild"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i11" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche" width="682" height="380" class="ph lq-hortgebaeude" fetchpriority="high"><div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
   </div>
@@ -2829,41 +2869,41 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
 
 <section class="lp-ab" id="bereiche">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Ein Haus für jedes Alter</h2><p class="lp-lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Ein Haus für jedes Alter</h2><p class="lp-lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
     <div class="lp-karten">
-      <article class="lp-karte"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i36" alt="Gruppenraum der Kinderkrippe" width="1600" height="1200" class="ph lq-p2160110" decoding="async"><div class="lp-in"><span class="lp-alter">ab 11 Monaten</span><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><a class="lp-link" href="#kinderkrippe">Zur Kinderkrippe</a></div></article>
-      <article class="lp-karte"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i6" alt="Gruppenraum im Kindergarten" width="1600" height="1200" class="ph lq-blick-vom-fenster-in-den-raum" decoding="async"><div class="lp-in"><span class="lp-alter">3 Jahre bis Einschulung</span><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: <button type="button" class="term" data-term="Projektarbeit" aria-haspopup="dialog">Projektarbeit</button>, Englisch, <button type="button" class="term" data-term="Vorkurs Deutsch" aria-haspopup="dialog">Vorkurs Deutsch</button> und viel Freispiel im großen Garten.</p><a class="lp-link" href="#kindergarten">Zum Kindergarten</a></div></article>
-      <article class="lp-karte"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i24" alt="Kreativraum im Kinderhort" width="1600" height="1164" class="ph lq-kreatviraum-5-1" decoding="async"><div class="lp-in"><span class="lp-alter">ab der Einschulung</span><h3>Kinderhort</h3><p>Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><a class="lp-link" href="#kinderhort">Zum Kinderhort</a></div></article>
+      <a class="lp-karte lp-karte-link reveal" href="#kinderkrippe"><span class="lp-bf"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i36" alt="Gruppenraum der Kinderkrippe" width="1600" height="1200" class="ph lq-p2160110" decoding="async"></span><div class="lp-in"><span class="lp-alter">ab 11 Monaten</span><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><span class="lp-link">Zur Kinderkrippe</span></div></a>
+      <a class="lp-karte lp-karte-link reveal" href="#kindergarten"><span class="lp-bf"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i6" alt="Gruppenraum im Kindergarten" width="1600" height="1200" class="ph lq-blick-vom-fenster-in-den-raum" decoding="async"></span><div class="lp-in"><span class="lp-alter">3 Jahre bis Einschulung</span><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="lp-link">Zum Kindergarten</span></div></a>
+      <a class="lp-karte lp-karte-link reveal" href="#kinderhort"><span class="lp-bf"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i24" alt="Kreativraum im Kinderhort" width="1600" height="1164" class="ph lq-kreatviraum-5-1" decoding="async"></span><div class="lp-in"><span class="lp-alter">ab der Einschulung</span><h3>Kinderhort</h3><p>Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><span class="lp-link">Zum Kinderhort</span></div></a>
     </div>
   </div>
 </section>
 
-<section class="lp-leit"><div class="container"><p>Weil Qualität zählt. <span>Vielfalt und Individualität sind uns wichtig, und das leben wir jeden Tag in unserer Pädagogik.</span></p></div></section>
+<section class="lp-leit" data-woerter><div class="container"><p>Weil Qualität zählt. <span><span class="lp-w">Vielfalt</span> <span class="lp-w">und</span> <span class="lp-w">Individualität</span> <span class="lp-w">sind</span> <span class="lp-w">uns</span> <span class="lp-w">wichtig,</span> <span class="lp-w">und</span> <span class="lp-w">das</span> <span class="lp-w">leben</span> <span class="lp-w">wir</span> <span class="lp-w">jeden</span> <span class="lp-w">Tag</span> <span class="lp-w">in</span> <span class="lp-w">unserer</span> <span class="lp-w">Pädagogik.</span></span></p></div></section>
 
 <section class="lp-ab lp-papier" id="platz">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
     <ol class="lp-schritte">
-      <li><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
-      <li><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
-      <li><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
+      <li class="reveal"><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
+      <li class="reveal"><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
+      <li class="reveal"><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
     </ol>
-    <div class="lp-aktion lp-nach"><a class="lp-btn" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-aktion lp-nach reveal"><a class="lp-btn" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 
 <section class="lp-ab">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
     <div class="lp-zwei">
-      <article class="lp-karte"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i31" alt="Weißer Raum" width="1600" height="1200" class="ph lq-p2160031" decoding="async"><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
-      <article class="lp-karte"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i35" alt="Hauseigene Küche" width="1600" height="1200" class="ph lq-p2160054" decoding="async"><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
+      <article class="lp-karte reveal"><span class="lp-bf"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i31" alt="Weißer Raum" width="1600" height="1200" class="ph lq-p2160031" decoding="async"></span><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+      <article class="lp-karte reveal"><span class="lp-bf"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i35" alt="Hauseigene Küche" width="1600" height="1200" class="ph lq-p2160054" decoding="async"></span><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
     </div>
   </div>
 </section>
 
 <section class="lp-ab lp-papier">
-  <div class="container lp-gruss">
+  <div class="container lp-gruss reveal">
     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-img="i47" alt="Petra Lachnit, Einrichtungsleitung" width="407" height="420" decoding="async">
     <div class="lp-gruss-txt"><h2 class="lp-h3">Schön, dass Sie da sind</h2>
       <p class="lp-lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
@@ -2873,20 +2913,20 @@ main .lp-h3 { margin: 0; font: 600 36px/40px var(--font-head); letter-spacing: -
 
 <section class="lp-ab" id="fragen">
   <div class="container">
-    <div class="lp-kopf"><h2 class="lp-h2">Häufige Fragen</h2></div>
+    <div class="lp-kopf reveal"><h2 class="lp-h2">Häufige Fragen</h2></div>
     <div class="faq lp-fragen">
-      <details><summary>Muss unsere Familie katholisch sein?</summary><div><p>Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details>
-      <details><summary>Wie lange dauert die Eingewöhnung?</summary><div><p>In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></div></details>
-      <details><summary>Sind die Schließtage in allen Bereichen gleich?</summary><div><p>Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></div></details>
-      <details><summary>Müssen wir Windeln mitbringen?</summary><div><p>In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></div></details>
-      <details><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
-      <details><summary>Wer kocht das Mittagessen?</summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
+      <details class="reveal"><summary>Muss unsere Familie katholisch sein?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details>
+      <details class="reveal"><summary>Wie lange dauert die Eingewöhnung?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></div></details>
+      <details class="reveal"><summary>Sind die Schließtage in allen Bereichen gleich?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></div></details>
+      <details class="reveal"><summary>Müssen wir Windeln mitbringen?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></div></details>
+      <details class="reveal"><summary>Muss mein Kind für den Kindergarten sauber sein?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
+      <details class="reveal"><summary>Wer kocht das Mittagessen?<span class="lp-pl" aria-hidden="true"></span></summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
     </div>
   </div>
 </section>
 
 <section class="lp-ab lp-rosehell">
-  <div class="container lp-schluss">
+  <div class="container lp-schluss reveal">
     <h2 class="lp-h2">Lernen Sie uns kennen</h2>
     <p class="lp-lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
     <div class="lp-aktion"><a class="lp-btn" href="mailto:kinderhort.grombuehl@t-online.de?subject=Platzanfrage&body=Liebes%20Team%2C%0A%0Awir%20interessieren%20uns%20f%C3%BCr%20einen%20Platz%20in%20Ihrer%20Einrichtung.%0A%0AName%20des%20Kindes%3A%20%0AGeburtsdatum%3A%20%0AGew%C3%BCnschter%20Bereich%20%28Krippe%20/%20Kindergarten%20/%20Hort%29%3A%20%0AGew%C3%BCnschter%20Beginn%3A%20%0AGew%C3%BCnschte%20Betreuungszeiten%3A%20%0AName%20der%20Eltern%3A%20%0ATelefon%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>
@@ -4657,6 +4697,22 @@ window.KITA = {
   } else {
     searchBtns.forEach(function (b) { b.hidden = true; });
   }
+
+  /* ---------- Startseite: Leitsatz wird Wort für Wort kräftiger (einmalig, nur Farbe) ---------- */
+  (function () {
+    var leit = $(".lp-leit[data-woerter]");
+    if (!leit || reduced || !("IntersectionObserver" in window)) return;
+    $$(".lp-w", leit).forEach(function (w, i) { w.style.setProperty("--w", i); });
+    var vorher = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; vorher.disconnect();
+      if (es[0].boundingClientRect.top > innerHeight * .6) leit.classList.add("vor");
+    }, { rootMargin: "0px 0px 30% 0px" });
+    var los = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; los.disconnect();
+      requestAnimationFrame(function () { requestAnimationFrame(function () { leit.classList.remove("vor"); }); });
+    }, { threshold: .45 });
+    vorher.observe(leit); los.observe(leit);
+  })();
 
   /* ---------- Sanftes Einblenden beim Scrollen ---------- */
   var reveals = $$(".reveal");
@@ -6483,7 +6539,7 @@ window.KITA = {
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; if (fertig) fertig(); };
     }
     d.sanftAuf = function () {
-      var von = d.getBoundingClientRect().height; zu = false;
+      var von = d.getBoundingClientRect().height; zu = false; d.classList.remove("schliesst");
       if (lauf) { lauf.onfinish = null; lauf.cancel(); }
       d.open = true; var bis = d.getBoundingClientRect().height;
       d.style.height = von + "px"; void d.offsetHeight; d.style.height = "";
@@ -6493,10 +6549,10 @@ window.KITA = {
       lauf.onfinish = function () { lauf = null; d.style.overflow = ""; };
     };
     d.sanftZu = function () {
-      zu = true;
+      zu = true; d.classList.add("schliesst");
       fade([{ opacity: 1 }, { opacity: 0 }], { duration: (o.zu || o.ms) * (o.ausblenden || .5), easing: EASE_OUT, fill: "forwards" });
       fahre(s.getBoundingClientRect().height + (d.offsetHeight - d.clientHeight), function () {
-        zu = false; d.open = false; inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
+        zu = false; d.open = false; d.classList.remove("schliesst"); inner.forEach(function (c) { c.getAnimations().forEach(function (a) { a.cancel(); }); });
       });
     };
     s.addEventListener("click", function (e) {
