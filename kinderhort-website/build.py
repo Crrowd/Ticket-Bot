@@ -636,12 +636,12 @@ def anmeldung_section(bereich):
                    "Name der Eltern: \nTelefon: \n\nViele Grüße\n")
     kennen = mailto(f"Kennenlernen {bereich}", "Liebes Team,\n\nwir würden gern Ihre Einrichtung kennenlernen.\n\n"
                     f"Bereich: {bereich}\nPassende Tage / Uhrzeiten: \nName: \nTelefon: \n\nViele Grüße\n")
-    cards = (f'<div class="anm-card reveal"><span class="anm-n">1</span><h3>Platz anfragen</h3>'
+    cards = (f'<div class="anm-card reveal"><h3>Platz anfragen</h3>'
              f'<p>Schreiben Sie uns, ab wann Sie einen Platz {"in der" if bereich == "Kinderkrippe" else "im"} {bereich} suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir dafür brauchen.</p>'
              f'<a class="btn btn-primary" href="{platz}">{icon("mail", 20)} Platz anfragen</a></div>'
-             f'<div class="anm-card reveal"><span class="anm-n">2</span><h3>Kennenlernen vereinbaren</h3>'
+             f'<div class="anm-card reveal"><h3>Kennenlernen vereinbaren</h3>'
              '<p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p>'
-             f'<a class="btn btn-ghost" href="{kennen}">{icon("calendar", 20)} Kennenlernen vereinbaren</a></div>')
+             f'<a class="btn btn-primary" href="{kennen}">{icon("calendar", 20)} Kennenlernen vereinbaren</a></div>')
     return section("anmeldung", "Anmeldung", "So bekommen Sie einen Platz", "",
                    f'<div class="anm-grid">{cards}</div><p class="anm-tel">Lieber telefonisch? <a href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></p>')
 
