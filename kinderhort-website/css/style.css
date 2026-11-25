@@ -2905,3 +2905,23 @@ a.lp-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
   .seite-neu #bereiche-neu .nb-druck-kopf { order: -1; }
   .seite-neu .nb-druck-kopf img { width: 18mm; }
 }
+
+/* ===== Runde 7 (25.11.2026) ===== */
+/* A Rahmen bei Aktuelles und Downloads */
+.page-hero.mit-rahmen .page-hero-card { box-shadow: 16px 16px 0 var(--rose), var(--shadow-lg); }
+@media (max-width: 900px) { .page-hero.mit-rahmen .page-hero-card { box-shadow: 8px 8px 0 var(--rose), var(--shadow-lg); } }
+/* C Kreis zum Antippen */
+a.ph-kreis { text-decoration: none; cursor: pointer; transition: rotate .3s var(--ease-out), scale .3s var(--ease-out); }
+a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) { a.ph-kreis:hover { rotate: 0deg; scale: 1.04; } }
+/* B Auch bei uns im Haus */
+.auch-karten { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px) { .auch-karten { grid-template-columns: minmax(0, 1fr); } }
+/* D Kurz-Kasten: Symbole ploppen nacheinander */
+@keyframes kurz-pop { 0% { opacity: 0; scale: .6; } 60% { opacity: 1; scale: 1.08; } 100% { scale: 1; } }
+.js .kurz.reveal.visible li .kurz-ic { animation: kurz-pop .35s var(--ease-out) backwards; }
+.js .kurz.reveal.visible li:nth-child(1) .kurz-ic { animation-delay: .15s; }
+.js .kurz.reveal.visible li:nth-child(2) .kurz-ic { animation-delay: .25s; }
+.js .kurz.reveal.visible li:nth-child(3) .kurz-ic { animation-delay: .35s; }
+.js .kurz.reveal.visible li:nth-child(4) .kurz-ic { animation-delay: .45s; }
+.js .kurz.reveal.visible li:nth-child(n+5) .kurz-ic { animation-delay: .55s; }

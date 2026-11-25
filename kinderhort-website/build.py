@@ -454,13 +454,13 @@ def page(fname, title, desc, active, body, theme="", head=""):
 PAGES_WRITTEN = []
 
 # ---------- Bausteine ----------
-def page_hero(title, sub, image, kicker, links=None, alt="", kreis=None):
+def page_hero(title, sub, image, kicker, links=None, alt="", kreis=None, rahmen=False):
     sn = ""
     if links:
         sn = '\n<nav class="subnav no-print" aria-label="Auf dieser Seite"><div class="container"><ul>' + "".join(
             f'<li><a href="#{a}">{l}</a></li>' for a, l in links) + "</ul></div></nav>"
-    kr = (f'<div class="ph-kreis" aria-hidden="true"><span>{kreis[0]}</span><b>{kreis[1]}</b><span>{kreis[2]}</span></div>') if kreis else ""
-    return f'''<section class="page-hero{" mit-kreis" if kreis else ""}">
+    kr = (f'<a class="ph-kreis" href="#ueberblick" aria-label="Alter: {kreis[0]} {kreis[1]} {kreis[2]} – zum Überblick"><span>{kreis[0]}</span><b>{kreis[1]}</b><span>{kreis[2]}</span></a>') if kreis else ""
+    return f'''<section class="page-hero{" mit-kreis" if kreis else ""}{" mit-rahmen" if rahmen else ""}">
   <div class="container">{kr}
     <div class="page-hero-card">
       {img(image, alt or title, lazy=False, sizes="100vw")}
@@ -924,8 +924,16 @@ krippe += section("fragen", "", "Häufige Fragen zur Kinderkrippe", "", faq([
     ("Gibt es eine Eingewöhnungszeit?", "Einfühlsame, mit den Eltern gemeinsam geplante Eingewöhnungszeit des Kindes. Dauer der vollständigen Eingewöhnung etwa vier Wochen."),
 ]), cls="alt")
 krippe += abc_section("KrippenABC", "Zum Downloadbereich")
+def auch_bei_uns(eigene):
+    karten = re.findall(r'<a class="lp-karte lp-karte-link reveal" href="([a-z]+\.html)">.*?</a></div></a>', home, re.S)
+    bloecke = [m.group(0) for m in re.finditer(r'<a class="lp-karte lp-karte-link reveal" href="[a-z]+\.html">.*?<span class="lp-link">[^<]*</span></div></a>', home, re.S)]
+    andere = [b for b in bloecke if f'href="{eigene}"' not in b]
+    assert len(andere) == 2, len(andere)
+    return section("auch", "", "Auch bei uns im Haus", "Geschwister oder der nächste Schritt: Die anderen Bereiche sind gleich nebenan.",
+                   '<div class="lp-karten auch-karten">' + "".join(andere) + "</div>", cls="alt")
 krippe += anmeldung_section("Kinderkrippe")
-krippe += ferienplan_section(kurz=True, kicker="")
+krippe += auch_bei_uns("kinderkrippe.html")
+krippe += ferienplan_section(cls="", kurz=True, kicker="")
 page("kinderkrippe.html", "Kinderkrippe", "Kinderkrippe im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Sonnen- und Sternengruppe für Kinder ab 11 Monaten – mit virtuellem Rundgang, Tagesablauf und FAQ.", "kinderkrippe.html", krippe, "theme-krippe")
 
 # =====================================================================
@@ -1021,7 +1029,8 @@ kiga += section("fragen", "", "Häufige Fragen zum Kindergarten", "", faq([
 ]), cls="alt")
 kiga += abc_section("KindergartenABC", "Zum Downloadbereich")
 kiga += anmeldung_section("Kindergarten")
-kiga += ferienplan_section(kurz=True, kicker="")
+kiga += auch_bei_uns("kindergarten.html")
+kiga += ferienplan_section(cls="", kurz=True, kicker="")
 page("kindergarten.html", "Kindergarten", "Kindergarten im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Bären-, Bienen- und Spatzengruppe für Kinder von 3 Jahren bis zur Einschulung.", "kindergarten.html", kiga, "theme-kiga")
 
 # =====================================================================
@@ -1222,14 +1231,15 @@ hort += section("fragen", "", "Häufige Fragen zum Kinderhort", "", faq([
 ]))
 hort += abc_section("KinderhortABC", "KinderhortABC herunterladen")
 hort += anmeldung_section("Kinderhort")
-hort += ferienplan_section(kurz=True, kicker="")
+hort += auch_bei_uns("kinderhort.html")
+hort += ferienplan_section(cls="", kurz=True, kicker="")
 page("kinderhort.html", "Kinderhort", "Kinderhort im Kath. Kinder- und Jugendhort Grombühl, Würzburg: Betreuung für Schulkinder aller Schulformen von 6:45 bis 18:00 Uhr – mit Hausaufgabenbetreuung, Ferienprogramm und Freitagsausflügen.", "kinderhort.html", hort, "theme-hort")
 
 # =====================================================================
 # AKTUELLES
 # =====================================================================
 akt = page_hero("Aktuelles", "Hier finden Sie aktuelle Termine und Informationen.", "img/bauecke-2.jpg", "Termine &amp; Infos",
-                [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Schließtage")], alt="Bauecke im Kinderhort")
+                [("termine", "Termine")] + ([("elternbrief", "Liebe Eltern")] if read_csv("elternbriefe.csv") else []) + [("ferienplan", "Schließtage")], alt="Bauecke im Kinderhort", rahmen=True)
 EV_FILTER = ('<div class="ev-filter no-print" role="group" aria-label="Termine nach Bereich">' + "".join(
     f'<button type="button" data-b="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{t}</button>' for k, t in [("alle", "Alle"), ("krippe", "Krippe"), ("kiga", "Kindergarten"), ("hort", "Hort")]) + "</div>") if any(r.get("_b") for r in TERMINE) else ""
 akt += section("termine", "", "Aktuelle Termine", "Vormerktermine für Sie, liebe Eltern:", f'''
@@ -1306,7 +1316,7 @@ def dl(href, title, kind):
     return f'<li><a class="dl-link" href="{href}" download><span class="ficon">PDF</span><span>{title}{neu}<small>{sub}</small></span></a></li>'
 plan_dl = dl("downloads/Ferienplan_2026_27.pdf", "Schließtage 2026/2027", "Ferienplan")
 medi_dl = dl("downloads/Medikamentenvereinbarung.pdf", "Medikamentenvereinbarung", "Formular zum Ausfüllen")
-downl = page_hero("Downloads", "Hier finden Sie weitere Informationsblätter.", "img/p2160170.jpg", "Infoblätter &amp; Formulare", alt="Spielbereich")
+downl = page_hero("Downloads", "Hier finden Sie weitere Informationsblätter.", "img/p2160170.jpg", "Infoblätter &amp; Formulare", alt="Spielbereich", rahmen=True)
 def lotse(q, text, links):
     return (f'<details class="lotse-item" name="lotse"><summary>{q}</summary><div><p>{text}</p><div class="lotse-links">' +
             "".join(f'<a class="btn {"btn-primary" if i == 0 else "btn-ghost"}" href="{h}"{" download" if h.endswith((".pdf", ".ics")) else ""}>{icon(ic, 20)} {t}</a>' for i, (h, ic, t) in enumerate(links)) + "</div></div></details>")
