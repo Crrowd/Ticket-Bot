@@ -102,6 +102,7 @@ def mailto(subject, body):
 KRANK_MAIL = mailto("Krankmeldung / Abwesenheit", "Liebes Team,\n\nunser Kind kann leider nicht in die Einrichtung kommen.\n\nName des Kindes: \nGruppe / Bereich: \nAbwesend von – bis: \nGrund (freiwillig): \n\nViele Grüße\n")
 ABHOL_MAIL = mailto("Abholung durch eine andere Person", "Liebes Team,\n\nunser Kind wird an folgendem Tag von einer anderen Person abgeholt.\n\nName des Kindes: \nGruppe / Bereich: \nAbholung am: \nAbholende Person (Name): \nBeziehung zum Kind (z. B. Oma, Nachbarin): \nDie Person bringt einen Ausweis mit.\n\nViele Grüße\n")
 URLAUB_MAIL = mailto("Abwesenheit / Urlaub", "Liebes Team,\n\nunser Kind ist in folgendem Zeitraum nicht in der Einrichtung.\n\nName des Kindes: \nGruppe / Bereich: \nAbwesend von – bis: \nGrund (freiwillig, z. B. Urlaub): \n\nViele Grüße\n")
+KENNEN_MAIL = mailto("Kennenlernen", "Liebes Team,\n\nwir würden gern Ihre Einrichtung kennenlernen.\n\nBereich (Krippe / Kindergarten / Hort): \nPassende Tage / Uhrzeiten: \nName: \nTelefon: \n\nViele Grüße\n")
 PLATZ_MAIL = mailto("Platzanfrage", "Liebes Team,\n\nwir interessieren uns für einen Platz in Ihrer Einrichtung.\n\nName des Kindes: \nGeburtsdatum: \nGewünschter Bereich (Krippe / Kindergarten / Hort): \nGewünschter Beginn: \nGewünschte Betreuungszeiten: \nName der Eltern: \nTelefon: \n\nViele Grüße\n")
 
 _dims = {}
@@ -741,7 +742,7 @@ home = f'''
       <p class="lp-lead lp-e">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
       <div class="lp-aktion lp-e"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-weiter" href="#bereiche">Unsere Bereiche ansehen {icon("right", 20)}</a></div>
     </div>
-    <figure class="lp-hero-bild">{img("img/haus-panorama.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<a class="lp-kreis" href="#bereiche"><span><b>3</b>Bereiche unter einem Dach</span></a></figure>
+    <figure class="lp-hero-bild"><a class="lp-hero-gross" href="img/haus-panorama.jpg" data-full="img/haus-panorama.jpg" data-group="haus" data-title="Unser Haus in der Lindleinstraße 20" data-text="Das Haus mit Garten, Treppe und Rutsche." aria-label="Foto vom Haus groß ansehen">{img("img/haus-panorama.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</a><a class="lp-kreis" href="#bereiche"><span><b>3</b>Bereiche unter einem Dach</span></a></figure>
   </div>
   <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><div class="lp-eltern-links"><a href="kontakt.html#krank">{icon("phone", 22)}<span>Kind krank&shy;melden</span></a><a href="aktuelles.html">{icon("list", 22)}<span>Termine</span></a><a href="aktuelles.html#ferienplan">{icon("calendar", 22)}<span>Schließ&shy;tage</span></a><a href="downloads.html">{icon("file", 22)}<span>Down&shy;loads</span></a></div></nav></div>
 </section>
@@ -765,20 +766,22 @@ home = f'''
   <div class="container">
     <div class="lp-kopf reveal"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
     <ol class="lp-schritte">
-      <li class="reveal"><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
-      <li class="reveal"><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
-      <li class="reveal"><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
+      <li class="reveal"><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p><a class="lp-link lp-schritt-link" href="{PLATZ_MAIL}">E-Mail schreiben {icon("right", 18)}</a></li>
+      <li class="reveal"><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p><a class="lp-link lp-schritt-link" href="{KENNEN_MAIL}">Termin vorschlagen {icon("right", 18)}</a></li>
+      <li class="reveal"><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p><a class="lp-link lp-schritt-link" href="#fragen">Fragen zur Eingewöhnung {icon("right", 18)}</a></li>
     </ol>
-    <div class="lp-aktion lp-nach reveal"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-tel" href="tel:+4993127898920">{icon("phone", 18)} Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-anfrage reveal"><h3>Platz anfragen</h3>
+      <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Per E-Mail anfragen</a><a class="lp-btn lp-btn-tel" href="tel:+4993127898920">{icon("phone", 20)} Anrufen: 0931&nbsp;2789892&nbsp;0</a></div></div>
   </div>
 </section>
 
 <section class="lp-ab">
   <div class="container">
     <div class="lp-kopf reveal"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
-    <div class="lp-zwei">
+    <div class="lp-zwei lp-drei">
       <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160031.jpg" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}" aria-label="Weißer Raum groß ansehen">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}</a><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
       <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160054.jpg" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten." aria-label="Hauseigene Küche groß ansehen">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}</a><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
+      <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/garten.jpg" data-full="img/garten.jpg" data-group="home" data-title="Großer Außenbereich" data-text="Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage – für alle Bereiche." aria-label="Außenbereich groß ansehen">{img("img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus", sizes="(max-width: 900px) 100vw, 380px")}</a><div class="lp-in"><h3>Großer Außenbereich</h3><p>Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage – für alle Bereiche.</p></div></article>
     </div>
   </div>
 </section>
@@ -816,7 +819,8 @@ home = f'''
   <div class="container lp-schluss reveal">
     <h2 class="lp-h2">Lernen Sie uns kennen</h2>
     <p class="lp-lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
-    <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a><a class="lp-link lp-tel" href="tel:+4993127898920">{icon("phone", 18)} 0931&nbsp;2789892&nbsp;0</a></div>
+    <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">{icon("mail", 20)} E-Mail schreiben</a><a class="lp-btn lp-btn-tel" href="tel:+4993127898920">{icon("phone", 20)} Anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
+    <p class="lp-adresse"><span>{icon("pin", 20)} Lindleinstraße 20, 97080 Würzburg</span><a class="lp-link js-route" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lindleinstra%C3%9Fe%2020%2C%2097080%20W%C3%BCrzburg" target="_blank" rel="noopener noreferrer"><span>Route planen</span> {icon("right", 18)}</a></p>
   </div>
 </section>
 '''

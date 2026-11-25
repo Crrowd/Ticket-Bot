@@ -2798,3 +2798,27 @@ a.lp-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
   .lp-eltern-links svg { display: block; color: var(--surface); }
   .lp-eltern-links a:active { background: var(--rose-soft); }
 }
+
+/* ===== Startseite Runde 4 (25.11.2026) ===== */
+/* A Links unter den Schritten */
+.lp-schritte li { grid-template-rows: auto auto 1fr auto; }
+.lp-schritt-link { display: inline-flex; align-items: center; gap: 6px; justify-self: start; margin-top: 4px; min-height: 44px; }
+.lp-schritt-link svg { transition: translate .25s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .lp-schritt-link:hover svg { translate: 4px 0; } }
+/* Platz anfragen: Überschrift und zwei gleiche Knöpfe */
+.lp-anfrage { margin-top: 40px; display: grid; gap: 16px; justify-items: start; }
+.lp-anfrage h3 { margin: 0; font: 600 24px/32px var(--font-head); }
+@media (hover: hover) and (pointer: fine) { .lp-btn-tel:hover svg { animation: lp-klingeln .4s var(--ease-out); translate: none; } }
+/* C Adresse und Route */
+.lp-adresse { margin: 8px 0 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 20px; font-size: 18px; line-height: 28px; }
+.lp-adresse > span { display: inline-flex; align-items: center; gap: 8px; }
+.lp-adresse .lp-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.lp-adresse .lp-link svg { transition: translate .25s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .lp-adresse .lp-link:hover svg { translate: 4px 0; } }
+/* B drei Karten */
+.lp-zwei.lp-drei { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .lp-zwei.lp-drei { grid-template-columns: minmax(0, 1fr); } }
+/* E Hausfoto groß ansehen */
+.lp-hero-gross { display: block; cursor: zoom-in; border-radius: 24px; }
+.lp-hero-gross:focus-visible { outline: 3px solid var(--surface); outline-offset: 6px; }
+@media (max-width: 560px) { .lp-aktion .lp-btn { width: 100%; justify-content: center; } }
