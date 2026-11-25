@@ -21,34 +21,35 @@ a { color: inherit; }
 .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 16px; border-radius: 12px; font: 600 16px/24px "Plus Jakarta Sans", sans-serif; text-decoration: none; transition: background-color .3s var(--ease), translate .3s var(--ease); }
 .btn:active { translate: 0 1px; }
 .btn:focus-visible, a:focus-visible { outline: 3px solid var(--tuerkis); outline-offset: 2px; }
-.btn-p { background: var(--petrol); color: var(--papier); }
+.btn-p { background: var(--rose); color: var(--petrol); box-shadow: inset 0 0 0 1.5px rgb(30 59 68 / .35); }
 .btn-g { box-shadow: inset 0 0 0 1.5px var(--petrol); }
-.pfeil { text-decoration: underline; text-underline-offset: 4px; font-weight: 600; }
+.btn-k { background: var(--petrol); color: var(--papier); }
+.pfeil { text-decoration: underline; text-decoration-color: #C9A49E; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 600; }
 /* Navigation */
 .nav { position: sticky; top: 12px; z-index: 5; margin: 12px auto 0; width: fit-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 24px; padding: 8px 8px 8px 16px; border-radius: 16px; background: rgb(243 248 247 / .72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
 .nav b { font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; }
 .nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
 .nav ul a { display: block; padding: 8px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; font-weight: 500; text-decoration: none; }
-.nav ul a[aria-current] { background: rgb(30 59 68 / .08); }
+.nav ul a[aria-current] { background: var(--rose); }
 .nav .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; line-height: 20px; border-radius: 8px; }
 /* Hero */
 .hero { padding: 64px 0 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
 .hero-txt { display: grid; gap: 24px; justify-items: start; }
 .hero-txt .h1, .hero-txt .lead { max-width: 680px; }
-.kick { font-size: 14px; line-height: 20px; font-weight: 500; }
+.kick { font-size: 14px; line-height: 20px; font-weight: 500; padding: 4px 12px; border-radius: 8px; background: var(--rose); margin: 0; }
 .aktion { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
 .beleg { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
-.beleg li { padding: 4px 12px; border-radius: 999px; background: rgb(243 248 247 / .6); font-size: 14px; line-height: 20px; font-weight: 500; }
+.beleg li { padding: 4px 12px; border-radius: 999px; background: rgb(212 181 176 / .55); font-size: 14px; line-height: 20px; font-weight: 500; }
 .hero-bild { position: relative; }
-.hero-bild img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; display: block; }
+.hero-bild img { box-shadow: 16px 16px 0 var(--rose); width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; display: block; }
 .hero-bild figcaption { position: absolute; left: 16px; bottom: 16px; padding: 8px 12px; border-radius: 12px; background: rgb(243 248 247 / .85); backdrop-filter: blur(8px); font-size: 14px; line-height: 20px; font-weight: 500; }
 /* Schon bei uns */
-.eltern { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 24px; border-radius: 16px; background: rgb(243 248 247 / .55); }
+.eltern { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 24px; border-radius: 16px; background: #F1E5E3; box-shadow: 0 0 0 1px rgb(212 181 176 / .9); }
 .eltern b { font-size: 14px; line-height: 20px; font-weight: 600; }
 .eltern a { font-size: 14px; line-height: 20px; font-weight: 500; text-underline-offset: 4px; }
 /* Abschnitte */
 .ab { padding: 96px 0; }
-.ab.hell { background: var(--papier); }
+.ab.hell { background: var(--papier); } .ab.rosehell { background: #F1E5E3; }
 .kopf { display: grid; gap: 16px; max-width: 680px; margin-bottom: 48px; }
 .karten { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .karte { background: var(--papier); border-radius: 24px; padding: 8px; display: grid; align-content: start; }
@@ -57,9 +58,9 @@ a { color: inherit; }
 .karte .in { padding: 24px 16px 16px; display: grid; gap: 12px; }
 .alter { justify-self: start; padding: 2px 8px; border-radius: 999px; background: var(--rose); font-size: 12px; line-height: 16px; font-weight: 600; }
 /* Leitsatz */
-.leit { padding: 128px 0; background: var(--petrol); color: var(--papier); }
+.leit { padding: 128px 0; background: var(--rose); color: var(--petrol); }
 .leit p { max-width: 900px; font-size: 48px; line-height: 56px; font-weight: 600; letter-spacing: -.025em; margin: 0; text-wrap: balance; }
-.leit p span { color: var(--salbei); }
+.leit p span { color: rgb(30 59 68 / .62); }
 /* Schritte */
 .schritte { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; counter-reset: s; list-style: none; margin: 0; padding: 0; }
 .schritte li { background: #fff; border-radius: 24px; padding: 32px; display: grid; gap: 12px; align-content: start; box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
@@ -68,13 +69,13 @@ a { color: inherit; }
 .zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 /* Gruß */
 .gruss { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; align-items: start; max-width: 960px; }
-.gruss img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; background: var(--papier); }
+.gruss img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; background: var(--papier); box-shadow: 0 0 0 8px var(--rose); }
 .gruss .txt { display: grid; gap: 16px; }
 /* Fragen */
 .fragen { display: grid; gap: 12px; max-width: 800px; }
 .fragen details { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
 .fragen summary { list-style: none; cursor: pointer; padding: 16px 24px; font-size: 18px; line-height: 28px; font-weight: 500; display: flex; justify-content: space-between; gap: 16px; }
-.fragen summary::after { content: "+"; font-weight: 600; }
+.fragen summary::after { content: "+"; font-weight: 600; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; }
 .fragen details[open] summary::after { content: "–"; }
 .fragen details p { padding: 0 24px 24px; margin: 0; }
 /* Schluss */
@@ -82,7 +83,7 @@ a { color: inherit; }
 .schluss .lead { max-width: 560px; }
 footer { padding: 48px 0; background: #142A31; color: var(--papier); font-size: 14px; line-height: 20px; }
 footer .w { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
-@media (hover: hover) and (pointer: fine) { .btn-p:hover { background: var(--tuerkis); } .btn-g:hover { background: rgb(30 59 68 / .06); } }
+@media (hover: hover) and (pointer: fine) { .btn-p:hover { background: #C9A49E; } .btn-g:hover { background: rgb(30 59 68 / .06); } }
 @media (max-width: 900px) {
   .hero, .karten, .schritte, .zwei { grid-template-columns: minmax(0, 1fr); }
   .hero { padding-top: 40px; gap: 32px; }
@@ -96,7 +97,7 @@ footer .w { display: flex; flex-wrap: wrap; justify-content: space-between; gap:
 </style></head><body>
 <nav class="nav" aria-label="Hauptmenü"><b>Kinder- und Jugendhort Grombühl</b>
 <ul><li><a href="#" aria-current="page">Startseite</a></li><li><a href="#">Bereiche</a></li><li><a href="#">Aktuelles</a></li><li><a href="#">Downloads</a></li></ul>
-<a class="btn btn-p" href="#">Kontakt</a></nav>
+<a class="btn btn-k" href="#">Kontakt</a></nav>
 <main>
 <section class="w hero">
  <div class="hero-txt">
@@ -158,7 +159,7 @@ footer .w { display: flex; flex-wrap: wrap; justify-content: space-between; gap:
  </div>
 </div></section>
 
-<section class="ab hell"><div class="w schluss">
+<section class="ab rosehell"><div class="w schluss">
  <h2 class="h2">Lernen Sie uns kennen</h2>
  <p class="lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
  <div class="aktion"><a class="btn btn-p" href="#">Platz anfragen</a><a class="pfeil" href="#">0931 2789892 0</a></div>
