@@ -661,3 +661,10 @@ Entscheidung offen.
 - Kontakt-Einträge haben Sprungmarken (#krank, #platz, #abholung, #abwesenheit); wer über einen Link kommt, sieht den Eintrag einmal kurz rosé hinterlegt (1 s, nach dem Seitenwechsel). Alle „Kind krankmelden“-Links inkl. App-Verknüpfung und Aushang-QR zeigen jetzt auf #krank.
 
 - 23.11.: Bewegung reduzieren auch beim Gruß („Den ganzen Gruß lesen“) und beim Heute-Stift; Einblenden der Aufklapper mit eigener Kurve (EASE_OUT).
+
+## 25.11.2026 – Neue Startseite (Entwurf „Landing-Page-Skill“ eingebaut)
+- Aufbau: Kopf (Adresse, „Eine Kita für Kinder von 11 Monaten bis 16 Jahren“, Platz anfragen, Hausfoto mit Kreis „3 Bereiche“), Leiste „Schon bei uns?“, drei Bereiche, Leitsatz auf Rosé, drei Schritte zum Platz, Weißer Raum/Küche, Gruß, 6 Fragen, Schluss „Lernen Sie uns kennen“.
+- Nicht mehr auf der Startseite: Rundgang, Termine/Wochenübersicht, Status „Jetzt geöffnet“, Schließtage-Leiste (alles weiter auf Aktuelles/Bereichsseiten/Kontakt). Hinweisband und Elternstimmen bleiben.
+- CSS-Block „Neue Startseite“ (Klassen lp-…). Entwurf: entwurf/landing-skill/.
+- Datenschutz: Punkt „Leitsatz eingeblendet“ entfernt (gibt es nicht mehr).
+- Offen: Team-Anleitung (PDF) erwähnt noch Termine/Status auf der Startseite → bei Punkt 7 mit anpassen. Bewegung auf der Startseite: Vorschläge folgen.

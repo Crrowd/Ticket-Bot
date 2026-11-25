@@ -732,133 +732,84 @@ WORDCLOUD = ('<div class="word-cloud reveal" role="img" aria-label="Was Kinder b
     f'<span>{w}</span>' for i, (w, z, x, y) in enumerate(WORDS)) + "</div>")
 
 home = f'''
-<section class="hero">
-  <div class="container hero-grid">
-    <div>
+<section class="lp-hero">
+  <div class="container lp-hero-grid">
+    <div class="lp-hero-txt">
       <span class="eyebrow">{icon("pin", 16)} Lindleinstraße 20 · Würzburg-Grombühl</span>
-      <h1>Kath. Kinder- und Jugendhort <span class="hl" translate="no">Grombühl</span></h1>
-      <p class="lead"><span class="leitsatz">Weil <span class="mark circle">Qualität{MARK_CIRCLE}</span> zählt!</span> Eine vielfältige, große Kita für Kinder von 11 Monaten bis 16 Jahren – mit Herz, Zeit und viel Platz zum Entdecken.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary js-magnet" href="#bereiche">Unsere Bereiche {icon("arrow", 20)}</a>
-        <a class="btn btn-ghost" href="kontakt.html">Kontakt aufnehmen</a>
-      </div>
-      <a class="hero-krank" href="kontakt.html#krank"><span>Kind krankmelden</span> <span aria-hidden="true">→</span></a>
+      <h1 class="lp-h1">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
+      <p class="lp-lead">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
+      <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="#bereiche">Unsere Bereiche ansehen</a></div>
     </div>
-    <div class="hero-collage">
-      <figure class="c1">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}</figure>
-      <figure class="c2">{img("img/img_4956.jpg", "Der Piratenausguck im Kreativraum des Kinderhorts", sizes="(max-width: 900px) 33vw, 190px")}</figure>
-      <figure class="c3">{img("img/p2160131.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 33vw, 190px")}</figure>
-      <figure class="c4">{img("img/lesecke.jpg", "Leseecke mit Büchern und Kissen", sizes="(max-width: 900px) 33vw, 190px")}</figure>
-      <div class="hero-badge"><span><b>3</b>Bereiche unter einem Dach</span></div>
-    </div>
+    <figure class="lp-hero-bild">{img("img/hortgebaeude.jpg", "Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche", lazy=False, sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-kreis"><span><b>3</b>Bereiche unter einem Dach</span></div></figure>
   </div>
+  <div class="container"><nav class="lp-eltern" aria-label="Für Eltern, die schon bei uns sind"><b>Schon bei uns?</b><a href="kontakt.html#krank">Kind krankmelden</a><a href="aktuelles.html">Termine</a><a href="aktuelles.html#ferienplan">Schließtage</a><a href="downloads.html">Downloads</a></nav></div>
 </section>
 
 <div class="announce" id="hinweis"></div>
 
-<section class="section alt" id="bereiche">
+<section class="lp-ab" id="bereiche">
   <div class="container">
-    <div class="section-head"><span class="kicker">Krippe · Kindergarten · Hort</span><h2>Ein Haus für jedes Alter</h2>
-      <p>Mit Krippe, Kindergarten und Hort unter einem Dach können wir Kindern und Familien ein einheitliches Konzept und einen nahtlosen Wechsel gewährleisten.</p></div>
-    <div class="areas">
-      <a class="area-card theme-krippe reveal" href="kinderkrippe.html">
-        <div class="thumb">{img("img/p2160110.jpg", "Gruppenraum der Kinderkrippe")}<span class="age">ab 11 Monaten</span></div>
-        <div class="bar"></div>
-        <div class="body"><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten – vom 11. Monat bis zum August des Jahres, in dem sie 3 Jahre alt werden.</p><span class="more">Zur Kinderkrippe {icon("arrow", 18)}</span></div>
-      </a>
-      <a class="area-card theme-kiga reveal" href="kindergarten.html">
-        <div class="thumb">{img("img/blick-vom-fenster-in-den-raum.jpg", "Gruppenraum im Kindergarten")}<span class="age">3 Jahre bis Einschulung</span></div>
-        <div class="bar"></div>
-        <div class="body"><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><span class="more">Zum Kindergarten {icon("arrow", 18)}</span></div>
-      </a>
-      <a class="area-card theme-hort reveal" href="kinderhort.html">
-        <div class="thumb">{img("img/kreatviraum-5-1.jpg", "Kreativraum im Kinderhort")}<span class="age">ab der Einschulung</span></div>
-        <div class="bar"></div>
-        <div class="body"><h3>Kinderhort</h3><p>Für alle Schulformen – mit begleiteten, korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung bis 18:00 Uhr.</p><span class="more">Zum Kinderhort {icon("arrow", 18)}</span></div>
-      </a>
+    <div class="lp-kopf"><h2 class="lp-h2">Ein Haus für jedes Alter</h2><p class="lp-lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
+    <div class="lp-karten">
+      <article class="lp-karte">{img("img/p2160110.jpg", "Gruppenraum der Kinderkrippe", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">ab 11 Monaten</span><h3>Kinderkrippe</h3><p>Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><a class="lp-link" href="kinderkrippe.html">Zur Kinderkrippe</a></div></article>
+      <article class="lp-karte">{img("img/blick-vom-fenster-in-den-raum.jpg", "Gruppenraum im Kindergarten", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">3 Jahre bis Einschulung</span><h3>Kindergarten</h3><p>Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><a class="lp-link" href="kindergarten.html">Zum Kindergarten</a></div></article>
+      <article class="lp-karte">{img("img/kreatviraum-5-1.jpg", "Kreativraum im Kinderhort", sizes="(max-width: 900px) 100vw, 380px")}<div class="lp-in"><span class="lp-alter">ab der Einschulung</span><h3>Kinderhort</h3><p>Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><a class="lp-link" href="kinderhort.html">Zum Kinderhort</a></div></article>
     </div>
   </div>
 </section>
 
-<section class="section green">
+<section class="lp-leit"><div class="container"><p>Weil Qualität zählt. <span>Vielfalt und Individualität sind uns wichtig, und das leben wir jeden Tag in unserer Pädagogik.</span></p></div></section>
+
+<section class="lp-ab lp-papier" id="platz">
   <div class="container">
-    <div class="section-head"><h2>Mehr als Betreuung</h2>
-      <p>Lange Öffnungszeiten, eine hauseigene Küche und viel Raum zum Spielen, Lernen und Entspannen – mitten in der Stadt.</p></div>
-    <p class="fakten reveal">Wir öffnen um <b>6:45 Uhr</b>, der Hort betreut bis <b>18:00 Uhr</b>, auch in den Ferien. Geschlossen ist an <b>höchstens 30 Tagen</b> im Jahr, gleich in allen Abteilungen. Und <b>zwei Köchinnen</b> kochen jeden Tag frisch mit regionalen Zutaten.</p>
-    <div class="teasers">
-      <a class="teaser reveal" href="img/p2160031.jpg" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}">{img("img/p2160031.jpg", "Weißer Raum")}<div><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen – ein Ort für Ruhe und Traumreisen.</p></div></a>
-      <a class="teaser reveal" href="img/p2160054.jpg" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Hier wird täglich frisch gekocht.">{img("img/p2160054.jpg", "Hauseigene Küche")}<div><h3>Hauseigene Küche</h3><p>Hier wird täglich frisch und kindgerecht gekocht.</p></div></a>
-    </div>
+    <div class="lp-kopf"><h2 class="lp-h2">So bekommen Sie einen Platz</h2><p class="lp-lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
+    <ol class="lp-schritte">
+      <li><h3>Platz anfragen</h3><p>Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
+      <li><h3>Kennenlernen</h3><p>Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
+      <li><h3>Eingewöhnung</h3><p>Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
+    </ol>
+    <div class="lp-aktion lp-nach"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">Lieber anrufen: 0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container welcome">
-    <div class="welcome-photo reveal">{img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}</div>
-    <div class="reveal">
-      <span class="kicker">Herzlich willkommen</span>
-      <h2>Schön, dass Sie da sind</h2>
-      <blockquote>
-        <p>Herzlich willkommen auf den Seiten des Kath. Kinder- und Jugendhortes Grombühl. Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen mit unserer Webseite eine gute erste Orientierung geben und Ihnen weiterhelfen, wenn Sie nach einer passenden Kita suchen oder sich zunächst nur ein Bild von uns machen möchten.</p>
-        <p>Sicher fällt Ihnen gleich auf, dass wir eine vielfältige und große Kita sind, mit einem breit gefächerten Altersspektrum, das sich an Kinder von 11 Monaten bis hin zu 16 Jahren richtet. Vielfalt und Individualität sind uns wichtig und das praktizieren wir hier täglich in unserer Pädagogik.</p>
-        <details class="read-more"><summary><span>Den ganzen Gruß lesen</span></summary>
-        <p>Wir achten auf die Stärken jedes Kindes und wollen allen Kindern – ob Krippen-, Kindergarten- oder Hortkindern – vielfältige Möglichkeiten bieten, diese Stärken in sich zu entdecken und immer weiter zu entwickeln. Dazu braucht es vielfältige Angebote, Projekte und ein ausgewogenes Maß an Begleitung und Freiheit. Daran arbeiten wir täglich!</p>
-        <p>Gerne informieren wir Sie, wenn Sie mehr wissen möchten. Wir freuen uns auf Sie und Ihr Kind.</p>
-        </details>
-      </blockquote>
-      <div class="signature">Herzliche Grüße, Ihre<strong class="sig-name">Petra Lachnit<svg class="sig-swash" viewBox="0 0 220 28" aria-hidden="true"><path pathLength="1" d="M4 20 C40 8 70 26 104 16 S168 4 216 12"/></svg></strong><span>Einrichtungsleitung – Kath. Kinder- und Jugendhort Grombühl</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="section alt" id="rundgang">
+<section class="lp-ab">
   <div class="container">
-    <div class="section-head"><h2>Schauen Sie sich bei uns um</h2>
-      <p>Fotos aus allen drei Bereichen zeigen Gruppenräume, Turnraum, Weißen Raum, Bistro und Küche – ganz ohne Termin.</p></div>
-    <div class="teasers three rundgang-reihe">
-      <a class="teaser reveal" href="kinderkrippe.html#rundgang">{img("img/puppenecke3.jpg", "Puppenecke der Kinderkrippe")}<div><h3>Kinderkrippe</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
-      <a class="teaser reveal" href="kindergarten.html#rundgang">{img("img/blick-vom-nebenraum-in-den-gruppenraum.jpg", "Gruppenraum im Kindergarten")}<div><h3>Kindergarten</h3><p>16 Bilder ansehen {icon("arrow", 18)}</p></div></a>
-      <a class="teaser reveal" href="kinderhort.html#rundgang">{img("img/kreatviraum-4.jpg", "Kreativraum im Kinderhort")}<div><h3>Kinderhort</h3><p>24 Bilder ansehen {icon("arrow", 18)}</p></div></a>
+    <div class="lp-kopf"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
+    <div class="lp-zwei">
+      <article class="lp-karte">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+      <article class="lp-karte">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}<div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
     </div>
   </div>
 </section>
 
-<section class="section" id="aktuell">
-  <div class="container">
-    <div class="section-head"><h2>Termine &amp; Unterlagen</h2>
-      <p>Die nächsten Termine auf einen Blick. Vergangene Termine verschwinden automatisch.</p></div>
-    <div class="heute-zeile">{STATUS_CARD}</div>
-    <div class="woche reveal" data-woche aria-label="Diese Woche: Termine, Schließtage und Feiertage"></div>
-    <div class="notes-grid">
-      <div>
-        <ul class="event-list" data-max="3">
-          {"".join(ev(r) for r in TERMINE)}
-        </ul>
-        <p class="events-empty muted" hidden>Aktuell stehen keine weiteren Termine an.</p>
-        <div class="btn-row"><a class="btn btn-primary" href="aktuelles.html">Alle Termine {icon("arrow", 20)}</a>
-          <a class="btn btn-ghost js-ics-all" href="downloads/termine.ics" download>{icon("calendar", 20)} Alle in den Kalender</a></div>
-        <div class="saved-row" hidden><button class="btn btn-primary js-saved-ics" type="button">{icon("calendar", 20)} Gemerkte Termine in den Kalender (<span class="saved-n">0</span>)</button> <button class="btn btn-ghost js-saved-sheet" type="button">Gemerkte ansehen</button></div>
-      </div>
-      <div class="note-card reveal">
-        <h3>Unterlagen zum Herunterladen</h3>
-        <p>Hier finden Sie weitere Informationsblätter: Ferienplan, KinderhortABC und die Medikamentenvereinbarung.</p>
-        <a class="btn btn-primary" href="downloads.html">{icon("file", 20)} Zu den Downloads</a>
-      </div>
-    </div>
+<section class="lp-ab lp-papier">
+  <div class="container lp-gruss">
+    {img("img/petra-lachnit.png", "Petra Lachnit, Einrichtungsleitung")}
+    <div class="lp-gruss-txt"><h2 class="lp-h3">Schön, dass Sie da sind</h2>
+      <p class="lp-lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
+      <p class="lp-name">Petra Lachnit</p><p class="lp-rolle">Einrichtungsleitung</p></div>
   </div>
 </section>
-
-{ferienplan_section(kurz=True, kicker="")}
 {STIMMEN}
-<section class="section tight">
+<section class="lp-ab" id="fragen">
   <div class="container">
-    <div class="cta-band cta-offen reveal">
-      <div><h2>Lernen Sie uns kennen</h2><p>Sie haben Fragen zu Krippe, Kindergarten oder Hort? Rufen Sie uns an oder schreiben Sie uns eine E-Mail.</p></div>
-      <div class="actions">
-        <a class="btn btn-primary" href="tel:+4993127898920">{icon("phone", 20)} 0931&nbsp;2789892&nbsp;0</a>
-        <a class="btn btn-ghost js-magnet" href="{PLATZ_MAIL}">{icon("mail", 20)} Platz anfragen</a>
-      </div>
+    <div class="lp-kopf"><h2 class="lp-h2">Häufige Fragen</h2></div>
+    <div class="faq lp-fragen">
+      <details><summary>Muss unsere Familie katholisch sein?</summary><div><p>Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></div></details>
+      <details><summary>Wie lange dauert die Eingewöhnung?</summary><div><p>In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></div></details>
+      <details><summary>Sind die Schließtage in allen Bereichen gleich?</summary><div><p>Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></div></details>
+      <details><summary>Müssen wir Windeln mitbringen?</summary><div><p>In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></div></details>
+      <details><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><div><p>Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></div></details>
+      <details><summary>Wer kocht das Mittagessen?</summary><div><p>Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></div></details>
     </div>
+  </div>
+</section>
+
+<section class="lp-ab lp-rosehell">
+  <div class="container lp-schluss">
+    <h2 class="lp-h2">Lernen Sie uns kennen</h2>
+    <p class="lp-lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
+    <div class="lp-aktion"><a class="lp-btn" href="{PLATZ_MAIL}">Platz anfragen</a><a class="lp-link" href="tel:+4993127898920">0931&nbsp;2789892&nbsp;0</a></div>
   </div>
 </section>
 '''
@@ -1507,8 +1458,7 @@ dsg += f'''<section class="section"><div class="container"><div class="prose">
   <li>ob Sie Termine lieber als Liste oder als Kalender sehen,</li>
   <li>ob die ruhige Ansicht („Bewegung aus“) eingeschaltet ist,</li>
   <li>die zuletzt angesehenen Seiten (für die Suche),</li>
-  <li>das Datum Ihres letzten Besuchs (damit neue Termine und Elternbriefe markiert werden können),</li>
-  <li>ob der Leitsatz auf der Startseite schon einmal eingeblendet wurde.</li>
+  <li>das Datum Ihres letzten Besuchs (damit neue Termine und Elternbriefe markiert werden können).</li>
 </ul>
 <p>Damit die Seite auch ohne Internetverbindung erreichbar bleibt, legt Ihr Browser außerdem eine Kopie der Seiten an. Sie können all das jederzeit in den Einstellungen Ihres Browsers löschen („Websitedaten löschen“). Das Speichern ist für die von Ihnen gewünschten Funktionen erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG).</p>
 <h2>6. Kontakt per E-Mail und Telefon</h2>
