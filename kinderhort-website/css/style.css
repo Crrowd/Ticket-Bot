@@ -2925,3 +2925,10 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .js .kurz.reveal.visible li:nth-child(3) .kurz-ic { animation-delay: .35s; }
 .js .kurz.reveal.visible li:nth-child(4) .kurz-ic { animation-delay: .45s; }
 .js .kurz.reveal.visible li:nth-child(n+5) .kurz-ic { animation-delay: .55s; }
+
+/* ===== Fragen-Knopf überall gleich: Plus wird Minus (25.11.2026) ===== */
+.faq:not(.lp-fragen) summary::after { content: ""; background: var(--rose) linear-gradient(var(--ink), var(--ink)) center / 13px 2.4px no-repeat; padding: 0; transition: rotate .3s var(--ease-out); }
+.faq:not(.lp-fragen) summary::before { content: ""; position: absolute; z-index: 1; right: 33.8px; top: 50%; width: 2.4px; height: 13px; margin-top: -6.5px; border-radius: 1px; background: var(--ink); pointer-events: none; transition: rotate .3s var(--ease-out); }
+.faq:not(.lp-fragen) details[open]:not(.schliesst) summary::after { rotate: 180deg; }
+.faq:not(.lp-fragen) details[open]:not(.schliesst) summary::before { rotate: 90deg; }
+.faq:not(.lp-fragen) details[open].schliesst summary::after, .faq:not(.lp-fragen) details:not([open]) summary::after { rotate: 0deg; }
