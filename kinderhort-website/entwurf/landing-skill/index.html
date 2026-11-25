@@ -1,0 +1,168 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entwurf Startseite</title>
+<style>
+@font-face { font-family: "Plus Jakarta Sans"; font-weight: 200 800; font-display: swap; src: url("../../fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2"); }
+:root { --salbei:#A8C5C0; --petrol:#1E3B44; --rose:#D4B5B0; --tuerkis:#2D6A6A; --papier:#F3F8F7; --ease:cubic-bezier(.22,1,.36,1); color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--salbei); color: var(--petrol); font: 400 16px/24px "Plus Jakarta Sans", system-ui, sans-serif; }
+a { color: inherit; }
+.w { width: min(1200px, 100% - 32px); margin-inline: auto; }
+/* Textstile */
+.h1 { font-size: 60px; line-height: 60px; font-weight: 600; letter-spacing: -.03em; margin: 0; text-wrap: balance; background: linear-gradient(90deg, var(--petrol), var(--tuerkis)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.h2 { font-size: 48px; line-height: 48px; font-weight: 600; letter-spacing: -.025em; margin: 0; text-wrap: balance; }
+.h3 { font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.h5 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 0; }
+.t1 { font-size: 20px; line-height: 28px; font-weight: 500; margin: 0; }
+.t2 { font-size: 18px; line-height: 28px; font-weight: 500; margin: 0; }
+.b3 { font-size: 16px; line-height: 24px; margin: 0; text-wrap: pretty; }
+.c1 { font-size: 14px; line-height: 20px; font-weight: 500; margin: 0; }
+.lead { font-size: 18px; line-height: 28px; margin: 0; text-wrap: pretty; }
+/* Knöpfe */
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 16px; border-radius: 12px; font: 600 16px/24px "Plus Jakarta Sans", sans-serif; text-decoration: none; transition: background-color .3s var(--ease), translate .3s var(--ease); }
+.btn:active { translate: 0 1px; }
+.btn:focus-visible, a:focus-visible { outline: 3px solid var(--tuerkis); outline-offset: 2px; }
+.btn-p { background: var(--petrol); color: var(--papier); }
+.btn-g { box-shadow: inset 0 0 0 1.5px var(--petrol); }
+.pfeil { text-decoration: underline; text-underline-offset: 4px; font-weight: 600; }
+/* Navigation */
+.nav { position: sticky; top: 12px; z-index: 5; margin: 12px auto 0; width: fit-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 24px; padding: 8px 8px 8px 16px; border-radius: 16px; background: rgb(243 248 247 / .72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
+.nav b { font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; }
+.nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav ul a { display: block; padding: 8px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; font-weight: 500; text-decoration: none; }
+.nav ul a[aria-current] { background: rgb(30 59 68 / .08); }
+.nav .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; line-height: 20px; border-radius: 8px; }
+/* Hero */
+.hero { padding: 64px 0 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.hero-txt { display: grid; gap: 24px; justify-items: start; }
+.hero-txt .h1, .hero-txt .lead { max-width: 680px; }
+.kick { font-size: 14px; line-height: 20px; font-weight: 500; }
+.aktion { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.beleg { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.beleg li { padding: 4px 12px; border-radius: 999px; background: rgb(243 248 247 / .6); font-size: 14px; line-height: 20px; font-weight: 500; }
+.hero-bild { position: relative; }
+.hero-bild img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 24px; display: block; }
+.hero-bild figcaption { position: absolute; left: 16px; bottom: 16px; padding: 8px 12px; border-radius: 12px; background: rgb(243 248 247 / .85); backdrop-filter: blur(8px); font-size: 14px; line-height: 20px; font-weight: 500; }
+/* Schon bei uns */
+.eltern { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 24px; border-radius: 16px; background: rgb(243 248 247 / .55); }
+.eltern b { font-size: 14px; line-height: 20px; font-weight: 600; }
+.eltern a { font-size: 14px; line-height: 20px; font-weight: 500; text-underline-offset: 4px; }
+/* Abschnitte */
+.ab { padding: 96px 0; }
+.ab.hell { background: var(--papier); }
+.kopf { display: grid; gap: 16px; max-width: 680px; margin-bottom: 48px; }
+.karten { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.karte { background: var(--papier); border-radius: 24px; padding: 8px; display: grid; align-content: start; }
+.hell .karte { background: #fff; box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
+.karte img { width: 100%; aspect-ratio: 3/2; object-fit: cover; border-radius: 16px; display: block; }
+.karte .in { padding: 24px 16px 16px; display: grid; gap: 12px; }
+.alter { justify-self: start; padding: 2px 8px; border-radius: 999px; background: var(--rose); font-size: 12px; line-height: 16px; font-weight: 600; }
+/* Leitsatz */
+.leit { padding: 128px 0; background: var(--petrol); color: var(--papier); }
+.leit p { max-width: 900px; font-size: 48px; line-height: 56px; font-weight: 600; letter-spacing: -.025em; margin: 0; text-wrap: balance; }
+.leit p span { color: var(--salbei); }
+/* Schritte */
+.schritte { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; counter-reset: s; list-style: none; margin: 0; padding: 0; }
+.schritte li { background: #fff; border-radius: 24px; padding: 32px; display: grid; gap: 12px; align-content: start; box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
+.schritte li::before { counter-increment: s; content: counter(s); width: 40px; height: 40px; border-radius: 12px; background: var(--rose); display: grid; place-items: center; font-weight: 600; font-size: 18px; }
+/* Mehr als Betreuung */
+.zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+/* Gruß */
+.gruss { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; align-items: start; max-width: 960px; }
+.gruss img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; background: var(--papier); }
+.gruss .txt { display: grid; gap: 16px; }
+/* Fragen */
+.fragen { display: grid; gap: 12px; max-width: 800px; }
+.fragen details { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px rgb(30 59 68 / .08); }
+.fragen summary { list-style: none; cursor: pointer; padding: 16px 24px; font-size: 18px; line-height: 28px; font-weight: 500; display: flex; justify-content: space-between; gap: 16px; }
+.fragen summary::after { content: "+"; font-weight: 600; }
+.fragen details[open] summary::after { content: "–"; }
+.fragen details p { padding: 0 24px 24px; margin: 0; }
+/* Schluss */
+.schluss { text-align: center; display: grid; gap: 24px; justify-items: center; }
+.schluss .lead { max-width: 560px; }
+footer { padding: 48px 0; background: #142A31; color: var(--papier); font-size: 14px; line-height: 20px; }
+footer .w { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+@media (hover: hover) and (pointer: fine) { .btn-p:hover { background: var(--tuerkis); } .btn-g:hover { background: rgb(30 59 68 / .06); } }
+@media (max-width: 900px) {
+  .hero, .karten, .schritte, .zwei { grid-template-columns: minmax(0, 1fr); }
+  .hero { padding-top: 40px; gap: 32px; }
+  .h1 { font-size: 36px; line-height: 40px; } .h2 { font-size: 30px; line-height: 36px; } .h3 { font-size: 30px; line-height: 36px; }
+  .leit { padding: 80px 0; } .leit p { font-size: 30px; line-height: 36px; }
+  .ab { padding: 64px 0; } .kopf { margin-bottom: 32px; }
+  .nav ul { display: none; } .nav { width: calc(100% - 32px); justify-content: space-between; }
+  .gruss { grid-template-columns: minmax(0, 1fr); gap: 24px; } .gruss img { width: 120px; height: 120px; }
+  .schritte li { padding: 24px; }
+}
+</style></head><body>
+<nav class="nav" aria-label="Hauptmenü"><b>Kinder- und Jugendhort Grombühl</b>
+<ul><li><a href="#" aria-current="page">Startseite</a></li><li><a href="#">Bereiche</a></li><li><a href="#">Aktuelles</a></li><li><a href="#">Downloads</a></li></ul>
+<a class="btn btn-p" href="#">Kontakt</a></nav>
+<main>
+<section class="w hero">
+ <div class="hero-txt">
+  <p class="kick">Kath. Kinder- und Jugendhort Grombühl e. V. · Würzburg</p>
+  <h1 class="h1">Eine Kita für Kinder<br>von 11 Monaten<br>bis 16 Jahren</h1>
+  <p class="lead">Kinderkrippe, Kindergarten und Kinderhort unter einem Dach. Ihr Kind kann bei uns bleiben, von der ersten Eingewöhnung bis weit in die Schulzeit.</p>
+  <div class="aktion"><a class="btn btn-p" href="#">Platz anfragen</a><a class="pfeil" href="#">Unsere Bereiche ansehen</a></div>
+  <ul class="beleg"><li>3 Bereiche unter einem Dach</li><li>Hauseigene Küche</li><li>Ferienbetreuung im Hort</li></ul>
+ </div>
+ <figure class="hero-bild" style="margin:0"><img src="../../img/hortgebaeude.jpg" alt="Das Haus des Kinder- und Jugendhorts Grombühl mit Garten und Rutsche"><figcaption>Lindleinstraße 20, Würzburg-Grombühl</figcaption></figure>
+</section>
+<div class="w"><div class="eltern"><b>Schon bei uns?</b><a href="#">Kind krankmelden</a><a href="#">Termine</a><a href="#">Schließtage</a><a href="#">Downloads</a></div></div>
+
+<section class="ab"><div class="w">
+ <div class="kopf"><h2 class="h2">Ein Haus für jedes Alter</h2><p class="lead">Mit Krippe, Kindergarten und Hort unter einem Dach gibt es ein einheitliches Konzept und einen nahtlosen Wechsel.</p></div>
+ <div class="karten">
+  <article class="karte"><img src="../../img/p2160110.jpg" alt="Gruppenraum der Kinderkrippe"><div class="in"><span class="alter">ab 11 Monaten</span><h3 class="h5">Kinderkrippe</h3><p class="b3">Sonnen- und Sternengruppe: liebevolle Betreuung für die Kleinsten, bis zum August des Jahres, in dem sie 3 werden.</p><a class="pfeil" href="#">Zur Kinderkrippe</a></div></article>
+  <article class="karte"><img src="../../img/blick-vom-fenster-in-den-raum.jpg" alt="Gruppenraum im Kindergarten"><div class="in"><span class="alter">3 Jahre bis Einschulung</span><h3 class="h5">Kindergarten</h3><p class="b3">Bären-, Bienen- und Spatzengruppe: Projektarbeit, Englisch, Vorkurs Deutsch und viel Freispiel im großen Garten.</p><a class="pfeil" href="#">Zum Kindergarten</a></div></article>
+  <article class="karte"><img src="../../img/kreatviraum-5-1.jpg" alt="Kreativraum im Kinderhort"><div class="in"><span class="alter">ab der Einschulung</span><h3 class="h5">Kinderhort</h3><p class="b3">Für alle Schulformen, mit begleiteten und korrigierten Hausaufgaben, Freitagsausflügen und Ferienbetreuung.</p><a class="pfeil" href="#">Zum Kinderhort</a></div></article>
+ </div>
+</div></section>
+
+<section class="leit"><div class="w"><p>Weil Qualität zählt. <span>Vielfalt und Individualität sind uns wichtig, und das leben wir jeden Tag in unserer Pädagogik.</span></p></div></section>
+
+<section class="ab hell"><div class="w">
+ <div class="kopf"><h2 class="h2">So bekommen Sie einen Platz</h2><p class="lead">Drei Schritte, und wir begleiten Sie bei jedem.</p></div>
+ <ol class="schritte">
+  <li><h3 class="t1">Platz anfragen</h3><p class="b3">Schreiben Sie uns, ab wann Sie einen Platz suchen. Die vorbereitete E-Mail enthält alle Angaben, die wir brauchen.</p></li>
+  <li><h3 class="t1">Kennenlernen</h3><p class="b3">Gern zeigen wir Ihnen unser Haus und beantworten Ihre Fragen. Nennen Sie uns einfach Tage, die Ihnen passen.</p></li>
+  <li><h3 class="t1">Eingewöhnung</h3><p class="b3">Die Eingewöhnung planen wir gemeinsam mit Ihnen, ganz nach den Bedürfnissen Ihres Kindes.</p></li>
+ </ol>
+ <div class="aktion" style="margin-top:32px"><a class="btn btn-p" href="#">Platz anfragen</a><a class="pfeil" href="#">Lieber anrufen: 0931 2789892 0</a></div>
+</div></section>
+
+<section class="ab"><div class="w">
+ <div class="kopf"><h2 class="h2">Mehr als Betreuung</h2><p class="lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
+ <div class="zwei">
+  <article class="karte"><img src="../../img/p2160031.jpg" alt="Weißer Raum"><div class="in"><h3 class="h5">Weißer Raum</h3><p class="b3">Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+  <article class="karte"><img src="../../img/p2160054.jpg" alt="Hauseigene Küche"><div class="in"><h3 class="h5">Hauseigene Küche</h3><p class="b3">Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
+ </div>
+</div></section>
+
+<section class="ab hell"><div class="w gruss">
+ <img src="../../img/petra-lachnit.png" alt="Petra Lachnit, Einrichtungsleitung">
+ <div class="txt"><h2 class="h3">Schön, dass Sie da sind</h2>
+ <p class="lead">Ich freue mich sehr, dass Sie sich für unsere Kita interessieren. Wir wollen Ihnen eine gute erste Orientierung geben und weiterhelfen, wenn Sie nach einer passenden Kita suchen.</p>
+ <p class="t2">Petra Lachnit</p><p class="c1">Einrichtungsleitung</p></div>
+</div></section>
+
+<section class="ab"><div class="w">
+ <div class="kopf"><h2 class="h2">Häufige Fragen</h2></div>
+ <div class="fragen">
+  <details open><summary>Muss unsere Familie katholisch sein?</summary><p class="b3">Nein. Wir sind eine katholische Einrichtung und feiern die Feste des Kirchenjahres, sind aber weltoffen für alle Religionen und Kulturen.</p></details>
+  <details><summary>Wie lange dauert die Eingewöhnung?</summary><p class="b3">In der Kinderkrippe etwa vier Wochen, gemeinsam mit Ihnen geplant. Im Kindergarten verläuft sie für jedes Kind unterschiedlich.</p></details>
+  <details><summary>Sind die Schließtage in allen Bereichen gleich?</summary><p class="b3">Ja. In allen Bereichen haben wir an höchstens 30 gleichen Tagen im Jahr geschlossen.</p></details>
+  <details><summary>Müssen wir Windeln mitbringen?</summary><p class="b3">In der Kinderkrippe ja: Windeln, Feuchttücher und ggf. Wundschutzcreme, damit jedes Kind mit seinen eigenen Produkten gewickelt wird.</p></details>
+  <details><summary>Muss mein Kind für den Kindergarten sauber sein?</summary><p class="b3">Nein. Braucht Ihr Kind noch eine Windel, unterstützen wir es auf dem Weg zum Sauberwerden.</p></details>
+  <details><summary>Wer kocht das Mittagessen?</summary><p class="b3">Unsere hauseigene Küche. Zwei Köchinnen kochen jeden Tag frisch.</p></details>
+ </div>
+</div></section>
+
+<section class="ab hell"><div class="w schluss">
+ <h2 class="h2">Lernen Sie uns kennen</h2>
+ <p class="lead">Sie haben Fragen zu Krippe, Kindergarten oder Hort? Schreiben Sie uns oder rufen Sie an.</p>
+ <div class="aktion"><a class="btn btn-p" href="#">Platz anfragen</a><a class="pfeil" href="#">0931 2789892 0</a></div>
+</div></section>
+</main>
+<footer><div class="w"><span>© 2026 Kath. Kinder- und Jugendhort Grombühl e. V. · Lindleinstraße 20 · 97080 Würzburg</span><span><a href="#">Impressum</a> · <a href="#">Datenschutz</a></span></div></footer>
+</body></html>
