@@ -459,7 +459,7 @@ def page_hero(title, sub, image, kicker, links=None, alt="", kreis=None, rahmen=
     if links:
         sn = '\n<nav class="subnav no-print" aria-label="Auf dieser Seite"><div class="container"><ul>' + "".join(
             f'<li><a href="#{a}">{l}</a></li>' for a, l in links) + "</ul></div></nav>"
-    kr = (f'<a class="ph-kreis" href="#ueberblick" aria-label="Alter: {kreis[0]} {kreis[1]} {kreis[2]} – zum Überblick"><span>{kreis[0]}</span><b>{kreis[1]}</b><span>{kreis[2]}</span></a>') if kreis else ""
+    kr = (f'<a class="ph-kreis" href="#ueberblick" title="Zum Überblick"><span>{kreis[0]}</span><b>{kreis[1]}</b><span>{kreis[2]}</span></a>') if kreis else ""
     return f'''<section class="page-hero{" mit-kreis" if kreis else ""}{" mit-rahmen" if rahmen else ""}">
   <div class="container">{kr}
     <div class="page-hero-card">
