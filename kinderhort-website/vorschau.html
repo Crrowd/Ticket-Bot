@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kath. Kinder- und Jugendhort Grombühl e. V. – Vorschau</title>
-<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjMiIGZpbGw9IiMxRTNCNDQiLz48cGF0aCBkPSJNNiAxNyBRMjQgMjUgNDIgMTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBjbGFzcz0iYmYiIGQ9Ik05IDE4LjMgTDE1IDIxIEwxMS4yIDI5WiIgZmlsbD0iI0Q0QjVCMCIvPjxwYXRoIGNsYXNzPSJiZiIgZD0iTTE2LjUgMjEuNiBMMjIuNSAyMyBMMTkgMzEuNVoiIGZpbGw9IiNBOEM1QzAiLz48cGF0aCBjbGFzcz0iYmYiIGQ9Ik0yNC41IDIzIEwzMC41IDIxLjggTDI4LjYgMzEuNFoiIGZpbGw9IiNENEI1QjAiLz48cGF0aCBjbGFzcz0iYmYiIGQ9Ik0zMiAyMS4zIEwzOC41IDE4LjQgTDM3LjYgMjguM1oiIGZpbGw9IiNBOEM1QzAiLz48L3N2Zz4=">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PGNpcmNsZSBjbGFzcz0iYm0ta3JlaXMiIGN4PSIyNCIgY3k9IjI0IiByPSIyMyIgZmlsbD0iIzFFM0I0NCIvPjxwYXRoIGQ9Ik02IDE3IFEyNCAyNSA0MiAxNyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGNsYXNzPSJiZiIgZD0iTTkgMTguMyBMMTUgMjEgTDExLjIgMjlaIiBmaWxsPSIjRDRCNUIwIi8+PHBhdGggY2xhc3M9ImJmIiBkPSJNMTYuNSAyMS42IEwyMi41IDIzIEwxOSAzMS41WiIgZmlsbD0iI0E4QzVDMCIvPjxwYXRoIGNsYXNzPSJiZiIgZD0iTTI0LjUgMjMgTDMwLjUgMjEuOCBMMjguNiAzMS40WiIgZmlsbD0iI0Q0QjVCMCIvPjxwYXRoIGNsYXNzPSJiZiIgZD0iTTMyIDIxLjMgTDM4LjUgMTguNCBMMzcuNiAyOC4zWiIgZmlsbD0iI0E4QzVDMCIvPjwvc3ZnPg==">
 <style>/* ==========================================================
    Kath. Kinder- und Jugendhort Grombühl e. V. – Stylesheet
    Layout: ruhiger Salbei-Grund, Inhalte auf dunkel-türkisen Karten,
@@ -2940,6 +2940,13 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .faq:not(.lp-fragen) details[open]:not(.schliesst) summary::before { rotate: 90deg; }
 .faq:not(.lp-fragen) details[open].schliesst summary::after, .faq:not(.lp-fragen) details:not([open]) summary::after { rotate: 0deg; }
 
+/* ===== Logo beim ersten Öffnen (26.11.2026) ===== */
+@keyframes bm-roll { from { opacity: 0; rotate: -90deg; scale: .7; } }
+@keyframes bm-wehen { 0% { rotate: 0deg; } 30% { rotate: 12deg; } 60% { rotate: -8deg; } 100% { rotate: 0deg; } }
+.brand-mark .bm-kreis { transform-box: fill-box; transform-origin: center; }
+.logo-ein .site-header .brand-mark .bm-kreis { animation: bm-roll .6s var(--ease-out) both; }
+.logo-ein .site-header .brand-mark .bf { animation: bm-wehen .8s var(--io) both; animation-delay: calc(.45s + var(--n) * 70ms); }
+
 /* Automatisch erzeugt von build.py – nicht von Hand ändern. */
 .lq-baellebad { background-image: url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAwAA8BgJbACdAEPh73a5VeAAP7oL1N5R0MNjOcSAru9g+tJveYlhbfjB4i5d7jgfld92ZLHRyeBpKvdQUm4CaR4Wm0TNWqP73mxRdY4IAAA); }
 .lq-bauecke-2 { background-image: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAQCdASoQAAwAA8BgJQBOgMXhW+0iAAD2ufidlmoA6jus4LLBIamoOgvKvb1ULui6sj+gups24mptpi3q9We0UxemyX9Tb999RAbPn1RK473DB06hBUvR/7qse8AOw1opARWNKwAAAA==); }
@@ -3038,7 +3045,7 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="#index">
-      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1E3B44"/><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path class="bf" d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path class="bf" d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path class="bf" d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path class="bf" d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg>
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><circle class="bm-kreis" cx="24" cy="24" r="23" fill="#1E3B44"/><path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/><path class="bf" d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/><path class="bf" d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/><path class="bf" d="M24.5 23 L30.5 21.8 L28.6 31.4Z" fill="#D4B5B0"/><path class="bf" d="M32 21.3 L38.5 18.4 L37.6 28.3Z" fill="#A8C5C0"/></svg>
       <span class="brand-text"><span class="b-pre">Kath. Kinder- und Jugendhort</span> <span class="b-name" translate="no">Grombühl e. V.</span></span>
     </a>
     <nav class="main-nav" id="hauptmenue" aria-label="Hauptnavigation">
@@ -4306,6 +4313,14 @@ window.KITA = {
   root.classList.add("js");
   var K = window.KITA || null;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* Logo: Kreis rollt herein, Wimpel wehen – nur beim ersten Öffnen der Website */
+  try {
+    var ruhigGespeichert = false; try { ruhigGespeichert = localStorage.getItem("ruhig") === "1"; } catch (e2) {}
+    if (!reduced && !ruhigGespeichert && !sessionStorage.getItem("logo-ein")) {
+      sessionStorage.setItem("logo-ein", "1"); root.classList.add("logo-ein");
+      setTimeout(function () { root.classList.remove("logo-ein"); }, 1800);
+    }
+  } catch (e) {}
   var isMac = /Mac|iPhone|iPad/.test(navigator.platform || "");
   function $(s, el) { return (el || document).querySelector(s); }
   function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }

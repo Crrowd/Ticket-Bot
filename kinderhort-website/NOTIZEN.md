@@ -687,3 +687,4 @@ Entscheidung offen.
 - 25.11.: Aktuelles: Kasten neben Terminen „Termine abonnieren – kostenlos“ (→ downloads.html#abo), Knopf „Termine abonnieren“ statt „Alle in den Kalender“.
 - 25.11.: Fragen-Knopf überall gleich (Plus wird Minus, halbe Drehung) – Bereichsseiten wie Startseite; Striche gezeichnet statt „+“-Zeichen.
 - 25.11.: Entschieden: Pfeil-Aufklapper („Was möchten Sie tun?“, „Den ganzen Gruß lesen“) bleiben mit Pfeil, kein runder Knopf.
+- 26.11.: Logo-Animation Variante 3 (Kreis rollt herein, Wimpel wehen), einmal pro Besuch (sessionStorage „logo-ein“), nicht bei „Bewegung aus“/reduzierter Bewegung.

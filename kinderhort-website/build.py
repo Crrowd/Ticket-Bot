@@ -203,7 +203,7 @@ def bunting(colors=("#D4B5B0", "#A8C5C0", "#D4B5B0", "#F3F8F7"), n=18, bg=None):
     return f'<svg class="bunting" viewBox="0 0 {w} 46" preserveAspectRatio="none" aria-hidden="true">{"".join(parts)}</svg>'
 
 BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">'
-              '<circle cx="24" cy="24" r="23" fill="#1E3B44"/>'
+              '<circle class="bm-kreis" cx="24" cy="24" r="23" fill="#1E3B44"/>'
               '<path d="M6 17 Q24 25 42 17" fill="none" stroke="#fff" stroke-width="1.6"/>'
               '<path class="bf" d="M9 18.3 L15 21 L11.2 29Z" fill="#D4B5B0"/>'
               '<path class="bf" d="M16.5 21.6 L22.5 23 L19 31.5Z" fill="#A8C5C0"/>'

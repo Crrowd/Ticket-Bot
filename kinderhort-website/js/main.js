@@ -6,6 +6,14 @@
   root.classList.add("js");
   var K = window.KITA || null;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* Logo: Kreis rollt herein, Wimpel wehen – nur beim ersten Öffnen der Website */
+  try {
+    var ruhigGespeichert = false; try { ruhigGespeichert = localStorage.getItem("ruhig") === "1"; } catch (e2) {}
+    if (!reduced && !ruhigGespeichert && !sessionStorage.getItem("logo-ein")) {
+      sessionStorage.setItem("logo-ein", "1"); root.classList.add("logo-ein");
+      setTimeout(function () { root.classList.remove("logo-ein"); }, 1800);
+    }
+  } catch (e) {}
   var isMac = /Mac|iPhone|iPad/.test(navigator.platform || "");
   function $(s, el) { return (el || document).querySelector(s); }
   function $$(s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); }

@@ -2932,3 +2932,10 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .faq:not(.lp-fragen) details[open]:not(.schliesst) summary::after { rotate: 180deg; }
 .faq:not(.lp-fragen) details[open]:not(.schliesst) summary::before { rotate: 90deg; }
 .faq:not(.lp-fragen) details[open].schliesst summary::after, .faq:not(.lp-fragen) details:not([open]) summary::after { rotate: 0deg; }
+
+/* ===== Logo beim ersten Öffnen (26.11.2026) ===== */
+@keyframes bm-roll { from { opacity: 0; rotate: -90deg; scale: .7; } }
+@keyframes bm-wehen { 0% { rotate: 0deg; } 30% { rotate: 12deg; } 60% { rotate: -8deg; } 100% { rotate: 0deg; } }
+.brand-mark .bm-kreis { transform-box: fill-box; transform-origin: center; }
+.logo-ein .site-header .brand-mark .bm-kreis { animation: bm-roll .6s var(--ease-out) both; }
+.logo-ein .site-header .brand-mark .bf { animation: bm-wehen .8s var(--io) both; animation-delay: calc(.45s + var(--n) * 70ms); }
