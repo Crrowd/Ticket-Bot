@@ -233,9 +233,9 @@ def mega(active):
     pages = [x[1] for x in BEREICHE]
     default = BEREICHE[pages.index(active)][0] if active in pages else "krippe"
     cols = "".join(
-        f'<div class="mega-col c-{k}"><a class="mega-title" href="{h}"{' aria-current="page"' if h == active else ""}>{t}<small>{sub}</small></a>'
+        f'<div class="mega-col c-{k}"><a class="mm-bild" href="{h}" tabindex="-1" aria-hidden="true">{img(im, "", sizes="(max-width: 760px) 90vw, 320px")}</a><a class="mega-title" href="{h}"{' aria-current="page"' if h == active else ""}>{t}<small>{sub}</small></a>'
         + "<ul>" + "".join(f'<li><a href="{h}#{a}"><span class="ml">{l}</span></a></li>' for a, l in MEGA_LINKS) + "</ul></div>"
-        for k, h, t, sub, _ in BEREICHE)
+        for k, h, t, sub, im in BEREICHE)
     visual = "".join(
         f'<figure class="v-{k}{" def" if k == default else ""}">{img(im, "", sizes="320px")}' + "".join(img(x, "", cls="mv-x", sizes="320px") for x in MEGA_FOTOS[k]) + f'<figcaption>{t}<small>{sub}</small></figcaption></figure>'
         for k, h, t, sub, im in BEREICHE)

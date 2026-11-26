@@ -2939,3 +2939,22 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .brand-mark .bm-kreis { transform-box: fill-box; transform-origin: center; }
 .logo-ein .site-header .brand-mark .bm-kreis { animation: bm-roll .6s var(--ease-out) both; }
 .logo-ein .site-header .brand-mark .bf { animation: bm-wehen .8s var(--io) both; animation-delay: calc(.45s + var(--n) * 70ms); }
+
+/* ===== Menü auf Tablet und Handy: Bereiche als Fotokarten (26.11.2026) ===== */
+.mm-bild { display: none; }
+@media (max-width: 1180px) {
+  .main-nav > ul { max-width: 960px; grid-template-columns: minmax(0, 1fr) !important; }
+  .main-nav > ul > li:not(.nav-extra) { grid-column: auto; }
+  .main-nav .mega-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .main-nav .mega-col { display: grid; align-content: start; padding: 8px; border-radius: 22px; }
+  .main-nav .mm-bild { display: block; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; }
+  .main-nav .mm-bild img { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale .5s var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) { .main-nav .mega-col:hover .mm-bild img { scale: 1.04; } }
+  .main-nav .mega-title { padding: 12px 8px 4px; }
+  .main-nav .mega ul { padding: 8px 4px 4px; }
+  .main-nav .mega li a { font-size: .85rem; min-height: 36px; }
+}
+@media (max-width: 760px) {
+  .main-nav .mega-cols { grid-template-columns: minmax(0, 1fr); }
+  .main-nav .mm-bild { aspect-ratio: 16 / 7; }
+}
