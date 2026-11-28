@@ -690,3 +690,4 @@ Entscheidung offen.
 - 26.11.: Logo-Animation Variante 3 (Kreis rollt herein, Wimpel wehen), einmal pro Besuch (sessionStorage „logo-ein“), nicht bei „Bewegung aus“/reduzierter Bewegung.
 - 26.11.: Menü auf Tablet/Handy (bis 1180px): Bereiche als Fotokarten (Entwurf B), drei nebeneinander, Handy untereinander. Computer-Menü unverändert.
 - 28.11.: Neue Fotos: Weißer Raum (5 Fotos, Hauptfoto Wassersäulen in Räumen aller Bereiche + Startseite, alle 5 in den Rundgängen), Hort-Spielflur Bibliothek (Räume + Rundgang), Kindergarten-Spielbereich (Rundgang), Hort-Basteln (Rundgang), Angebotstafel unter dem Hort-Tagesablauf. Flur mit Weihnachtssocken: nicht verwendet.
+- 28.11.: Startseite Großansicht: Weißer Raum blättert durch seine 5 Fotos, Außenbereich durch Garten + Hausfoto, Küche einzeln (versteckte .lb-mehr-Links). Pfeile in der Großansicht liegen über langen Texten, Text auf dem Handy max. 3 Zeilen.

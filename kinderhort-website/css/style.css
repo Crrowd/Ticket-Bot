@@ -2966,3 +2966,9 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
 .angebote-tafel figcaption { color: var(--fg-soft); }
 .angebote-tafel figcaption strong { display: block; color: var(--fg); }
 .angebote-tafel a:focus-visible { outline: 3px solid var(--surface); outline-offset: 3px; }
+
+/* Weitere Fotos nur für die Großansicht (28.11.2026) */
+.lb-mehr { display: none; }
+/* Lange Bildtexte verdecken die Pfeile nicht (28.11.2026) */
+.lb-btn { z-index: 3; }
+@media (max-width: 700px) { .lightbox figcaption span { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; } }
