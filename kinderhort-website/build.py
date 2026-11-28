@@ -783,7 +783,7 @@ home = f'''
   <div class="container">
     <div class="lp-kopf reveal"><h2 class="lp-h2">Mehr als Betreuung</h2><p class="lp-lead">Viel Raum zum Spielen, Lernen und Entspannen, mitten in der Stadt.</p></div>
     <div class="lp-zwei lp-drei">
-      <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160031.jpg" data-full="img/p2160031.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}" aria-label="Weißer Raum groß ansehen">{img("img/p2160031.jpg", "Weißer Raum", sizes="(max-width: 900px) 100vw, 580px")}<span class="lp-lupe" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></a><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
+      <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/weisser-raum-wassersaeulen-2.jpg" data-full="img/weisser-raum-wassersaeulen-2.jpg" data-group="home" data-title="Weißer Raum" data-text="{e(WEISSER_RAUM)}" aria-label="Weißer Raum groß ansehen">{img("img/weisser-raum-wassersaeulen-2.jpg", "Weißer Raum mit leuchtenden Wassersäulen", sizes="(max-width: 900px) 100vw, 580px")}<span class="lp-lupe" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></a><div class="lp-in"><h3>Weißer Raum</h3><p>Wasserbett, Lichtwasserfall und Wassersäulen: ein Ort für Ruhe und Traumreisen.</p></div></article>
       <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/p2160054.jpg" data-full="img/p2160054.jpg" data-group="home" data-title="Hauseigene Küche" data-text="Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten." aria-label="Hauseigene Küche groß ansehen">{img("img/p2160054.jpg", "Hauseigene Küche", sizes="(max-width: 900px) 100vw, 580px")}<span class="lp-lupe" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></a><div class="lp-in"><h3>Hauseigene Küche</h3><p>Zwei Köchinnen kochen täglich frisch und mit regionalen Zutaten.</p></div></article>
       <article class="lp-karte reveal"><a class="lp-bf lp-gross" href="img/garten.jpg" data-full="img/garten.jpg" data-group="home" data-title="Großer Außenbereich" data-text="Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage – für alle Bereiche." aria-label="Außenbereich groß ansehen">{img("img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus", sizes="(max-width: 900px) 100vw, 380px")}<span class="lp-lupe" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></a><div class="lp-in"><h3>Großer Außenbereich</h3><p>Sehr großes Außengelände mit altem Baumbestand, trotz Stadtlage – für alle Bereiche.</p></div></article>
     </div>
@@ -857,7 +857,11 @@ krippe_tour = [
     ("img/nebenraum.jpg", "Unser Nebenraum", "Er wird täglich zum Freispiel genutzt mit wechselndem Spielmaterial (Polsterbausteine, Parkhaus, kleines Bällebad, …) oder auch zur angeleiteten Kleingruppenarbeit."),
     ("img/schlafen.jpg", "Unser Schlafraum", "Ausgestattet mit einem Bett für jedes Kind zum täglichen Mittagsschlaf. Das Zimmer kann durch ein Rollo bzw. einen Vorhang angenehm abgedunkelt werden, um eine gemütliche Schlafatmosphäre zu ermöglichen."),
     ("img/img_6791.jpg", "Unser Wickelraum", "In geschützter Atmosphäre bieten der Wickeltisch, eine auf Kleinkindgröße ausgerichtete, sehr niedrige Kindertoilette sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege."),
-    ("img/p2160031.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen-2.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen.jpg", "Unser weißer Raum", "die Wassersäulen vor den Spiegeln"),
+    ("img/weisser-raum-sitzlandschaft.jpg", "Unser weißer Raum", "die Sofalandschaft zum Ausruhen"),
+    ("img/weisser-raum-sitzlandschaft-2.jpg", "Unser weißer Raum", "Farbreflexe der Wassersäulen"),
+    ("img/weisser-raum-lichtvorhang.jpg", "Unser weißer Raum", "der Lichtwasserfall"),
     ("img/turnraum.jpg", "Unser Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert."),
     ("img/img_6768.jpg", "Unser Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier laden Bobbycars, kleine Räder und mehr zum Fahren ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren."),
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht"),
@@ -886,7 +890,7 @@ krippe += section("raeume", "Räumlichkeiten", "Viel Platz für die Kleinsten", 
     ("Flur", "Der Flurbereich mit den Kindergarderoben wird ebenfalls als Spielbereich angeboten. Hier laden Bobbycars, kleine Räder und mehr zum Fahren ein. Der täglich ausgelegte Teppich ist der Platz von Morgen- und Mittagskreis, zum Singen und Musizieren.", "img/img_6768.jpg"),
     ("Wickelraum", "In geschützter Atmosphäre bieten der Wickeltisch, eine auf Kleinkindgröße ausgerichtete, sehr niedrige Kindertoilette sowie Töpfchen und ein Waschbecken angemessene Möglichkeit zur Körperhygiene und -pflege.", "img/img_6791.jpg"),
     ("Turnraum", "Die wöchentliche Bewegungseinheit findet im gut ausgestatteten Turnraum statt. In Kleingruppen werden spielerisch Balance, Reaktion und Kraft gefördert.", "img/turnraum.jpg"),
-    ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
+    ("Weißer Raum", WEISSER_RAUM, "img/weisser-raum-wassersaeulen-2.jpg", "Weißer Raum mit leuchtenden Wassersäulen, Spiegeln und weißen Sitzpolstern"),
     ("Eingangsbereich", "Der Eingangsbereich bietet tagsüber Möglichkeit zum Abstellen des Kinderwagens.", None),
     ("Außenbereich", "Die Kinderkrippe hat direkt vor dem Eingang einen eigenen Außenspielbereich mit Sandkasten, Nestschaukel, Tipi, Terrasse und Rasenfläche. Am Vormittag nutzt die Kinderkrippe gerne auch die restliche, sehr weitläufige Spielfläche mit dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
 ]), cls="alt")
@@ -951,10 +955,15 @@ kiga_tour = [
     ("img/maltisch.jpg", "Unser Gruppenraum", "der Kreativtisch"),
     ("img/p2160149.jpg", "Unser Zimmer Kunterbunt", "Im Zimmer Kunterbunt findet für alle Mittelkinder (4- bis 5-Jährige) einmal wöchentlich am Vormittag eine Kleingruppenarbeit statt. Die Kinder starten mit dem Morgenkreis und einem gemeinsamen Frühstück."),
     ("img/p2160152.jpg", "Unser Zimmer Kunterbunt", "Hier werden verschiedene Beschäftigungen passend zur Jahreszeit oder zum Projektthema angeboten. Dies sind beispielsweise kreative Angebote, Bilderbuchbetrachtungen, Fingerspiele oder das Singen von Liedern."),
-    ("img/p2160031.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen-2.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen.jpg", "Unser weißer Raum", "die Wassersäulen vor den Spiegeln"),
+    ("img/weisser-raum-sitzlandschaft.jpg", "Unser weißer Raum", "die Sofalandschaft zum Ausruhen"),
+    ("img/weisser-raum-sitzlandschaft-2.jpg", "Unser weißer Raum", "Farbreflexe der Wassersäulen"),
+    ("img/weisser-raum-lichtvorhang.jpg", "Unser weißer Raum", "der Lichtwasserfall"),
     ("img/turnraum.jpg", "Unser Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt."),
     ("img/p2170222.jpg", "Unser Flur", "Unser großer Spielbereich im Flur"),
     ("img/p2170225.jpg", "Unser Flur", "mit wechselnden Spielmaterialien"),
+    ("img/kiga-spielbereich.jpg", "Unser Kindergarten", "Spielbereich mit Bauteppich, Sofa und Maltisch"),
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht."),
 ]
 kiga = page_hero("Kindergarten", "Spielen, forschen, Freunde finden – in großen, hellen Räumen und einem riesigen Garten mitten in der Stadt.",
@@ -978,7 +987,7 @@ kiga += section("raeume", "", "Große, helle Räume zum Spielen und Lernen", "",
 <span class="group-chip"><span class="group-ic gi-spatz" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h.01M3.5 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.3-2.3L2 20M20 7l2 .5-2 .5M10 18v3M14 17.8V21M7 18a6 6 0 0 0 3.8-10.6"/></svg></span>Spatzengruppe</span></div>''' + rooms([
     ("Gruppenraum", "In unseren großen, hellen Gruppenräumen befinden sich jeweils eine Leseecke, eine Bauecke, eine Puppen- und Rollenspielecke, ein Kreativtisch, ein Frühstücks- und Esstisch für das warme frisch zubereitete Mittagessen sowie Spieltische für Brettspiele und Puzzle. Zu jeder Gruppe gehört ein Nebenraum, dort finden altersspezifische Angebote in Kleingruppen statt. Außerdem hat jede Gruppe einen großen Spielbereich im Flur mit wechselnden Spielmaterialien.", "img/blick-vom-fenster-in-den-raum.jpg"),
     ("Turnraum", "Der große, hohe Raum bietet den Kindern die Möglichkeit zum Toben und Rennen. Hier finden Bewegungsangebote und -spiele zu speziellen Wünschen und Themen der Kinder statt.", "img/turnraum.jpg"),
-    ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
+    ("Weißer Raum", WEISSER_RAUM, "img/weisser-raum-wassersaeulen-2.jpg", "Weißer Raum mit leuchtenden Wassersäulen, Spiegeln und weißen Sitzpolstern"),
     ("Zimmer Kunterbunt", "Im Zimmer Kunterbunt findet für alle Mittelkinder (4- bis 5-Jährige) einmal wöchentlich am Vormittag eine Kleingruppenarbeit statt. Die Kinder starten mit dem Morgenkreis und einem gemeinsamen Frühstück. Hier werden verschiedene Beschäftigungen passend zur Jahreszeit oder zum Projektthema angeboten. Dies sind beispielsweise kreative Angebote, Bilderbuchbetrachtungen, Fingerspiele oder das Singen von Liedern.", "img/p2160149.jpg"),
     ("Außenbereich", "Am Schiff, im Tipi, im Sandkasten und auf dem Fußballhof kann sich das Kind täglich an der frischen Luft bewegen. Für den Sandkasten gibt es Spielsachen, die dem Kind täglich zur Verfügung gestellt werden, und es hat die Möglichkeit, mit dem Laufrad, Fahrrad oder anderen Fahrzeugen zu fahren. Das sehr große Außengelände mit altem Baumbestand nutzen alle Bereiche des Hauses.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
 ]), cls="alt")
@@ -1051,8 +1060,13 @@ hort_tour = [
     ("img/hausaufgaben1.jpg", "Unsere Hausaufgabenräume", "Hier werden die Hausaufgaben jedes Kindes von den Erziehern korrigiert und auf Vollständigkeit überprüft"),
     ("img/chilloutarea.jpg", "Unsere Chillout-Ecke", "Bereich der ganz Großen: Kinder ab der 6. Klasse haben hier einen eigenen gemütlichen Bereich zum Chillen."),
     ("img/turnraum.jpg", "Unser Turnraum", "Hier spielen, turnen und toben die Kinder. Sie können diesen Raum bei gezielten Angeboten und in ihrer Freizeit nutzen."),
-    ("img/p2160031.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen-2.jpg", "Unser weißer Raum", WEISSER_RAUM),
+    ("img/weisser-raum-wassersaeulen.jpg", "Unser weißer Raum", "die Wassersäulen vor den Spiegeln"),
+    ("img/weisser-raum-sitzlandschaft.jpg", "Unser weißer Raum", "die Sofalandschaft zum Ausruhen"),
+    ("img/weisser-raum-sitzlandschaft-2.jpg", "Unser weißer Raum", "Farbreflexe der Wassersäulen"),
+    ("img/weisser-raum-lichtvorhang.jpg", "Unser weißer Raum", "der Lichtwasserfall"),
     ("img/img_1288.jpg", "Unser Spielflur", "Hier hat jedes Kind seinen eigenen Spind für Büchertasche und persönliches Eigentum."),
+    ("img/spielflur-bibliothek.jpg", "Unser Spielflur", "die Bibliothek mit Büchern für jedes Lesealter"),
     ("img/p2160035.jpg", "Unser Spielflur", "Im Spielflur gibt es eine Bibliothek mit Büchern für jedes Lesealter"),
     ("img/p2160042.jpg", "Unser Spielflur", "der Tischkicker"),
     ("img/img_1251.jpg", "Unser Bistro", "Im Bistro nehmen die Kinder täglich nach der Schule in entspannter Atmosphäre gemeinsam mit ihren Freunden ein leckeres frisch gekochtes Mittagessen ein"),
@@ -1061,6 +1075,7 @@ hort_tour = [
     ("img/p2160054.jpg", "Unsere hauseigene Küche", "Hier wird täglich frisch gekocht"),
     ("img/img_2423.jpg", "Unser Kreativraum", "Ein Werk unserer Kinder"),
     ("img/img_8912.jpg", "Ein Kunstwerk unserer Kinder", "Gestaltet im Kinderhort"),
+    ("img/hort-basteln.jpg", "Gebastelt im Kinderhort", "Weihnachtliche Bastelarbeiten aus der Angebotszeit"),
 ]
 
 def paed_item(titel, html):
@@ -1163,10 +1178,10 @@ hort += section("paedagogik", "Pädagogik", "So arbeiten wir im Hort", "Unser Zi
 hort += section("raeume", "", "Räume für Hausaufgaben, Kreativität und Erholung", "", rooms([
     ("Kreativraum", "Freizeitbereich der Hortkinder, in dem eine Puppenecke, eine Bauecke, ein Piratenausguck, mehrere Spielteppiche, ein Billardtisch und ein Kreativbereich mit unterschiedlichsten Materialien zur Verfügung stehen.", "img/kreatviraum-4.jpg"),
     ("Hausaufgabenräume", "Nach Alter und Klassenstufen getrennt fertigt jedes Kind hier eigenständig seine Hausaufgaben an. Jedes Kind erhält die Hilfe und Unterstützung, die es für seine Aufgaben benötigt. Hier werden die Hausaufgaben jedes Kindes von den Erziehern korrigiert und auf Vollständigkeit überprüft.", "img/img_1222.jpg"),
-    ("Spielflur", "Hier hat jedes Kind seinen eigenen Spind für Büchertasche und persönliches Eigentum. Im Spielflur gibt es eine Bibliothek mit Büchern für jedes Lesealter, eine gemütliche Lesetreppe, einen Spielbereich mit Spieltischen und einen Tischkicker.", "img/p2160035.jpg"),
+    ("Spielflur", "Hier hat jedes Kind seinen eigenen Spind für Büchertasche und persönliches Eigentum. Im Spielflur gibt es eine Bibliothek mit Büchern für jedes Lesealter, eine gemütliche Lesetreppe, einen Spielbereich mit Spieltischen und einen Tischkicker.", "img/spielflur-bibliothek.jpg", "Bibliothek im Spielflur mit Bücherregal, roten Sesseln und Lesetisch"),
     ("Bistro", "Im Bistro nehmen die Kinder täglich nach der Schule in entspannter Atmosphäre gemeinsam mit ihren Freunden ein leckeres frisch gekochtes Mittagessen ein, das in unserer hauseigenen Küche zubereitet wurde.", "img/img_1251.jpg"),
     ("Turnraum", "Hier spielen, turnen und toben die Kinder. Sie können diesen Raum bei gezielten Angeboten und in ihrer Freizeit nutzen.", "img/turnraum.jpg"),
-    ("Weißer Raum", WEISSER_RAUM, "img/p2160031.jpg"),
+    ("Weißer Raum", WEISSER_RAUM, "img/weisser-raum-wassersaeulen-2.jpg", "Weißer Raum mit leuchtenden Wassersäulen, Spiegeln und weißen Sitzpolstern"),
     ("Werkraum", "Handwerkliche und gestalterische Aktionen finden regelmäßig im Werkraum statt.", "img/werkraum.jpg"),
     ("Bereich der ganz Großen", "Kinder ab der 6. Klasse haben hier einen eigenen gemütlichen Bereich zum Chillen.", "img/chilloutarea.jpg"),
     ("Außenbereich", "Nach der Schule können die Kinder draußen spielen, toben und sich ausruhen. Das sehr große Außengelände mit altem Baumbestand nutzen alle Bereiche des Hauses: mit Rutsche, dem großen, teils überdachten Sandkasten, der Ruheinsel und dem Fußballhof.", "img/garten.jpg", "Außenbereich mit Liegebank, großem Sitzkissen und Luftballons vor dem Haus"),
@@ -1186,7 +1201,7 @@ hort += section("tagesablauf", "", "Der Tagesablauf des Kinderhorts", "", timeli
     ("14:30 – 16:30 Uhr", "Freitagsausflug und Freispielzeit: Je nach Interessen, Jahreszeit oder Gruppenthema geht es in die Stadt, in die Natur, zu Veranstaltungen, zum Spielen oder zum Sport. Die Teilnahme ist freiwillig, wer nicht mitkommt, wird im Hort betreut. Freitags gibt es keine Hausaufgaben."),
     "Täglich",
     ("17:00 – 18:00 Uhr", "Die allgemeine Hortzeit endet um 17:00 Uhr. Kinder, deren Eltern mehr Zeit gebucht haben, besuchen bis 18:00 Uhr den Spätdienst."),
-]), cls="alt")
+]) + f'''<figure class="angebote-tafel reveal"><a href="img/hort-angebote.jpg" data-full="img/hort-angebote.jpg" data-group="angebote" data-title="Unsere Angebotstafel" data-text="Jede Woche hängt im Hort, was es in der Angebotszeit gibt, z. B. Plätzchen backen, Musizieren oder tiergestützte Pädagogik." aria-label="Angebotstafel groß ansehen">{img("img/hort-angebote.jpg", "Angebotstafel im Hort mit den Angeboten von Montag bis Freitag", sizes="(max-width: 900px) 100vw, 720px")}</a><figcaption><strong>So sieht eine Angebotswoche aus</strong> Die Tafel im Hort zeigt, was es in der Angebotszeit gibt, zum Beispiel Plätzchen backen, Musizieren oder tiergestützte Pädagogik.</figcaption></figure>''', cls="alt")
 hort += section("auszeichnung", "", "Der Kath. Kinder- und Jugendhort Grombühl bietet mehr als Betreuung …", "", f'''
 <div class="split split-top">
   <div class="reveal"><p>Wir betrachten jedes Kind stärkenorientiert. Wir fördern die Selbstständigkeit der Schulkinder durch unser gruppenübergreifendes Konzept, das den Kindern die Möglichkeit gibt, selbst zu bestimmen, wo und mit wem sie spielen oder wie sie ihre Freizeit gestalten. Altersübergreifende Kontakte zu Jüngeren und Älteren stärken die Kinder in Verantwortungsübernahme, Rücksicht und Eigenverantwortlichkeit. Zahlreiche Partizipationsmöglichkeiten zeigen den Kindern, wie sie Einfluss auf ihren Alltag im Kinderhort nehmen und diesen selbst mitbestimmen können, z. B. in Kinderkonferenzen, Kinderbefragungen und Gruppengesprächen mit den Erziehern.</p></div>

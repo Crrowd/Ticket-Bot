@@ -2958,3 +2958,11 @@ a.ph-kreis:focus-visible { outline: 3px solid var(--surface); outline-offset: 4p
   .main-nav .mega-cols { grid-template-columns: minmax(0, 1fr); }
   .main-nav .mm-bild { aspect-ratio: 16 / 7; }
 }
+
+/* ===== Angebotstafel im Hort-Tagesablauf (28.11.2026) ===== */
+.angebote-tafel { margin: 32px 0 0; max-width: 720px; display: grid; gap: 12px; }
+.angebote-tafel a { display: block; border-radius: 20px; overflow: hidden; cursor: zoom-in; box-shadow: var(--shadow); }
+.angebote-tafel img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.angebote-tafel figcaption { color: var(--fg-soft); }
+.angebote-tafel figcaption strong { display: block; color: var(--fg); }
+.angebote-tafel a:focus-visible { outline: 3px solid var(--surface); outline-offset: 3px; }
